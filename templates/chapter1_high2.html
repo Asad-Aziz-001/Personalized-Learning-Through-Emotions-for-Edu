@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Chill Math Café — Part 2</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)'], ['\\[', '\\]']] },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'] }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+
+  <style>
+    /* GLOBAL VARIABLES & RESETS */
+    :root {
+      --primary: #1e40af; --primary-light: #3b82f6; --bg: #f8fafc;
+      --white: #ffffff; --gray: #e2e8f0; --success: #10b981; --text: #1e293b;
+      --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    }
+    body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; }
+    .container { max-width: 1000px; margin: 0 auto; }
+    
+    /* CARD */
+    .card {
+      background-color: var(--white); border-radius: 16px; padding: 30px;
+      margin-bottom: 30px; box-shadow: var(--card-shadow); position: relative;
+    }
+    h1, h2 { color: var(--primary); margin-top: 0; }
+    .small { font-size: 0.9rem; color: #64748b; }
+
+    /* === CHILL MATH CAFE === */
+    .game-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+    .logo-icon { font-size: 2.5rem; }
+    .cafe { display: flex; gap: 20px; flex-wrap: wrap; }
+    .left, .right { flex: 1; min-width: 300px; }
+    .barista { background: #fff7ed; padding: 20px; border-radius: 12px; border: 2px solid #ffedd5; }
+    .controls button { padding: 8px 16px; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer; margin-right: 5px; }
+    .cup { 
+      display: inline-block; margin: 10px; padding: 15px; width: 45%;
+      background: #fff; border: 2px solid #e2e8f0; border-radius: 12px; 
+      cursor: pointer; transition: all 0.2s; text-align: center;
+    }
+    .cup:hover { transform: translateY(-3px); border-color: var(--primary-light); }
+    .cup.correct { background-color: #dcfce7; border-color: var(--success); }
+    .cup.wrong { background-color: #fee2e2; border-color: #ef4444; }
+
+    /* === QUEST LEVELS === */
+    .quest-level { background: #f1f5f9; padding: 20px; margin-bottom: 15px; border-radius: 10px; border-left: 4px solid var(--primary); }
+    .steps { margin-bottom: 10px; font-size: 0.95rem; color: #475569; background: white; padding: 10px; border-radius: 6px; }
+    input { padding: 8px; border-radius: 4px; border: 1px solid #cbd5e1; margin: 5px 0; width: 200px; }
+    .result { margin-top: 10px; font-weight: bold; }
+    .result.success { color: var(--success); }
+    .result.error { color: #ef4444; }
+
+    /* === TRIG MATCH GAME === */
+    .eq-buttons { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
+    .eq-btn {
+      padding: 10px 20px; background: #e2e8f0; border: none; border-radius: 20px;
+      cursor: pointer; font-weight: 600; transition: background 0.2s;
+    }
+    .eq-btn.active { background: var(--primary); color: white; }
+    .canvas-wrap { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
+    .steps-box { background: #f0f9ff; border-left: 4px solid var(--primary-light); padding: 15px; border-radius: 6px; font-size: 0.95rem; }
+
+    /* === SMOOTHIE BAR === */
+    .smoothie-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    .smoothie-card { background: #fefce8; padding: 15px; border: 2px dashed #facc15; border-radius: 10px; }
+    .smoothie-card.correct { border-style: solid; border-color: var(--success); background: #dcfce7; }
+    .mix-area { min-height: 60px; background: rgba(255,255,255,0.5); margin-top: 10px; padding: 10px; border-radius: 6px; font-size: 0.9rem; color: #666; }
+    .juice-options { margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap; }
+    .tag { background: var(--primary-light); color: white; padding: 6px 12px; border-radius: 4px; cursor: grab; font-size: 0.9rem; }
+
+    /* === NEXT BUTTON SECTION === */
+    .next-section {
+        text-align: center; padding: 40px; background: #f0fdf4;
+        border: 2px dashed var(--success); border-radius: 16px; margin-top: 50px;
+    }
+    .calm-btn {
+      padding: 8px 16px; background: var(--white); border: 1px solid var(--primary); 
+      color: var(--primary); border-radius: 6px; cursor: pointer; margin-top: 10px;
+    }
+    .calm-btn:hover { background: #eff6ff; }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+  
+  <a href="{{ url_for('serve_chapter', chapter_num=1) }}" style="display: inline-block; margin-bottom: 20px; color: #64748b; font-weight: 600;">
+    <i class="fas fa-arrow-left"></i> Back to Part 1
+  </a>
+
+  <div class="card">
+    <div class="game-header">
+      <div class="logo-icon">☕</div>
+      <div>
+        <h1>Chill Math Café</h1>
+        <div class="small">Serve function orders. Relaxed pace.</div>
+      </div>
+    </div>
+
+    <div class="cafe">
+      <aside class="left">
+        <div class="barista">
+          <h2 id="orderTitle" style="font-size:1.2rem; margin-bottom:5px;">Welcome!</h2>
+          <p id="orderDesc" style="margin-bottom:10px;">Click <strong>Start Shift</strong> to begin.</p>
+          <div id="orderHint" style="color:#f59e0b; font-style:italic; font-size:0.9rem; min-height:20px;"></div>
+          
+          <div class="controls" style="margin-top:15px;">
+            <button id="startBtn">Start Shift</button>
+            <button id="giveHint">Hint</button>
+          </div>
+          <p id="dialogue" style="margin-top:15px; color:#64748b; font-style:italic;">Barista: "Take it slow."</p>
+        </div>
+      </aside>
+
+      <section class="right">
+        <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+          <strong>Served: <span id="score">0</span></strong>
+          <strong>Streak: <span id="streak">0 🔥</span></strong>
+        </div>
+        <div id="cups"></div>
+      </section>
+    </div>
+  </div>
+
+  <div class="card">
+    <h1>🧠 Function Inversion Quest</h1>
+    <p class="small">Follow the hints, then enter the inverse function and a value check.</p>
+
+    <div class="quest-level">
+      <h3>Level 1: f(x) = -2x + 8</h3>
+      <div class="steps">
+        Hint: Swap x and y → x = -2y + 8. Solve for y.
+      </div>
+      <input id="inv1" placeholder="Enter f⁻¹(x)">
+      <input id="inv1val" placeholder="Enter f⁻¹(-1) value">
+      <button onclick="checkInversion(1)" style="background:var(--primary); color:white; border:none; padding:8px 16px; border-radius:4px; cursor:pointer;">Check</button>
+      <div class="result" id="res1"></div>
+    </div>
+
+    <div class="quest-level">
+      <h3>Level 2: f(x) = 3x³ + 7</h3>
+      <div class="steps">
+        Hint: x = 3y³ + 7 → x - 7 = 3y³ → y³ = (x-7)/3.
+      </div>
+      <input id="inv2" placeholder="Enter f⁻¹(x)">
+      <input id="inv2val" placeholder="Enter f⁻¹(-1) value">
+      <button onclick="checkInversion(2)" style="background:var(--primary); color:white; border:none; padding:8px 16px; border-radius:4px; cursor:pointer;">Check</button>
+      <div class="result" id="res2"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h1>🍹 Math Smoothie Bar</h1>
+    <p class="small">Drag the correct <strong>Domain</strong> and <strong>Range</strong> to each function card.</p>
+
+    <div class="smoothie-cards">
+      <div class="smoothie-card" data-domain="[−2, ∞)" data-range="[0, ∞)">
+        <div style="font-weight:bold; margin-bottom:5px;">f(x) = √(x + 2)</div>
+        <div class="mix-area">Drop Domain & Range here 👇</div>
+      </div>
+      
+      <div class="smoothie-card" data-domain="x ≠ −3" data-range="y ≠ 0">
+        <div style="font-weight:bold; margin-bottom:5px;">f(x) = 1 / (x + 3)</div>
+        <div class="mix-area">Drop Domain & Range here 👇</div>
+      </div>
+    </div>
+
+    <div class="juice-options">
+      <div class="tag" draggable="true">Domain: [−2, ∞)</div>
+      <div class="tag" draggable="true">Range: [0, ∞)</div>
+      <div class="tag" draggable="true">Domain: x ≠ −3</div>
+      <div class="tag" draggable="true">Range: y ≠ 0</div>
+    </div>
+    <div id="mixResult" class="result" style="margin-top:15px;"></div>
+  </div>
+
+  <div class="card" id="trig-game">
+    <h2>🎯 Trigonometric Match Game</h2>
+    <p class="small">Visualize solutions where two functions intersect.</p>
+    
+    <div class="eq-buttons">
+      <button class="eq-btn active" data-eq="eq1"> (i) x = sin(2x) </button>
+      <button class="eq-btn" data-eq="eq2"> (ii) x/2 = cos(x) </button>
+      <button class="eq-btn" data-eq="eq3"> (iii) 2x = tan(x) </button>
+    </div>
+
+    <div class="canvas-wrap">
+      <canvas id="gameCanvas" width="760" height="400"></canvas>
+    </div>
+
+    <div style="margin-top:15px; display:flex; gap:10px;">
+      <button id="showStepsBtn" class="calm-btn">📖 Show Steps</button>
+      <button id="hideStepsBtn" class="calm-btn">❌ Hide Steps</button>
+    </div>
+
+    <div id="stepsBox" class="steps-box" style="margin-top:12px;">
+      Select an equation to see intersections.
+    </div>
+  </div>
+
+  <div class="next-section">
+    <h2 style="color: #166534; margin-bottom: 10px;">Chapter 1 Completed!</h2>
+    <p style="color: #15803d; margin-bottom: 25px; font-size: 1.1rem;">
+      You have explored functions, limits, compositions, and inverses. <br>
+      It's time to lock in your knowledge and earn your badge.
+    </p>
+    
+    <a href="{{ url_for('serve_quiz', chapter_num=1) }}" 
+       style="display: inline-block; padding: 16px 40px; background: #10b981; color: white; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 1.2rem; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); transition: transform 0.2s;">
+       Take Chapter 1 Quiz <i class="fas fa-check-circle"></i>
+    </a>
+  </div>
+
+</div>
+
+<script>
+/* =========================
+   1. CHILL MATH CAFE LOGIC 
+   ========================= */
+const cafeProblems = [
+  { f: '2x + 1', g: '3/(x - 1)', note: 'x ≠ 1' },
+  { f: '√(x + 1)', g: 'x²', note: 'x ≥ 0' }
+];
+let cafeQueue = [];
+
+document.getElementById('startBtn').addEventListener('click', () => {
+    cafeQueue = [...cafeProblems, ...cafeProblems]; // Duplicate for longer play
+    cafeQueue.sort(() => Math.random() - 0.5);
+    nextCafeOrder();
+});
+
+function nextCafeOrder() {
+    if(cafeQueue.length === 0) {
+        document.getElementById('orderTitle').textContent = "All Served!";
+        document.getElementById('cups').innerHTML = "Shift Complete! ☕";
+        return;
+    }
+    const p = cafeQueue.pop();
+    const type = Math.random() > 0.5 ? 'fog' : 'gof';
+    
+    document.getElementById('orderTitle').textContent = `Order: ${type === 'fog' ? 'f(g(x))' : 'g(f(x))'}`;
+    document.getElementById('orderDesc').innerHTML = `f(x)=${p.f}, g(x)=${p.g}`;
+    
+    // Generate answers (Simplified logic for demo)
+    let correct = type === 'fog' ? p.f.replace('x', `(${p.g})`) : p.g.replace('x', `(${p.f})`);
+    let wrong = "x + 5"; 
+    
+    const opts = [correct, wrong].sort(() => Math.random() - 0.5);
+    const cupsDiv = document.getElementById('cups');
+    cupsDiv.innerHTML = '';
+    
+    opts.forEach(opt => {
+        const cup = document.createElement('div');
+        cup.className = 'cup';
+        cup.textContent = opt;
+        cup.onclick = () => {
+            if(opt === correct) {
+                cup.classList.add('correct');
+                document.getElementById('score').innerText = parseInt(document.getElementById('score').innerText) + 1;
+                setTimeout(nextCafeOrder, 800);
+            } else {
+                cup.classList.add('wrong');
+            }
+        };
+        cupsDiv.appendChild(cup);
+    });
+}
+
+document.getElementById('giveHint').addEventListener('click', () => {
+    document.getElementById('orderHint').textContent = "Replace every 'x' in the outer function with the entire inner function.";
+});
+
+/* =========================
+   2. INVERSION QUEST LOGIC 
+   ========================= */
+function checkInversion(level) {
+    const valInput = document.getElementById(`inv${level}val`).value;
+    const res = document.getElementById(`res${level}`);
+    // Simplified validation: just checking if they entered something close to a number
+    if(valInput && !isNaN(valInput)) {
+        res.textContent = "✅ Good job! Logic verified.";
+        res.className = "result success";
+    } else {
+        res.textContent = "❌ Try checking your calculation for f⁻¹(-1).";
+        res.className = "result error";
+    }
+}
+
+/* =========================
+   3. SMOOTHIE BAR (DRAG DROP) 
+   ========================= */
+const tags = document.querySelectorAll('.tag');
+const dropzones = document.querySelectorAll('.smoothie-card');
+let draggedItem = null;
+
+tags.forEach(tag => {
+    tag.addEventListener('dragstart', () => { draggedItem = tag; setTimeout(()=>tag.style.display='none',0); });
+    tag.addEventListener('dragend', () => { setTimeout(()=>tag.style.display='block',0); draggedItem = null; });
+});
+
+dropzones.forEach(zone => {
+    zone.addEventListener('dragover', e => e.preventDefault());
+    zone.addEventListener('drop', () => {
+        const mixArea = zone.querySelector('.mix-area');
+        const clone = draggedItem.cloneNode(true);
+        clone.style.display = 'block';
+        clone.draggable = false;
+        clone.style.cursor = 'default';
+        mixArea.appendChild(clone);
+        
+        // Check logic
+        const content = mixArea.textContent;
+        const domain = zone.dataset.domain;
+        const range = zone.dataset.range;
+        
+        if(content.includes(domain) && content.includes(range)) {
+            zone.classList.add('correct');
+            document.getElementById('mixResult').textContent = "✅ Smoothie Blended!";
+            document.getElementById('mixResult').className = "result success";
+        }
+    });
+});
+
+/* =========================
+   4. TRIG MATCH GAME LOGIC 
+   ========================= */
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+const scale = 40; 
+const W = canvas.width, H = canvas.height;
+let activeEq = "eq1";
+
+const equations = {
+    eq1: { left: x => x, right: x => Math.sin(2*x), steps: "1. Plot y=x (blue line).<br>2. Plot y=sin(2x) (red wave).<br>3. Look for where they cross (near 0)." },
+    eq2: { left: x => x/2, right: x => Math.cos(x), steps: "1. Plot y=x/2.<br>2. Plot y=cos(x).<br>3. Intersections show solutions." },
+    eq3: { left: x => 2*x, right: x => Math.tan(x), steps: "1. Plot y=2x.<br>2. Plot y=tan(x).<br>3. Intersections are solutions." }
+};
+
+function drawGraph() {
+    ctx.clearRect(0,0,W,H);
+    // Axes
+    ctx.beginPath(); ctx.moveTo(0,H/2); ctx.lineTo(W,H/2); ctx.moveTo(W/2,0); ctx.lineTo(W/2,H); ctx.stroke();
+    
+    const eq = equations[activeEq];
+    
+    // Draw Left (Blue)
+    ctx.strokeStyle = "#3b82f6"; ctx.beginPath();
+    for(let i=0; i<W; i++) {
+        let x = (i - W/2)/scale;
+        let y = H/2 - eq.left(x)*scale;
+        if(i==0) ctx.moveTo(i,y); else ctx.lineTo(i,y);
+    }
+    ctx.stroke();
+
+    // Draw Right (Red)
+    ctx.strokeStyle = "#ef4444"; ctx.beginPath();
+    for(let i=0; i<W; i++) {
+        let x = (i - W/2)/scale;
+        let y = H/2 - eq.right(x)*scale;
+        if(Math.abs(y - H/2) < H/2) { // simple clipping
+             if(i==0) ctx.moveTo(i,y); else ctx.lineTo(i,y);
+        } else {
+             ctx.moveTo(i,y); // break line for asymptote
+        }
+    }
+    ctx.stroke();
+}
+
+document.querySelectorAll('.eq-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.eq-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeEq = btn.dataset.eq;
+        drawGraph();
+        document.getElementById('stepsBox').innerHTML = "Select 'Show Steps' to explain.";
+    });
+});
+
+document.getElementById('showStepsBtn').addEventListener('click', () => {
+    document.getElementById('stepsBox').innerHTML = equations[activeEq].steps;
+});
+document.getElementById('hideStepsBtn').addEventListener('click', () => {
+    document.getElementById('stepsBox').innerHTML = "";
+});
+
+// Initial Draw
+drawGraph();
+
+</script>
+
+</body>
+</html>

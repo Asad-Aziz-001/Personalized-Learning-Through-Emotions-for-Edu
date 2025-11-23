@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Sentellect</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* ... (Keep all your existing styles exactly the same) ... */
+    :root { --primary: #1e40af; --bg: #f8fafc; --white: #ffffff; --text: #1e293b; --success: #10b981; --card-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+    body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); color: var(--text); display: flex; flex-direction: column; min-height: 100vh; margin:0; }
+    .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 20px; flex: 1; }
+    header { background: white; padding: 15px 0; box-shadow: 0 2px 15px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+    .navbar { display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 1.5rem; font-weight: 700; color: var(--primary); display: flex; gap: 10px; align-items: center; }
+    .logo-icon { width: 36px; height: 36px; background: var(--primary); color: white; border-radius: 10px; display: flex; justify-content: center; align-items: center; }
+    .btn-logout { padding: 8px 20px; border-radius: 50px; border: 1px solid #e2e8f0; display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--text); transition: 0.3s; }
+    .btn-logout:hover { background: #fee2e2; color: #991b1b; }
+    
+    .welcome-card { background: linear-gradient(135deg, var(--primary), #1e3a8a); color: white; padding: 40px; border-radius: 16px; text-align: center; margin-top: 30px; box-shadow: var(--card-shadow); }
+    .level-badge { background: rgba(255,255,255,0.2); padding: 5px 15px; border-radius: 20px; font-weight: 600; }
+
+    /* SHAP BOX STYLE */
+    .shap-box {
+        margin-top: 30px; 
+        background: white; 
+        padding: 30px; 
+        border-radius: 16px; 
+        box-shadow: var(--card-shadow); 
+        text-align: center; 
+        animation: fadeIn 1s ease;
+    }
+    .shap-text-highlight {
+        font-size: 1.1rem;
+        background: #f0f9ff;
+        border-left: 5px solid var(--primary);
+        padding: 15px;
+        margin: 20px auto;
+        max-width: 800px;
+        text-align: left;
+        border-radius: 8px;
+        color: #334155;
+    }
+
+    /* ... (Keep rest of your CSS for chapters, progress bar, etc.) ... */
+    .progress-container { background: white; padding: 20px; border-radius: 12px; margin: 30px 0; box-shadow: var(--card-shadow); }
+    .progress-bar-bg { height: 15px; background: #e2e8f0; border-radius: 20px; overflow: hidden; margin-top: 10px; }
+    .progress-fill { height: 100%; background: #10b981; width: 0%; transition: width 1s; }
+    
+    .chapter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 50px; }
+    .chapter-card { background: white; border-radius: 12px; padding: 20px; box-shadow: var(--card-shadow); border: 1px solid #f1f5f9; }
+    .chapter-card.completed { border-left: 5px solid #10b981; }
+    .chapter-card.active { border-left: 5px solid var(--primary); }
+    .chapter-card h3 { color: var(--primary); margin: 10px 0; }
+    
+    .btn-start { display: block; padding: 10px; text-align: center; background: var(--primary); color: white; border-radius: 8px; text-decoration: none; margin-top: 15px; }
+    .btn-completed { display: block; padding: 10px; text-align: center; background: #10b981; color: white; border-radius: 8px; cursor: default; margin-top: 15px; }
+    .btn-locked { display: block; padding: 10px; text-align: center; background: #e2e8f0; color: #94a3b8; border-radius: 8px; cursor: not-allowed; margin-top: 15px; }
+
+    .footer { margin-top: auto; background: #1e3a8a; color: white; padding: 40px 0; text-align: center; }
+    
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+
+ <header>
+    <div class="container navbar">
+      <div class="logo"><div class="logo-icon">S</div><span>Sentellect</span></div>
+      <div style="display: flex; gap: 10px;">
+        <a href="{{ url_for('profile') }}" class="btn-logout" style="background: #eff6ff; color: var(--primary); border: none;"><i class="fas fa-user"></i> Profile</a>
+        <a href="{{ url_for('logout') }}" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <section class="welcome-section">
+      <div class="welcome-card">
+        <h1>Welcome Back, {{ current_user.name }}!</h1>
+        <p>Your personalized path: <span class="level-badge">{{ label }} Distress</span></p>
+      </div>
+    </section>
+    
+    {% if shap_image %}
+    <div class="shap-box">
+      <h2 style="color: var(--primary); font-size: 1.8rem; margin-bottom: 10px;">Why did I get this result?</h2>
+      
+      {% if shap_text %}
+      <div class="shap-text-highlight">
+          <i class="fas fa-info-circle" style="color: var(--primary); margin-right: 8px;"></i>
+          {{ shap_text | safe }}
+      </div>
+      {% endif %}
+
+      <p style="font-size: 1rem; color: #64748b; margin-bottom: 20px;">
+        <span style="color: #ef4444; font-weight: bold;">Red bars</span> increase the predicted level, while 
+        <span style="color: #10b981; font-weight: bold;">Blue bars</span> decrease it.
+      </p>
+      <div style="display: inline-block; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; padding: 10px; background: #f8fafc;">
+        <img src="data:image/png;base64,{{ shap_image }}" 
+             alt="AI Explanation Chart" 
+             style="max-width: 100%; height: auto; display: block;">
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="progress-container">
+      <div style="display: flex; justify-content: space-between;">
+        <strong style="color: var(--primary);">Overall Progress</strong>
+        <strong style="color: var(--text);">{{ progress }}% Completed</strong>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-fill" style="width: {{ progress }}%;"></div>
+      </div>
+      <p style="font-size: 0.9rem; color: #64748b; margin-top: 5px;">{{ completed_chapters|length }} of 6 Modules Completed</p>
+    </div>
+
+    <section class="chapters-section">
+      <h2 style="color: var(--text); margin-bottom: 20px;">Your Modules</h2>
+      
+      <div class="chapter-grid">
+        {% for i in range(1, 7) %}
+        {% set titles = ["Functions & Limits", "Differentiation", "Integration", "Analytic Geometry", "Linear Inequalities", "Conic Sections"] %}
+        {% set descs = ["Fundamental behavior of functions.", "Rates of change and slopes.", "Area under curves and accumulation.", "Coordinate systems and lines.", "Solving and graphing inequalities.", "Parabolas, ellipses, and hyperbolas."] %}
+        
+        {% set is_completed = i|string in completed_chapters %}
+        {% set is_next = (i == 1 or (i-1)|string in completed_chapters) and not is_completed %}
+        {% set is_locked = not is_completed and not is_next %}
+
+        <div class="chapter-card {% if is_completed %}completed{% elif is_next %}active{% endif %}">
+          <div class="card-header">
+            <span class="chapter-number">Module 0{{ i }}</span>
+            {% if is_completed %} <span class="status-badge status-done"><i class="fas fa-check"></i> Done</span>
+            {% elif is_next %} <span class="status-badge status-next"><i class="fas fa-star"></i> Up Next</span>
+            {% else %} <span class="status-badge status-lock"><i class="fas fa-lock"></i> Locked</span>
+            {% endif %}
+          </div>
+          <div class="card-body">
+            <h3>{{ titles[i-1] }}</h3>
+            <p>{{ descs[i-1] }}</p>
+          </div>
+          <div class="card-footer">
+            {% if is_completed %}
+              <div class="btn-completed"><i class="fas fa-check-circle"></i> Completed</div>
+              <a href="{{ url_for('serve_chapter', chapter_num=i) }}" style="display:block; text-align:center; margin-top:8px; font-size:0.85rem; color:var(--primary);">Review Content</a>
+            {% elif is_next %}
+              <a href="{{ url_for('serve_chapter', chapter_num=i) }}" class="btn-start">Start Module {{ i }}</a>
+            {% else %}
+              <div class="btn-locked"><i class="fas fa-lock"></i> Complete Module 0{{ i-1 }} First</div>
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <p>© 2024 Sentellect. Final Year Project - Educational Technology.</p>
+    </div>
+  </footer>
+</body>
+</html>

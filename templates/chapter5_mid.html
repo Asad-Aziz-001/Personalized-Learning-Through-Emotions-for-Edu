@@ -1,0 +1,2456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sentellect - Complete Linear Inequalities & Programming</title>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* ===== Base Styles ===== */
+    :root {
+      --primary: #1e40af;
+      --primary-light: #3b82f6;
+      --primary-dark: #1e3a8a;
+      --secondary: #f59e0b;
+      --accent: #ec4899;
+      --text: #1e293b;
+      --text-light: #64748b;
+      --text-lighter: #94a3b8;
+      --bg: #f8fafc;
+      --white: #ffffff;
+      --gray: #e2e8f0;
+      --gray-light: #f1f5f9;
+      --success: #10b981;
+      --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      --hover-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    section {
+      padding: 80px 0;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .section-title h2 {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 15px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title h2::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: var(--secondary);
+      border-radius: 2px;
+    }
+
+    .section-title p {
+      color: var(--text-light);
+      font-size: 1.1rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 28px;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--white);
+      box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(30, 64, 175, 0.4);
+    }
+
+    .btn-secondary {
+      background-color: var(--white);
+      color: var(--primary);
+      border: 2px solid var(--primary);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--primary);
+      color: var(--white);
+      transform: translateY(-2px);
+    }
+
+    /* ===== Animations ===== */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    @keyframes shimmer {
+      0% { background-position: -1000px 0; }
+      100% { background-position: 1000px 0; }
+    }
+
+    .animate {
+      animation: fadeIn 0.8s ease forwards;
+    }
+
+    .delay-1 { animation-delay: 0.2s; }
+    .delay-2 { animation-delay: 0.4s; }
+    .delay-3 { animation-delay: 0.6s; }
+
+    /* ===== Header/Navbar ===== */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      background-color: var(--white);
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    header.scrolled {
+      padding: 10px 0;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: var(--white);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 18px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(30, 64, 175, 0.2);
+    }
+
+    .logo-text {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      transition: all 0.3s ease;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 30px;
+    }
+
+    .nav-links a {
+      font-weight: 500;
+      position: relative;
+      padding: 5px 0;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      transition: width 0.3s ease;
+      border-radius: 2px;
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      width: 100%;
+    }
+
+    .nav-links a.active {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .auth-buttons {
+      display: flex;
+      gap: 15px;
+    }
+
+    .login-btn {
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .login-btn:hover {
+      color: var(--primary);
+    }
+
+    .signup-btn {
+      padding: 8px 20px;
+      border-radius: 50px;
+      background: linear-gradient(to right, var(--primary), var(--primary-light));
+      color: var(--white);
+      font-weight: 500;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(30, 64, 175, 0.25);
+    }
+
+    .signup-btn:hover {
+      background: linear-gradient(to right, var(--primary-dark), var(--primary));
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(30, 64, 175, 0.35);
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--primary);
+      cursor: pointer;
+    }
+    
+    /* ===== Hero Section ===== */
+    .hero {
+      position: relative;
+      padding: 190px 0 90px;
+      background: linear-gradient(135deg, var(--primary), #004e92);
+      color: var(--white);
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3QgZmlsbD0idXJsKCNwYXR0ZXJuKSIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIvPjwvc3ZnPg==');
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-size: 3.2rem;
+      margin-bottom: 20px;
+      line-height: 1.2;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .hero h1 span {
+      color: var(--secondary);
+      position: relative;
+    }
+
+    .hero h1 span::after {
+      content: '';
+      position: absolute;
+      bottom: 5px;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background-color: rgba(255, 255, 255, 0.3);
+      z-index: -1;
+      border-radius: 4px;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 40px;
+      opacity: 0.9;
+    }
+
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .hero .btn-secondary {
+      background-color: transparent;
+      color: var(--white);
+      border-color: var(--white);
+    }
+
+    .hero .btn-secondary:hover {
+      background-color: var(--white);
+      color: var(--primary);
+    }
+
+    .floating-shape {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      z-index: 0;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .shape-1 {
+      width: 150px;
+      height: 150px;
+      top: 10%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .shape-2 {
+      width: 100px;
+      height: 100px;
+      bottom: 15%;
+      right: 10%;
+      animation-delay: 0.5s;
+    }
+
+    .shape-3 {
+      width: 80px;
+      height: 80px;
+      top: 30%;
+      right: 20%;
+      animation-delay: 1s;
+    }
+    
+    /* ===== Card Styles ===== */
+    .card {
+      background-color: var(--white);
+      border-radius: 16px;
+      padding: 30px;
+      margin: 25px 0;
+      box-shadow: var(--card-shadow);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--primary), var(--secondary));
+      transition: width 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--hover-shadow);
+    }
+    
+    .card:hover::before {
+      width: 8px;
+    }
+
+    h2 {
+      color: var(--primary);
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    h3 {
+      color: var(--primary);
+      font-size: 1.4rem;
+      margin: 25px 0 15px;
+      font-weight: 600;
+      position: relative;
+      padding-left: 15px;
+    }
+    
+    h3::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 6px;
+      height: 6px;
+      background: var(--secondary);
+      border-radius: 50%;
+    }
+
+    p {
+      color: var(--text-light);
+      margin-bottom: 20px;
+      line-height: 1.7;
+    }
+
+    /* ===== Exercise Navigation ===== */
+    .exercise-nav {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin: 30px 0;
+      flex-wrap: wrap;
+    }
+
+    .exercise-btn {
+      padding: 12px 24px;
+      background: var(--white);
+      color: var(--primary);
+      border: 2px solid var(--primary);
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .exercise-btn.active {
+      background: var(--primary);
+      color: var(--white);
+    }
+
+    .exercise-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(30, 64, 175, 0.2);
+    }
+
+    .exercise-section {
+      display: none;
+    }
+
+    .exercise-section.active {
+      display: block;
+    }
+
+    /* ===== Step Buttons ===== */
+    .step-buttons {
+      display: flex;
+      gap: 12px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+
+    .step-btn {
+      padding: 10px 16px;
+      background: linear-gradient(to right, var(--primary), var(--primary-light));
+      color: var(--white);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      box-shadow: 0 4px 8px rgba(30, 64, 175, 0.2);
+    }
+
+    .step-btn:hover {
+      background: linear-gradient(to right, var(--primary-dark), var(--primary));
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(30, 64, 175, 0.3);
+    }
+
+    /* ===== Solution Display ===== */
+    .solution {
+      background: var(--gray-light);
+      border-left: 4px solid var(--secondary);
+      padding: 20px;
+      margin: 15px 0;
+      border-radius: 0 8px 8px 0;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .solution::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.5), transparent);
+      transform: translateX(-100%);
+    }
+    
+    .solution.active::before {
+      animation: shimmer 1.5s ease;
+    }
+
+    /* ===== Progress Bar ===== */
+    .progress-container {
+      width: 100%;
+      height: 8px;
+      background-color: var(--gray);
+      border-radius: 4px;
+      margin: 20px 0;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      border-radius: 4px;
+      width: 0%;
+      transition: width 1s ease;
+    }
+
+    /* ===== Graph Styles ===== */
+    .graph-container {
+      height: 300px;
+      margin: 15px 0;
+      background: var(--white);
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    /* ===== Game Area ===== */
+    .game-container {
+      background: #e6f2ff;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .game-area {
+      position: relative;
+      height: 250px;
+      border: 2px solid var(--primary);
+      border-radius: 10px;
+      margin: 15px 0;
+      overflow: hidden;
+      background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+    }
+
+    .bubble {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(106, 17, 203, 0.7);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      transition: transform 0.2s;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .bubble:hover {
+      transform: scale(1.1);
+    }
+
+    .game-score {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--primary);
+      margin: 10px 0;
+    }
+
+    /* ===== Self-Care Notes ===== */
+    .self-care {
+      background: linear-gradient(135deg, #e0f2fe, #f0f9ff);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 25px 0;
+      text-align: center;
+      border-left: 5px solid var(--accent);
+      animation: pulse 3s infinite;
+    }
+
+    .self-care h4 {
+      color: var(--accent);
+      margin-bottom: 10px;
+      font-size: 1.3rem;
+    }
+
+    .self-care p {
+      color: var(--text);
+      font-size: 1.1rem;
+      margin-bottom: 0;
+    }
+
+    /* ===== Visual Elements ===== */
+    .math-emoji {
+      font-size: 2rem;
+      margin: 0 10px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .visual-element {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .emoji-row {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin: 15px 0;
+    }
+
+    /* ===== Resources Section ===== */
+    .resources {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    .resource-card {
+      flex: 1;
+      min-width: 200px;
+      background: var(--white);
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: var(--card-shadow);
+      text-align: center;
+      transition: transform 0.3s;
+    }
+
+    .resource-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .resource-card a {
+      display: block;
+      margin: 10px 0;
+      padding: 10px;
+      background: var(--primary);
+      color: var(--white);
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+
+    .resource-card a:hover {
+      background: var(--primary-dark);
+    }
+
+    /* ===== Completion Message ===== */
+    .completion {
+      text-align: center;
+      padding: 30px;
+      background: linear-gradient(135deg, #dbeafe, #e0f2fe);
+      border-radius: 16px;
+      margin: 30px 0;
+      animation: fadeIn 1s ease;
+    }
+
+    .completion h3 {
+      color: var(--primary);
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+    }
+
+    .completion p {
+      font-size: 1.1rem;
+      color: var(--text);
+    }
+
+    /* ===== Linear Inequalities Specific Styles ===== */
+    .definition {
+      background: #f3fbff;
+      border-left: 6px solid var(--primary);
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+
+    .controls {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .example {
+      background: #fff;
+      padding: 12px;
+      border-radius: 10px;
+      margin-top: 12px;
+      border-left: 6px solid #bfe9ff;
+    }
+
+    .big {
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+
+    .step-block {
+      margin-top: 10px;
+    }
+
+    .step-line {
+      display: none;
+      padding: 10px;
+      border-radius: 8px;
+      background: #f7fbff;
+      margin-top: 8px;
+      border-left: 4px solid #d6eefc;
+    }
+
+    .next-step {
+      margin-top: 8px;
+      background: var(--primary);
+      color: white;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #d9ecff;
+      width: 100%;
+      font-size: 15px;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+
+    button.check {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .result {
+      margin-top: 8px;
+      padding: 10px;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .result.good {
+      background: #e6fff0;
+      border-left: 4px solid #2fb46a;
+    }
+
+    .result.warn {
+      background: #fff7e6;
+      border-left: 4px solid #ffb74d;
+    }
+
+    .divider {
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+      color: white;
+      padding: 10px 14px;
+      border-radius: 10px;
+      margin: 18px 0;
+      font-weight: 700;
+      box-shadow: 0 6px 18px rgba(3, 102, 214, 0.08);
+      text-align: center;
+    }
+
+    .small-note {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-top: 6px;
+    }
+
+    .scenario {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-around;
+      padding: 12px;
+    }
+
+    .scenario .card-mini {
+      background: white;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 6px 16px rgba(3, 102, 214, 0.04);
+      width: 30%;
+      min-width: 200px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .scenario .card-mini:hover {
+      transform: translateY(-5px);
+    }
+
+    .scenario .icon {
+      font-size: 48px;
+      margin-bottom: 8px;
+    }
+
+    .scenario .explain {
+      display: none;
+      margin-top: 8px;
+      text-align: left;
+    }
+
+    .show-explain {
+      display: block;
+      padding: 10px;
+      border-radius: 8px;
+      background: #f2fbff;
+      border-left: 4px solid #cfeeff;
+      margin-top: 8px;
+    }
+
+    .question-box {
+      background: #f0f9ff;
+      border-radius: 10px;
+      padding: 15px;
+      margin: 15px 0;
+      border-left: 5px solid var(--primary);
+    }
+
+    .question-text {
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #0b4a8a;
+    }
+
+    .try-yourself {
+      background: #f9f7ff;
+      border-radius: 10px;
+      padding: 15px;
+      margin: 15px 0;
+      border: 2px dashed #a5d8ff;
+    }
+
+    .try-title {
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .formula-box {
+      background: #f8f5ff;
+      border-radius: 8px;
+      padding: 12px;
+      margin: 10px 0;
+      border-left: 4px solid #9d7bff;
+      font-family: 'Courier New', monospace;
+    }
+
+    .example-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .example-box {
+      background: #f7fbff;
+      border-radius: 10px;
+      padding: 15px;
+      border: 2px solid #e1f0ff;
+    }
+
+    /* ===== Game Link ===== */
+    .game-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 15px;
+      padding: 12px 25px;
+      background: linear-gradient(to right, var(--success), #0da271);
+      color: var(--white);
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
+    }
+
+    .game-link:hover {
+      background: linear-gradient(to right, #0da271, var(--success));
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(16, 185, 129, 0.4);
+    }
+
+    /* ===== Footer ===== */
+    .footer {
+      background: linear-gradient(to bottom, var(--primary-dark), #0f172a);
+      color: var(--white);
+      padding: 80px 0 30px;
+      position: relative;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 10px;
+      background: linear-gradient(90deg, var(--secondary), var(--primary));
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+      margin-bottom: 60px;
+    }
+
+    .footer-about {
+      grid-column: span 2;
+    }
+
+    .footer-logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .footer-logo-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--white), var(--gray));
+      color: var(--primary);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .footer-about p {
+      opacity: 0.8;
+      margin-bottom: 25px;
+      line-height: 1.7;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 15px;
+    }
+
+    .social-link {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+      background: linear-gradient(135deg, var(--secondary), var(--accent));
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
+    }
+
+    .footer-links h3 {
+      font-size: 1.2rem;
+      margin-bottom: 25px;
+      position: relative;
+      padding-bottom: 10px;
+      color: var(--white);
+    }
+
+    .footer-links h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 3px;
+      background: linear-gradient(to right, var(--secondary), var(--accent));
+    }
+
+    .footer-links ul {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 12px;
+    }
+
+    .footer-links a {
+      opacity: 0.8;
+      transition: all 0.3s ease;
+      position: relative;
+      padding-left: 15px;
+    }
+
+    .footer-links a::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      opacity: 1;
+      padding-left: 20px;
+    }
+
+    .footer-links a:hover::before {
+      opacity: 1;
+      left: -5px;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 30px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-bottom p {
+      opacity: 0.7;
+      margin-bottom: 20px;
+    }
+
+    .footer-tags {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 5px 15px;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+    }
+
+    .tag:hover {
+      background: linear-gradient(to right, var(--secondary), var(--accent));
+      color: var(--text);
+      transform: translateY(-2px);
+    }
+    
+    /* ===== Floating Action Button ===== */
+    .fab {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: 0 6px 15px rgba(30, 64, 175, 0.3);
+      cursor: pointer;
+      z-index: 999;
+      transition: all 0.3s ease;
+      animation: pulse 2s infinite;
+    }
+    
+    .fab:hover {
+      transform: scale(1.1) rotate(90deg);
+      box-shadow: 0 8px 20px rgba(30, 64, 175, 0.4);
+    }
+
+    /* ===== Responsive Styles ===== */
+    @media (max-width: 992px) {
+      .nav-links {
+        gap: 20px;
+      }
+      
+      .footer-content {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .footer-about {
+        grid-column: span 2;
+      }
+      
+      .scenario .card-mini {
+        width: 45%;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 15px 0;
+      }
+      
+      .nav-links {
+        display: none;
+      }
+      
+      .mobile-menu-btn {
+        display: block;
+      }
+      
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      
+      .hero-buttons {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .footer-content {
+        grid-template-columns: 1fr;
+      }
+      
+      .footer-about {
+        grid-column: span 1;
+      }
+      
+      .scenario .card-mini {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .section-title h2 {
+        font-size: 2rem;
+      }
+      
+      .hero {
+        padding: 150px 0 80px;
+      }
+      
+      .hero h1 {
+        font-size: 2rem;
+      }
+      
+      .hero p {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <header id="header">
+    <div class="container">
+      <nav class="navbar">
+        <a href="#" class="logo">
+          <div class="logo-icon">S</div>
+          <span class="logo-text">Sentellect</span>
+        </a>
+        
+        <ul class="nav-links">
+          <li><a href="#" class="active">Home</a></li>
+          <li><a href="#exercise-5.1">Introduction</a></li>
+          <li><a href="#exercise-5.2">Graphing</a></li>
+          <li><a href="#exercise-5.3">Practice</a></li>
+        </ul>
+        
+        <div class="auth-buttons">
+          <a href="#" class="login-btn">Login</a>
+          <a href="#" class="signup-btn">Sign Up</a>
+        </div>
+        
+        <button class="mobile-menu-btn">
+          <i class="fas fa-bars"></i>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="floating-shape shape-1"></div>
+    <div class="floating-shape shape-2"></div>
+    <div class="floating-shape shape-3"></div>
+    
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="animate">Linear Inequalities & Programming <span>Complete Guide</span></h1>
+        <p class="animate delay-1">Master linear inequalities, systems, and optimization with interactive examples and stress-free learning</p>
+        <div class="hero-buttons">
+          <a href="#exercise-5.1" class="btn btn-primary animate delay-2">Start Learning</a>
+          <a href="#resources" class="btn btn-secondary animate delay-3">Resources</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Exercise Navigation -->
+  <div class="container">
+    <div class="exercise-nav">
+      <button class="exercise-btn active" onclick="showExercise('exercise-5.1')">5.1 Basics</button>
+      <button class="exercise-btn" onclick="showExercise('exercise-5.2')">5.2 Moderate</button>
+      <button class="exercise-btn" onclick="showExercise('exercise-5.3')">5.3 Advanced</button>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container">
+    
+    <!-- Exercise 5.1: Basics -->
+    <section id="exercise-5.1" class="exercise-section active">
+      <!-- Game Link -->
+      <div class="card animate">
+        <h2>🎮 Quick Practice Game</h2>
+        <p>Try this simple game to practice inequalities:</p>
+        <a href="https://www.begalileo.com/math-games/grade-8/write-and-graph-linear-inequalities" target="_blank" class="game-link">
+          <i class="fas fa-gamepad"></i> Play Inequality Game
+        </a>
+      </div>
+
+      <!-- Visual Element -->
+      <div class="visual-element animate delay-1">
+        <div class="emoji-row">
+          <span class="math-emoji">📈</span>
+          <span class="math-emoji">📉</span>
+          <span class="math-emoji">📊</span>
+        </div>
+      </div>
+
+      <!-- Basics Section -->
+      <div class="card animate delay-1">
+        <h2>Linear Inequalities Basics</h2>
+        <p>Linear inequalities show relationships where one side is greater or less than the other.</p>
+        
+        <div class="try-yourself">
+          <div class="try-title">💡 Quick Tip</div>
+          <p>Inequalities use &lt;, &gt;, ≤, or ≥ instead of =</p>
+        </div>
+        
+        <h3>Simple Steps to Graph Inequalities</h3>
+        
+        <div class="example-box">
+          <h4>Step 1: Draw the Line</h4>
+          <p>Replace the inequality with = and draw that line</p>
+        </div>
+        
+        <div class="example-box">
+          <h4>Step 2: Solid or Dashed?</h4>
+          <p>Use solid line for ≤ or ≥ (points on line are included)</p>
+          <p>Use dashed line for &lt; or &gt; (points on line are not included)</p>
+        </div>
+        
+        <div class="example-box">
+          <h4>Step 3: Test a Point</h4>
+          <p>Pick a point not on the line (0,0 is easiest)</p>
+          <p>If it satisfies the inequality, shade that side</p>
+          <p>If not, shade the opposite side</p>
+        </div>
+        
+        <div class="controls">
+          <button class="step-btn" onclick="showInequality('2x + y ≤ 6')">Show Example 1</button>
+          <button class="step-btn" onclick="showInequality('3x + 7y ≥ 21')">Show Example 2</button>
+        </div>
+        
+        <div class="graph-container" id="basicsGraph">
+          <canvas id="inequalityGraph"></canvas>
+        </div>
+        
+        <div id="current-inequality" class="solution">
+          <p>Click a button above to see an example!</p>
+        </div>
+
+        <!-- Self-Care Note -->
+        <div class="self-care animate delay-2">
+          <h4>💖 You're Doing Great! 💖</h4>
+          <p>Remember: Learning at your own pace is perfectly okay. Every step forward counts! 🌟</p>
+        </div>
+      </div>
+
+      <!-- Real-Life Examples Section -->
+      <div class="card animate delay-2">
+        <h2>Real-Life Examples</h2>
+        
+        <div class="example-box">
+          <h3>Budget Example</h3>
+          <p>You have $100 for books ($10 each) and notebooks ($5 each):</p>
+          <p><strong>10x + 5y ≤ 100</strong></p>
+          <p>This shows all combinations you can buy within budget.</p>
+          <div class="graph-container">
+            <canvas id="budgetGraph"></canvas>
+          </div>
+        </div>
+        
+        <div class="example-box">
+          <h3>Time Management</h3>
+          <p>You have 8 hours for math (x) and English (y) study:</p>
+          <p><strong>x + y ≤ 8</strong> and <strong>x ≥ 2y</strong></p>
+          <p>This shows possible time allocations.</p>
+          <div class="graph-container">
+            <canvas id="timeGraph"></canvas>
+          </div>
+        </div>
+
+        <!-- Self-Care Note -->
+        <div class="self-care animate delay-3">
+          <h4>🌈 Math in Real Life 🌈</h4>
+          <p>See how math applies to everyday situations? You're building practical skills! 🧠✨</p>
+        </div>
+      </div>
+
+      <!-- Practice Questions Section -->
+      <div class="card animate delay-3">
+        <h2>Practice Questions</h2>
+        
+        <div class="question-box">
+          <div class="question-text">Question 1: Simple Inequality</div>
+          <p>Solve: 5x - 3 &lt; 2x + 9</p>
+          <div class="progress-container">
+            <div class="progress-bar" id="progress1"></div>
+          </div>
+          <div class="step-buttons">
+            <button class="step-btn" onclick="showSolution('sol1', 1)">Step 1</button>
+            <button class="step-btn" onclick="showSolution('sol1', 2)">Step 2</button>
+            <button class="step-btn" onclick="showSolution('sol1', 3)">Answer</button>
+          </div>
+          <div id="sol1" class="solution">👉 Click the steps above to see the solution</div>
+        </div>
+
+        <div class="question-box">
+          <div class="question-text">Question 2: Graphing</div>
+          <p>Graph: y ≥ x - 2</p>
+          <div class="progress-container">
+            <div class="progress-bar" id="progress2"></div>
+          </div>
+          <div class="step-buttons">
+            <button class="step-btn" onclick="showSolution('sol2', 1)">Step 1</button>
+            <button class="step-btn" onclick="showSolution('sol2', 2)">Step 2</button>
+            <button class="step-btn" onclick="showSolution('sol2', 3)">Graph</button>
+          </div>
+          <div id="sol2" class="solution">👉 Click the steps above to see the solution</div>
+          <div class="graph-container">
+            <canvas id="question2Graph"></canvas>
+          </div>
+        </div>
+
+        <!-- Self-Care Note -->
+        <div class="self-care animate">
+          <h4>🌟 Practice Makes Progress! 🌟</h4>
+          <p>Each problem you try makes you better. Don't worry about perfection - focus on progress! 🧩💪</p>
+        </div>
+      </div>
+
+      <!-- Stress Relief Game Section -->
+      <div class="card animate">
+        <h2>🎮 Relaxing Inequality Game 🎮</h2>
+        <p>Take a break with this simple inequality game!</p>
+        
+        <div class="game-container">
+          <div class="game-score">
+            Time: <span id="game-time">30</span>s | Score: <span id="bubble-score">0</span>
+          </div>
+          <button class="step-btn" onclick="startBubbleGame()">Start Game</button>
+          <div class="game-area" id="game-area">
+            <p>Click Start Game to begin!</p>
+          </div>
+          <div class="game-instructions">
+            <p>💡 <strong>How to play:</strong> Click on bubbles with correct inequalities</p>
+          </div>
+        </div>
+        
+        <div class="self-care">
+          <h4>😌 Fun Learning Zone 😌</h4>
+          <p>Games make learning enjoyable! No pressure, just practice in a fun way. 🎯🎉</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Exercise 5.2: Moderate -->
+    <section id="exercise-5.2" class="exercise-section">
+      <!-- Welcome -->
+      <div class="card animate">
+        <h2>Welcome to Linear Inequalities Exercise 5.2</h2>
+        <p class="lead">Learn about graphing linear inequalities, finding feasible regions, and identifying corner points with interactive examples.</p>
+        <div class="small-note">Based on FSc Part 2 Mathematics - Punjab Textbook Board</div>
+      </div>
+
+      <!-- Introduction to Linear Inequalities -->
+      <div class="divider">Introduction to Linear Inequalities</div>
+      <div class="card animate delay-1">
+        <h2>What are Linear Inequalities?</h2>
+        <p class="lead">Linear inequalities are similar to linear equations, but instead of an equals sign, they use inequality symbols like <, >, ≤, or ≥.</p>
+        
+        <div class="scenario">
+          <div class="card-mini" onclick="toggleScenario('ineq','budget')">
+            <div class="icon">💰</div>
+            <div style="font-weight:700">Budget Limits</div>
+            <div class="explain" id="ineq-budget">
+              <div class="show-explain">
+                <b>Real-life example:</b> If you have a budget of $100 for shopping, your spending can be represented as x ≤ 100, where x is the amount you spend.
+              </div>
+            </div>
+          </div>
+          <div class="card-mini" onclick="toggleScenario('ineq','time')">
+            <div class="icon">⏰</div>
+            <div style="font-weight:700">Time Constraints</div>
+            <div class="explain" id="ineq-time">
+              <div class="show-explain">
+                <b>Real-life example:</b> If you need to study at least 2 hours for an exam, your study time t can be represented as t ≥ 2.
+              </div>
+            </div>
+          </div>
+          <div class="card-mini" onclick="toggleScenario('ineq','recipe')">
+            <div class="icon">🍰</div>
+            <div style="font-weight:700">Recipe Requirements</div>
+            <div class="explain" id="ineq-recipe">
+              <div class="show-explain">
+                <b>Real-life example:</b> If a recipe requires at least 3 cups of flour but no more than 5, we can write 3 ≤ f ≤ 5.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="definition">
+          <b>Linear Inequality:</b> An inequality that can be written in one of the following forms:
+          <br>ax + by < c, ax + by > c, ax + by ≤ c, or ax + by ≥ c
+        </div>
+
+        <div class="example-container">
+          <div class="example-box">
+            <div class="big">Example 1: 2x - 3y ≤ 6</div>
+            <div class="controls">
+              <button class="step-btn" onclick="startSteps('ineq1')">Show Steps</button>
+            </div>
+            <div class="step-block" id="ineq1">
+              <div class="step-line" id="ineq1_step1"><b>Step 1:</b> First, graph the boundary line 2x - 3y = 6</div>
+              <div class="step-line" id="ineq1_step2"><b>Step 2:</b> Find x-intercept: set y=0 → 2x=6 → x=3 → point (3,0)</div>
+              <div class="step-line" id="ineq1_step3"><b>Step 3:</b> Find y-intercept: set x=0 → -3y=6 → y=-2 → point (0,-2)</div>
+              <div class="step-line" id="ineq1_step4"><b>Step 4:</b> Draw a solid line (since ≤ includes equality)</div>
+              <div class="step-line" id="ineq1_step5"><b>Step 5:</b> Test point (0,0): 2(0)-3(0)=0 ≤ 6 → True, so shade region containing (0,0)</div>
+              <div style="margin-top:8px">
+                <button class="next-step" onclick="nextStep('ineq1')">Next Step</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="example-box">
+            <div class="big">Example 2: x + y > 5</div>
+            <div class="controls">
+              <button class="step-btn" onclick="startSteps('ineq2')">Show Steps</button>
+            </div>
+            <div class="step-block" id="ineq2">
+              <div class="step-line" id="ineq2_step1"><b>Step 1:</b> First, graph the boundary line x + y = 5</div>
+              <div class="step-line" id="ineq2_step2"><b>Step 2:</b> Find x-intercept: set y=0 → x=5 → point (5,0)</div>
+              <div class="step-line" id="ineq2_step3"><b>Step 3:</b> Find y-intercept: set x=0 → y=5 → point (0,5)</div>
+              <div class="step-line" id="ineq2_step4"><b>Step 4:</b> Draw a dashed line (since > does not include equality)</div>
+              <div class="step-line" id="ineq2_step5"><b>Step 5:</b> Test point (0,0): 0+0=0 > 5 → False, so shade region NOT containing (0,0)</div>
+              <div style="margin-top:8px">
+                <button class="next-step" onclick="nextStep('ineq2')">Next Step</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="try-yourself">
+          <div class="try-title">✨ Try It Yourself</div>
+          <p>1. Which side of the line 3x + 2y = 6 should be shaded for 3x + 2y ≤ 6?</p>
+          <div class="row">
+            <input id="tineq1" placeholder="Type 'above' or 'below'">
+            <button class="check" onclick="checkTextMotivate('tineq1','below','tineq1_res')">Check</button>
+          </div>
+          <div id="tineq1_res" class="result"></div>
+          
+          <p>2. Is the boundary line solid or dashed for x + y < 5?</p>
+          <div class="row">
+            <input id="tineq2" placeholder="Type 'solid' or 'dashed'">
+            <button class="check" onclick="checkTextMotivate('tineq2','dashed','tineq2_res')">Check</button>
+          </div>
+          <div id="tineq2_res" class="result"></div>
+        </div>
+
+        <div class="self-care">
+          <h4>💖 Self-Care Break 💖</h4>
+          <p>Remember to take deep breaths while learning! Graphing inequalities can be tricky, but you're building amazing visualization skills. 🌟</p>
+        </div>
+      </div>
+
+      <!-- Systems of Linear Inequalities -->
+      <div class="divider">Systems of Linear Inequalities</div>
+      <div class="card animate delay-2">
+        <h2>Graphing Systems and Finding Feasible Regions</h2>
+        <p class="lead">Find the solution set (feasible region) for systems of linear inequalities.</p>
+        
+        <div class="scenario">
+          <div class="card-mini" onclick="toggleScenario('system','puzzle')">
+            <div class="icon">🧩</div>
+            <div style="font-weight:700">Puzzle Pieces</div>
+            <div class="explain" id="system-puzzle">
+              <div class="show-explain">
+                <b>Visualization:</b> Each inequality is like a puzzle piece. The feasible region is where all pieces overlap.
+              </div>
+            </div>
+          </div>
+          <div class="card-mini" onclick="toggleScenario('system','intersection')">
+            <div class="icon">🎯</div>
+            <div style="font-weight:700">Intersection</div>
+            <div class="explain" id="system-intersection">
+              <div class="show-explain">
+                <b>Key concept:</b> The solution to a system is the intersection (overlap) of all individual solution sets.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="definition">
+          <b>Feasible Region:</b> The set of all points that satisfy all inequalities in a system simultaneously.
+          <br><b>Corner Points:</b> Points where boundary lines intersect. These are important in optimization problems.
+        </div>
+
+        <div class="example-container">
+          <div class="example-box">
+            <div class="big">System 1: 
+              <br>2x + y ≤ 10
+              <br>x + 4y ≤ 12
+              <br>x ≥ 0, y ≥ 0
+            </div>
+            <div class="controls">
+              <button class="step-btn" onclick="startSteps('system1')">Show Steps</button>
+            </div>
+            <div class="step-block" id="system1">
+              <div class="step-line" id="system1_step1"><b>Step 1:</b> Graph each inequality on the same coordinate plane</div>
+              <div class="step-line" id="system1_step2"><b>Step 2:</b> The feasible region is where all shaded areas overlap</div>
+              <div class="step-line" id="system1_step3"><b>Step 3:</b> Find corner points by solving systems of equations:</div>
+              <div class="step-line" id="system1_step4"><b>Step 4:</b> Intersection of 2x+y=10 and x+4y=12: Solve to get (4,2)</div>
+              <div class="step-line" id="system1_step5"><b>Step 5:</b> Other corners: (0,0), (5,0), (0,3)</div>
+              <div style="margin-top:8px">
+                <button class="next-step" onclick="nextStep('system1')">Next Step</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="example-box">
+            <div class="big">System 2: 
+              <br>2x + 3y ≤ 18
+              <br>2x + y ≤ 10
+              <br>x + 4y ≤ 12
+              <br>x ≥ 0, y ≥ 0
+            </div>
+            <div class="controls">
+              <button class="step-btn" onclick="startSteps('system2')">Show Steps</button>
+            </div>
+            <div class="step-block" id="system2">
+              <div class="step-line" id="system2_step1"><b>Step 1:</b> Graph all inequalities on the same coordinate plane</div>
+              <div class="step-line" id="system2_step2"><b>Step 2:</b> The feasible region is where all shaded areas overlap</div>
+              <div class="step-line" id="system2_step3"><b>Step 3:</b> Find corner points by solving systems of equations:</div>
+              <div class="step-line" id="system2_step4"><b>Step 4:</b> Intersection of 2x+3y=18 and 2x+y=10: Solve to get (3,4)</div>
+              <div class="step-line" id="system2_step5"><b>Step 5:</b> Other corners: (0,0), (5,0), (0,4), (2,6)</div>
+              <div style="margin-top:8px">
+                <button class="next-step" onclick="nextStep('system2')">Next Step</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="try-yourself">
+          <div class="try-title">✨ Try It Yourself</div>
+          <p>1. How many corner points does the system x≥0, y≥0, x+y≤5 have?</p>
+          <div class="row">
+            <input id="tsys1" placeholder="Type a number">
+            <button class="check" onclick="checkTextMotivate('tsys1','3','tsys1_res')">Check</button>
+          </div>
+          <div id="tsys1_res" class="result"></div>
+          
+          <p>2. For the system x≥0, y≥0, 2x+y≤10, x+y≤6, is (3,3) in the feasible region?</p>
+          <div class="row">
+            <input id="tsys2" placeholder="Type 'yes' or 'no'">
+            <button class="check" onclick="checkTextMotivate('tsys2','yes','tsys2_res')">Check</button>
+          </div>
+          <div id="tsys2_res" class="result"></div>
+        </div>
+
+        <div class="self-care">
+          <h4>🌟 Practice Makes Progress! 🌟</h4>
+          <p>Each system you solve makes you stronger at visualizing mathematical relationships. Don't worry if it takes time - you're building neural pathways! 🧩💪</p>
+        </div>
+      </div>
+
+      <!-- Practice Problems -->
+      <div class="divider">Practice Problems</div>
+      <div class="card animate delay-3">
+        <h2>Test Your Understanding</h2>
+        <p class="lead">Apply what you've learned to solve these practice problems.</p>
+        
+        <div class="question-box">
+          <div class="question-text">Problem 1: Graph the feasible region for the system:
+            <br>2x - 3y ≤ 6
+            <br>2x + 3y ≤ 12
+            <br>x ≥ 0, y ≥ 0
+            <br>Find the corner points.
+          </div>
+          <div class="controls">
+            <button class="step-btn" onclick="startSteps('practice1')">Show Solution</button>
+          </div>
+          <div class="step-block" id="practice1">
+            <div class="step-line" id="practice1_step1"><b>Step 1:</b> Graph 2x - 3y = 6: x-intercept (3,0), y-intercept (0,-2)</div>
+            <div class="step-line" id="practice1_step2"><b>Step 2:</b> Graph 2x + 3y = 12: x-intercept (6,0), y-intercept (0,4)</div>
+            <div class="step-line" id="practice1_step3"><b>Step 3:</b> Shade appropriate regions for both inequalities</div>
+            <div class="step-line" id="practice1_step4"><b>Step 4:</b> The feasible region is bounded by x=0, y=0, and the two lines</div>
+            <div class="step-line" id="practice1_step5"><b>Step 5:</b> Corner points: (0,0), (3,0), (0,4), and intersection of 2x-3y=6 and 2x+3y=12</div>
+            <div class="step-line" id="practice1_step6"><b>Step 6:</b> Solve the system: Adding equations gives 4x=18 → x=4.5, then y=1</div>
+            <div class="step-line" id="practice1_step7"><b>Step 7:</b> Final corner points: (0,0), (3,0), (0,4), (4.5,1)</div>
+            <div style="margin-top:8px">
+              <button class="next-step" onclick="nextStep('practice1')">Next Step</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="self-care">
+          <h4>💫 You've Got This! 💫</h4>
+          <p>Learning is a journey, not a race. Be proud of every step you take toward understanding these concepts! 🌠📖</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Exercise 5.3: Advanced -->
+    <section id="exercise-5.3" class="exercise-section">
+      <!-- Welcome -->
+      <div class="card animate">
+        <h2>Welcome to Linear Programming Exercise 5.3</h2>
+        <p class="lead">Learn about optimizing linear functions subject to constraints with interactive examples and real-world applications.</p>
+        <div class="small-note">Based on FSc Part 2 Mathematics - Punjab Textbook Board</div>
+      </div>
+
+      <!-- Introduction to Linear Programming -->
+      <div class="divider">Introduction to Linear Programming</div>
+      <div class="card animate delay-1">
+        <h2>What is Linear Programming?</h2>
+        <p class="lead">Linear programming is a mathematical method to achieve the best outcome (maximum profit or lowest cost) in a mathematical model whose requirements are represented by linear relationships.</p>
+        
+        <div class="scenario">
+          <div class="card-mini" onclick="toggleScenario('lp','factory')">
+            <div class="icon">🏭</div>
+            <div style="font-weight:700">Factory Production</div>
+            <div class="explain" id="lp-factory">
+              <div class="show-explain">
+                <b>Real-life example:</b> A factory wants to maximize profit by deciding how many units of each product to make, given limited resources like labor and materials.
+              </div>
+            </div>
+          </div>
+          <div class="card-mini" onclick="toggleScenario('lp','diet')">
+            <div class="icon">🥗</div>
+            <div style="font-weight:700">Diet Planning</div>
+            <div class="explain" id="lp-diet">
+              <div class="show-explain">
+                <b>Real-life example:</b> Create the cheapest diet that meets all nutritional requirements by selecting the right combination of foods.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="definition">
+          <b>Linear Programming Problem Components:</b>
+          <br>1. <b>Objective Function:</b> The function to maximize or minimize (e.g., profit, cost)
+          <br>2. <b>Constraints:</b> Limitations or requirements (e.g., resource limits, minimum requirements)
+          <br>3. <b>Decision Variables:</b> The quantities we can control (e.g., x, y)
+          <br>4. <b>Feasible Region:</b> The set of all points satisfying all constraints
+          <br>5. <b>Optimal Solution:</b> The point in the feasible region that optimizes the objective function
+        </div>
+
+        <div class="example-container">
+          <div class="example-box">
+            <div class="big">Key Theorem: Corner Point Method</div>
+            <p>If a linear programming problem has an optimal solution, it must occur at a corner point of the feasible region.</p>
+            <div class="controls">
+              <button class="step-btn" onclick="startSteps('method1')">Show Steps</button>
+            </div>
+            <div class="step-block" id="method1">
+              <div class="step-line" id="method1_step1"><b>Step 1:</b> Graph all constraints to find the feasible region</div>
+              <div class="step-line" id="method1_step2"><b>Step 2:</b> Identify all corner points of the feasible region</div>
+              <div class="step-line" id="method1_step3"><b>Step 3:</b> Evaluate the objective function at each corner point</div>
+              <div class="step-line" id="method1_step4"><b>Step 4:</b> Select the corner point that gives the optimal value</div>
+              <div style="margin-top:8px">
+                <button class="next-step" onclick="nextStep('method1')">Next Step</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="example-box">
+            <div class="big">Example: Simple Maximization</div>
+            <p>Maximize P = 3x + 2y subject to:
+              <br>x + y ≤ 4
+              <br>x ≥ 0, y ≥ 0
+            </p>
+            <div class="controls">
+              <button class="step-btn" onclick="startSteps('simple1')">Show Solution</button>
+            </div>
+            <div class="step-block" id="simple1">
+              <div class="step-line" id="simple1_step1"><b>Step 1:</b> Feasible region is a triangle with corners at (0,0), (4,0), (0,4)</div>
+              <div class="step-line" id="simple1_step2"><b>Step 2:</b> Evaluate P at each corner:
+                <br>At (0,0): P = 3(0) + 2(0) = 0
+                <br>At (4,0): P = 3(4) + 2(0) = 12
+                <br>At (0,4): P = 3(0) + 2(4) = 8
+              </div>
+              <div class="step-line" id="simple1_step3"><b>Step 3:</b> Maximum value is 12 at point (4,0)</div>
+              <div style="margin-top:8px">
+                <button class="next-step" onclick="nextStep('simple1')">Next Step</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="try-yourself">
+          <div class="try-title">✨ Try It Yourself</div>
+          <p>1. For maximizing P = 2x + 5y with constraints x≥0, y≥0, x+y≤5, what are the corner points?</p>
+          <div class="row">
+            <input id="tlp1" placeholder="Type as (x,y), (x,y), ...">
+            <button class="check" onclick="checkTextMotivate('tlp1','(0,0), (5,0), (0,5)','tlp1_res')">Check</button>
+          </div>
+          <div id="tlp1_res" class="result"></div>
+          
+          <p>2. In linear programming, where does the optimal solution always occur?</p>
+          <div class="row">
+            <input id="tlp2" placeholder="Type your answer">
+            <button class="check" onclick="checkTextMotivate('tlp2','at a corner point','tlp2_res')">Check</button>
+          </div>
+          <div id="tlp2_res" class="result"></div>
+        </div>
+
+        <div class="self-care">
+          <h4>💖 Mindful Learning Break 💖</h4>
+          <p>Remember that optimization is about finding the best solution within given limits - just like making the most of your study time! 🌟</p>
+        </div>
+      </div>
+
+      <!-- Maximization Problems -->
+      <div class="divider">Maximization Problems</div>
+      <div class="card animate delay-2">
+        <h2>Solving Maximization Problems</h2>
+        <p class="lead">Learn how to find maximum values of objective functions subject to constraints.</p>
+        
+        <div class="scenario">
+          <div class="card-mini" onclick="toggleScenario('max','profit')">
+            <div class="icon">💰</div>
+            <div style="font-weight:700">Profit Maximization</div>
+            <div class="explain" id="max-profit">
+              <div class="show-explain">
+                <b>Business application:</b> Companies use linear programming to maximize profits while considering production limits, resource constraints, and market demands.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="definition">
+          <b>Maximization Problem Steps:</b>
+          <br>1. Identify the objective function to maximize
+          <br>2. Write all constraints as linear inequalities
+          <br>3. Graph the feasible region
+          <br>4. Find all corner points
+          <br>5. Evaluate the objective function at each corner point
+          <br>6. Select the point with the maximum value
+        </div>
+
+        <div class="example-container">
+          <div class="example-box">
+            <div class="big">Problem 1: Maximize f(x,y) = 2x + 5y</div>
+            <p>Subject to:
+              <br>2y - x ≤ 8
+              <br>x - y ≤ 4
+              <br>x ≥ 0, y ≥ 0
+            </p>
+            <div class="controls">
+              <button class="step-btn" onclick="startSteps('max1')">Show Solution</button>
+            </div>
+            <div class="step-block" id="max1">
+              <div class="step-line" id="max1_step1"><b>Step 1:</b> Graph the constraints to find the feasible region</div>
+              <div class="step-line" id="max1_step2"><b>Step 2:</b> Find intersection points:
+                <br>Line 1: 2y - x = 8 → x = 2y - 8
+                <br>Line 2: x - y = 4 → x = y + 4
+              </div>
+              <div class="step-line" id="max1_step3"><b>Step 3:</b> Solve system: 2y - 8 = y + 4 → y = 12, x = 16</div>
+              <div class="step-line" id="max1_step4"><b>Step 4:</b> Corner points: (0,0), (0,4), (16,12), (4,0)</div>
+              <div class="step-line" id="max1_step5"><b>Step 5:</b> Evaluate f(x,y) at each point:
+                <br>(0,0): 0
+                <br>(0,4): 20
+                <br>(16,12): 92
+                <br>(4,0): 8
+              </div>
+              <div class="step-line" id="max1_step6"><b>Step 6:</b> Maximum value is 92 at (16,12)</div>
+              <div style="margin-top:8px">
+                <button class="next-step" onclick="nextStep('max1')">Next Step</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="try-yourself">
+          <div class="try-title">✨ Try It Yourself</div>
+          <p>1. For maximizing P = 3x + 2y with x≥0, y≥0, x+y≤10, 2x+y≤16, what is the maximum value?</p>
+          <div class="row">
+            <input id="tmax1" placeholder="Type the maximum value">
+            <button class="check" onclick="checkTextMotivate('tmax1','24','tmax1_res')">Check</button>
+          </div>
+          <div id="tmax1_res" class="result"></div>
+        </div>
+
+        <div class="self-care">
+          <h4>🌈 Progress Checkpoint 🌈</h4>
+          <p>You're learning to find optimal solutions systematically! This skill applies to many real-world decision-making scenarios. 🧠✨</p>
+        </div>
+      </div>
+
+      <!-- Real-World Applications -->
+      <div class="divider">Real-World Applications</div>
+      <div class="card animate">
+        <h2>Applying Linear Programming to Real Problems</h2>
+        <p class="lead">See how linear programming solves practical problems in business, nutrition, and resource allocation.</p>
+        
+        <div class="question-box">
+          <div class="question-text">Application 1: Diet Problem
+            <br>Each unit of food X costs Rs. 25 and contains 2 units of protein and 4 units of iron.
+            <br>Each unit of food Y costs Rs. 30 and contains 3 units of protein and 2 units of iron.
+            <br>Each animal must receive at least 12 units of protein and 16 units of iron each day.
+            <br>How many units of each food should be fed to each animal at the smallest possible cost?
+          </div>
+          <div class="controls">
+            <button class="step-btn" onclick="startSteps('app1')">Show Solution</button>
+          </div>
+          <div class="step-block" id="app1">
+            <div class="step-line" id="app1_step1"><b>Step 1:</b> Define variables:
+              <br>Let x = units of food X
+              <br>Let y = units of food Y
+            </div>
+            <div class="step-line" id="app1_step2"><b>Step 2:</b> Objective function (minimize cost):
+              <br>C = 25x + 30y
+            </div>
+            <div class="step-line" id="app1_step3"><b>Step 3:</b> Constraints:
+              <br>Protein: 2x + 3y ≥ 12
+              <br>Iron: 4x + 2y ≥ 16
+              <br>Non-negativity: x ≥ 0, y ≥ 0
+            </div>
+            <div class="step-line" id="app1_step4"><b>Step 4:</b> Find corner points:
+              <br>Intersection of 2x+3y=12 and 4x+2y=16
+              <br>Solve: Multiply first equation by 2: 4x+6y=24
+              <br>Subtract second equation: 4y=8 → y=2, then x=3
+            </div>
+            <div class="step-line" id="app1_step5"><b>Step 5:</b> Other corner points: (0,6), (4,0), (8,0)</div>
+            <div class="step-line" id="app1_step6"><b>Step 6:</b> Evaluate C at each point:
+              <br>(3,2): C=25(3)+30(2)=135
+              <br>(0,6): C=25(0)+30(6)=180
+              <br>(4,0): C=25(4)+30(0)=100
+              <br>(8,0): C=25(8)+30(0)=200
+            </div>
+            <div class="step-line" id="app1_step7"><b>Step 7:</b> Minimum cost is Rs. 100 with 4 units of food X and 0 units of food Y</div>
+            <div style="margin-top:8px">
+              <button class="next-step" onclick="nextStep('app1')">Next Step</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="self-care">
+          <h4>💫 You're Learning Practical Problem-Solving! 💫</h4>
+          <p>These optimization techniques are used by businesses worldwide to make better decisions. You're gaining valuable, real-world skills! 🌠📖</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Resources Section -->
+    <section id="resources" class="exercise-section">
+      <div class="card animate">
+        <h2>Helpful Resources</h2>
+        
+        <div class="visual-element">
+          <div class="emoji-row">
+            <span class="math-emoji">📚</span>
+            <span class="math-emoji">🎥</span>
+            <span class="math-emoji">💡</span>
+          </div>
+        </div>
+        
+        <div class="resources">
+          <div class="resource-card">
+            <h3>Video Help</h3>
+            <p>Short videos to help you understand:</p>
+            <a href="https://www.youtube.com/watch?v=YBYl7ry5sUQ" target="_blank">📹 Graphing Inequalities</a>
+            <a href="https://www.youtube.com/watch?v=P_qc_gzq1y8" target="_blank">🎬 Basic Inequalities</a>
+          </div>
+          
+          <div class="resource-card">
+            <h3>Practice Games</h3>
+            <p>Fun ways to practice:</p>
+            <a href="https://www.mathgames.com/skill/7.95-graph-inequalities" target="_blank">🎮 Graph Practice</a>
+            <a href="https://www.ixl.com/math/algebra-1/graph-linear-inequalities" target="_blank">🕹️ Inequality Games</a>
+          </div>
+          
+          <div class="resource-card">
+            <h3>Study Tips</h3>
+            <p>Simple ways to learn better:</p>
+            <ul style="text-align:left; margin-left:20px;">
+              <li>Take short breaks</li>
+              <li>Practice a little daily</li>
+              <li>Ask for help when needed</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Self-Care Note -->
+        <div class="self-care animate delay-1">
+          <h4>💫 You've Got This! 💫</h4>
+          <p>Learning is your journey. Go at your pace and celebrate every small victory! 🌠📖</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Completion Message -->
+    <div class="completion animate">
+      <h3>🎉 Amazing Work! 🎉</h3>
+      <p>You've completed the Linear Inequalities & Programming learning modules! You now understand how to graph inequalities, solve systems, and optimize functions under constraints.</p>
+      <p>🌟 <strong>You're developing analytical thinking skills that will serve you well in many areas!</strong> 🌟</p>
+      <div class="emoji-row">
+        <span class="math-emoji">🥳</span>
+        <span class="math-emoji">👏</span>
+        <span class="math-emoji">💫</span>
+        <span class="math-emoji">🌈</span>
+      </div>
+    </div>
+  </div>
+  <div style="margin: 50px 0; text-align: center; padding: 30px; background: #f0fdf4; border: 2px dashed #10b981; border-radius: 12px;">
+    <h3 style="color: #047857; margin-bottom: 10px;">Module Complete?</h3>
+    <p style="color: #065f46; margin-bottom: 20px;">Test your understanding of Linear Inequalities to unlock the next step.</p>
+    
+    <a href="{{ url_for('serve_quiz', chapter_num=5) }}" class="btn btn-primary" style="background-color: #10b981; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); padding: 15px 40px; font-size: 1.1rem;">
+        Take Chapter 5 Quiz <i class="fas fa-arrow-right"></i>
+    </a>
+</div>
+
+  <!-- Floating Action Button -->
+  <div class="fab">
+    <i class="fas fa-book-open"></i>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-about">
+          <div class="footer-logo">
+            <div class="footer-logo-icon">S</div>
+            Sentellect
+          </div>
+          <p>Personalizing learning through emotions to improve educational experience for HSSC Mathematics.</p>
+          <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+        
+        <div class="footer-links">
+          <h3>Exercises</h3>
+          <ul>
+            <li><a href="#exercise-5.1">5.1 Basics</a></li>
+            <li><a href="#exercise-5.2">5.2 Moderate</a></li>
+            <li><a href="#exercise-5.3">5.3 Advanced</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-links">
+          <h3>Resources</h3>
+          <ul>
+            <li><a href="#resources">Study Materials</a></li>
+            <li><a href="#">Support</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-links">
+          <h3>Account</h3>
+          <ul>
+            <li><a href="#">Student Login</a></li>
+            <li><a href="#">Create Account</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>© 2024 Sentellect. Final Year Project - Educational Technology.</p>
+        <div class="footer-tags">
+          <a href="#" class="tag">Linear Inequalities</a>
+          <a href="#" class="tag">Linear Programming</a>
+          <a href="#" class="tag">Stress-Free Learning</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Initialize main chart
+    const ctx = document.getElementById('inequalityGraph').getContext('2d');
+    let inequalityChart = new Chart(ctx, {
+      type: 'scatter',
+      data: { datasets: [] },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: { min: -2, max: 8, grid: { color: '#ddd' } },
+          y: { min: -2, max: 8, grid: { color: '#ddd' } }
+        },
+        plugins: {
+          title: { display: true, text: 'Inequality Graph', font: { size: 16 } },
+          tooltip: { enabled: false }
+        }
+      }
+    });
+
+    // Initialize example charts
+    const budgetCtx = document.getElementById('budgetGraph').getContext('2d');
+    let budgetChart = new Chart(budgetCtx, {
+      type: 'scatter',
+      data: { datasets: [] },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: { min: 0, max: 12, title: { display: true, text: 'Books' } },
+          y: { min: 0, max: 25, title: { display: true, text: 'Notebooks' } }
+        },
+        plugins: {
+          title: { display: true, text: 'Budget: 10x + 5y ≤ 100', font: { size: 14 } }
+        }
+      }
+    });
+
+    const timeCtx = document.getElementById('timeGraph').getContext('2d');
+    let timeChart = new Chart(timeCtx, {
+      type: 'scatter',
+      data: { datasets: [] },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: { min: 0, max: 10, title: { display: true, text: 'Math Hours' } },
+          y: { min: 0, max: 10, title: { display: true, text: 'English Hours' } }
+        },
+        plugins: {
+          title: { display: true, text: 'Time: x + y ≤ 8 and x ≥ 2y', font: { size: 14 } }
+        }
+      }
+    });
+
+    // Initialize question chart
+    const question2Ctx = document.getElementById('question2Graph').getContext('2d');
+    let question2Chart = new Chart(question2Ctx, {
+      type: 'scatter',
+      data: { datasets: [] },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: { min: -5, max: 10, title: { display: true, text: 'x' } },
+          y: { min: -5, max: 10, title: { display: true, text: 'y' } }
+        },
+        plugins: {
+          title: { display: true, text: 'y ≥ x - 2', font: { size: 14 } }
+        }
+      }
+    });
+
+    // Header scroll effect
+    window.addEventListener('scroll', function() {
+      const header = document.getElementById('header');
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+
+    // Animation on scroll
+    document.addEventListener('DOMContentLoaded', function() {
+      const animateElements = document.querySelectorAll('.animate');
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const delay = entry.target.classList.contains('delay-1') ? 0.2 : 
+                         entry.target.classList.contains('delay-2') ? 0.4 :
+                         entry.target.classList.contains('delay-3') ? 0.6 : 0;
+            
+            setTimeout(() => {
+              entry.target.style.opacity = 1;
+              entry.target.style.transform = 'translateY(0)';
+            }, delay * 1000);
+          }
+        });
+      }, { threshold: 0.1 });
+      
+      animateElements.forEach(element => {
+        element.style.opacity = 0;
+        element.style.transform = 'translateY(20px)';
+        element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(element);
+      });
+      
+      // Initialize charts
+      showInequality('2x + y ≤ 6');
+      initializeExamples();
+    });
+
+    // Show inequality graph
+    function showInequality(inequality) {
+      let datasets = [];
+      let explanation = "";
+      
+      switch(inequality) {
+        case '2x + y ≤ 6':
+          datasets = createInequalityDataset('2x + y = 6', '2x + y ≤ 6', (x) => 6 - 2*x, (x, y) => 2*x + y <= 6);
+          explanation = "<p><strong>2x + y ≤ 6</strong>: Solid line (≤). Test (0,0): 0 ≤ 6 ✓, shade region with (0,0).</p>";
+          break;
+        case '3x + 7y ≥ 21':
+          datasets = createInequalityDataset('3x + 7y = 21', '3x + 7y ≥ 21', (x) => (21 - 3*x)/7, (x, y) => 3*x + 7*y >= 21);
+          explanation = "<p><strong>3x + 7y ≥ 21</strong>: Solid line (≥). Test (0,0): 0 ≥ 21 ✗, shade opposite side.</p>";
+          break;
+      }
+      
+      inequalityChart.data.datasets = datasets;
+      inequalityChart.update();
+      document.getElementById('current-inequality').innerHTML = explanation;
+    }
+
+    // Create inequality dataset
+    function createInequalityDataset(lineLabel, regionLabel, lineFunc, regionFunc) {
+      let lineData = [];
+      let regionData = [];
+      
+      for(let x = -2; x <= 8; x++) {
+        lineData.push({x: x, y: lineFunc(x)});
+      }
+      
+      for(let x = -2; x <= 8; x += 0.5) {
+        for(let y = -2; y <= 8; y += 0.5) {
+          if (regionFunc(x, y)) {
+            regionData.push({x: x, y: y});
+          }
+        }
+      }
+      
+      return [
+        {
+          label: lineLabel,
+          data: lineData,
+          showLine: true,
+          borderColor: '#6a11cb',
+          borderWidth: 3,
+          pointRadius: 0,
+          fill: false
+        },
+        {
+          label: regionLabel,
+          data: regionData,
+          pointRadius: 0,
+          backgroundColor: 'rgba(106, 17, 203, 0.2)',
+          showLine: false,
+          fill: true
+        }
+      ];
+    }
+
+    // Initialize examples
+    function initializeExamples() {
+      // Budget example
+      budgetChart.data.datasets = createInequalityDataset(
+        '10x + 5y = 100', 
+        '10x + 5y ≤ 100', 
+        (x) => (100 - 10*x)/5, 
+        (x, y) => 10*x + 5*y <= 100
+      );
+      budgetChart.update();
+      
+      // Time management example
+      let timeDatasets = [
+        ...createInequalityDataset('x + y = 8', 'x + y ≤ 8', (x) => 8 - x, (x, y) => x + y <= 8),
+        ...createInequalityDataset('x = 2y', 'x ≥ 2y', (x) => x/2, (x, y) => x >= 2*y)
+      ];
+      timeDatasets[0].borderColor = '#6a11cb';
+      timeDatasets[1].backgroundColor = 'rgba(106, 17, 203, 0.2)';
+      timeDatasets[2].borderColor = '#2575fc';
+      timeDatasets[3].backgroundColor = 'rgba(37, 117, 252, 0.2)';
+      timeChart.data.datasets = timeDatasets;
+      timeChart.update();
+      
+      // Question 2
+      question2Chart.data.datasets = createInequalityDataset('y = x - 2', 'y ≥ x - 2', (x) => x - 2, (x, y) => y >= x - 2);
+      question2Chart.update();
+    }
+
+    // Show solution steps
+    function showSolution(elementId, step) {
+      const solutionDiv = document.getElementById(elementId);
+      const progressBar = document.getElementById(`progress${elementId.slice(3)}`);
+      
+      // Update progress bar
+      progressBar.style.width = `${step * 33}%`;
+      
+      // Different solutions for different questions
+      const solutions = {
+        sol1: [
+          "Step 1: Subtract 2x from both sides: 5x - 3 - 2x < 2x + 9 - 2x → 3x - 3 < 9",
+          "Step 2: Add 3 to both sides: 3x - 3 + 3 < 9 + 3 → 3x < 12",
+          "Answer: Divide both sides by 3: x < 4"
+        ],
+        sol2: [
+          "Step 1: Draw the line y = x - 2 (solid because of ≥)",
+          "Step 2: Test point (0,0): 0 ≥ 0 - 2 → 0 ≥ -2 ✓",
+          "Graph: Shade the region containing (0,0)"
+        ]
+      };
+      
+      solutionDiv.innerHTML = solutions[elementId][step-1];
+      solutionDiv.style.animation = 'fadeIn 0.5s ease';
+    }
+    
+    // Bubble game
+    let bubbleGameInterval;
+    let bubbleScore = 0;
+    let gameTime = 30;
+    
+    function startBubbleGame() {
+      document.getElementById('game-area').innerHTML = '';
+      bubbleScore = 0;
+      gameTime = 30;
+      document.getElementById('bubble-score').textContent = bubbleScore;
+      document.getElementById('game-time').textContent = gameTime;
+      
+      // Create bubbles
+      bubbleGameInterval = setInterval(() => {
+        if (gameTime <= 0) return;
+        
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble float';
+        const size = Math.random() * 50 + 30;
+        bubble.style.width = `${size}px`;
+        bubble.style.height = `${size}px`;
+        bubble.style.left = `${Math.random() * 90}%`;
+        bubble.style.bottom = '0px';
+        bubble.style.background = `rgba(${Math.random() * 100 + 100}, ${Math.random() * 100 + 100}, ${Math.random() * 255}, 0.7)`;
+        
+        // Add inequality content - some correct, some incorrect
+        const inequalities = [
+          { text: '2x+3<7', correct: true },
+          { text: '5≥10', correct: false },
+          { text: 'x-4≤2', correct: true },
+          { text: '3y>15', correct: true },
+          { text: '8<5', correct: false },
+          { text: 'x+5≥10', correct: true }
+        ];
+        
+        const inequality = inequalities[Math.floor(Math.random() * inequalities.length)];
+        bubble.textContent = inequality.text;
+        bubble.dataset.correct = inequality.correct;
+        
+        bubble.addEventListener('click', function() {
+          if (this.dataset.correct === 'true') {
+            bubbleScore++;
+            document.getElementById('bubble-score').textContent = bubbleScore;
+            this.style.background = '#84fab0';
+            setTimeout(() => this.remove(), 300);
+          } else {
+            this.style.background = '#ff6b6b';
+            setTimeout(() => this.remove(), 300);
+          }
+        });
+        
+        document.getElementById('game-area').appendChild(bubble);
+        
+        // Remove bubble after animation
+        setTimeout(() => {
+          if (bubble.parentNode) bubble.remove();
+        }, 5000);
+      }, 1000);
+      
+      // Game timer
+      const timer = setInterval(() => {
+        gameTime--;
+        document.getElementById('game-time').textContent = gameTime;
+        
+        if (gameTime <= 0) {
+          clearInterval(timer);
+          clearInterval(bubbleGameInterval);
+          setTimeout(() => {
+            alert(`Game over! Your score: ${bubbleScore}`);
+          }, 500);
+        }
+      }, 1000);
+    }
+
+    // Exercise navigation
+    function showExercise(exerciseId) {
+      // Hide all exercise sections
+      document.querySelectorAll('.exercise-section').forEach(section => {
+        section.classList.remove('active');
+      });
+      
+      // Show selected exercise section
+      document.getElementById(exerciseId).classList.add('active');
+      
+      // Update active button
+      document.querySelectorAll('.exercise-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
+      
+      // Scroll to top of exercises
+      document.querySelector('.exercise-nav').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Toggle scenario explanations
+    function toggleScenario(concept, id) {
+      const el = document.getElementById(`${concept}-${id}`);
+      if (el.style.display === "block") {
+        el.style.display = "none";
+      } else {
+        el.style.display = "block";
+      }
+    }
+
+    // Start step-by-step examples
+    function startSteps(id) {
+      const steps = document.querySelectorAll(`#${id} .step-line`);
+      steps.forEach(s => s.style.display = "none");
+      const nextBtn = document.querySelector(`#${id} .next-step`);
+      if (nextBtn) nextBtn.style.display = "block";
+      if (steps[0]) steps[0].style.display = "block";
+    }
+
+    // Show next step in examples
+    function nextStep(id) {
+      const steps = document.querySelectorAll(`#${id} .step-line`);
+      const nextBtn = document.querySelector(`#${id} .next-step`);
+      let shownIndex = -1;
+      
+      steps.forEach((s, i) => {
+        if (s.style.display === "block") shownIndex = i;
+      });
+      
+      if (shownIndex + 1 < steps.length) {
+        steps[shownIndex + 1].style.display = "block";
+      } else {
+        if (nextBtn) nextBtn.style.display = "none";
+      }
+    }
+
+    // Check text input answers with motivational feedback
+    function checkTextMotivate(inputId, correct, resultId) {
+      const userAns = document.getElementById(inputId).value.trim().toLowerCase();
+      const resultEl = document.getElementById(resultId);
+      const correctAns = correct.trim().toLowerCase();
+      
+      const motivationalMessages = [
+        "Great job! You're getting it!",
+        "Excellent work! Keep it up!",
+        "Perfect! You're mastering this!",
+        "Well done! You're on the right track!",
+        "Correct! You're doing amazing!"
+      ];
+      
+      const tryAgainMessages = [
+        "Almost! Try again with a fresh perspective.",
+        "Not quite, but you're close! Try once more.",
+        "Good attempt! Let's try that again.",
+        "Not exactly, but you're learning! Try again.",
+        "Almost there! Give it another shot."
+      ];
+      
+      const randomGood = motivationalMessages[Math.floor(Math.random() * motivationalMessages.length)];
+      const randomTry = tryAgainMessages[Math.floor(Math.random() * tryAgainMessages.length)];
+
+      if (userAns === correctAns) {
+        resultEl.innerHTML = `✅ ${randomGood}`;
+        resultEl.className = "result good";
+      } else {
+        resultEl.innerHTML = `❌ ${randomTry} <br><small>Hint: correct answer is <b>${correct}</b></small>`;
+        resultEl.className = "result warn";
+      }
+      resultEl.style.display = "block";
+    }
+  </script>
+</body>
+</html>

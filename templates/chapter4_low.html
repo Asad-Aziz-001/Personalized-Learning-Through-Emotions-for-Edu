@@ -1,0 +1,1781 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sentellect - Coordinate Geometry Exercise 4.4 (FSc Part 2)</title>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+    /* ===== Base Styles ===== */
+    :root {
+      --primary: #1e40af;
+      --primary-light: #3b82f6;
+      --primary-dark: #1e3a8a;
+      --secondary: #f59e0b;
+      --accent: #ec4899;
+      --text: #1e293b;
+      --text-light: #64748b;
+      --text-lighter: #94a3b8;
+      --bg: #f8fafc;
+      --white: #ffffff;
+      --gray: #e2e8f0;
+      --gray-light: #f1f5f9;
+      --success: #10b981;
+      --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      --hover-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      --pastel-bg: #f3f8ff;
+      --muted: #64748b;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    section {
+      padding: 80px 0;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .section-title h2 {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 15px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title h2::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: var(--secondary);
+      border-radius: 2px;
+    }
+
+    .section-title p {
+      color: var(--text-light);
+      font-size: 1.1rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 28px;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--white);
+      box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(30, 64, 175, 0.4);
+    }
+
+    .btn-secondary {
+      background-color: var(--white);
+      color: var(--primary);
+      border: 2px solid var(--primary);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--primary);
+      color: var(--white);
+      transform: translateY(-2px);
+    }
+
+    /* ===== Animations (kept original) ===== */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    @keyframes shimmer {
+      0% { background-position: -1000px 0; }
+      100% { background-position: 1000px 0; }
+    }
+    
+    @keyframes slideIn {
+      from { transform: translateX(-20px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    
+    @keyframes bounceIn {
+      0% { transform: scale(0.95); opacity: 0; }
+      50% { transform: scale(1.02); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes breathe {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.45); }
+    }
+
+    @keyframes wavey {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+      100% { transform: translateY(0); }
+    }
+
+    .animate {
+      animation: fadeIn 0.8s ease forwards;
+    }
+    
+    .animate-slide {
+      animation: slideIn 0.6s ease forwards;
+    }
+    
+    .animate-bounce {
+      animation: bounceIn 0.8s ease forwards;
+    }
+
+    .delay-1 { animation-delay: 0.2s; }
+    .delay-2 { animation-delay: 0.4s; }
+    .delay-3 { animation-delay: 0.6s; }
+    .delay-4 { animation-delay: 0.8s; }
+
+    /* ===== Header/Navbar (kept original) ===== */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      background-color: var(--white);
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    header.scrolled {
+      padding: 10px 0;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: var(--white);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 18px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(30, 64, 175, 0.2);
+    }
+
+    .logo-text {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      transition: all 0.3s ease;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 30px;
+    }
+
+    .nav-links a {
+      font-weight: 500;
+      position: relative;
+      padding: 5px 0;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      transition: width 0.3s ease;
+      border-radius: 2px;
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      width: 100%;
+    }
+
+    .nav-links a.active {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .auth-buttons {
+      display: flex;
+      gap: 15px;
+      /* Visibility controlled by content */
+    }
+
+    .login-btn {
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .login-btn:hover {
+      color: var(--primary);
+    }
+
+    .signup-btn {
+      padding: 8px 20px;
+      border-radius: 50px;
+      background: linear-gradient(to right, var(--primary), var(--primary-light));
+      color: var(--white);
+      font-weight: 500;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(30, 64, 175, 0.25);
+    }
+
+    .signup-btn:hover {
+      background: linear-gradient(to right, var(--primary-dark), var(--primary));
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(30, 64, 175, 0.35);
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--primary);
+      cursor: pointer;
+    }
+    
+    /* ===== Hero Section (kept original) ===== */
+    .hero {
+      position: relative;
+      padding: 180px 0 80px;
+      background: linear-gradient(135deg, var(--primary), #004e92);
+      color: var(--white);
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3QgZmlsbD0idXJsKCNwYXR0ZXJuKSIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIvPjwvc3ZnPg==');
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-size: 3.2rem;
+      margin-bottom: 20px;
+      line-height: 1.2;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      white-space: nowrap;
+    }
+
+    .hero h1 span {
+      color: var(--secondary);
+      position: relative;
+    }
+
+    .hero h1 span::after {
+      content: '';
+      position: absolute;
+      bottom: 5px;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background-color: rgba(255, 255, 255, 0.3);
+      z-index: -1;
+      border-radius: 4px;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 40px;
+      opacity: 0.9;
+    }
+
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .hero .btn-secondary {
+      background-color: transparent;
+      color: var(--white);
+      border-color: var(--white);
+    }
+
+    .hero .btn-secondary:hover {
+      background-color: var(--white);
+      color: var(--primary);
+    }
+
+    .floating-shape {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      z-index: 0;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .shape-1 {
+      width: 150px;
+      height: 150px;
+      top: 10%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .shape-2 {
+      width: 100px;
+      height: 100px;
+      bottom: 15%;
+      right: 10%;
+      animation-delay: 0.5s;
+    }
+
+    .shape-3 {
+      width: 80px;
+      height: 80px;
+      top: 30%;
+      right: 20%;
+      animation-delay: 1s;
+    }
+    
+    .particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 0;
+    }
+    
+    .particle {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      animation: float 8s infinite ease-in-out;
+    }
+
+    /* ===== Card Styles (kept original) ===== */
+    .card {
+      background-color: var(--white);
+      border-radius: 16px;
+      padding: 30px;
+      margin: 25px 0;
+      box-shadow: var(--card-shadow);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--primary), var(--secondary));
+      transition: width 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--hover-shadow);
+    }
+    
+    .card:hover::before {
+      width: 8px;
+    }
+
+    h2 {
+      color: var(--primary);
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    h3 {
+      color: var(--primary);
+      font-size: 1.4rem;
+      margin: 25px 0 15px;
+      font-weight: 600;
+      position: relative;
+      padding-left: 15px;
+    }
+    
+    h3::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 6px;
+      height: 6px;
+      background: var(--secondary);
+      border-radius: 50%;
+    }
+
+    p {
+      color: var(--text-light);
+      margin-bottom: 20px;
+      line-height: 1.7;
+    }
+
+    .lead {
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    /* ===== Step Buttons (kept original) ===== */
+    .step-buttons {
+      display: flex;
+      gap: 12px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+
+    .step-btn {
+      padding: 10px 16px;
+      background: linear-gradient(to right, var(--primary), var(--primary-light));
+      color: var(--white);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      box-shadow: 0 4px 8px rgba(30, 64, 175, 0.2);
+    }
+
+    .step-btn:hover {
+      background: linear-gradient(to right, var(--primary-dark), var(--primary));
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(30, 64, 175, 0.3);
+    }
+
+    /* ===== Solution Display (kept original) ===== */
+    .solution {
+      background: var(--gray-light);
+      border-left: 4px solid var(--secondary);
+      padding: 20px;
+      margin: 15px 0;
+      border-radius: 0 8px 8px 0;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .solution::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.5), transparent);
+      transform: translateX(-100%);
+    }
+    
+    .solution.active::before {
+      animation: shimmer 1.5s ease;
+    }
+
+    /* ===== Self-Care Notes (kept original) ===== */
+    .self-care {
+      background: linear-gradient(135deg, #e0f2fe, #f0f9ff);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 25px 0;
+      text-align: center;
+      border-left: 5px solid var(--accent);
+      animation: pulse 3s infinite;
+    }
+
+    .self-care h4 {
+      color: var(--accent);
+      margin-bottom: 10px;
+      font-size: 1.3rem;
+    }
+
+    .self-care p {
+      color: var(--text);
+      font-size: 1.1rem;
+      margin-bottom: 0;
+    }
+
+    /* ===== Visual Elements (kept original) ===== */
+    .math-emoji {
+      font-size: 2rem;
+      margin: 0 10px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .emoji-row {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+
+
+      margin: 15px 0;
+    }
+
+    /* ===== Chapter 4 Specific Styles (kept original) ===== */
+    .definition {
+      background: #f3fbff;
+      border-left: 6px solid var(--primary);
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 10px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .definition-content{flex:1}
+    .definition-cartoon{flex-shrink:0;width:80px;height:80px;display:flex;align-items:center;justify-content:center}
+
+    .controls {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .big {
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+
+    .step-block {
+      margin-top: 10px;
+    }
+
+    .step-line {
+      display: none;
+      padding: 10px;
+      border-radius: 8px;
+      background: #f7fbff;
+      margin-top: 8px;
+      border-left: 4px solid #d6eefc;
+      font-family: 'Times New Roman', serif; /* Enhance math presentation */
+      font-size: 1.1em;
+      line-height: 1.5;
+    }
+
+    .next-step {
+      margin-top: 8px;
+      background: var(--primary);
+      color: white;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #d9ecff;
+      width: 100%;
+      font-size: 15px;
+    }
+    input[type="number"] {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #d9ecff;
+      max-width: 100px;
+      font-size: 15px;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+
+    button.check {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .result {
+      margin-top: 8px;
+      padding: 10px;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .result.good {
+      background: #e6fff0;
+      border-left: 4px solid #2fb46a;
+    }
+
+    .result.warn {
+      background: #fff7e6;
+      border-left: 4px solid #ffb74d;
+    }
+
+    .calm {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 10px;
+      background: linear-gradient(180deg, #fff8f0, #f8ffff);
+      text-align: center;
+      border: 1px solid #e6f7ff;
+    }
+
+    .breath {
+      width: 48px;
+      height: 48px;
+      background: #ffd08a;
+      border-radius: 50%;
+      margin: 12px auto;
+      animation: breathe 4s infinite ease-in-out;
+    }
+
+    .wave {
+      font-size: 36px;
+      display: inline-block;
+      animation: wavey 2.6s infinite;
+    }
+
+    .divider {
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+      color: white;
+      padding: 10px 14px;
+      border-radius: 10px;
+      margin: 18px 0;
+      font-weight: 700;
+      box-shadow: 0 6px 18px rgba(3, 102, 214, 0.08);
+      text-align: center;
+    }
+
+    .small-note {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-top: 6px;
+    }
+
+    .motivate{
+      background:linear-gradient(180deg,#fff,#fffaf6);
+      border-radius:10px;
+      padding:10px;
+      border-left:6px solid var(--accent);
+      margin-top:12px;
+      display:flex;
+      align-items:center;
+      gap:12px
+    }
+    .motivate .emoji{font-size:24px}
+    .motivate .text{font-weight:700;color:var(--primary);font-size:0.95rem}
+
+    .try-yourself {
+      background: #fffaf0;
+      border-radius: 10px;
+      padding: 15px;
+      margin: 15px 0;
+      border: 1px dashed rgba(245,158,11,0.16);
+    }
+
+    .try-title {
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .example-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .example-box {
+      background: var(--pastel-bg);
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid rgba(30,64,175,0.04);
+    }
+    
+    /* ===== Interactive Games (re-styled to 4.1 look) ===== */
+    .game-card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    
+    .game-card-style{
+      display:flex;
+      gap:16px;
+      align-items:center;
+      background:var(--white);
+      padding:20px;
+      border-radius:16px;
+      box-shadow:0 8px 25px rgba(2,6,23,0.08);
+      cursor:pointer;
+      border:1px solid rgba(30,64,175,0.04);
+      transition:all 0.3s ease;
+      position:relative;
+      overflow:hidden
+    }
+    .game-card-style:hover{
+      transform:translateY(-8px);
+      box-shadow:0 15px 35px rgba(30,64,175,0.15)
+    }
+    .game-card-style::before{
+      content:"";
+      position:absolute;
+      top:0;
+      left:0;
+      width:100%;
+      height:5px;
+      background:linear-gradient(90deg,var(--primary),var(--accent))
+    }
+    .game-card-left{
+      min-width:110px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:8px
+    }
+    .svg-icon{
+      width:100px;
+      height:100px;
+      border-radius:16px;
+      background:linear-gradient(180deg,#fff,#fffaf6);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:0 8px 20px rgba(30,64,175,0.08);
+      border:2px solid rgba(255,255,255,0.7);
+      overflow:hidden;
+      font-size: 48px;
+      color: var(--primary);
+    }
+    .game-card-title{
+      font-weight:800;
+      color:var(--primary);
+      font-size:1.2rem;
+      margin-bottom:6px
+    }
+    .game-card-desc{
+      color:var(--muted);
+      font-size:0.95rem;
+      line-height:1.4
+    }
+    .start-btn {
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(30,64,175,0.2);
+    }
+    .start-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(30,64,175,0.3);
+    }
+
+    .game-play-area {
+      display: none;
+      margin-top: 20px;
+      padding: 20px;
+      border: 2px solid var(--accent);
+      border-radius: 12px;
+      background: #fffafc;
+      text-align: center;
+    }
+    
+    .score-board {
+      font-weight: 700;
+      color: var(--primary);
+      background: #f0f9ff;
+      padding: 6px 10px;
+      border-radius: 6px;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+    
+    .game-message {
+      margin-top: 12px;
+      color: var(--primary);
+      font-weight: 600;
+    }
+    
+    .game-input-group {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 15px;
+        font-weight: 600;
+        color: var(--primary);
+    }
+    
+    .game-icon-visual {
+      font-size: 48px;
+      margin-bottom: 10px;
+    }
+
+    /* Celebration Overlay */
+    .celebration {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 2000;
+      display: none;
+    }
+    
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: #f00;
+      opacity: 0;
+    }
+    
+    .hurray-text {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 48px;
+      font-weight: bold;
+      color: #ff6b6b;
+      text-shadow: 2px 2px 0 #ffd166, 4px 4px 0 #06d6a0;
+      opacity: 0;
+    }
+
+    /* Sound controls style */
+    .sound-toggle {
+      position: fixed;
+      right: 18px;
+      bottom: 100px;
+      z-index: 200;
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(11, 99, 216, 0.14);
+      cursor: pointer;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .sound-toggle .icon {
+      font-size: 18px;
+    }
+
+    .sound-muted {
+      background: #ddd;
+      color: #666;
+      border: 1px solid #ccc;
+    }
+
+    /* ===== Footer (kept original) ===== */
+    .footer {
+      background: linear-gradient(to bottom, var(--primary-dark), #0f172a);
+      color: var(--white);
+      padding: 80px 0 30px;
+      position: relative;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 10px;
+      background: linear-gradient(90deg, var(--secondary), var(--primary));
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+      margin-bottom: 60px;
+    }
+
+    .footer-about {
+      grid-column: span 2;
+    }
+
+    .footer-logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .footer-logo-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--white), var(--gray));
+      color: var(--primary);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .footer-about p {
+      opacity: 0.8;
+      margin-bottom: 25px;
+      line-height: 1.7;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 15px;
+    }
+
+    .social-link {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+      background: linear-gradient(135deg, var(--secondary), var(--accent));
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
+    }
+
+    .footer-links h3 {
+      font-size: 1.2rem;
+      margin-bottom: 25px;
+      position: relative;
+      padding-bottom: 10px;
+      color: var(--white);
+    }
+
+    .footer-links h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 3px;
+      background: linear-gradient(to right, var(--secondary), var(--accent));
+    }
+
+    .footer-links ul {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 12px;
+    }
+
+    .footer-links a {
+      opacity: 0.8;
+      transition: all 0.3s ease;
+      position: relative;
+      padding-left: 15px;
+    }
+
+    .footer-links a::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      opacity: 1;
+      padding-left: 20px;
+    }
+
+    .footer-links a:hover::before {
+      opacity: 1;
+      left: -5px;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 30px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-bottom p {
+      opacity: 0.7;
+      margin-bottom: 20px;
+    }
+
+    .footer-tags {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 5px 15px;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+    }
+
+    .tag:hover {
+      background: linear-gradient(to right, var(--secondary), var(--accent));
+      color: var(--text);
+      transform: translateY(-2px);
+    }
+    
+    /* ===== Floating Action Button (kept original) ===== */
+    .fab {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: 0 6px 15px rgba(30, 64, 175, 0.3);
+      cursor: pointer;
+      z-index: 999;
+      transition: all 0.3s ease;
+      animation: pulse 2s infinite;
+    }
+    
+    .fab:hover {
+      transform: scale(1.1) rotate(90deg);
+      box-shadow: 0 8px 20px rgba(30, 64, 175, 0.4);
+    }
+  </style>
+</head>
+<body>
+<button aria-pressed="true" class="sound-toggle" id="soundToggle" style="display:none;" title="Toggle ambient sound">
+<span class="icon" id="soundIcon">🔈</span>
+<span id="soundLabel">Sound On</span>
+</button>
+<header id="header">
+<div class="container">
+<nav class="navbar">
+<a class="logo" href="#">
+<div class="logo-icon">S</div>
+<span class="logo-text">Sentellect</span>
+</a>
+<ul class="nav-links" style="display:flex;justify-content:center;align-items:center;gap:40px;list-style:none;margin:0 auto;padding:0;">
+<li><a class="active" href="#home">Home</a></li>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#graphing">Graphing</a></li>
+<li><a href="#systems">Systems</a></li>
+<li><a href="#practice">Practice</a></li>
+</ul>
+<div class="auth-buttons" style="display:none;">
+</div>
+<button class="mobile-menu-btn" style="display:none;">
+<i class="fas fa-bars"></i>
+</button>
+</nav>
+</div>
+</header>
+<section class="hero">
+<div class="particles">
+<div class="particle" style="top: 20%; left: 5%; width: 10px; height: 10px; animation-delay: 0s;"></div>
+<div class="particle" style="top: 60%; left: 15%; width: 15px; height: 15px; animation-delay: 1s;"></div>
+<div class="particle" style="top: 30%; right: 10%; width: 12px; height: 12px; animation-delay: 2s;"></div>
+<div class="particle" style="bottom: 20%; left: 20%; width: 8px; height: 8px; animation-delay: 3s;"></div>
+<div class="particle" style="bottom: 40%; right: 15%; width: 14px; height: 14px; animation-delay: 4s;"></div>
+</div>
+<div class="floating-shape shape-1"></div>
+<div class="floating-shape shape-2"></div>
+<div class="floating-shape shape-3"></div>
+<div class="container">
+<div class="hero-content">
+<h1 class="animate">Coordinate Geometry — <span>Chapter 4</span></h1>
+<p class="animate delay-1">Exercise 4.1(L): Mastering the Fundamentals: Cartesian Plane, Distance, Midpoint, and Section Formulas.</p>
+<div class="hero-buttons">
+<a class="btn btn-primary animate delay-2" href="#distance-section">Start Learning</a>
+<a class="btn btn-secondary animate delay-3" href="#collinearity-section">Coordinate Geometry</a>
+</div>
+</div>
+</div>
+</section>
+<div class="wrap container">
+<div class="card animate" style="margin-top: 40px;">
+<h1><i class="fas fa-book-open"></i> Welcome to Coordinate Geometry Exercise 4.1</h1>
+<p class="lead">Learn about the Cartesian plane, distance formula, midpoint, and more with interactive examples.</p>
+<div class="definition definition-content" style="display:block; border-left: 6px solid var(--secondary);">Based on FSc Part 2 Mathematics - Punjab Textbook Board</div>
+<div class="motivation">
+<div class="motivation-icon">🚀</div>
+<div style="flex-grow: 1;">
+<div class="motivation-text">You're about to unlock the power of coordinates!</div>
+<div class="motivation-subtext">Every great mathematician started with these basics</div>
+</div>
+</div>
+</div>
+<div class="divider" id="distance-section"><i class="fas fa-ruler"></i> Distance Formula</div>
+<section class="card animate delay-1">
+<h2><i class="fas fa-arrows-alt-h"></i> Distance Between Two Points</h2>
+<p class="lead">Find how far apart two points are using the distance formula.</p>
+<!-- Styled Concept Explanation for Each Concept -->
+<style>
+  .concept-explained-box {
+    background: #f0f7ff;
+    border-radius: 14px;
+    padding: 20px;
+    margin: 25px 0;
+    border: 2px solid rgba(30,64,175,0.08);
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    box-shadow: 0 8px 20px rgba(30,64,175,0.05);
+    transition: all 0.3s ease;
+  }
+  .concept-explained-box:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(30,64,175,0.1);
+  }
+  .concept-explained-box .icon {
+    font-size: 2.5rem;
+    flex-shrink: 0;
+    animation: float 4s ease-in-out infinite;
+  }
+  .concept-explained-box .content {
+    flex: 1;
+  }
+  .concept-explained-box h3 {
+    color: var(--primary);
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+  .concept-explained-box p {
+    color: var(--text-light);
+    margin-bottom: 6px;
+    line-height: 1.6;
+  }
+   .concept-visual {
+      display: flex;
+      justify-content: center;
+      margin: 15px 0;
+    }
+</style>
+<div class="definition formula">
+<b>Distance Formula:</b> \( d = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2} \)
+        </div>
+<div class="concept-explained-box"><div class="icon">🧭</div><div class="content"><h3>Distance Concept Explained</h3><div class="cartoon-explanation">
+<div class="explanation-line">The distance formula finds the straight-line distance between two points</div>
+<div class="explanation-line">It's based on the Pythagorean theorem - imagine a right triangle!</div>
+<div class="explanation-line">The horizontal and vertical differences form the triangle's legs</div>
+</div></div></div>
+<div class="example-container">
+<div class="example-box">
+<div class="example-icon">📍</div>
+<div class="big">Example 1: A(3,1) and B(-2,-4)</div>
+<div class="controls">
+<button class="step-btn" onclick="startSteps('dist1')"><i class="fas fa-play"></i> Show Steps</button>
+</div>
+<div class="step-block" id="dist1">
+<div class="hidden"><b>Step 1:</b> \( d = \sqrt{(-2-3)^2 + (-4-1)^2} \)</div>
+<div class="hidden"><b>Step 2:</b> \( = \sqrt{(-5)^2 + (-5)^2} = \sqrt{25 + 25} \)</div>
+<div class="hidden"><b>Step 3:</b> \( = \sqrt{50} = 5\sqrt{2} \)</div>
+<div style="margin-top:12px">
+<button class="show-all-btn" onclick="revealAll('dist1')"><i class="fas fa-fast-forward"></i> Show All Steps</button>
+</div>
+</div>
+</div>
+<div class="example-box">
+<div class="example-icon">🗺️</div>
+<div class="big">Example 2: A(-8,3) and B(2,-1)</div>
+<div class="controls">
+<button class="step-btn" onclick="startSteps('dist2')"><i class="fas fa-play"></i> Show Steps</button>
+</div>
+<div class="step-block" id="dist2">
+<div class="hidden"><b>Step 1:</b> \( d = \sqrt{(2+8)^2 + (-1-3)^2} \)</div>
+<div class="hidden"><b>Step 2:</b> \( = \sqrt{(10)^2 + (-4)^2} = \sqrt{100 + 16} \)</div>
+<div class="hidden"><b>Step 3:</b> \( = \sqrt{116} = 2\sqrt{29} \)</div>
+<div style="margin-top:12px">
+<button class="show-all-btn" onclick="revealAll('dist2')"><i class="fas fa-fast-forward"></i> Show All Steps</button>
+</div>
+</div>
+</div>
+</div>
+<div class="try-yourself">
+<div class="try-title"><i class="fas fa-pencil-alt"></i> Try It Yourself</div>
+<p>1. Find distance between (0,0) and (4,3)</p>
+<div class="row">
+<input id="tdist1" placeholder="Type your answer"/>
+<button class="check" onclick="checkTextMotivate('tdist1','5','tdist1_res')">Check</button>
+</div>
+<div class="result" id="tdist1_res"></div>
+<p>2. Find distance between (-1,-1) and (2,3)</p>
+<div class="row">
+<input id="tdist2" placeholder="Type your answer"/>
+<button class="check" onclick="checkTextMotivate('tdist2','5','tdist2_res')">Check</button>
+</div>
+<div class="result" id="tdist2_res"></div>
+</div>
+<div class="motivate" style="margin-top:14px">
+<div class="emoji">📏✨</div>
+<div class="text" style="color:#f59e0b;">You're accurately measuring the space! Excellent application of the distance formula.</div>
+</div>
+</section>
+<div class="divider" id="midpoint-section"><i class="fas fa-balance-scale"></i> Midpoint Formula</div>
+<section class="card animate delay-2">
+<h2><i class="fas fa-dot-circle"></i> Finding the Midpoint</h2>
+<p class="lead">Find the point exactly halfway between two given points.</p>
+<div class="definition formula">
+<b>Midpoint Formula:</b> \( M = \left( \frac{x_1 + x_2}{2}, \frac{y_1 + y_2}{2} \right) \)
+        </div>
+<div class="concept-explained-box"><div class="icon">⚖️</div><div class="content"><h3>Midpoint Concept Explained</h3><div class="cartoon-explanation">
+<div class="explanation-line">The midpoint is exactly halfway between two points</div>
+<div class="explanation-line">It's like finding the center point of a line segment</div>
+<div class="explanation-line">Average the x-coordinates and y-coordinates separately</div>
+</div></div></div>
+<div class="example-container">
+<div class="example-box">
+<div class="example-icon">🤝</div>
+<div class="big">Example 1: A(3,1) and B(-2,-4)</div>
+<div class="controls">
+<button class="step-btn" onclick="startSteps('mid1')"><i class="fas fa-play"></i> Show Steps</button>
+</div>
+<div class="step-block" id="mid1">
+<div class="hidden"><b>Step 1:</b> \( M = \left( \frac{3 + (-2)}{2}, \frac{1 + (-4)}{2} \right) \)</div>
+<div class="hidden"><b>Step 2:</b> \( = \left( \frac{1}{2}, -\frac{3}{2} \right) \)</div>
+<div style="margin-top:12px">
+<button class="show-all-btn" onclick="revealAll('mid1')"><i class="fas fa-fast-forward"></i> Show All Steps</button>
+</div>
+</div>
+</div>
+<div class="example-box">
+<div class="example-icon">🎯</div>
+<div class="big">Example 2: A(-8,3) and B(2,-1)</div>
+<div class="controls">
+<button class="step-btn" onclick="startSteps('mid2')"><i class="fas fa-play"></i> Show Steps</button>
+</div>
+<div class="step-block" id="mid2">
+<div class="hidden"><b>Step 1:</b> \( M = \left( \frac{-8 + 2}{2}, \frac{3 + (-1)}{2} \right) \)</div>
+<div class="hidden"><b>Step 2:</b> \( = \left( \frac{-6}{2}, \frac{2}{2} \right) = (-3, 1) \)</div>
+<div style="margin-top:12px">
+<button class="show-all-btn" onclick="revealAll('mid2')"><i class="fas fa-fast-forward"></i> Show All Steps</button>
+</div>
+</div>
+</div>
+</div>
+<div class="try-yourself">
+<div class="try-title"><i class="fas fa-pencil-alt"></i> Try It Yourself</div>
+<p>1. Find midpoint of (0,0) and (4,4)</p>
+<div class="row">
+<input id="tmid1" placeholder="Type as (x,y)"/>
+<button class="check" onclick="checkTextMotivate('tmid1','(2,2)','tmid1_res')">Check</button>
+</div>
+<div class="result" id="tmid1_res"></div>
+<p>2. Find midpoint of (-2,-2) and (2,2)</p>
+<div class="row">
+<input id="tmid2" placeholder="Type as (x,y)"/>
+<button class="check" onclick="checkTextMotivate('tmid2','(0,0)','tmid2_res')">Check</button>
+</div>
+<div class="result" id="tmid2_res"></div>
+</div>
+<div class="motivate" style="margin-top:14px">
+<div class="emoji">⚖️💖</div>
+<div class="text" style="color:#06D6A0;">Perfectly balanced! You've found the center of that line segment.</div>
+</div>
+</section>
+<div class="divider" id="section-section"><i class="fas fa-divide"></i> Section Formula</div>
+<section class="card animate delay-3">
+<h2><i class="fas fa-cut"></i> Dividing a Line Segment</h2>
+<p class="lead">Find a point that divides a line segment in a given ratio.</p>
+<div class="definition formula">
+<b>Section Formula:</b> \( P = \left( \frac{mx_2 + nx_1}{m+n}, \frac{my_2 + ny_1}{m+n} \right) \)
+            <br/>Where m:n is the ratio in which point divides the segment
+        </div>
+<div class="concept-explained-box"><div class="icon">📏</div><div class="content"><h3>Section Formula Concept Explained</h3><div class="cartoon-explanation">
+<div class="explanation-line">The section formula finds a point that divides a line in a specific ratio</div>
+<div class="explanation-line">It's like cutting a rope into pieces of certain lengths</div>
+<div class="explanation-line">The m:n ratio tells how the segment is divided internally</div>
+</div></div></div>
+<div class="example-container">
+<div class="example-box">
+<div class="example-icon">🍫</div>
+<div class="big">Example 1: A(-1,4) and B(6,2) in ratio 1:2</div>
+<div class="controls">
+<button class="step-btn" onclick="startSteps('sec1')"><i class="fas fa-play"></i> Show Steps</button>
+</div>
+<div class="step-block" id="sec1">
+<div class="hidden"><b>Step 1:</b> \( P = \left( \frac{1(6) + 2(-1)}{1+2}, \frac{1(2) + 2(4)}{1+2} \right) \)</div>
+<div class="hidden"><b>Step 2:</b> \( = \left( \frac{6 - 2}{3}, \frac{2 + 8}{3} \right) \)</div>
+<div class="hidden"><b>Step 3:</b> \( = \left( \frac{4}{3}, \frac{10}{3} \right) \)</div>
+<div style="margin-top:12px">
+<button class="show-all-btn" onclick="revealAll('sec1')"><i class="fas fa-fast-forward"></i> Show All Steps</button>
+</div>
+</div>
+</div>
+<div class="example-box">
+<div class="example-icon">🌉</div>
+<div class="big">Example 2: A(-5,8) and B(5,3) in ratio 3:2</div>
+<div class="controls">
+<button class="step-btn" onclick="startSteps('sec2')"><i class="fas fa-play"></i> Show Steps</button>
+</div>
+<div class="step-block" id="sec2">
+<div class="hidden"><b>Step 1:</b> \( P = \left( \frac{3(5) + 2(-5)}{3+2}, \frac{3(3) + 2(8)}{3+2} \right) \)</div>
+<div class="hidden"><b>Step 2:</b> \( = \left( \frac{15 - 10}{5}, \frac{9 + 16}{5} \right) \)</div>
+<div class="hidden"><b>Step 3:</b> \( = \left( 1, 5 \right) \)</div>
+<div style="margin-top:12px">
+<button class="show-all-btn" onclick="revealAll('sec2')"><i class="fas fa-fast-forward"></i> Show All Steps</button>
+</div>
+</div>
+</div>
+</div>
+<div class="try-yourself">
+<div class="try-title"><i class="fas fa-pencil-alt"></i> Try It Yourself</div>
+<p>1. Find point dividing (0,0) and (6,6) in ratio 1:2</p>
+<div class="row">
+<input id="tsec1" placeholder="Type as (x,y)"/>
+<button class="check" onclick="checkTextMotivate('tsec1','(2,2)','tsec1_res')">Check</button>
+</div>
+<div class="result" id="tsec1_res"></div>
+<p>2. Find point dividing (-2,-2) and (4,4) in ratio 2:1</p>
+<div class="row">
+<input id="tsec2" placeholder="Type as (x,y)"/>
+<button class="check" onclick="checkTextMotivate('tsec2','(2,2)','tsec2_res')">Check</button>
+</div>
+<div class="result" id="tsec2_res"></div>
+</div>
+<div class="motivate" style="margin-top:14px">
+<div class="emoji">✂️🎯</div>
+<div class="text" style="color:#118AB2;">You can cut that segment with precision! Mastery of the ratio is key.</div>
+</div>
+</section>
+<div class="divider" id="collinearity-section"><i class="fas fa-align-center"></i> Collinearity of Points</div>
+<section class="card animate delay-4">
+<h2><i class="fas fa-arrows-alt-h"></i> Checking if Points are Collinear</h2>
+<p class="lead">Determine if three points lie on the same straight line.</p>
+<div class="definition" style="display:block;">
+<b>Method 1 (Slopes):</b> Points are collinear if slopes between all pairs are equal.
+            <br/><b>Method 2 (Area):</b> Points are collinear if area of triangle formed by them is zero.
+        </div><div class="concept-explained-box"><div class="icon">📐</div><div class="content"><h3>Collinearity Concept Explained</h3><div class="cartoon-explanation">
+<div class="explanation-line">Collinear points lie on the same straight line</div>
+<div class="explanation-line">Check if slopes between point pairs are equal</div>
+<div class="explanation-line">Or check if the triangle area formed by them is zero</div>
+</div></div></div>
+<div class="example-container">
+<div class="example-box">
+<div class="example-icon">📿</div>
+<div class="big">Example 1: A(-1,1), B(3,2), C(7,3)</div>
+<div class="controls">
+<button class="step-btn" onclick="startSteps('col1')"><i class="fas fa-play"></i> Show Steps</button>
+</div>
+<div class="step-block" id="col1">
+<div class="hidden"><b>Step 1:</b> Find slope AB = \( \frac{2-1}{3-(-1)} = \frac{1}{4} \)</div>
+<div class="hidden"><b>Step 2:</b> Find slope BC = \( \frac{3-2}{7-3} = \frac{1}{4} \)</div>
+<div class="hidden"><b>Step 3:</b> Since slopes are equal, points are collinear</div>
+<div style="margin-top:12px">
+<button class="show-all-btn" onclick="revealAll('col1')"><i class="fas fa-fast-forward"></i> Show All Steps</button>
+</div>
+</div>
+</div>
+<div class="example-box">
+<div class="example-icon">🚂</div>
+<div class="big">Example 2: A(1,2), B(2,4), C(3,6)</div>
+<div class="controls">
+<button class="step-btn" onclick="startSteps('col2')"><i class="fas fa-play"></i> Show Steps</button>
+</div>
+<div class="step-block" id="col2">
+<div class="hidden"><b>Step 1:</b> Find slope AB = \( \frac{4-2}{2-1} = 2 \)</div>
+<div class="hidden"><b>Step 2:</b> Find slope BC = \( \frac{6-4}{3-2} = 2 \)</div>
+<div class="hidden"><b>Step 3:</b> Since slopes are equal, points are collinear</div>
+<div style="margin-top:12px">
+<button class="show-all-btn" onclick="revealAll('col2')"><i class="fas fa-fast-forward"></i> Show All Steps</button>
+</div>
+</div>
+</div>
+</div>
+<div class="try-yourself">
+<div class="try-title"><i class="fas fa-pencil-alt"></i> Try It Yourself</div>
+<p>1. Are points (2,2), (4,4), (6,6) collinear?</p>
+<div class="row">
+<input id="tcol1" placeholder="Type yes or no"/>
+<button class="check" onclick="checkTextMotivate('tcol1','yes','tcol1_res')">Check</button>
+</div>
+<div class="result" id="tcol1_res"></div>
+<p>2. Are points (1,1), (2,3), (3,5) collinear?</p>
+<div class="row">
+<input id="tcol2" placeholder="Type yes or no"/>
+<button class="check" onclick="checkTextMotivate('tcol2','yes','tcol2_res')">Check</button>
+</div>
+<div class="result" id="tcol2_res"></div>
+</div>
+<div class="motivate" style="margin-top:14px">
+<div class="emoji">🎓🏆</div>
+<div class="text" style="color:var(--primary);">You're a coordinate detective! Aligning those points perfectly is a sign of mastery.</div>
+</div>
+</section>
+
+<div style="text-align: center; margin: 40px 0;">
+    <a href="{{ url_for('serve_chapter_part', chapter_num=4, part_num=2) }}" class="btn btn-primary">
+        Continue to Part 2 <i class="fas fa-arrow-right"></i>
+    </a>
+</div>
+</div>
+<div class="fab">
+<i class="fas fa-book-open"></i>
+</div>
+<footer class="footer">
+<div class="container">
+<div class="footer-content">
+<div class="footer-about">
+<div class="footer-logo">
+<div class="footer-logo-icon">S</div>
+            Sentellect
+          </div>
+<p>Personalizing learning through emotions to improve educational experience for HSSC Mathematics.</p>
+<div class="social-links">
+<a class="social-link" href="#"><i class="fab fa-facebook-f"></i></a>
+<a class="social-link" href="#"><i class="fab fa-twitter"></i></a>
+<a class="social-link" href="#"><i class="fab fa-instagram"></i></a>
+<a class="social-link" href="#"><i class="fab fa-linkedin-in"></i></a>
+</div>
+</div>
+<div class="footer-links">
+<h3>Platform</h3>
+<ul>
+<li><a href="#distance-section">Distance</a></li>
+<li><a href="#midpoint-section">Midpoint</a></li>
+<li><a href="#section-section">Section</a></li>
+<li><a href="#collinearity-section">Collinearity</a></li>
+</ul>
+</div>
+<div class="footer-links">
+<h3>Resources</h3>
+<ul>
+<li><a href="#">Study Materials</a></li>
+<li><a href="#">About Project</a></li>
+<li><a href="#">Contact</a></li>
+<li><a href="#">Support</a></li>
+</ul>
+</div>
+<div class="footer-links">
+<h3>Account</h3>
+<ul>
+<li><a href="#">Your Account</a></li>
+<li><a href="#">Help Center</a></li>
+<li><a href="#">Contact Us</a></li>
+<li><a href="#">Privacy Policy</a></li>
+<li><a href="#">Terms &amp; Conditions</a></li>
+</ul>
+</div>
+</div>
+<div class="footer-bottom">
+<p>© 2025 Sentellect. Final Year Project - Educational Technology.</p>
+<div class="footer-tags">
+<a class="tag" href="#">PTB HSSC Mathematics</a>
+<a class="tag" href="#">Emotion-Aware Learning</a>
+<a class="tag" href="#">Coordinate Geometry</a>
+</div>
+</div>
+</div>
+</footer>
+<script>
+    // --- JavaScript Functions (Copied/Adapted to retain original 4.1 functionality while using 4.4's styling/animations) ---
+    
+    // Header scroll effect (Copied from 4.4)
+    window.addEventListener('scroll', function() {
+      const header = document.getElementById('header');
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+
+    // Animation on scroll (Copied from 4.4)
+    document.addEventListener('DOMContentLoaded', function() {
+      const animateElements = document.querySelectorAll('.animate');
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const delay = entry.target.classList.contains('delay-1') ? 0.2 : 
+                         entry.target.classList.contains('delay-2') ? 0.4 :
+                         entry.target.classList.contains('delay-3') ? 0.6 : 
+                         entry.target.classList.contains('delay-4') ? 0.8 : 0;
+            
+            setTimeout(() => {
+              entry.target.style.opacity = 1;
+              entry.target.style.transform = 'translateY(0)';
+            }, delay * 1000);
+          }
+        });
+      }, { threshold: 0.1 });
+      
+      animateElements.forEach(element => {
+        element.style.opacity = 0;
+        element.style.transform = 'translateY(20px)';
+        element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(element);
+      });
+      
+      // Create floating particles for hero section
+      createParticles();
+      
+      // Initialize step blocks
+      initStepBlocks();
+    });
+    
+    // Create particles function (Copied from 4.4)
+    function createParticles() {
+      const particlesContainer = document.querySelector('.particles');
+      if (!particlesContainer) return;
+      for (let i = 0; i < 15; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        
+        const size = Math.random() * 10 + 5;
+        const posX = Math.random() * 100;
+        const posY = Math.random() * 100;
+        const delay = Math.random() * 5;
+        
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.left = `${posX}%`;
+        particle.style.top = `${posY}%`;
+        particle.style.animationDelay = `${delay}s`;
+        
+        particlesContainer.appendChild(particle);
+      }
+    }
+    
+    // Initialize step-blocks (Modified 4.1 logic to run with 4.4 step functions)
+    function initStepBlocks(){
+        document.querySelectorAll('.step-block').forEach(block=>{
+            // Hide all steps initially
+            Array.from(block.querySelectorAll('.hidden')).forEach(h => h.style.display = 'none');
+            
+            // Re-wire step buttons to use startSteps/nextStep logic
+            const controls = block.closest('.example-box').querySelector('.controls');
+            let initialStepBtn = controls.querySelector('.step-btn');
+
+            // If an initial step button exists, give it a block-specific ID for tracking
+            if (initialStepBtn) {
+                initialStepBtn.id = `start-${block.id}`;
+            }
+
+            // Ensure the start button is available and clickable
+            initialStepBtn.onclick = function() {
+                // Remove all step buttons after first click and replace with 'Next Step' button logic
+                controls.innerHTML = '';
+                const nextBtn = document.createElement('button');
+                nextBtn.className = 'step-btn';
+                nextBtn.innerHTML = '<i class="fas fa-forward"></i> Next Step';
+                nextBtn.onclick = () => nextStep(block.id);
+                controls.appendChild(nextBtn);
+                
+                // Show the first step
+                const steps = document.querySelectorAll(`#${block.id} .hidden`);
+                if (steps[0]) steps[0].style.display = 'block';
+                block.currentStep = 0;
+                
+                // If only one step exists, hide the next button
+                if (steps.length <= 1) nextBtn.style.display = 'none';
+            };
+        });
+    }
+
+    // Show next step (Adapted 4.1 logic)
+    function nextStep(id) {
+        const block = document.getElementById(id);
+        if (!block) return;
+        
+        const steps = Array.from(block.querySelectorAll('.hidden'));
+        const controls = block.closest('.example-box').querySelector('.controls');
+        const nextBtn = controls.querySelector('.step-btn');
+        
+        block.currentStep = (block.currentStep || 0) + 1;
+        
+        if (block.currentStep < steps.length) {
+            steps[block.currentStep].style.display = 'block';
+            if (block.currentStep === steps.length - 1) {
+                if (nextBtn) nextBtn.style.display = 'none';
+            }
+        } else {
+            if (nextBtn) nextBtn.style.display = 'none';
+        }
+    }
+    
+    // Show all steps (Adapted 4.1 logic)
+    function revealAll(id){
+        const block = document.getElementById(id);
+        if(!block) return;
+        Array.from(block.querySelectorAll('.hidden')).forEach(h => h.style.display = 'block');
+        
+        // Hide/remove the next step button if it exists
+        const controls = block.closest('.example-box').querySelector('.controls');
+        const nextBtn = controls.querySelector('.step-btn');
+        if (nextBtn) nextBtn.style.display = "none";
+        
+        // Optional: Animation for visual feedback 
+        block.animate([{boxShadow: 'var(--card-shadow)'}, {boxShadow: 'var(--hover-shadow)'}], {duration: 300, iterations: 1});
+    }
+
+    // Check text input answers with motivational feedback (Copied/Adapted from 4.4)
+    function checkTextMotivate(inputId, correct, resultId) {
+      // Normalize answer for simple checking (remove spaces, parentheses, commas, equals)
+      const userAns = document.getElementById(inputId).value.trim().toLowerCase().replace(/[\s\(\),=]/g, '');
+      const resultEl = document.getElementById(resultId);
+      // Normalize correct answer 
+      const correctAns = correct.trim().toLowerCase().replace(/[\s\(\),=]/g, '');
+      
+      const motivationalMessages = [
+        "Great job! You're getting it!",
+        "Excellent work! Keep it up!",
+        "Perfect! You're mastering this!",
+        "Well done! You're on the right track!",
+        "Correct! You're doing amazing!"
+      ];
+      
+      const tryAgainMessages = [
+        "Almost! Try again with a fresh perspective.",
+        "Not quite, but you're close! Try once more.",
+        "Good attempt! Let's try that again.",
+        "Not exactly, but you're learning! Try again.",
+        "Almost there! Give it another shot."
+      ];
+      
+      const randomGood = motivationalMessages[Math.floor(Math.random() * motivationalMessages.length)];
+      const randomTry = tryAgainMessages[Math.floor(Math.random() * tryAgainMessages.length)];
+
+      if (userAns === correctAns) {
+        resultEl.innerHTML = `✅ ${randomGood}`;
+        resultEl.className = "result good";
+      } else {
+        resultEl.innerHTML = `❌ ${randomTry} <br><small>Hint: check your calculation carefully.</small>`;
+        resultEl.className = "result warn";
+      }
+      resultEl.style.display = "block";
+    }
+  </script>
+</body>
+</html>

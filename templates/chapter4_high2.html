@@ -1,0 +1,3426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sentellect — Coordinate Geometry (Chapter 4) - Exercise 4.2</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ===== Base Styles ===== */
+    :root {
+      --primary: #1e40af;
+      --primary-light: #3b82f6;
+      --primary-dark: #1e3a8a;
+      --secondary: #f59e0b;
+      --accent: #ec4899;
+      --text: #1e293b;
+      --text-light: #64748b;
+      --text-lighter: #94a3b8;
+      --bg: #f8fafc;
+      --white: #ffffff;
+      --gray: #e2e8f0;
+      --gray-light: #f1f5f9;
+      --success: #10b981;
+      --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      --hover-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      --pastel-bg: #f3f8ff;
+      --muted: #64748b;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Quicksand', system-ui, -apple-system, 'Segoe UI', Roboto, Arial;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    section {
+      padding: 80px 0;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .section-title h2 {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 15px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title h2::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: var(--secondary);
+      border-radius: 2px;
+    }
+
+    .section-title p {
+      color: var(--text-light);
+      font-size: 1.1rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 28px;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--white);
+      box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(30, 64, 175, 0.4);
+    }
+
+    .btn-secondary {
+      background-color: var(--white);
+      color: var(--primary);
+      border: 2px solid var(--primary);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--primary);
+      color: var(--white);
+      transform: translateY(-2px);
+    }
+
+    /* ===== Animations ===== */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    @keyframes shimmer {
+      0% { background-position: -1000px 0; }
+      100% { background-position: 1000px 0; }
+    }
+    
+    @keyframes slideIn {
+      from { transform: translateX(-20px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    
+    @keyframes bounceIn {
+      0% { transform: scale(0.95); opacity: 0; }
+      50% { transform: scale(1.02); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes breathe {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.45); }
+    }
+
+    @keyframes wavey {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+      100% { transform: translateY(0); }
+    }
+
+    .animate {
+      animation: fadeIn 0.8s ease forwards;
+    }
+    
+    .animate-slide {
+      animation: slideIn 0.6s ease forwards;
+    }
+    
+    .animate-bounce {
+      animation: bounceIn 0.8s ease forwards;
+    }
+
+    .delay-1 { animation-delay: 0.2s; }
+    .delay-2 { animation-delay: 0.4s; }
+    .delay-3 { animation-delay: 0.6s; }
+    .delay-4 { animation-delay: 0.8s; }
+
+    /* ===== Header/Navbar ===== */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      background-color: var(--white);
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    header.scrolled {
+      padding: 10px 0;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: var(--white);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 18px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(30, 64, 175, 0.2);
+    }
+
+    .logo-text {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      transition: all 0.3s ease;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 30px;
+      margin: 0 auto;
+    }
+
+    .nav-links a {
+      font-weight: 500;
+      position: relative;
+      padding: 5px 0;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      transition: width 0.3s ease;
+      border-radius: 2px;
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      width: 100%;
+    }
+
+    .nav-links a.active {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--primary);
+      cursor: pointer;
+    }
+
+    /* Sound controls in header */
+    .header-sound-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    
+    .sound-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .sound-btn:hover {
+      transform: scale(1.1);
+      background: var(--primary-light);
+    }
+    
+    .sound-btn.muted {
+      background: var(--muted);
+    }
+    
+    /* ===== Hero Section ===== */
+    .hero {
+      position: relative;
+      padding: 180px 0 80px;
+      background: linear-gradient(135deg, var(--primary), #004e92);
+      color: var(--white);
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3QgZmlsbD0idXJsKCNwYXR0ZXJuKSIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIvPjwvc3ZnPg==');
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-size: 3.2rem;
+      margin-bottom: 20px;
+      line-height: 1.2;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .hero h1 span {
+      color: var(--secondary);
+      position: relative;
+    }
+
+    .hero h1 span::after {
+      content: '';
+      position: absolute;
+      bottom: 5px;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background-color: rgba(255, 255, 255, 0.3);
+      z-index: -1;
+      border-radius: 4px;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 40px;
+      opacity: 0.9;
+    }
+
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .hero .btn-secondary {
+      background-color: transparent;
+      color: var(--white);
+      border-color: var(--white);
+    }
+
+    .hero .btn-secondary:hover {
+      background-color: var(--white);
+      color: var(--primary);
+    }
+
+    .floating-shape {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      z-index: 0;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .shape-1 {
+      width: 150px;
+      height: 150px;
+      top: 10%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .shape-2 {
+      width: 100px;
+      height: 100px;
+      bottom: 15%;
+      right: 10%;
+      animation-delay: 0.5s;
+    }
+
+    .shape-3 {
+      width: 80px;
+      height: 80px;
+      top: 30%;
+      right: 20%;
+      animation-delay: 1s;
+    }
+    
+    .particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 0;
+    }
+    
+    .particle {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      animation: float 8s infinite ease-in-out;
+    }
+
+    /* ===== Card Styles ===== */
+    .card {
+      background-color: var(--white);
+      border-radius: 16px;
+      padding: 30px;
+      margin: 25px 0;
+      box-shadow: var(--card-shadow);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--primary), var(--secondary));
+      transition: width 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--hover-shadow);
+    }
+    
+    .card:hover::before {
+      width: 8px;
+    }
+
+    h2 {
+      color: var(--primary);
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    h3 {
+      color: var(--primary);
+      font-size: 1.4rem;
+      margin: 25px 0 15px;
+      font-weight: 600;
+      position: relative;
+      padding-left: 15px;
+    }
+    
+    h3::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 6px;
+      height: 6px;
+      background: var(--secondary);
+      border-radius: 50%;
+    }
+
+    p {
+      color: var(--text-light);
+      margin-bottom: 20px;
+      line-height: 1.7;
+    }
+
+    .lead {
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    /* ===== Step Buttons ===== */
+    .step-buttons {
+      display: flex;
+      gap: 12px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+
+    .step-btn {
+      padding: 10px 16px;
+      background: linear-gradient(to right, var(--primary), var(--primary-light));
+      color: var(--white);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      box-shadow: 0 4px 8px rgba(30, 64, 175, 0.2);
+    }
+
+    .step-btn:hover {
+      background: linear-gradient(to right, var(--primary-dark), var(--primary));
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(30, 64, 175, 0.3);
+    }
+
+    /* ===== Solution Display ===== */
+    .solution {
+      background: var(--gray-light);
+      border-left: 4px solid var(--secondary);
+      padding: 20px;
+      margin: 15px 0;
+      border-radius: 0 8px 8px 0;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .solution::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.5), transparent);
+      transform: translateX(-100%);
+    }
+    
+    .solution.active::before {
+      animation: shimmer 1.5s ease;
+    }
+
+    /* ===== Progress Bar ===== */
+    .progress-container {
+      width: 100%;
+      height: 8px;
+      background-color: var(--gray);
+      border-radius: 4px;
+      margin: 20px 0;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      border-radius: 4px;
+      width: 0%;
+      transition: width 1s ease;
+    }
+
+    /* ===== Self-Care Notes ===== */
+    .self-care {
+      background: linear-gradient(135deg, #e0f2fe, #f0f9ff);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 25px 0;
+      text-align: center;
+      border-left: 5px solid var(--accent);
+      animation: pulse 3s infinite;
+    }
+
+    .self-care h4 {
+      color: var(--accent);
+      margin-bottom: 10px;
+      font-size: 1.3rem;
+    }
+
+    .self-care p {
+      color: var(--text);
+      font-size: 1.1rem;
+      margin-bottom: 0;
+    }
+
+    /* ===== Visual Elements ===== */
+    .math-emoji {
+      font-size: 2rem;
+      margin: 0 10px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .visual-element {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .emoji-row {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin: 15px 0;
+    }
+
+    /* Coordinate Visuals */
+    .concept-visual {
+      display: flex;
+      justify-content: center;
+      margin: 15px 0;
+    }
+
+    .coordinate-visual {
+      position: relative;
+      width: 280px;
+      height: 200px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+
+    .grid-lines {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-image: linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+
+    .axis {
+      position: absolute;
+      background: #333;
+    }
+
+    .x-axis {
+      bottom: 50%;
+      left: 0;
+      width: 100%;
+      height: 2px;
+    }
+
+    .y-axis {
+      left: 50%;
+      top: 0;
+      width: 2px;
+      height: 100%;
+    }
+
+    .point {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .point-label {
+      position: absolute;
+      font-size: 12px;
+      font-weight: bold;
+      transform: translate(5px, -5px);
+    }
+
+    .line {
+      position: absolute;
+      height: 2px;
+      transform-origin: left center;
+    }
+
+    /* Concept visuals */
+    .visual-box {
+      width: 220px;
+      height: 160px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      padding: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ===== Chapter 4 Specific Styles ===== */
+    .definition {
+      background: #f3fbff;
+      border-left: 6px solid var(--primary);
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 10px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .definition-content{flex:1}
+    .definition-cartoon{flex-shrink:0;width:80px;height:80px;display:flex;align-items:center;justify-content:center}
+
+    .controls {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    
+    /* --- NEW/MODIFIED STYLES FOR HORIZONTAL EXAMPLES --- */
+    .example-container {
+        display: flex;
+        flex-wrap: wrap; /* Allows wrapping on smaller screens */
+        gap: 20px;
+        margin: 20px 0;
+    }
+    .example-box {
+      background: #fff;
+      padding: 12px;
+      border-radius: 10px;
+      border-left: 6px solid #bfe9ff;
+      flex: 1; /* Makes columns take equal space */
+      min-width: 300px; /* Ensures readability on small devices */
+    }
+    /* -------------------------------------------------- */
+
+    .big {
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+
+    .step-block {
+      margin-top: 10px;
+    }
+
+    .step-line {
+      display: none;
+      padding: 10px;
+      border-radius: 8px;
+      background: #f7fbff;
+      margin-top: 8px;
+      border-left: 4px solid #d6eefc;
+    }
+
+    .next-step {
+      margin-top: 8px;
+      background: var(--primary);
+      color: white;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #d9ecff;
+      width: 100%;
+      font-size: 15px;
+    }
+    input[type="number"] {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #d9ecff;
+      max-width: 100px;
+      font-size: 15px;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+
+    button.check {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .result {
+      margin-top: 8px;
+      padding: 10px;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .result.good {
+      background: #e6fff0;
+      border-left: 4px solid #2fb46a;
+    }
+
+    .result.warn {
+      background: #fff7e6;
+      border-left: 4px solid #ffb74d;
+    }
+
+    .calm {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 10px;
+      background: linear-gradient(180deg, #fff8f0, #f8ffff);
+      text-align: center;
+      border: 1px solid #e6f7ff;
+    }
+
+    .breath {
+      width: 48px;
+      height: 48px;
+      background: #ffd08a;
+      border-radius: 50%;
+      margin: 12px auto;
+      animation: breathe 4s infinite ease-in-out;
+    }
+
+    .wave {
+      font-size: 36px;
+      display: inline-block;
+      animation: wavey 2.6s infinite;
+    }
+
+    .divider {
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+      color: white;
+      padding: 10px 14px;
+      border-radius: 10px;
+      margin: 18px 0;
+      font-weight: 700;
+      box-shadow: 0 6px 18px rgba(3, 102, 214, 0.08);
+      text-align: center;
+    }
+
+    .small-note {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-top: 6px;
+    }
+
+    .funny-note {
+      font-size: 14px;
+      color: var(--primary);
+      margin-top: 6px;
+    }
+
+    .scenario {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-around;
+      padding: 12px;
+    }
+    
+    .scenario .card-mini {
+      background: white;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 6px 16px rgba(3, 102, 214, 0.04);
+      width: 30%;
+      min-width: 200px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    
+    .scenario .card-mini:hover {
+      transform: translateY(-5px);
+    }
+    
+    .scenario .icon {
+      font-size: 48px;
+      margin-bottom: 8px;
+    }
+    
+    .scenario .explain {
+      display: none;
+      margin-top: 8px;
+      text-align: left;
+    }
+    
+    .show-explain {
+      display: block;
+      padding: 10px;
+      border-radius: 8px;
+      background: #f2fbff;
+      border-left: 4px solid #cfeeff;
+      margin-top: 8px;
+    }
+
+    /* New Scenario Styling */
+    .cute-scenario-box {
+        background: linear-gradient(135deg, #fff7f9, #f0f9ff);
+        border: 2px solid var(--accent);
+        border-radius: 15px;
+        padding: 20px;
+        margin: 20px 0;
+        box-shadow: 0 8px 16px rgba(236, 72, 153, 0.1);
+    }
+    .cute-scenario-box h3 {
+        color: var(--accent);
+        margin: 0 0 10px 0;
+        padding-left: 0;
+        text-align: center;
+    }
+    .cute-scenario-box h3::before {
+        display: none;
+    }
+    .scenario-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+    }
+    .scenario-btn {
+        background: var(--primary);
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        white-space: nowrap;
+    }
+    .scenario-btn:hover {
+        background: var(--accent);
+        transform: translateY(-2px);
+    }
+    .scenario-content {
+        background: var(--white);
+        border-radius: 10px;
+        padding: 15px;
+        border-left: 5px solid var(--secondary);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        display: none;
+        text-align: left;
+    }
+    .scenario-content.active {
+        display: block;
+    }
+    .scenario-content strong {
+        color: var(--text);
+        font-weight: 700;
+    }
+
+
+    /* ===== Interactive Games ===== */
+    .game-card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    
+    .game-card-style{
+      display:flex;
+      gap:16px;
+      align-items:center;
+      background:var(--white);
+      padding:20px;
+      border-radius:16px;
+      box-shadow:0 8px 25px rgba(2,6,23,0.08);
+      cursor:pointer;
+      border:1px solid rgba(30,64,175,0.04);
+      transition:all 0.3s ease;
+      position:relative;
+      overflow:hidden
+    }
+    .game-card-style:hover{
+      transform:translateY(-8px);
+      box-shadow:0 15px 35px rgba(30,64,175,0.15)
+    }
+    .game-card-style::before{
+      content:"";
+      position:absolute;
+      top:0;
+      left:0;
+      width:100%;
+      height:5px;
+      background:linear-gradient(90deg,var(--primary),var(--accent))
+    }
+    .game-card-left{
+      min-width:110px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:8px
+    }
+    .svg-icon{
+      width:100px;
+      height:100px;
+      border-radius:16px;
+      background:linear-gradient(180deg,#fff,#fffaf6);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:0 8px 20px rgba(30,64,175,0.08);
+      border:2px solid rgba(255,255,255,0.7);
+      overflow:hidden;
+      font-size: 48px;
+      color: var(--primary);
+    }
+    .game-card-title{
+      font-weight:800;
+      color:var(--primary);
+      font-size:1.2rem;
+      margin-bottom:6px
+    }
+    .game-card-desc{
+      color:var(--muted);
+      font-size:0.95rem;
+      line-height:1.4
+    }
+    .start-btn {
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(30,64,175,0.2);
+    }
+    .start-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(30,64,175,0.3);
+    }
+
+    .game-play-area {
+      display: none;
+      margin-top: 20px;
+      padding: 20px;
+      border: 2px solid var(--accent);
+      border-radius: 12px;
+      background: #fffafc;
+      text-align: center;
+    }
+    
+    .score-board {
+      font-weight: 700;
+      color: var(--primary);
+      background: #f0f9ff;
+      padding: 6px 10px;
+      border-radius: 6px;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+    
+    .game-message {
+      margin-top: 12px;
+      color: var(--primary);
+      font-weight: 600;
+    }
+    
+    .game-input-group {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 15px;
+        font-weight: 600;
+        color: var(--primary);
+    }
+    
+    .game-icon-visual {
+      font-size: 48px;
+      margin-bottom: 10px;
+    }
+
+    /* Celebration Overlay */
+    .celebration {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 2000;
+      display: none;
+    }
+    
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: #f00;
+      opacity: 0;
+    }
+    
+    .hurray-text {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 48px;
+      font-weight: bold;
+      color: #ff6b6b;
+      text-shadow: 2px 2px 0 #ffd166, 4px 4px 0 #06d6a0;
+      opacity: 0;
+    }
+
+    /* Party popper */
+    .party-popper {
+      position: absolute;
+      font-size: 30px;
+      opacity: 0;
+    }
+    
+    /* Graph styling */
+    .graph-container {
+      margin: 20px 0;
+      padding: 15px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      position: relative; /* Needed for axis labels */
+    }
+    
+    .graph-title {
+      text-align: center;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+    
+    /* MODIFIED GRAPH SIZE */
+    .graph {
+      width: 100%;
+      height: 250px; /* Reduced height from 300px */
+      background: #f9fafb;
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+    /* -------------------- */
+    
+    .graph-grid {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
+      background-size: 10% 10%;
+    }
+    
+    .graph-axis {
+      position: absolute;
+      background: #333;
+    }
+    
+    .graph-x-axis {
+      bottom: 50%;
+      left: 0;
+      width: 100%;
+      height: 2px;
+    }
+    
+    .graph-y-axis {
+      left: 50%;
+      top: 0;
+      width: 2px;
+      height: 100%;
+    }
+    
+    .graph-point {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 5; /* Bring points above lines */
+      transition: transform 0.3s ease;
+    }
+
+    .graph-point:hover {
+        transform: translate(-50%, -50%) scale(1.5);
+    }
+    
+    .graph-label {
+      position: absolute;
+      font-size: 12px;
+      font-weight: bold;
+      transform: translate(5px, -5px);
+      z-index: 6;
+    }
+
+    /* Interactive Axis Labels */
+    .axis-label {
+      position: absolute;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary);
+      background: rgba(255, 255, 255, 0.7);
+      padding: 1px 5px;
+      border-radius: 3px;
+      z-index: 10;
+    }
+    
+    .graph-line {
+      position: absolute;
+      height: 2px;
+      transform-origin: left center;
+      transition: all 0.5s ease;
+      z-index: 2;
+    }
+    
+    .graph-original {
+      border: 2px dashed var(--primary);
+      opacity: 0.5;
+    }
+    
+    .graph-transformed {
+      border: 2px solid var(--secondary);
+    }
+    
+    .graph-origin {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 5;
+    }
+
+    /* Custom Axis Styles for Clarity */
+    .orig-axis {
+        background: var(--primary);
+        opacity: 0.5;
+    }
+
+    .new-axis {
+        background: var(--accent);
+        border: 1px solid var(--accent);
+        opacity: 0.8;
+    }
+
+    /* ===== Footer ===== */
+    .footer {
+      background: linear-gradient(to bottom, var(--primary-dark), #0f172a);
+      color: var(--white);
+      padding: 80px 0 30px;
+      position: relative;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 10px;
+      background: linear-gradient(90deg, var(--secondary), var(--primary));
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+      margin-bottom: 60px;
+    }
+
+    .footer-about {
+      grid-column: span 2;
+    }
+
+    .footer-logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .footer-logo-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--white), var(--gray));
+      color: var(--primary);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .footer-about p {
+      opacity: 0.8;
+      margin-bottom: 25px;
+      line-height: 1.7;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 15px;
+    }
+
+    .social-link {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+      background: linear-gradient(135deg, var(--secondary), var(--accent));
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
+    }
+
+    .footer-links h3 {
+      font-size: 1.2rem;
+      margin-bottom: 25px;
+      position: relative;
+      padding-bottom: 10px;
+      color: var(--white);
+    }
+
+    .footer-links h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 3px;
+      background: linear-gradient(to right, var(--secondary), var(--accent));
+    }
+
+    .footer-links ul {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 12px;
+    }
+
+    .footer-links a {
+      opacity: 0.8;
+      transition: all 0.3s ease;
+      position: relative;
+      padding-left: 15px;
+    }
+
+    .footer-links a::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      opacity: 1;
+      padding-left: 20px;
+    }
+
+    .footer-links a:hover::before {
+      opacity: 1;
+      left: -5px;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 30px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-bottom p {
+      opacity: 0.7;
+      margin-bottom: 20px;
+    }
+
+    .footer-tags {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 5px 15px;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+    }
+
+    .tag:hover {
+      background: linear-gradient(to right, var(--secondary), var(--accent));
+      color: var(--text);
+      transform: translateY(-2px);
+    }
+    
+    /* ===== Floating Action Button ===== */
+    .fab {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: 0 6px 15px rgba(30, 64, 175, 0.3);
+      cursor: pointer;
+      z-index: 999;
+      transition: all 0.3s ease;
+      animation: pulse 2s infinite;
+    }
+    
+    .fab:hover {
+      transform: scale(1.1) rotate(90deg);
+      box-shadow: 0 8px 20px rgba(30, 64, 175, 0.4);
+    }
+
+    /* ===== Responsive Styles ===== */
+    @media (max-width: 992px) {
+      .nav-links {
+        gap: 20px;
+      }
+      
+      .footer-content {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .footer-about {
+        grid-column: span 2;
+      }
+      
+      .example-container {
+        flex-direction: column; /* Stacks examples vertically on mid-sized screens */
+      }
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 15px 0;
+      }
+      
+      .nav-links {
+        display: none;
+      }
+      
+      .mobile-menu-btn {
+        display: block;
+      }
+      
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      
+      .hero-buttons {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .footer-content {
+        grid-template-columns: 1fr;
+      }
+      
+      .footer-about {
+        grid-column: span 1;
+      }
+      
+      .header-sound-controls {
+        right: 60px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .section-title h2 {
+        font-size: 2rem;
+      }
+      
+      .hero {
+        padding: 150px 0 80px;
+      }
+      
+      .hero h1 {
+        font-size: 2rem;
+      }
+      
+      .hero p {
+        font-size: 1rem;
+      }
+      
+      .header-sound-controls {
+        right: 50px;
+      }
+      .example-container {
+        flex-direction: column;
+      }
+    }
+
+    /* New styles for enhanced content */
+    .concept-explanation {
+      background: #fffaf0;
+      border-radius: 8px;
+      padding: 12px;
+      margin: 10px 0;
+      border-left: 4px solid #ffd166;
+    }
+
+    .visual-hint {
+      background: #f0fff4;
+      border-radius: 8px;
+      padding: 10px;
+      margin: 8px 0;
+      border-left: 4px solid #2fd182;
+      font-size: 14px;
+    }
+
+    .cartoon-box {
+      background: #fff9e6;
+      border: 2px solid #ffd166;
+      border-radius: 10px;
+      padding: 15px;
+      margin: 15px 0;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .cartoon-icon {
+      font-size: 3rem;
+      color: #ff6b6b;
+      flex-shrink: 0;
+    }
+    
+    .cartoon-text {
+      flex: 1;
+    }
+  </style>
+
+<!-- ClarityVersion graph styles: static, clear, legend, note-card -->
+<style>
+/* Graph container and basic visuals */
+.graph-container { position: relative; margin: 20px 0; padding: 16px; background: #ffffff; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.06); }
+.graph-title { text-align:center; font-weight:600; color:var(--primary); margin-bottom:8px; font-size:1.05rem; }
+.graph { position: relative; width: 100%; height: 300px; background: linear-gradient(180deg,#f9fafb,#f1f5f9); border-radius:10px; overflow: visible; }
+/* grid and axes (Sentellect palette) */
+.graph .graph-grid { position:absolute; inset:0; background-image: linear-gradient(to right, rgba(0,0,0,0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,0,0,0.04) 1px, transparent 1px); background-size: 25px 25px; border-radius:8px; }
+.graph .graph-axis { position:absolute; background:var(--primary); }
+.graph .graph-x-axis { bottom:50%; left:0; width:100%; height:3px; opacity:0.9; }
+.graph .graph-y-axis { left:50%; top:0; width:3px; height:100%; opacity:0.9; }
+
+/* Points */
+.graph .orig-point, .graph .answer-point { position:absolute; transform:translate(-50%,-50%); border-radius:50%; z-index:6; }
+.graph .orig-point { width:14px; height:14px; background: var(--primary); box-shadow:0 0 10px rgba(30,64,175,0.18); border: 2px solid rgba(255,255,255,0.8); }
+.graph .answer-point { width:16px; height:16px; background: var(--success); box-shadow:0 0 12px rgba(16,185,129,0.18); border: 2px solid rgba(255,255,255,0.9); }
+
+/* Labels */
+.graph .orig-label, .graph .answer-label { position:absolute; font-size:13px; font-weight:700; background:rgba(255,255,255,0.95); padding:4px 8px; border-radius:8px; border:1px solid rgba(0,0,0,0.06); z-index:7; pointer-events:none; white-space:nowrap; }
+.graph .orig-label { color: var(--primary); transform: translate(10px,-22px); }
+.graph .answer-label { color: #065f46; transform: translate(10px,-22px); }
+
+/* Connector (straight, slightly thicker) */
+.graph .connector-svg { position:absolute; left:0; top:0; width:100%; height:100%; pointer-events:none; z-index:5; overflow:visible; }
+.connector-line { stroke:#f59e0b; stroke-width:3; fill:none; stroke-linecap:round; marker-end: url(#arrowhead); opacity:0.98; }
+
+/* Legend */
+.graph .mini-legend { position:absolute; right:10px; top:10px; background: rgba(255,255,255,0.95); border-radius:8px; padding:6px 8px; font-size:13px; border:1px solid rgba(0,0,0,0.04); z-index:10; display:flex; gap:10px; align-items:center; }
+.legend-item { display:flex; gap:8px; align-items:center; }
+.legend-swatch { width:12px; height:12px; border-radius:3px; display:inline-block; }
+.legend-orig { background: var(--primary); }
+.legend-new { background: var(--success); }
+
+/* Note card */
+.graph-note { margin-top:10px; background: linear-gradient(180deg,#fffaf0,#f8ffff); border-left:6px solid var(--secondary); padding:12px; border-radius:8px; font-size:14px; color:var(--text); box-shadow:0 6px 18px rgba(0,0,0,0.04); }
+.graph-note strong { color:var(--primary); display:block; margin-bottom:6px; }
+
+/* Responsive tweaks */
+@media (max-width:800px) {
+  .graph { height:240px; }
+  .graph .orig-label, .graph .answer-label { font-size:12px; padding:3px 6px; }
+  .graph-note { font-size:13px; padding:10px; }
+}
+</style>
+
+</head>
+<body>
+  <div class="celebration" id="celebration"></div>
+
+  <header>
+    <div class="container">
+      <nav class="navbar">
+        <a href="#" class="logo">
+          <div class="logo-icon">S</div>
+          <span class="logo-text">Sentellect</span>
+        </a>
+        
+        <ul class="nav-links">
+          <li><a href="#" class="active">Home</a></li>
+          <li><a href="#introduction">Introduction</a></li>
+          <li><a href="#graphing">Graphing</a></li>
+          <li><a href="#systems">System</a></li>
+          <li><a href="#practice">Practice</a></li>
+          <li><a href="#games">Games</a></li>  
+        </ul>
+        
+        <div class="header-sound-controls">
+          <button class="sound-btn" id="toggleSound" title="Toggle sound effects">
+            <i class="fas fa-volume-up"></i>
+          </button>
+        </div>
+        
+        <button class="mobile-menu-btn">
+          <i class="fas fa-bars"></i>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero" role="banner" aria-label="Chapter 4 hero">
+    <div class="particles">
+      <div class="particle" style="top: 20%; left: 5%; width: 10px; height: 10px; animation-delay: 0s;"></div>
+      <div class="particle" style="top: 60%; left: 15%; width: 15px; height: 15px; animation-delay: 1s;"></div>
+      <div class="particle" style="top: 30%; right: 10%; width: 12px; height: 12px; animation-delay: 2s;"></div>
+      <div class="particle" style="bottom: 20%; left: 20%; width: 8px; height: 8px; animation-delay: 3s;"></div>
+      <div class="particle" style="bottom: 40%; right: 15%; width: 14px; height: 14px; animation-delay: 4s;"></div>
+    </div>
+    
+    <div class="floating-shape shape-1"></div>
+    <div class="floating-shape shape-2"></div>
+    <div class="floating-shape shape-3"></div>
+    
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="animate">Coordinate Geometry — <span> Chapter 4 </span></h1>
+        <p class="animate delay-1">Exercise 4.2(H): **Translation** and **Rotation** of Axes. Learn how to shift and rotate coordinate systems to simplify problems.</p>
+        <div class="hero-buttons">
+          <a href="#introduction" class="btn btn-primary animate delay-2">Start Exercise 4.2</a>
+          <a href="#games" class="btn btn-secondary animate delay-3">Open Games</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container" style="padding-bottom:60px;">
+
+    <div id="introduction" class="divider">Introduction</div>
+    <section class="card animate">
+      <h2>Welcome to Translation and Rotation of Axes</h2>
+      <p class="lead">This module contains all examples, try-it-yourself exercises, and interactive games to practice the key ideas about moving and rotating coordinate systems to simplify geometry problems.</p>
+      
+      <div class="concept-explanation">
+        <p><strong>Real World Analogy:</strong> Imagine you're looking at a building. Sometimes it's easier to describe windows from the ground (original coordinates), and sometimes from a helicopter above (transformed coordinates). Both describe the same building, just from different perspectives!</p>
+      </div>
+      
+      <div class="cute-scenario-box">
+          <h3>🧐 Why Do We Transform Coordinates?</h3>
+          <div class="scenario-buttons" id="intro-buttons">
+              <button class="scenario-btn" onclick="showScenarioContent('intro-scen', 'perspective'); playSound('click')"><i class="fas fa-eye"></i> Perspective</button>
+              <button class="scenario-btn" onclick="showScenarioContent('intro-scen', 'simplify'); playSound('click')"><i class="fas fa-magic"></i> Simplify</button>
+              <button class="scenario-btn" onclick="showScenarioContent('intro-scen', 'realworld'); playSound('click')"><i class="fas fa-globe-americas"></i> Real World</button>
+          </div>
+          <div class="scenario-content active" id="intro-scen-perspective">
+              <p><strong>Different Perspectives:</strong> The same object can be described differently depending on where you're standing and which way you're facing. Coordinate geometry helps us map between these viewpoints!</p>
+          </div>
+          <div class="scenario-content" id="intro-scen-simplify">
+              <p><strong>Simplify Problems:</strong> Complex equations can sometimes be reduced to a much simpler form by moving the origin to a key point (like the center of a circle) or rotating the axes to align with a shape.</p>
+          </div>
+          <div class="scenario-content" id="intro-scen-realworld">
+              <p><strong>Real Applications:</strong> Coordinate transformations are fundamental to **GPS**, **computer graphics**, and **robotics**! They help systems understand where things are in different frames of reference.</p>
+          </div>
+      </div>
+      <div class="concept-visual">
+        <div class="visual-box" style="background:linear-gradient(135deg, #e3f2fd, #f3e5f5); display:flex; align-items:center; justify-content:center;">
+          <div style="text-align:center">
+            <div style="font-size:40px; margin-bottom:10px">🔄</div>
+            <div style="font-weight:bold; color:var(--primary)">Let's Transform Coordinate Systems!</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div id="graphing" class="divider">Graphing - Translation of Axes</div>
+    <section class="card animate delay-1">
+      <h2>Moving the Coordinate System (Translation)</h2>
+      <p class="lead">Translation shifts the origin to a new location while keeping the axes parallel. Think of it as moving your entire coordinate grid to a new location without rotating it!</p>
+
+      <div class="concept-explanation">
+        <p><strong>What is Translation?</strong> When we translate axes, we're picking up our entire coordinate system and moving it to a new location. The grid lines stay parallel to their original direction - we're just changing where we call (0,0).</p>
+      </div>
+      
+      <div class="cute-scenario-box">
+          <h3>🚶‍♂️ Translation: It's Just Moving House!</h3>
+          <div class="scenario-buttons" id="trans-buttons">
+              <button class="scenario-btn" onclick="showScenarioContent('trans-scen', 'city'); playSound('click')"><i class="fas fa-city"></i> New City Center</button>
+              <button class="scenario-btn" onclick="showScenarioContent('trans-scen', 'classroom'); playSound('click')"><i class="fas fa-school"></i> New Classroom</button>
+              <button class="scenario-btn" onclick="showScenarioContent('trans-scen', 'map'); playSound('click')"><i class="fas fa-map-marker-alt"></i> New Map Center</button>
+          </div>
+          <div class="scenario-content active" id="trans-scen-city">
+              <p><strong>New City Center:</strong> Imagine your city builds a new downtown. All addresses (coordinates) change relative to this new center, but streets stay in the same direction (axes remain parallel).</p>
+          </div>
+          <div class="scenario-content" id="trans-scen-classroom">
+              <p><strong>New Classroom:</strong> If your class moves to a new room, your seat position changes relative to the new front (new origin), but the classroom layout (axes direction) stays the same.</p>
+          </div>
+          <div class="scenario-content" id="trans-scen-map">
+              <p><strong>New Map Center:</strong> When you center a GPS map on a new location, all coordinates are adjusted based on the new center, but the north direction doesn't change.</p>
+          </div>
+      </div>
+      <div class="cartoon-box">
+        <div class="cartoon-icon">🚶‍♂️</div>
+        <div class="cartoon-text">
+          <h3>Walking to a New Town</h3>
+          <p>Imagine you're in your hometown where your house is at (0,0). If you walk to a new town and make the town square your new (0,0), your house now has new coordinates relative to this new center!</p>
+        </div>
+      </div>
+
+      <div class="definition">
+        <div class="definition-content">
+          <strong>Translation Formulas:</strong> If the new origin is O'(h,k), then:
+          <p style="font-size:1.1rem; text-align:center; font-family: monospace;">
+            X = x - h<br>
+            Y = y - k
+          </p>
+          <p style="margin-top:8px; display:flex; align-items:center; gap:8px;">
+            <span style="font-size:24px">📍</span>
+            <span>Where (x,y) are the original coordinates and (X,Y) are the new coordinates.</span>
+          </p>
+          <p class="visual-hint">💡 <strong>Memory Tip:</strong> "New = Old - Origin" for translation!</p>
+        </div>
+        <div class="definition-cartoon">
+          <svg viewBox="0 0 100 100" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+            <line x1="10" y1="50" x2="90" y2="50" stroke="#3b82f6" stroke-width="2" stroke-dasharray="3,3" />
+            <line x1="50" y1="10" x2="50" y2="90" stroke="#3b82f6" stroke-width="2" stroke-dasharray="3,3" />
+            <line x1="30" y1="30" x2="70" y2="30" stroke="#f59e0b" stroke-width="2" />
+            <line x1="30" y1="30" x2="30" y2="70" stroke="#f59e0b" stroke-width="2" />
+            <circle cx="50" cy="50" r="5" fill="#ec4899" />
+            <circle cx="30" cy="30" r="5" fill="#10b981" />
+            <text x="50" y="55" font-size="8" fill="#ec4899" text-anchor="middle" font-weight="bold">O</text>
+            <text x="30" y="35" font-size="8" fill="#10b981" text-anchor="middle" font-weight="bold">O'</text>
+            <text x="60" y="25" font-size="6" fill="#3b82f6">Original</text>
+            <text x="40" y="15" font-size="6" fill="#f59e0b">New</text>
+          </svg>
+        </div>
+      </div>
+
+      <div class="example-container">
+        <div class="example-box">
+          <div class="big">Example 1: P(3,2) with O'(1,3)</div>
+          <p class="small-note">Find the new coordinates of point P when we move the origin to O'</p>
+          <div class="controls">
+            <button class="step-btn" onclick="startSteps('trans1'); playSound('concept')">Show Detailed Steps</button>
+          </div>
+          <div class="step-block" id="trans1">
+            <div class="step-line" style="display:none"><b>Step 1:</b> Identify what we know: Original point P(3,2), New origin O'(1,3)</div>
+            <div class="step-line" style="display:none"><b>Step 2:</b> Use translation formula for X-coordinate: \( X = x - h = 3 - 1 = 2 \)</div>
+            <div class="step-line" style="display:none"><b>Step 3:</b> Use translation formula for Y-coordinate: \( Y = y - k = 2 - 3 = -1 \)</div>
+            <div class="step-line" style="display:none"><b>Step 4:</b> Interpret the result: In the new coordinate system, point P is at (2, -1)</div>
+            <div class="step-line" style="display:none"><b>Understanding:</b> This means point P is 2 units right and 1 unit down from our new origin O'</div>
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('trans1'); playSound('click')">Next Step</button></div>
+          </div>
+          
+          <div class="graph-container">
+            <div class="graph-title">Translation Visualization: P(3,2) with O'(1,3)</div>
+            <div class="graph" id="translation-graph-1">
+              <div class="graph-grid"></div>
+              <div class="graph-axis graph-x-axis orig-axis"></div>
+              <div class="graph-axis graph-y-axis orig-axis"></div>
+              </div>
+          </div>
+        </div>
+
+        <div class="example-box">
+          <div class="big">Example 2: P(-2,6) with O'(-3,2)</div>
+          <p class="small-note">Find new coordinates when both point and origin have negative values</p>
+          <div class="controls">
+            <button class="step-btn" onclick="startSteps('trans2'); playSound('concept')">Show Detailed Steps</button>
+          </div>
+          <div class="step-block" id="trans2">
+            <div class="step-line" style="display:none"><b>Step 1:</b> Identify: P(-2,6), O'(-3,2). Notice both have negative x-values</div>
+            <div class="step-line" style="display:none"><b>Step 2:</b> Calculate X: \( X = -2 - (-3) = -2 + 3 = 1 \) (Careful with negative signs!)</div>
+            <div class="step-line" style="display:none"><b>Step 3:</b> Calculate Y: \( Y = 6 - 2 = 4 \)</div>
+            <div class="step-line" style="display:none"><b>Step 4:</b> New coordinates: (1, 4)</div>
+            <div class="step-line" style="display:none"><b>Understanding:</b> Even though P was left of the old origin, it's now right of the new origin!</div>
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('trans2'); playSound('click')">Next Step</button></div>
+          </div>
+          
+          <div class="graph-container">
+            <div class="graph-title">Translation Visualization: P(-2,6) with O'(-3,2)</div>
+            <div class="graph" id="translation-graph-2">
+              <div class="graph-grid"></div>
+              <div class="graph-axis graph-x-axis orig-axis"></div>
+              <div class="graph-axis graph-y-axis orig-axis"></div>
+              </div>
+          </div>
+        </div>
+        
+        <div class="example-box">
+          <div class="big">Example 3: Reverse Translation</div>
+          <p class="small-note">Find original coordinates when we know new coordinates and translation</p>
+          <div class="controls">
+            <button class="step-btn" onclick="startSteps('trans3'); playSound('concept')">Show Detailed Steps</button>
+          </div>
+          <div class="step-block" id="trans3">
+            <div class="step-line" style="display:none"><b>Problem:</b> A point has coordinates (8,10) in a system with origin O'(3,4). Find its original coordinates.</div>
+            <div class="step-line" style="display:none"><b>Step 1:</b> Use reverse formulas: \( x = X + h \), \( y = Y + k \)</div>
+            <div class="step-line" style="display:none"><b>Step 2:</b> Calculate x: \( x = 8 + 3 = 11 \)</div>
+            <div class="step-line" style="display:none"><b>Step 3:</b> Calculate y: \( y = 10 + 4 = 14 \)</div>
+            <div class="step-line" style="display:none"><b>Step 4:</b> Original coordinates: (11, 14)</div>
+            <div class="step-line" style="display:none"><b>Understanding:</b> The point that was at (8,10) relative to O' was actually at (11,14) in the original system</div>
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('trans3'); playSound('click')">Next Step</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="try-yourself">
+        <div class="try-title">✨ Try It Yourself: Translation Practice</div>
+        <p>1. Find the new coordinates of P(5,7) when the origin is shifted to O'(2,3). (Enter as x,y)</p>
+        <div class="row">
+          <input id="t_trans1" placeholder="e.g. 1,2">
+          <button class="check" onclick="checkTextMotivate('t_trans1','(3,4)','t_trans1_res')">Check</button>
+        </div>
+        <div id="t_trans1_res" class="result"></div>
+        
+        <p style="margin-top:10px">2. A point has coordinates (-5,-3) with respect to the new origin O'(-2,-6). Find its original coordinates.</p>
+        <div class="row">
+          <input id="t_trans2" placeholder="Enter as x,y">
+          <button class="check" onclick="checkTextMotivate('t_trans2','(-7,-9)','t_trans2_res')">Check</button>
+        </div>
+        <div id="t_trans2_res" class="result"></div>
+      </div>
+      
+      <div class="motivate" style="margin-top:14px">
+        <div class="emoji">📍🗺️</div>
+        <div class="text" style="color:#ec4899;">Great job moving the coordinate system around!</div>
+      </div>
+      
+      <h3 style="margin-top:18px;color:var(--accent)">Play the Translation Games</h3>
+      <div class="game-card-grid">
+        <div class="game-card-style" onclick="showGame('translation-game'); playSound('gameStart')">
+          <div class="game-card-left">
+            <div class="svg-icon" aria-hidden="true" style="background: linear-gradient(135deg, #ff7eb3, #ff758c);">
+              <i class="fas fa-location-arrow"></i>
+            </div>
+            <div style="font-size:12px;color:var(--muted); margin-top:5px">Coordinate Shifter</div>
+          </div>
+          <div>
+            <div class="game-card-title">Coordinate Catcher</div>
+            <div class="game-card-desc">Find the new coordinates after translation quickly for a high score.</div>
+            <div style="margin-top:12px"><button class="start-btn">Play Game</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="translation-game" class="game-play-area">
+        <h3 style="color:var(--primary); margin-bottom: 10px;">Coordinate Catcher: Find the new coordinates!</h3>
+        <div class="game-icon-visual">📍</div>
+        <div class="score-board" id="trans-score-display">Score: 0</div>
+        <div class="game-prompt" id="trans-prompt">Point P(3,2) with New Origin O'(1,3)</div>
+        <div class="game-input-group">
+            X: <input type="number" id="trans-x-input" placeholder="X">
+            Y: <input type="number" id="trans-y-input" placeholder="Y">
+        </div>
+        <button class="check" onclick="checkTranslation()" style="background:var(--primary)">Check Coordinates</button>
+        <div class="game-message" id="trans-status">Ready.</div>
+        <button class="step-btn" style="margin-top: 15px;" onclick="initTranslationGame(); playSound('click')">New Problem</button>
+      </div>
+
+      <div class="calm">
+        <div class="wave">🧘</div>
+        <div style="font-weight:700">Calm: Imagine gently shifting the entire coordinate grid. Breathe in the simplicity!</div>
+      </div>
+    </section>
+
+    <div id="systems" class="divider">Systems - Rotation of Axes</div>
+    <section class="card animate delay-2">
+      <h2>Turning the Coordinate System (Rotation)</h2>
+      <p class="lead">Rotation turns the axes about the origin through an angle &theta; while keeping the origin fixed. This changes the orientation of the coordinate system.</p>
+
+      <div class="concept-explanation">
+        <p><strong>What is Rotation?</strong> When we rotate axes, we keep the origin in the same place but turn the entire coordinate system. It's like spinning a map while keeping your finger on one location.</p>
+      </div>
+      
+      <div class="cute-scenario-box">
+          <h3>🧭 Rotation: Everything Turns Around You!</h3>
+          <div class="scenario-buttons" id="rot-buttons">
+              <button class="scenario-btn" onclick="showScenarioContent('rot-scen', 'compass'); playSound('click')"><i class="fas fa-compass"></i> New North</button>
+              <button class="scenario-btn" onclick="showScenarioContent('rot-scen', 'camera'); playSound('click')"><i class="fas fa-camera"></i> Camera View</button>
+              <button class="scenario-btn" onclick="showScenarioContent('rot-scen', 'dance'); playSound('click')"><i class="fas fa-quidditch"></i> Dance Turn</button>
+          </div>
+          <div class="scenario-content active" id="rot-scen-compass">
+              <p><strong>New North Direction:</strong> If you turn your compass to face a new direction (rotate axes), all bearings (coordinates) change relative to this new direction, but your physical location stays the same (origin fixed).</p>
+          </div>
+          <div class="scenario-content" id="rot-scen-camera">
+              <p><strong>Camera Rotation:</strong> When you rotate a camera, objects appear in different positions in the frame (new coordinates), but the objects themselves haven't actually moved. The point is fixed, the perspective changes.</p>
+          </div>
+          <div class="scenario-content" id="rot-scen-dance">
+              <p><strong>Dance Turn:</strong> When you spin while dancing, the room appears to rotate around you, but you stay in the same spot (fixed origin). This is rotation!</p>
+          </div>
+      </div>
+      <div class="cartoon-box">
+        <div class="cartoon-icon">🎡</div>
+        <div class="cartoon-text">
+          <h3>Ferris Wheel View</h3>
+          <p>Imagine you're on a Ferris wheel. As you rotate, buildings appear to move around you, but actually you're the one spinning! This is exactly what happens when we rotate coordinate axes.</p>
+        </div>
+      </div>
+
+      <div class="definition">
+        <div class="definition-content">
+          <strong>Rotation Formulas:</strong> If the axes are rotated through angle $\theta$:
+          <p style="font-size:1.1rem; text-align:center; font-family: monospace;">
+            X = x cos&theta; + y sin&theta;<br>
+            Y = y cos&theta; - x sin&theta;
+          </p>
+          <p style="margin-top:8px; display:flex; align-items:center; gap:8px;">
+            <span style="font-size:24px">🔄</span>
+            <span>Where (x,y) are the original coordinates and (X,Y) are the new coordinates.</span>
+          </p>
+          <p class="visual-hint">💡 <strong>Memory Tip:</strong> For X, use cosine with x and sine with y. For Y, swap and subtract!</p>
+        </div>
+        <div class="definition-cartoon">
+          <svg viewBox="0 0 100 100" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+            <line x1="10" y1="50" x2="90" y2="50" stroke="#3b82f6" stroke-width="2" />
+            <line x1="50" y1="10" x2="50" y2="90" stroke="#3b82f6" stroke-width="2" />
+            <line x1="20" y1="20" x2="80" y2="80" stroke="#f59e0b" stroke-width="2" />
+            <line x1="20" y1="80" x2="80" y2="20" stroke="#f59e0b" stroke-width="2" />
+            <circle cx="50" cy="50" r="5" fill="#ec4899" />
+            <text x="50" y="55" font-size="8" fill="#ec4899" text-anchor="middle" font-weight="bold">O</text>
+            <text x="60" y="25" font-size="6" fill="#3b82f6">Original</text>
+            <text x="70" y="70" font-size="6" fill="#f59e0b">Rotated</text>
+            <path d="M60 50 A 10 10 0 0 1 55 45" fill="none" stroke="#10b981" stroke-width="2" />
+            <text x="62" y="48" font-size="6" fill="#10b981" font-weight="bold">&theta;</text>
+          </svg>
+        </div>
+      </div>
+
+      <div class="example-container">
+        <div class="example-box">
+          <div class="big">Example 1: P(5,3) with &theta;=45°</div>
+          <p class="small-note">Find new coordinates when we rotate the axes by 45 degrees</p>
+          <div class="controls">
+            <button class="step-btn" onclick="startSteps('rot1'); playSound('concept')">Show Detailed Steps</button>
+          </div>
+          <div class="step-block" id="rot1">
+            <div class="step-line" style="display:none"><b>Step 1:</b> Identify: P(5,3), &theta;=45°. We need cos45° and sin45°</div>
+            <div class="step-line" style="display:none"><b>Step 2:</b> Recall: \( \cos45° = \sin45° = \frac{1}{\sqrt{2}} \)</div>
+            <div class="step-line" style="display:none"><b>Step 3:</b> Calculate X: \( X = 5 \cdot \frac{1}{\sqrt{2}} + 3 \cdot \frac{1}{\sqrt{2}} = \frac{8}{\sqrt{2}} = 4\sqrt{2} \)</div>
+            <div class="step-line" style="display:none"><b>Step 4:</b> Calculate Y: \( Y = 3 \cdot \frac{1}{\sqrt{2}} - 5 \cdot \frac{1}{\sqrt{2}} = -\frac{2}{\sqrt{2}} = -\sqrt{2} \)</div>
+            <div class="step-line" style="display:none"><b>Step 5:</b> New coordinates: \( (4\sqrt{2}, -\sqrt{2}) \)</div>
+            <div class="step-line" style="display:none"><b>Understanding:</b> After rotating 45°, the point is mostly in the positive X direction with a small negative Y</div>
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('rot1'); playSound('click')">Next Step</button></div>
+          </div>
+          
+          <div class="graph-container">
+            <div class="graph-title">Rotation Visualization: P(5,3) with &theta;=45°</div>
+            <div class="graph" id="rotation-graph-1">
+              <div class="graph-grid"></div>
+              <div class="graph-axis graph-x-axis orig-axis"></div>
+              <div class="graph-axis graph-y-axis orig-axis"></div>
+              </div>
+          </div>
+        </div>
+
+        <div class="example-box">
+          <div class="big">Example 2: P(3,-7) with &theta;=30°</div>
+          <p class="small-note">Rotation with a point in the fourth quadrant</p>
+          <div class="controls">
+            <button class="step-btn" onclick="startSteps('rot2'); playSound('concept')">Show Detailed Steps</button>
+          </div>
+          <div class="step-block" id="rot2">
+            <div class="step-line" style="display:none"><b>Step 1:</b> Identify: P(3,-7), &theta;=30°. We need cos30° and sin30°</div>
+            <div class="step-line" style="display:none"><b>Step 2:</b> Recall: \( \cos30° = \frac{\sqrt{3}}{2}, \sin30° = \frac{1}{2} \)</div>
+            <div class="step-line" style="display:none"><b>Step 3:</b> Calculate X: \( X = 3 \cdot \frac{\sqrt{3}}{2} + (-7) \cdot \frac{1}{2} = \frac{3\sqrt{3} - 7}{2} \)</div>
+            <div class="step-line" style="display:none"><b>Step 4:</b> Calculate Y: \( Y = (-7) \cdot \frac{\sqrt{3}}{2} - 3 \cdot \frac{1}{2} = \frac{-7\sqrt{3} - 3}{2} \)</div>
+            <div class="step-line" style="display:none"><b>Step 5:</b> New coordinates: \( \left( \frac{3\sqrt{3} - 7}{2}, \frac{-7\sqrt{3} - 3}{2} \right) \)</div>
+            <div class="step-line" style="display:none"><b>Understanding:</b> Both coordinates are negative after rotation, placing the point in the third quadrant of the new system</div>
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('rot2'); playSound('click')">Next Step</button></div>
+          </div>
+          
+          <div class="graph-container">
+            <div class="graph-title">Rotation Visualization: P(3,-7) with &theta;=30°</div>
+            <div class="graph" id="rotation-graph-2">
+              <div class="graph-grid"></div>
+              <div class="graph-axis graph-x-axis orig-axis"></div>
+              <div class="graph-axis graph-y-axis orig-axis"></div>
+              </div>
+          </div>
+        </div>
+        
+        <div class="example-box">
+          <div class="big">Example 3: Special Angle - arctan(1/3)</div>
+          <p class="small-note">When the rotation angle is given as an inverse trigonometric function</p>
+          <div class="controls">
+            <button class="step-btn" onclick="startSteps('rot3'); playSound('concept')">Show Detailed Steps</button>
+          </div>
+          <div class="step-block" id="rot3">
+            <div class="step-line" style="display:none"><b>Step 1:</b> Identify: P(15,10), &theta; = arctan(1/3). This means tan&theta; = 1/3</div>
+            <div class="step-line" style="display:none"><b>Step 2:</b> Find sin&theta; and cos&theta; using a right triangle with opposite=1, adjacent=3</div>
+            <div class="step-line" style="display:none"><b>Step 3:</b> Hypotenuse = \( \sqrt{1^2 + 3^2} = \sqrt{10} \)</div>
+            <div class="step-line" style="display:none"><b>Step 4:</b> So \( \sin\theta = \frac{1}{\sqrt{10}}, \cos\theta = \frac{3}{\sqrt{10}} \)</div>
+            <div class="step-line" style="display:none"><b>Step 5:</b> Calculate X: \( X = 15 \cdot \frac{3}{\sqrt{10}} + 10 \cdot \frac{1}{\sqrt{10}} = \frac{55}{\sqrt{10}} \)</div>
+            <div class="step-line" style="display:none"><b>Step 6:</b> Calculate Y: \( Y = 10 \cdot \frac{3}{\sqrt{10}} - 15 \cdot \frac{1}{\sqrt{10}} = \frac{15}{\sqrt{10}} \)</div>
+            <div class="step-line" style="display:none"><b>Step 7:</b> New coordinates: \( \left( \frac{55}{\sqrt{10}}, \frac{15}{\sqrt{2}} \right) \)</div>
+            <div class="step-line" style="display:none"><b>Understanding:</b> After this specific rotation, the point has a much larger X-coordinate than Y-coordinate</div>
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('rot3'); playSound('click')">Next Step</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="try-yourself">
+        <div class="try-title">✨ Try It Yourself: Rotation Practice</div>
+        <p>1. Find the new coordinates of P(1,1) when the axes are rotated through 45°.</p>
+        <div class="row">
+          <input id="t_rot1" placeholder="Enter as x,y">
+          <button class="check" onclick="checkTextMotivate('t_rot1','(√2,0)','t_rot1_res')">Check</button>
+        </div>
+        <div id="t_rot1_res" class="result"></div>
+        
+        <p style="margin-top:10px">2. Find the new coordinates of P(2,0) when the axes are rotated through 90°.</p>
+        <div class="row">
+          <input id="t_rot2" placeholder="Enter as x,y">
+          <button class="check" onclick="checkTextMotivate('t_rot2','(0,-2)','t_rot2_res')">Check</button>
+        </div>
+        <div id="t_rot2_res" class="result"></div>
+      </div>
+      
+      <div class="motivate" style="margin-top:14px">
+        <div class="emoji">🔄🎯</div>
+        <div class="text" style="color:#06D6A0;">You're mastering the rotation of coordinate systems!</div>
+      </div>
+      
+      <h3 style="margin-top:16px;color:var(--accent)">Play the Rotation Games</h3>
+      <div class="game-card-grid">
+        <div class="game-card-style" onclick="showGame('rotation-game'); playSound('gameStart')">
+          <div class="game-card-left">
+            <div class="svg-icon" aria-hidden="true" style="background: linear-gradient(135deg, #FFD166, #EF476F);">
+              <i class="fas fa-redo-alt"></i>
+            </div>
+            <div style="font-size:12px;color:var(--muted); margin-top:5px">Axis Rotator</div>
+          </div>
+          <div>
+            <div class="game-card-title">Axis Angle Finder</div>
+            <div class="game-card-desc">Find the new coordinates after rotation for a high score.</div>
+            <div style="margin-top:12px"><button class="start-btn">Play Game</button></div>
+          </div>
+        </div>
+      </div>
+      
+      <div id="rotation-game" class="game-play-area">
+        <h3 style="color:var(--primary); margin-bottom: 20px;">Axis Angle Finder: Find the new coordinates after rotation!</h3>
+        <div class="game-icon-visual">🔄</div>
+        <div class="score-board" id="rot-score-display">Score: 0</div>
+        <div class="game-prompt" id="rot-prompt">Point P(5,3) with Rotation Angle &theta; = 45°</div>
+        <div class="game-input-group">
+          X: <input type="number" id="rot-x-input" placeholder="X" step="0.01">
+          Y: <input type="number" id="rot-y-input" placeholder="Y" step="0.01">
+        </div>
+        <button class="check" onclick="checkRotation()" style="background:var(--primary)">Submit</button>
+        <div class="game-message" id="rot-status">Ready.</div>
+        <button class="step-btn" style="margin-top: 15px;" onclick="initRotationGame(); playSound('click')">New Problem</button>
+      </div>
+
+      <div class="calm">
+        <div style="font-size:28px">🧘</div>
+        <div style="font-weight:700">Calm: Close your eyes and imagine the coordinate axes gently rotating. Breathe slowly.</div>
+      </div>
+    </section>
+
+    <div id="practice" class="divider">Practice - Combined Transformations</div>
+    <section class="card animate delay-3">
+      <h2>Translation + Rotation (The Full Transformation)</h2>
+      <p class="lead">Apply both translation and rotation to coordinate systems. This is done in sequence: **first translation, then rotation.**</p>
+
+      <div class="concept-explanation">
+        <p><strong>When do we use both?</strong> Sometimes we need to both move and rotate our coordinate system. We always do translation first, then rotation.</p>
+      </div>
+      
+      <div class="cute-scenario-box">
+          <h3>🚗 Combined: It's a Two-Step Trip!</h3>
+          <div class="scenario-buttons" id="comb-buttons">
+              <button class="scenario-btn" onclick="showScenarioContent('comb-scen', 'newcity'); playSound('click')"><i class="fas fa-building"></i> New City Layout</button>
+              <button class="scenario-btn" onclick="showScenarioContent('comb-scen', 'furniture'); playSound('click')"><i class="fas fa-couch"></i> Furniture Rearrange</button>
+              <button class="scenario-btn" onclick="showScenarioContent('comb-scen', 'park'); playSound('click')"><i class="fas fa-thumbtack"></i> Final Pinpoint</button>
+          </div>
+          <div class="scenario-content active" id="comb-scen-newcity">
+              <p><strong>New City Layout:</strong> Imagine first driving to a new city's entrance (translation) and then following streets that are all angled differently from your old city's grid (rotation).</p>
+          </div>
+          <div class="scenario-content" id="comb-scen-furniture">
+              <p><strong>Rearranging Furniture:</strong> Moving a heavy sofa to a new spot in the room (translation) and then angling it slightly to face the TV (rotation).</p>
+          </div>
+          <div class="scenario-content" id="comb-scen-park">
+              <p><strong>Amusement Park:</strong> You walk to the Ferris wheel (translation), and once you're on, your view of the rest of the park spins around (rotation). The final coordinate is your view from the spun ride!</p>
+          </div>
+      </div>
+      <div class="cartoon-box">
+        <div class="cartoon-icon">🚗</div>
+        <div class="cartoon-text">
+          <h3>Road Trip Adventure</h3>
+          <p>Imagine driving to a new city (translation) where all the streets are laid out at different angles than your hometown (rotation). You need both transformations to navigate!</p>
+        </div>
+      </div>
+
+      <div class="definition">
+        <div class="definition-content">
+          <strong>Combined Transformation Steps:</strong>
+          <p style="font-size:1.1rem; text-align:center; font-family: monospace;">
+            1. Translation: X' = x - h, Y' = y - k<br>
+            2. Rotation: X = X' cos&theta; + Y' sin&theta;, Y = Y' cos&theta; - X' sin&theta;
+          </p>
+          <p style="margin-top:8px; display:flex; align-items:center; gap:8px;">
+            <span style="font-size:24px">🔄📍</span>
+            <span>**Always** apply translation first, then rotation.</span>
+          </p>
+          <p class="visual-hint">💡 <strong>Order Matters:</strong> Always translate first, then rotate!</p>
+        </div>
+        <div class="definition-cartoon">
+          <svg viewBox="0 0 100 100" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+            <line x1="10" y1="50" x2="90" y2="50" stroke="#3b82f6" stroke-width="2" stroke-dasharray="3,3" />
+            <line x1="50" y1="10" x2="50" y2="90" stroke="#3b82f6" stroke-width="2" stroke-dasharray="3,3" />
+            <line x1="30" y1="30" x2="70" y2="30" stroke="#f59e0b" stroke-width="2" />
+            <line x1="30" y1="30" x2="30" y2="70" stroke="#f59e0b" stroke-width="2" />
+            <line x1="20" y1="40" x2="60" y2="60" stroke="#10b981" stroke-width="2" />
+            <line x1="20" y1="60" x2="60" y2="40" stroke="#10b981" stroke-width="2" />
+            <circle cx="50" cy="50" r="5" fill="#ec4899" />
+            <circle cx="30" cy="30" r="5" fill="#f59e0b" />
+            <text x="50" y="55" font-size="8" fill="#ec4899" text-anchor="middle" font-weight="bold">O</text>
+            <text x="30" y="35" font-size="8" fill="#f59e0b" text-anchor="middle" font-weight="bold">O'</text>
+            <text x="60" y="25" font-size="6" fill="#3b82f6">Original</text>
+            <text x="40" y="15" font-size="6" fill="#f59e0b">Translated</text>
+            <text x="50" y="85" font-size="6" fill="#10b981">Rotated</text>
+          </svg>
+        </div>
+      </div>
+      
+      <div class="example-container">
+        <div class="example-box">
+          <div class="big">Example: P(4,2) with O'(2,-1) and &theta;=45°</div>
+          <p class="small-note">Apply both translation and rotation to find final coordinates</p>
+          <div class="controls">
+            <button class="step-btn" onclick="startSteps('comb1'); playSound('concept')">Show Detailed Steps</button>
+          </div>
+          <div class="step-block" id="comb1">
+            <div class="step-line" style="display:none"><b>Step 1 (Translation):</b> Move origin to O'(2,-1)</div>
+            <div class="step-line" style="display:none"><b>Step 2:</b> Calculate translated coordinates: \( X' = 4 - 2 = 2 \), \( Y' = 2 - (-1) = 3 \)</div>
+            <div class="step-line" style="display:none"><b>Step 3 (Rotation):</b> Now rotate by &theta;=45°. We need cos45° and sin45°</div>
+            <div class="step-line" style="display:none"><b>Step 4:</b> Recall: \( \cos45° = \sin45° = \frac{1}{\sqrt{2}} \)</div>
+            <div class="step-line" style="display:none"><b>Step 5:</b> Calculate final X: \( X = 2 \cdot \frac{1}{\sqrt{2}} + 3 \cdot \frac{1}{\sqrt{2}} = \frac{5}{\sqrt{2}} \)</div>
+            <div class="step-line" style="display:none"><b>Step 6:</b> Calculate final Y: \( Y = 3 \cdot \frac{1}{\sqrt{2}} - 2 \cdot \frac{1}{\sqrt{2}} = \frac{1}{\sqrt{2}} \)</div>
+            <div class="step-line" style="display:none"><b>Step 7:</b> Final coordinates: \( \left( \frac{5}{\sqrt{2}}, \frac{1}{\sqrt{2}} \right) \)</div>
+            <div class="step-line" style="display:none"><b>Understanding:</b> After moving and rotating, the point is mostly in the positive X direction with a small positive Y</div>
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('comb1'); playSound('click')">Next Step</button></div>
+          </div>
+          
+          <div class="graph-container">
+            <div class="graph-title">Combined Transformation: P(4,2) with O'(2,-1) and &theta;=45°</div>
+            <div class="graph" id="combined-graph-1">
+              <div class="graph-grid"></div>
+              <div class="graph-axis graph-x-axis orig-axis"></div>
+              <div class="graph-axis graph-y-axis orig-axis"></div>
+              </div>
+          </div>
+        </div>
+      </div>
+      <div class="try-yourself">
+        <div class="try-title">✨ Try It Yourself: Combined Transformation</div>
+        <p>1. Find the new coordinates of P(6,4) when the origin is shifted to O'(1,1) and then the axes are rotated through 90°.</p>
+        <div class="row">
+          <input id="t_comb1" placeholder="Enter as x,y">
+          <button class="check" onclick="checkTextMotivate('t_comb1','(3,-5)','t_comb1_res')">Check</button>
+        </div>
+        <div id="t_comb1_res" class="result"></div>
+        
+        <p style="margin-top:10px">2. Find the new coordinates of P(3,0) when the origin is shifted to O'(1,1) and then the axes are rotated through 180°.</p>
+        <div class="row">
+          <input id="t_comb2" placeholder="Enter as x,y">
+          <button class="check" onclick="checkTextMotivate('t_comb2','(-2,-1)','t_comb2_res')">Check</button>
+        </div>
+        <div id="t_comb2_res" class="result"></div>
+      </div>
+      
+      <div class="motivate" style="margin-top:14px">
+        <div class="emoji">🔄📍🎯</div>
+        <div class="text" style="color:#f59e0b;">Excellent! You're handling complex transformations with ease!</div>
+      </div>
+      
+      <h3 style="margin-top:14px;color:var(--accent)">Play the Combined Transformation Games</h3>
+      <div class="game-card-grid">
+        <div class="game-card-style" onclick="showGame('combined-game'); playSound('gameStart')">
+          <div class="game-card-left">
+            <div class="svg-icon" aria-hidden="true" style="background: linear-gradient(135deg, #65C7F7, #4ECDC4);">
+              <i class="fas fa-cogs"></i>
+            </div>
+            <div style="font-size:12px;color:var(--muted); margin-top:5px">Full Transformer</div>
+          </div>
+          <div>
+            <div class="game-card-title">Transformation Master</div>
+            <div class="game-card-desc">Apply both translation and rotation to find the new coordinates.</div>
+            <div style="margin-top:12px"><button class="start-btn">Play Game</button></div>
+          </div>
+        </div>
+      </div>
+      
+      <div id="combined-game" class="game-play-area">
+        <h3 style="color:var(--primary); margin-bottom: 10px;">Transformation Master: Apply both translation and rotation!</h3>
+        <div class="game-icon-visual">🔄📍</div>
+        <div class="score-board" id="comb-score-display">Score: 0</div>
+        <div class="game-prompt" id="comb-prompt">Point P(4,2) with New Origin O'(2,-1) and Rotation &theta;=45°</div>
+        <div class="game-input-group">
+            X: <input type="number" id="comb-x-input" placeholder="X" step="0.01">
+            Y: <input type="number" id="comb-y-input" placeholder="Y" step="0.01">
+        </div>
+        <button class="check" onclick="checkCombined()" style="background:var(--primary)">Check Coordinates</button>
+        <div class="game-message" id="comb-status">Ready.</div>
+        <button class="step-btn" style="margin-top: 15px;" onclick="initCombinedGame(); playSound('click')">New Problem</button>
+      </div>
+
+      <div class="calm">
+        <div style="font-size:24px">🧠</div>
+        <div style="font-weight:700">Calm: Visualize the coordinate system first translating, then rotating. You've got this!</div>
+      </div>
+    </section>
+
+    <div class="divider">Key Differences: Translation vs Rotation</div>
+    <section class="card animate">
+      <h2>Translation vs Rotation: When to Use Each</h2>
+      <p class="lead">Understanding the differences between translation and rotation helps you choose the right transformation for each problem.</p>
+
+      <div class="cute-scenario-box">
+          <h3>⚖️ What's the Difference?</h3>
+          <div class="scenario-buttons" id="diff-buttons">
+              <button class="scenario-btn" onclick="showScenarioContent('diff-scen', 'move'); playSound('click')"><i class="fas fa-truck"></i> Translation</button>
+              <button class="scenario-btn" onclick="showScenarioContent('diff-scen', 'turn'); playSound('click')"><i class="fas fa-undo-alt"></i> Rotation</button>
+              <button class="scenario-btn" onclick="showScenarioContent('diff-scen', 'both'); playSound('click')"><i class="fas fa-cogs"></i> Both Together</button>
+          </div>
+          <div class="scenario-content active" id="diff-scen-move">
+              <p><strong>Translation:</strong> Like **moving to a new house** - your address changes but the furniture stays oriented the same way. The axis directions remain parallel.</p>
+          </div>
+          <div class="scenario-content" id="diff-scen-turn">
+              <p><strong>Rotation:</strong> Like **spinning in place** - you see everything from a different angle, but you stay in the same spot (origin fixed). The axis directions change.</p>
+          </div>
+          <div class="scenario-content" id="diff-scen-both">
+              <p><strong>Combined:</strong> Like moving to a new city where all streets are angled differently from your old city. We use both: **first translate**, then **rotate**.</p>
+          </div>
+      </div>
+      <div class="cartoon-box">
+        <div class="cartoon-icon">🎪</div>
+        <div class="cartoon-text">
+          <h3>Circus Performance</h3>
+          <p>Think of translation as moving your entire circus tent to a new location. Rotation is like spinning on a unicycle while staying in the same spot. Combined is like moving to a new city AND learning to ride a unicycle there!</p>
+        </div>
+      </div>
+
+      <div class="definition">
+        <div class="definition-content">
+          <table style="width:100%; border-collapse: collapse; margin-top:10px;">
+            <tr style="background:#f0f7ff;">
+              <th style="padding:10px; text-align:left; border-bottom:1px solid #d9ecff;">Feature</th>
+              <th style="padding:10px; text-align:left; border-bottom:1px solid #d9ecff;">Translation</th>
+              <th style="padding:10px; text-align:left; border-bottom:1px solid #d9ecff;">Rotation</th>
+            </tr>
+            <tr>
+              <td style="padding:10px; border-bottom:1px solid #d9ecff;"><b>What Changes?</b></td>
+              <td style="padding:10px; border-bottom:1px solid #d9ecff;">Origin position</td>
+              <td style="padding:10px; border-bottom:1px solid #d9ecff;">Axes direction</td>
+            </tr>
+            <tr>
+              <td style="padding:10px; border-bottom:1px solid #d9ecff;"><b>Origin</b></td>
+              <td style="padding:10px; border-bottom:1px solid #d9ecff;">Moves to O'(h,k)</td>
+              <td style="padding:10px; border-bottom:1px solid #d9ecff;">Stays at (0,0)</td>
+            </tr>
+            <tr>
+              <td style="padding:10px; border-bottom:1px solid #d9ecff;"><b>Axes Orientation</b></td>
+              <td style="padding:10px; border-bottom:1px solid #d9ecff;">Remains the same</td>
+              <td style="padding:10px; border-bottom:1px solid #d9ecff;">Changes by angle &theta;</td>
+            </tr>
+            <tr>
+              <td style="padding:10px; border-bottom:1px solid #d9ecff;"><b>Key Formulas</b></td>
+              <td style="padding:10px; border-bottom:1px solid #d9ecff;">X = x - h, Y = y - k</td>
+              <td style="padding:10px; border-bottom:1px solid #d9ecff;">X = x cos&theta; + y sin&theta;<br>Y = y cos&theta; - x sin&theta;</td>
+            </tr>
+            <tr>
+              <td style="padding:10px; border-bottom:1px solid #d9ecff;"><b>When to Use</b></td>
+              <td style="padding:10px; border-bottom:1px solid #d9ecff;">Change reference point</td>
+              <td style="padding:10px; border-bottom:1px solid #d9ecff;">Change viewing angle</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="concept-explanation">
+        <p><strong>Real-World Applications:</strong></p>
+        <p>• **Translation:** GPS systems use translation when they switch reference points (from one landmark to another)</p>
+        <p>• **Rotation:** Video games use rotation to show characters and objects from different camera angles</p>
+        <p>• **Combined:** Robotics uses both translation and rotation to position and orient robot arms</p>
+      </div>
+
+      <div class="try-yourself">
+        <div class="try-title">✨ Quick Quiz: Translation vs Rotation</div>
+        <p>1. Which transformation changes the origin position?</p>
+        <div class="row">
+          <input id="t_quiz1" placeholder="Translation or Rotation">
+          <button class="check" onclick="checkTextMotivate('t_quiz1','translation','t_quiz1_res')">Check</button>
+        </div>
+        <div id="t_quiz1_res" class="result"></div>
+        
+        <p style="margin-top:10px">2. Which transformation keeps the origin fixed?</p>
+        <div class="row">
+          <input id="t_quiz2" placeholder="Translation or Rotation">
+          <button class="check" onclick="checkTextMotivate('t_quiz2','rotation','t_quiz2_res')">Check</button>
+        </div>
+        <div id="t_quiz2_res" class="result"></div>
+        
+        <p style="margin-top:10px">3. In what order should you apply translation and rotation in a combined transformation?</p>
+        <div class="row">
+          <input id="t_quiz3" placeholder="Which first?">
+          <button class="check" onclick="checkTextMotivate('t_quiz3','translation first','t_quiz3_res')">Check</button>
+        </div>
+        <div id="t_quiz3_res" class="result"></div>
+      </div>
+      
+      <div class="motivate" style="margin-top:14px">
+        <div class="emoji">🏗️🏆</div>
+        <div class="text" style="color:#118AB2;">Incredible work on coordinate transformations! That's a huge achievement!</div>
+      </div>
+
+      <div class="calm">
+        <div style="font-size:24px">🤸</div>
+        <div style="font-weight:700">Calm: Stretch your body like a coordinate axis, first translate, then rotate!</div>
+      </div>
+    </section>
+
+    <div id="games" class="divider">Stress-Relief Games</div>
+    <section class="card">
+      <h2>Quick Access to Games</h2>
+      <p class="lead">Click any game below to open it and start practicing what you've learned in a fun way!</p>
+      <div class="game-card-grid">
+        <div class="game-card-style" onclick="showGame('translation-game'); playSound('gameStart')">
+          <div class="game-card-left">
+            <div class="svg-icon" style="background: linear-gradient(135deg, #ff7eb3, #ff758c);">
+              <i class="fas fa-location-arrow"></i>
+            </div>
+            <div style="font-size:12px;color:var(--muted); margin-top:5px">Coordinate Shifter</div>
+          </div>
+          <div>
+            <div class="game-card-title">Coordinate Catcher</div>
+            <div class="game-card-desc">Practice finding the new coordinates after translation.</div>
+          </div>
+        </div>
+
+        <div class="game-card-style" onclick="showGame('rotation-game'); playSound('gameStart')">
+          <div class="game-card-left">
+            <div class="svg-icon" style="background: linear-gradient(135deg, #FFD166, #EF476F);">
+              <i class="fas fa-redo-alt"></i>
+            </div>
+            <div style="font-size:12px;color:var(--muted); margin-top:5px">Axis Rotator</div>
+          </div>
+          <div>
+            <div class="game-card-title">Axis Angle Finder</div>
+            <div class="game-card-desc">Find the new coordinates after rotation.</div>
+          </div>
+        </div>
+
+        <div class="game-card-style" onclick="showGame('combined-game'); playSound('gameStart')">
+          <div class="game-card-left">
+            <div class="svg-icon" style="background: linear-gradient(135deg, #65C7F7, #4ECDC4);">
+              <i class="fas fa-cogs"></i>
+            </div>
+            <div style="font-size:12px;color:var(--muted); margin-top:5px">Full Transformer</div>
+          </div>
+          <div>
+            <div class="game-card-title">Transformation Master</div>
+            <div class="game-card-desc">Apply both translation and rotation.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="card" style="text-align:center;margin-top:18px">
+      <h2>🎉 Exercise 4.2 — Done!</h2>
+      <p class="lead">You've successfully worked through translation and rotation of axes. Replay games and review examples whenever you want. Keep up the great work!</p>
+      
+      <div style="text-align: center; margin: 40px 0;">
+    <a href="{{ url_for('serve_chapter_part', chapter_num=4, part_num=3) }}" class="btn btn-primary">
+        Continue to Part 3 <i class="fas fa-arrow-right"></i>
+    </a>
+</div>
+    </div>
+  </div>
+
+  <div class="fab">
+    <i class="fas fa-gamepad"></i>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-about">
+          <div class="footer-logo">
+            <div class="footer-logo-icon">S</div>
+            Sentellect
+          </div>
+          <p>Personalizing learning through emotions to improve educational experience for HSSC Mathematics.</p>
+          <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+        
+        <div class="footer-links">
+          <h3>Platform</h3>
+          <ul>
+            <li><a href="#introduction">Introduction</a></li>
+            <li><a href="#graphing">Translation</a></li>
+            <li><a href="#systems">Rotation</a></li>
+            <li><a href="#practice">Combined</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-links">
+          <h3>Resources</h3>
+          <ul>
+            <li><a href="#">Study Materials</a></li>
+            <li><a href="#">About Project</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Support</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-links">                                       
+          <h3>Account</h3>
+          <ul>
+            <li><a href="#">Your account</a></li>
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">Contact US</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms & Conditions</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>© 2025 Sentellect. Final Year Project - Educational Technology.</p>
+        <div class="footer-tags">
+          <a href="#" class="tag">PTB HSSC Mathematics</a>
+          <a href="#" class="tag">Emotion-Aware Learning</a>
+          <a href="#" class="tag">Coordinate Transformations</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Celebration system
+    function celebrate() {
+      if (!soundEnabled) return;
+      
+      const celebration = document.getElementById('celebration');
+      celebration.style.display = 'block';
+      
+      // Play celebration sound
+      playSound('celebration');
+      
+      // Create confetti
+      for (let i = 0; i < 150; i++) {
+        createConfetti();
+      }
+      
+      // Create party poppers
+      for (let i = 0; i < 20; i++) {
+        createPartyPopper();
+      }
+      
+      // Create hurray text
+      createHurrayText();
+      
+      // Hide celebration after 3 seconds
+      setTimeout(() => {
+        celebration.style.display = 'none';
+        celebration.innerHTML = '';
+      }, 3000);
+    }
+    
+    function createConfetti() {
+      const celebration = document.getElementById('celebration');
+      const confetti = document.createElement('div');
+      confetti.className = 'confetti';
+      
+      // Random position
+      const left = Math.random() * 100;
+      const colors = ['#ff6b6b', '#ffd166', '#06d6a0', '#118ab2', '#ef476f'];
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      
+      confetti.style.left = `${left}%`;
+      confetti.style.backgroundColor = color;
+      
+      celebration.appendChild(confetti);
+      
+      // Animate confetti
+      const animation = confetti.animate([
+        { transform: 'translateY(-20px) rotate(0deg)', opacity: 1 },
+        { transform: `translateY(${window.innerHeight}px) rotate(720deg)`, opacity: 0 }
+      ], {
+        duration: 2000 + Math.random() * 1000,
+        easing: 'cubic-bezier(0.215, 0.61, 0.355, 1)'
+      });
+      
+      animation.onfinish = () => {
+        confetti.remove();
+      };
+    }
+    
+    function createPartyPopper() {
+      const celebration = document.getElementById('celebration');
+      const popper = document.createElement('div');
+      popper.className = 'party-popper';
+      popper.textContent = '🎉';
+      
+      // Random position
+      const left = Math.random() * 100;
+      const top = Math.random() * 100;
+      
+      popper.style.left = `${left}%`;
+      popper.style.top = `${top}%`;
+      
+      celebration.appendChild(popper);
+      
+      // Animate party popper
+      const animation = popper.animate([
+        { transform: 'scale(0) rotate(0deg)', opacity: 1 },
+        { transform: 'scale(1.5) rotate(360deg)', opacity: 0 }
+      ], {
+        duration: 1000 + Math.random() * 500,
+        easing: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+      });
+      
+      animation.onfinish = () => {
+        popper.remove();
+      };
+    }
+    
+    function createHurrayText() {
+      const celebration = document.getElementById('celebration');
+      const hurray = document.createElement('div');
+      hurray.className = 'hurray-text';
+      hurray.textContent = 'HURRAY!';
+      
+      celebration.appendChild(hurray);
+      
+      // Animate hurray text
+      const animation = hurray.animate([
+        { transform: 'translate(-50%, -50%) scale(0)', opacity: 0 },
+        { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
+        { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
+        { transform: 'translate(-50%, -50%) scale(1.2)', opacity: 0 }
+      ], {
+        duration: 3000,
+        easing: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+      });
+      
+      animation.onfinish = () => {
+        hurray.remove();
+      };
+    }
+
+    // Sound system
+    let soundEnabled = true;
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    
+    // Sound functions
+    function playSound(type) {
+      if (!soundEnabled) return;
+      
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      // Set sound parameters based on type
+      switch(type) {
+        case 'success':
+          oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
+          gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+          oscillator.start();
+          oscillator.stop(audioContext.currentTime + 0.5);
+          break;
+          
+        case 'error':
+          oscillator.frequency.setValueAtTime(220, audioContext.currentTime); // A3
+          gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+          oscillator.start();
+          oscillator.stop(audioContext.currentTime + 0.3);
+          break;
+          
+        case 'click':
+          oscillator.frequency.setValueAtTime(784, audioContext.currentTime); // G5
+          gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+          oscillator.start();
+          oscillator.stop(audioContext.currentTime + 0.1);
+          break;
+          
+        case 'gameStart':
+          // Play a little melody
+          playMelody([784, 659, 523, 659, 784], [0.15, 0.15, 0.15, 0.15, 0.3]);
+          break;
+          
+        case 'celebration':
+          // Play a celebratory melody
+          playMelody([523.25, 659.25, 783.99, 1046.50, 1318.51, 1567.98], [0.15, 0.15, 0.15, 0.15, 0.15, 0.5]);
+          break;
+          
+        case 'concept':
+          // Play a gentle sound for understanding concepts
+          playMelody([261.63, 329.63, 392.00], [0.3, 0.3, 0.5]);
+          break;
+      }
+    }
+    
+    function playMelody(frequencies, durations) {
+      let time = audioContext.currentTime;
+      
+      frequencies.forEach((freq, i) => {
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        oscillator.frequency.setValueAtTime(freq, time);
+        gainNode.gain.setValueAtTime(0.2, time);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, time + durations[i]);
+        
+        oscillator.start(time);
+        oscillator.stop(time + durations[i]);
+        
+        time += durations[i];
+      });
+    }
+    
+    // Toggle sound
+    document.getElementById('toggleSound').addEventListener('click', function() {
+      soundEnabled = !soundEnabled;
+      const icon = this.querySelector('i');
+      
+      if (soundEnabled) {
+        icon.className = 'fas fa-volume-up';
+        this.classList.remove('muted');
+        playSound('click');
+      } else {
+        icon.className = 'fas fa-volume-mute';
+        this.classList.add('muted');
+      }
+    });
+
+    /* -------- Helpers (step reveals & answer checking) -------- */
+    function startSteps(blockId){
+      const block = document.getElementById(blockId);
+      if(!block) return;
+      const lines = block.querySelectorAll('.step-line');
+      lines.forEach(l => l.style.display = 'none');
+      if(lines.length) lines[0].style.display = 'block';
+      playSound('concept');
+    }
+    
+    function nextStep(blockId){
+      const block = document.getElementById(blockId);
+      if(!block) return;
+      const lines = block.querySelectorAll('.step-line');
+      let shown = 0;
+      for(let i=0;i<lines.length;i++) if(getComputedStyle(lines[i]).display !== 'none') shown++;
+      if(shown < lines.length) {
+        lines[shown].style.display = 'block';
+        playSound('success');
+        // Celebrate on the last step
+        if (shown === lines.length - 1) {
+          setTimeout(celebrate, 500);
+        }
+      }
+    }
+
+    function checkTextMotivate(inputId, correctText, resultId){
+      const val = (document.getElementById(inputId).value || '').trim().toLowerCase().replace(/\s/g,'');
+      const correct = (''+correctText).trim().toLowerCase().replace(/\s/g,'');
+      const resEl = document.getElementById(resultId);
+      if(!resEl){
+        // create a simple inline feedback if result element missing
+        const el = document.createElement('div'); el.style.marginTop='8px';
+        if(val === correct){	
+          el.style.color='#047857';	
+          el.textContent='Nice! Correct ✅';
+          playSound('success');
+          celebrate();
+        } else {	
+          el.style.color='#92400e';	
+          el.textContent='Not quite — try again.';
+          playSound('error');
+        }
+        document.getElementById(inputId).insertAdjacentElement('afterend', el);
+        return;
+      }
+      if(val === correct){
+        resEl.style.color = '#047857';	
+        resEl.textContent = 'Nice! Correct ✅';
+        resEl.className = "result good";
+        playSound('success');
+        celebrate();
+      } else {
+        resEl.style.color = '#92400e';	
+        resEl.textContent = 'Not quite — try again.';
+        resEl.className = "result warn";
+        playSound('error');
+      }
+      resEl.style.display = "block";
+    }
+
+    // NEW FUNCTION for the Cute Scenario Boxes
+    function showScenarioContent(baseId, contentId) {
+        // Hide all content divs related to the baseId
+        document.querySelectorAll(`#${baseId} .scenario-content`).forEach(el => {
+            el.classList.remove('active');
+        });
+        // Show the requested content
+        const target = document.getElementById(`${baseId}-${contentId}`);
+        if (target) {
+            target.classList.add('active');
+        }
+    }
+
+    /* ---------- Game datasets ---------- */
+    const translationData = [
+      { point: [3, 2], origin: [1, 3], result: [2, -1] },
+      { point: [-2, 6], origin: [-3, 2], result: [1, 4] },
+      { point: [5, 7], origin: [2, 3], result: [3, 4] },
+      { point: [0, 0], origin: [2, -1], result: [-2, 1] }
+    ];
+
+    const rotationData = [
+      { point: [5, 3], angle: 45, result: [5.656, -1.414] },
+      { point: [1, 1], angle: 45, result: [1.414, 0] },
+      { point: [0, 4], angle: 90, result: [4, 0] },
+      { point: [2, 0], angle: 90, result: [0, -2] }
+    ];
+
+    const combinedData = [
+      { point: [4, 2], origin: [2, -1], angle: 45, result: [3.535, 0.707] },
+      { point: [6, 4], origin: [1, 1], angle: 90, result: [3, -5] },
+      { point: [3, 0], origin: [1, 1], angle: 180, result: [-2, -1] }
+    ];
+
+    function shuffle(arr){ for(let i=arr.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]] } return arr }
+
+    /* ---------------- Translation Game ---------------- */
+    let transScore = 0;
+    let currentTransProblem = null;
+
+    function initTranslationGame(){
+      const problem = translationData[Math.floor(Math.random() * translationData.length)];
+      currentTransProblem = problem;
+      
+      document.getElementById('trans-prompt').textContent = `Point P(${problem.point[0]}, ${problem.point[1]}) with New Origin O'(${problem.origin[0]}, ${problem.origin[1]})`;
+      document.getElementById('trans-x-input').value = '';
+      document.getElementById('trans-y-input').value = '';
+      document.getElementById('trans-status').textContent = `Score: ${transScore}`;
+      document.getElementById('trans-score-display').textContent = `Score: ${transScore}`;
+      document.getElementById('trans-status').classList.remove('success', 'wrong');
+    }
+
+    function checkTranslation() {
+      const x = parseFloat(document.getElementById('trans-x-input').value);
+      const y = parseFloat(document.getElementById('trans-y-input').value);
+      const correctX = currentTransProblem.result[0];
+      const correctY = currentTransProblem.result[1];
+      
+      if (x === correctX && y === correctY) {
+        transScore++;
+        document.getElementById('trans-status').className = 'game-message success';
+        document.getElementById('trans-status').textContent = `✅ Correct! Score: ${transScore}`;
+        document.getElementById('trans-score-display').textContent = `Score: ${transScore}`;
+        playSound('success');
+        setTimeout(initTranslationGame, 1000);
+      } else {
+        document.getElementById('trans-status').className = 'game-message wrong';
+        document.getElementById('trans-status').textContent = `❌ Try again. Hint: it's (${correctX}, ${correctY})`;
+        playSound('error');
+      }
+    }
+
+    /* ---------------- Rotation Game ---------------- */
+    let rotScore = 0;
+    let currentRotProblem = null;
+
+    function initRotationGame() {
+      const problem = rotationData[Math.floor(Math.random() * rotationData.length)];
+      currentRotProblem = problem;
+      
+      document.getElementById('rot-prompt').textContent = `Point P(${problem.point[0]}, ${problem.point[1]}) with Rotation Angle &theta; = ${problem.angle}°`;
+      document.getElementById('rot-x-input').value = '';
+      document.getElementById('rot-y-input').value = '';
+      document.getElementById('rot-status').textContent = `Score: ${rotScore}`;
+      document.getElementById('rot-score-display').textContent = `Score: ${rotScore}`;
+      document.getElementById('rot-status').classList.remove('success', 'wrong');
+    }
+
+    function checkRotation() {
+      const x = parseFloat(document.getElementById('rot-x-input').value);
+      const y = parseFloat(document.getElementById('rot-y-input').value);
+      const correctX = currentRotProblem.result[0];
+      const correctY = currentRotProblem.result[1];
+
+      // Allow for small rounding errors
+      if (Math.abs(x - correctX) < 0.1 && Math.abs(y - correctY) < 0.1) {
+        rotScore++;
+        document.getElementById('rot-status').className = 'game-message success';
+        document.getElementById('rot-status').textContent = `✅ Correct! Score: ${rotScore}`;
+        document.getElementById('rot-score-display').textContent = `Score: ${rotScore}`;
+        playSound('success');
+        setTimeout(initRotationGame, 1000);
+      } else {
+        document.getElementById('rot-status').className = 'game-message wrong';
+        document.getElementById('rot-status').textContent = `❌ Try again. Hint: it's approximately (${correctX.toFixed(2)}, ${correctY.toFixed(2)})`;
+        playSound('error');
+      }
+    }
+    
+    /* ---------------- Combined Transformation Game ---------------- */
+    let combScore = 0;
+    let currentCombProblem = null;
+
+    function initCombinedGame() {
+      const problem = combinedData[Math.floor(Math.random() * combinedData.length)];
+      currentCombProblem = problem;
+      
+      document.getElementById('comb-prompt').textContent = `Point P(${problem.point[0]}, ${problem.point[1]}) with New Origin O'(${problem.origin[0]}, ${problem.origin[1]}) and Rotation &theta; = ${problem.angle}°`;
+      document.getElementById('comb-x-input').value = '';
+      document.getElementById('comb-y-input').value = '';
+      document.getElementById('comb-status').textContent = `Score: ${combScore}`;
+      document.getElementById('comb-score-display').textContent = `Score: ${combScore}`;
+      document.getElementById('comb-status').classList.remove('success', 'wrong');
+    }
+    
+    function checkCombined() {
+      const x = parseFloat(document.getElementById('comb-x-input').value);
+      const y = parseFloat(document.getElementById('comb-y-input').value);
+      const correctX = currentCombProblem.result[0];
+      const correctY = currentCombProblem.result[1];
+
+      // Allow for small rounding errors
+      if (Math.abs(x - correctX) < 0.1 && Math.abs(y - correctY) < 0.1) {
+        combScore++;
+        document.getElementById('comb-status').className = 'game-message success';
+        document.getElementById('comb-status').textContent = `✅ Correct! Score: ${combScore}`;
+        document.getElementById('comb-score-display').textContent = `Score: ${combScore}`;
+        playSound('success');
+        setTimeout(initCombinedGame, 1000);
+      } else {
+        document.getElementById('comb-status').className = 'game-message wrong';
+        document.getElementById('comb-status').textContent = `❌ Try again. Hint: it's approximately (${correctX.toFixed(2)}, ${correctY.toFixed(2)})`;
+        playSound('error');
+      }
+    }
+
+    /* ---------- show/hide game area helper ---------- */
+    function showGame(gameId){
+      document.querySelectorAll('.game-play-area').forEach(e => e.style.display = 'none');
+      const area = document.getElementById(gameId);
+      if(area){	
+        area.style.display = 'block';	
+        area.scrollIntoView({behavior:'smooth', block:'center'});	
+      }
+      if(gameId === 'translation-game') initTranslationGame();
+      if(gameId === 'rotation-game') initRotationGame();
+      if(gameId === 'combined-game') initCombinedGame();
+    }
+
+    /* ---------- Graph drawing functions ---------- */
+    function drawTranslationGraph(graphId, point, origin, result) {
+      const graph = document.getElementById(graphId);
+      if (!graph) return;
+      
+      // Clear previous content
+      graph.innerHTML = `
+        <div class="graph-grid"></div>
+      `;
+      
+      // Calculate positions for visualization
+      const centerX = graph.offsetWidth / 2;
+      const centerY = graph.offsetHeight / 2;
+      const scale = 30; // pixels per unit
+      
+      // --- Original Axes (x, y) ---
+      graph.innerHTML += `<div class="graph-axis graph-x-axis orig-axis" style="bottom: ${centerY}px; left: 0;"></div>`;
+      graph.innerHTML += `<div class="graph-axis graph-y-axis orig-axis" style="left: ${centerX}px; top: 0;"></div>`;
+      // Original Axis Labels
+      graph.innerHTML += `<div class="axis-label" style="top: ${centerY - 20}px; left: ${graph.offsetWidth - 20}px; color: var(--primary);">x</div>`;
+      graph.innerHTML += `<div class="axis-label" style="top: 0px; left: ${centerX + 10}px; color: var(--primary);">y</div>`;
+      
+      // --- New Axes (X, Y) ---
+      const originX = centerX + origin[0] * scale;
+      const originY = centerY - origin[1] * scale;
+
+      graph.innerHTML += `<div class="graph-axis graph-x-axis new-axis" style="bottom: ${graph.offsetHeight - originY}px; left: 0; background: var(--secondary);"></div>`;
+      graph.innerHTML += `<div class="graph-axis graph-y-axis new-axis" style="left: ${originX}px; top: 0; background: var(--secondary);"></div>`;
+      // New Axis Labels
+      graph.innerHTML += `<div class="axis-label" style="top: ${originY - 20}px; left: ${graph.offsetWidth - 20}px; color: var(--secondary);">X</div>`;
+      graph.innerHTML += `<div class="axis-label" style="top: 0px; left: ${originX + 10}px; color: var(--secondary);">Y</div>`;
+
+      // Draw original origin (O)
+      graph.innerHTML += `<div class="graph-origin" style="left: ${centerX}px; top: ${centerY}px; background: var(--primary);"></div>`;
+      // Draw new origin (O')
+      graph.innerHTML += `<div class="graph-origin" style="left: ${originX}px; top: ${originY}px; background: var(--accent);"></div>`;
+      graph.innerHTML += `<div class="graph-label" style="left: ${originX + 10}px; top: ${originY + 5}px; color: var(--accent);">O'</div>`;
+
+
+      // Draw original point
+      const origX = centerX + point[0] * scale;
+      const origY = centerY - point[1] * scale;
+      
+      const origPoint = document.createElement('div');
+      origPoint.className = 'graph-point';
+      origPoint.style.backgroundColor = '#3b82f6';
+      origPoint.style.left = `${origX}px`;
+      origPoint.style.top = `${origY}px`;
+      graph.appendChild(origPoint);
+      
+      const origLabel = document.createElement('div');
+      origLabel.className = 'graph-label';
+      origLabel.textContent = `P(${point[0]},${point[1]})`;
+      origLabel.style.left = `${origX + 10}px`;
+      origLabel.style.top = `${origY - 10}px`;
+      graph.appendChild(origLabel);
+
+      // Draw line from new origin to translated point (The new coordinate)
+      const transLine = document.createElement('div');
+      transLine.className = 'graph-line graph-transformed';
+      transLine.style.width = `${Math.sqrt(Math.pow(origX - originX, 2) + Math.pow(origY - originY, 2))}px`;
+      transLine.style.left = `${originX}px`;
+      transLine.style.top = `${originY}px`;
+      transLine.style.transform = `rotate(${Math.atan2(originY - origY, origX - originX)}rad)`;
+      graph.appendChild(transLine);
+    }
+    
+    function drawRotationGraph(graphId, point, angle, result) {
+      const graph = document.getElementById(graphId);
+      if (!graph) return;
+      
+      // Clear previous content
+      graph.innerHTML = `
+        <div class="graph-grid"></div>
+      `;
+      
+      // Calculate positions for visualization
+      const centerX = graph.offsetWidth / 2;
+      const centerY = graph.offsetHeight / 2;
+      const scale = 30; // pixels per unit
+      const angleRad = angle * Math.PI / 180;
+
+      // --- Original Axes (x, y) ---
+      graph.innerHTML += `<div class="graph-axis graph-x-axis orig-axis" style="bottom: ${centerY}px; left: 0;"></div>`;
+      graph.innerHTML += `<div class="graph-axis graph-y-axis orig-axis" style="left: ${centerX}px; top: 0;"></div>`;
+      // Original Axis Labels
+      graph.innerHTML += `<div class="axis-label" style="top: ${centerY - 20}px; left: ${graph.offsetWidth - 20}px; color: var(--primary);">x</div>`;
+      graph.innerHTML += `<div class="axis-label" style="top: 0px; left: ${centerX + 10}px; color: var(--primary);">y</div>`;
+      graph.innerHTML += `<div class="graph-origin" style="left: ${centerX}px; top: ${centerY}px; background: var(--primary);"></div>`;
+
+
+      // --- Rotated Axes (X, Y) ---
+      const axisLength = Math.max(graph.offsetWidth, graph.offsetHeight) * 0.8; 
+      
+      // Rotated X-Axis (Capital X)
+      const rotXAxis = document.createElement('div');
+      rotXAxis.className = 'graph-axis new-axis';
+      rotXAxis.style.width = `${axisLength}px`;
+      rotXAxis.style.height = '2px';
+      rotXAxis.style.left = `${centerX - axisLength / 2}px`;
+      rotXAxis.style.top = `${centerY}px`;
+      rotXAxis.style.transform = `rotate(${angleRad}rad)`;
+      graph.appendChild(rotXAxis);
+      
+      // Rotated Y-Axis (Capital Y)
+      const rotYAxis = document.createElement('div');
+      rotYAxis.className = 'graph-axis new-axis';
+      rotYAxis.style.width = '2px';
+      rotYAxis.style.height = `${axisLength}px`;
+      rotYAxis.style.left = `${centerX}px`;
+      rotYAxis.style.top = `${centerY - axisLength / 2}px`;
+      rotYAxis.style.transform = `rotate(${angleRad}rad)`;
+      graph.appendChild(rotYAxis);
+
+      // Rotated Axis Labels (X, Y) - requires finding endpoint of rotated axes
+      graph.innerHTML += `<div class="axis-label" style="left: ${centerX + (Math.cos(angleRad) * (axisLength/2) - 15)}px; top: ${centerY - (Math.sin(angleRad) * (axisLength/2) + 20)}px; color: var(--secondary);">X</div>`;
+      graph.innerHTML += `<div class="axis-label" style="left: ${centerX + (Math.sin(angleRad) * (axisLength/2) + 10)}px; top: ${centerY - (Math.cos(angleRad) * (axisLength/2) + 20)}px; color: var(--secondary);">Y</div>`;
+
+
+      // --- Point P (fixed) ---
+      const pointX = centerX + point[0] * scale;
+      const pointY = centerY - point[1] * scale;
+      
+      const pPoint = document.createElement('div');
+      pPoint.className = 'graph-point';
+      pPoint.style.backgroundColor = '#f59e0b';
+      pPoint.style.left = `${pointX}px`;
+      pPoint.style.top = `${pointY}px`;
+      graph.appendChild(pPoint);
+      
+      const pLabel = document.createElement('div');
+      pLabel.className = 'graph-label';
+      pLabel.textContent = `P(Original) / P' (New)`;
+      pLabel.style.left = `${pointX + 10}px`;
+      pLabel.style.top = `${pointY - 10}px`;
+      graph.appendChild(pLabel);
+
+      // Draw line from origin to point
+      const pLine = document.createElement('div');
+      pLine.className = 'graph-line graph-transformed';
+      pLine.style.width = `${Math.sqrt(Math.pow(pointX - centerX, 2) + Math.pow(pointY - centerY, 2))}px`;
+      pLine.style.left = `${centerX}px`;
+      pLine.style.top = `${centerY}px`;
+      pLine.style.transform = `rotate(${Math.atan2(centerY - pointY, pointX - centerX)}rad)`;
+      graph.appendChild(pLine);
+
+    }
+    
+    function drawCombinedGraph(graphId, point, origin, angle, result) {
+      const graph = document.getElementById(graphId);
+      if (!graph) return;
+      
+      // Clear previous content
+      graph.innerHTML = `
+        <div class="graph-grid"></div>
+      `;
+      
+      // Calculate positions for visualization
+      const centerX = graph.offsetWidth / 2;
+      const centerY = graph.offsetHeight / 2;
+      const scale = 30; // pixels per unit
+      const angleRad = angle * Math.PI / 180;
+
+      // --- Original Axes (x, y) ---
+      graph.innerHTML += `<div class="graph-axis graph-x-axis orig-axis" style="bottom: ${centerY}px; left: 0;"></div>`;
+      graph.innerHTML += `<div class="graph-axis graph-y-axis orig-axis" style="left: ${centerX}px; top: 0;"></div>`;
+      // Original Axis Labels
+      graph.innerHTML += `<div class="axis-label" style="top: ${centerY - 20}px; left: ${graph.offsetWidth - 20}px; color: var(--primary);">x</div>`;
+      graph.innerHTML += `<div class="axis-label" style="top: 0px; left: ${centerX + 10}px; color: var(--primary);">y</div>`;
+      graph.innerHTML += `<div class="graph-origin" style="left: ${centerX}px; top: ${centerY}px; background: var(--primary);"></div>`;
+      graph.innerHTML += `<div class="graph-label" style="left: ${centerX + 10}px; top: ${centerY + 5}px; color: var(--primary);">O(0,0)</div>`;
+      
+      // --- New Origin (O') ---
+      const originX = centerX + origin[0] * scale;
+      const originY = centerY - origin[1] * scale;
+
+      // Draw new origin (O')
+      graph.innerHTML += `<div class="graph-origin" style="left: ${originX}px; top: ${originY}px; background: var(--accent);"></div>`;
+      graph.innerHTML += `<div class="graph-label" style="left: ${originX + 10}px; top: ${originY + 5}px; color: var(--accent);">O'(${origin[0]},${origin[1]})</div>`;
+
+
+      // --- Rotated Axes (X, Y) - Pivot at O' ---
+      const axisLength = Math.max(graph.offsetWidth, graph.offsetHeight) * 0.8; 
+      
+      // Rotated X-Axis (Capital X)
+      const rotXAxis = document.createElement('div');
+      rotXAxis.className = 'graph-axis new-axis';
+      rotXAxis.style.width = `${axisLength}px`;
+      rotXAxis.style.height = '2px';
+      rotXAxis.style.left = `${originX - axisLength / 2}px`;
+      rotXAxis.style.top = `${originY}px`;
+      rotXAxis.style.transform = `rotate(${angleRad}rad)`;
+      graph.appendChild(rotXAxis);
+      
+      // Rotated Y-Axis (Capital Y)
+      const rotYAxis = document.createElement('div');
+      rotYAxis.className = 'graph-axis new-axis';
+      rotYAxis.style.width = '2px';
+      rotYAxis.style.height = `${axisLength}px`;
+      rotYAxis.style.left = `${originX}px`;
+      rotYAxis.style.top = `${originY - axisLength / 2}px`;
+      rotYAxis.style.transform = `rotate(${angleRad}rad)`;
+      graph.appendChild(rotYAxis);
+
+      // Rotated Axis Labels (X, Y) - relative to O'
+      graph.innerHTML += `<div class="axis-label" style="left: ${originX + (Math.cos(angleRad) * (axisLength/2) - 15)}px; top: ${originY - (Math.sin(angleRad) * (axisLength/2) + 20)}px; color: var(--secondary);">X</div>`;
+      graph.innerHTML += `<div class="axis-label" style="left: ${originX + (Math.sin(angleRad) * (axisLength/2) + 10)}px; top: ${originY - (Math.cos(angleRad) * (axisLength/2) + 20)}px; color: var(--secondary);">Y</div>`;
+
+
+      // --- Point P (fixed) ---
+      const pointX = centerX + point[0] * scale;
+      const pointY = centerY - point[1] * scale;
+      
+      const pPoint = document.createElement('div');
+      pPoint.className = 'graph-point';
+      pPoint.style.backgroundColor = '#3b82f6';
+      pPoint.style.left = `${pointX}px`;
+      pPoint.style.top = `${pointY}px`;
+      graph.appendChild(pPoint);
+
+      // Draw transformed point (P'' in the new system)
+      const rotPoint = document.createElement('div');
+      rotPoint.className = 'graph-point';
+      rotPoint.style.backgroundColor = '#f59e0b';
+      rotPoint.style.left = `${originX + result[0] * scale}px`;
+      rotPoint.style.top = `${originY - result[1] * scale}px`;
+      graph.appendChild(rotPoint);
+      
+      const rotLabel = document.createElement('div');
+      rotLabel.className = 'graph-label';
+      rotLabel.textContent = `P''(${result[0].toFixed(2)},${result[1].toFixed(2)})`;
+      rotLabel.style.left = `${originX + result[0] * scale + 10}px`;
+      rotLabel.style.top = `${originY - result[1] * scale - 10}px`;
+      graph.appendChild(rotLabel);
+      
+
+      // Draw line from new origin (O') to the final point (P'')
+      const rotLine = document.createElement('div');
+      rotLine.className = 'graph-line graph-transformed';
+      rotLine.style.width = `${Math.sqrt(Math.pow(result[0] * scale, 2) + Math.pow(result[1] * scale, 2))}px`;
+      rotLine.style.left = `${originX}px`;
+      rotLine.style.top = `${originY}px`;
+      // Calculate rotation based on the new point (X, Y) coordinates
+      rotLine.style.transform = `rotate(${Math.atan2(-result[1], result[0])}rad) rotate(${angleRad}rad)`;
+      graph.appendChild(rotLine);
+    }
+
+
+    /* ---------- init on load ---------- */
+    window.addEventListener('load', function(){
+      // hide game areas
+      document.querySelectorAll('.game-play-area').forEach(g => g.style.display = 'none');
+      
+      // Draw graphs for examples
+      drawTranslationGraph('translation-graph-1', [3, 2], [1, 3], [2, -1]);
+      drawTranslationGraph('translation-graph-2', [-2, 6], [-3, 2], [1, 4]);
+      drawRotationGraph('rotation-graph-1', [5, 3], 45, [5.656, -1.414]);
+      drawRotationGraph('rotation-graph-2', [3, -7], 30, [0.098, -7.428]);
+      drawCombinedGraph('combined-graph-1', [4, 2], [2, -1], 45, [3.535, 0.707]);
+      
+      // Header scroll effect
+      window.addEventListener('scroll', function() {
+        const header = document.querySelector('header');
+        if (window.scrollY > 50) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      });
+
+      // Animation on scroll
+      const animateElements = document.querySelectorAll('.animate');
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const delay = entry.target.classList.contains('delay-1') ? 0.2 : 
+                         entry.target.classList.contains('delay-2') ? 0.4 :
+                         entry.target.classList.contains('delay-3') ? 0.6 : 0;
+            
+            setTimeout(() => {
+              entry.target.style.opacity = 1;
+              entry.target.style.transform = 'translateY(0)';
+            }, delay * 1000);
+          }
+        });
+      }, { threshold: 0.1 });
+      
+      animateElements.forEach(element => {
+        element.style.opacity = 0;
+        element.style.transform = 'translateY(20px)';
+        element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(element);
+      });
+      
+      // Create floating particles for hero section
+      createParticles();
+      
+      // Play welcome sound
+      setTimeout(() => {
+        playSound('gameStart');
+      }, 500);
+    });
+    
+    function createParticles() {
+      const particlesContainer = document.querySelector('.particles');
+      for (let i = 0; i < 15; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        
+        const size = Math.random() * 10 + 5;
+        const posX = Math.random() * 100;
+        const posY = Math.random() * 100;
+        const delay = Math.random() * 5;
+        
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.left = `${posX}%`;
+        particle.style.top = `${posY}%`;
+        particle.style.animationDelay = `${delay}s`;
+        
+        particlesContainer.appendChild(particle);
+      }
+    }
+
+    // nav links smooth scroll
+    document.querySelectorAll('.nav-links a').forEach(a => {
+      a.addEventListener('click', function(e){
+        e.preventDefault();
+        const href = this.getAttribute('href') || '#';
+        if(href.startsWith('#')){
+          const t = document.querySelector(href);
+          if(t) t.scrollIntoView({behavior:'smooth', block:'center'});
+        }
+        playSound('click');
+      });
+    });
+    
+    // FAB scroll to games
+    document.querySelector('.fab').addEventListener('click', function() {
+      document.querySelector('#games').scrollIntoView({behavior:'smooth'});
+      playSound('click');
+    });
+  </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // helper functions
+  function round(v) { return Math.round((v + Number.EPSILON) * 100) / 100; }
+  function expand(bounds, pad=0.3) {
+    const w = Math.max(bounds.maxX - bounds.minX, 1);
+    const h = Math.max(bounds.maxY - bounds.minY, 1);
+    return { minX: bounds.minX - w*pad, maxX: bounds.maxX + w*pad, minY: bounds.minY - h*pad, maxY: bounds.maxY + h*pad };
+  }
+  function toPerc(x, y, b) {
+    const left = ((x - b.minX) / (b.maxX - b.minX)) * 100;
+    const top = (1 - ((y - b.minY) / (b.maxY - b.minY))) * 100;
+    return {left, top};
+  }
+  function makeSVG(tag) { return document.createElementNS('http://www.w3.org/2000/svg', tag); }
+
+  // Find all graphs in the document that are visible in examples
+  const graphs = document.querySelectorAll('.graph');
+  graphs.forEach(graph => {
+    try {
+      // avoid processing graphs we've already enhanced
+      if (graph.dataset.clarityEnhanced === '1') return;
+      graph.dataset.clarityEnhanced = '1';
+
+      // determine context container to read nearby text for equations
+      const container = graph.closest('.example-box') || graph.closest('section') || graph.closest('.card') || graph;
+      const text = container ? container.innerText : graph.innerText;
+
+      // parse original point P(x,y), origin O'(h,k), theta
+      const pMatch = text.match(/P\(\s*([-\d.]+)\s*,\s*([-\d.]+)\s*\)/i);
+      const oMatch = text.match(/O'?\(\s*([-\d.]+)\s*,\s*([-\d.]+)\s*\)/i);
+      const thetaMatch = text.match(/θ\s*=?\s*([-\d.]+)\s*°|theta\s*=?\s*([-\d.]+)\s*°/i);
+
+      // Explicit final coordinates mentioned in text (New coordinates or In the new coordinate system)
+      const explicit = text.match(/New coordinates[:\s]*\(?\s*([-\d.]+)\s*,\s*([-\d.]+)\s*\)?/i)
+                    || text.match(/In the new coordinate system[,:\s]*\(?\s*([-\d.]+)\s*,\s*([-\d.]+)\s*\)?/i);
+
+      // hidden step-lines might contain final coords
+      const stepLines = container ? container.querySelectorAll('.step-line') : [];
+
+      let finalMatch = explicit ? [parseFloat(explicit[1]), parseFloat(explicit[2])] : null;
+      if (!finalMatch && stepLines.length) {
+        for (let i=stepLines.length-1;i>=0;i--) {
+          const m = stepLines[i].innerText.match(/\(?\s*([-\d.]+)\s*,\s*([-\d.]+)\s*\)?/);
+          if (m) { finalMatch = [parseFloat(m[1]), parseFloat(m[2])]; break; }
+        }
+      }
+
+      let orig = pMatch ? [parseFloat(pMatch[1]), parseFloat(pMatch[2])] : null;
+      let origin = oMatch ? [parseFloat(oMatch[1]), parseFloat(oMatch[2])] : null;
+      let theta = thetaMatch ? parseFloat(thetaMatch[1]||thetaMatch[2]) : null;
+
+      // decide points to plot
+      let points = [];
+      let explanation = '';
+      let resultText = '';
+
+      if (orig && origin) {
+        const newX = orig[0] - origin[0];
+        const newY = orig[1] - origin[1];
+        points.push({type:'orig', x:orig[0], y:orig[1], label:`P(${orig[0]}, ${orig[1]})`});
+        points.push({type:'new', x:newX, y:newY, label:`P'(${round(newX)}, ${round(newY)})`});
+        resultText = `Result: P(${orig[0]}, ${orig[1]}) → P'(${round(newX)}, ${round(newY)})`;
+        explanation = `This graph shows the translation of point P(${orig[0]}, ${orig[1]}) by the new origin O'(${origin[0]}, ${origin[1]}). ` +
+                      `Subtracting the origin gives the new coordinates P'(${round(newX)}, ${round(newY)}). ` +
+                      `Translation moves the point without rotating the axes.`;
+      } else if (orig && theta !== null) {
+        const rad = theta * Math.PI / 180.0;
+        const x = orig[0], y = orig[1];
+        const X = x*Math.cos(rad) + y*Math.sin(rad);
+        const Y = y*Math.cos(rad) - x*Math.sin(rad);
+        points.push({type:'orig', x:x, y:y, label:`P(${x}, ${y})`});
+        points.push({type:'new', x:X, y:Y, label:`P'(${round(X)}, ${round(Y)})`});
+        resultText = `Result: P(${x}, ${y}) → P'(${round(X)}, ${round(Y)})`;
+        explanation = `This graph shows the rotation of axes by θ = ${theta}°. Using the rotation formulas gives ` +
+                      `P'(${round(X)}, ${round(Y)}). The point's position is transformed by the rotated axes while the origin stays fixed.`;
+      } else if (orig && finalMatch) {
+        points.push({type:'orig', x:orig[0], y:orig[1], label:`P(${orig[0]}, ${orig[1]})`});
+        points.push({type:'new', x:finalMatch[0], y:finalMatch[1], label:`P'(${round(finalMatch[0])}, ${round(finalMatch[1])})`});
+        resultText = `Result: P(${orig[0]}, ${orig[1]}) → P'(${round(finalMatch[0])}, ${round(finalMatch[1])})`;
+        explanation = `The original point is P(${orig[0]}, ${orig[1]}) and the final coordinates are given as P'(${round(finalMatch[0])}, ${round(finalMatch[1])}). ` +
+                      `This visual confirms the transformation result.`;
+      } else if (finalMatch) {
+        points.push({type:'new', x:finalMatch[0], y:finalMatch[1], label:`P'(${round(finalMatch[0])}, ${round(finalMatch[1])})`});
+        resultText = `Result: P'(${round(finalMatch[0])}, ${round(finalMatch[1])})`;
+        explanation = `The final coordinates for this example are P'(${round(finalMatch[0])}, ${round(finalMatch[1])}).`;
+      } else {
+        // nothing parseable; skip enhancement for this graph
+        return;
+      }
+
+      // compute coordinate bounds and expand for padding
+      const xs = points.map(p=>p.x), ys = points.map(p=>p.y);
+      let minX = Math.min(...xs), maxX = Math.max(...xs), minY = Math.min(...ys), maxY = Math.max(...ys);
+      if (minX === maxX) { minX -= 1; maxX += 1; }
+      if (minY === maxY) { minY -= 1; maxY += 1; }
+      const bounds = expand({minX, maxX, minY, maxY}, 0.35);
+      graph._coordBounds = bounds;
+
+      // place points and labels
+      const placed = {};
+      points.forEach(pt => {
+        const p = toPerc(pt.x, pt.y, bounds);
+        if (pt.type === 'orig') {
+          const el = document.createElement('div'); el.className='orig-point'; el.style.left = p.left + '%'; el.style.top = p.top + '%'; graph.appendChild(el);
+          const lab = document.createElement('div'); lab.className='orig-label'; lab.style.left = p.left + '%'; lab.style.top = p.top + '%'; lab.textContent = pt.label; graph.appendChild(lab);
+          placed.orig = p;
+        } else {
+          const el = document.createElement('div'); el.className='answer-point'; el.style.left = p.left + '%'; el.style.top = p.top + '%'; graph.appendChild(el);
+          const lab = document.createElement('div'); lab.className='answer-label'; lab.style.left = p.left + '%'; lab.style.top = p.top + '%'; lab.textContent = pt.label; graph.appendChild(lab);
+          placed.new = p;
+        }
+      });
+
+      // draw svg connector if both points exist
+      const svg = makeSVG('svg'); svg.setAttribute('class','connector-svg'); svg.setAttribute('viewBox','0 0 100 100');
+      svg.style.width = '100%'; svg.style.height = '100%';
+      // defs marker
+      const defs = makeSVG('defs'); const marker = makeSVG('marker');
+      marker.setAttribute('id','arrowhead_clarity'); marker.setAttribute('markerWidth','8'); marker.setAttribute('markerHeight','8'); marker.setAttribute('refX','6'); marker.setAttribute('refY','3'); marker.setAttribute('orient','auto');
+      const path = makeSVG('path'); path.setAttribute('d','M0,0 L0,6 L6,3 z'); path.setAttribute('fill','#f59e0b');
+      marker.appendChild(path); defs.appendChild(marker); svg.appendChild(defs);
+
+      if (placed.orig && placed.new) {
+        const x1 = placed.orig.left, y1 = placed.orig.top, x2 = placed.new.left, y2 = placed.new.top;
+        const line = makeSVG('line'); line.setAttribute('x1', x1); line.setAttribute('y1', y1); line.setAttribute('x2', x2); line.setAttribute('y2', y2);
+        line.setAttribute('class','connector-line'); line.setAttribute('marker-end','url(#arrowhead_clarity)');
+        svg.appendChild(line);
+      }
+
+      // add legend
+      const legend = document.createElement('div'); legend.className='mini-legend';
+      legend.innerHTML = '<div class=\"legend-item\"><span class=\"legend-swatch legend-orig\"></span>Original</div><div class=\"legend-item\"><span class=\"legend-swatch legend-new\"></span>New</div>';
+      graph.appendChild(legend);
+
+      // append svg to graph
+      graph.appendChild(svg);
+
+      // add note card under graph with result and explanation
+      const note = document.createElement('div'); note.className='graph-note';
+      const strong = document.createElement('strong'); strong.textContent = resultText;
+      const para = document.createElement('div'); para.textContent = explanation;
+      note.appendChild(strong); note.appendChild(para);
+
+      // insert after graph element
+      if (graph.parentNode) {
+        if (graph.nextSibling) graph.parentNode.insertBefore(note, graph.nextSibling);
+        else graph.parentNode.appendChild(note);
+      }
+
+    } catch(e) {
+      console.error('Clarity enhancement error', e);
+    }
+  });
+});
+</script>
+
+</body>
+</html>

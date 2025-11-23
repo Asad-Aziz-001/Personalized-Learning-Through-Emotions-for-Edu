@@ -1,0 +1,1834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sentellect - Chapter 1: Functions & Limits</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+  
+  <style>
+    /* ===== Base Styles ===== */
+    :root {
+      --primary: #1e40af;
+      --primary-light: #3b82f6;
+      --primary-dark: #1e3a8a;
+      --secondary: #f59e0b;
+      --accent: #ec4899;
+      --text: #1e293b;
+      --text-light: #64748b;
+      --text-lighter: #94a3b8;
+      --bg: #f8fafc;
+      --white: #ffffff;
+      --gray: #e2e8f0;
+      --gray-light: #f1f5f9;
+      --success: #10b981;
+      --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      --hover-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    
+    /* Override for content h1 */
+    .content-h1 {
+        font-size: 2.2rem;
+        color: var(--primary);
+        margin-bottom: 15px;
+        position: relative;
+        display: inline-block;
+        text-align: center;
+        width: 100%;
+    }
+    .content-h1::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: var(--secondary);
+        border-radius: 2px;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    section {
+      padding: 60px 0;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .section-title h2 {
+      font-size: 2.2rem;
+      color: var(--primary);
+      margin-bottom: 15px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title h2::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: var(--secondary);
+      border-radius: 2px;
+    }
+
+    .section-title p {
+      color: var(--text-light);
+      font-size: 1.1rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 28px;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      text-align: center;
+      cursor: pointer;
+    }
+    
+    /* Style for content buttons to match template */
+    .card button {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      text-align: center;
+      cursor: pointer;
+      background-color: var(--primary);
+      color: var(--white);
+      border: none;
+      margin: 5px 2px;
+    }
+    
+    .card button:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+    
+    .game-link {
+      display: inline-block;
+      padding: 12px 28px;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      text-align: center;
+      cursor: pointer;
+      background-color: var(--success);
+      color: var(--white);
+    }
+    .game-link:hover {
+      background-color: #0d9488;
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--white);
+      box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(30, 64, 175, 0.4);
+    }
+
+    /* ===== Animations ===== */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .animate {
+      animation: fadeIn 0.8s ease forwards;
+    }
+
+    .delay-1 { animation-delay: 0.2s; }
+    .delay-2 { animation-delay: 0.4s; }
+    .delay-3 { animation-delay: 0.6s; }
+
+    /* ===== Header/Navbar ===== */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      background-color: var(--white);
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    header.scrolled {
+      padding: 10px 0;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: var(--white);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 18px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(30, 64, 175, 0.2);
+    }
+
+    .logo-text {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      transition: all 0.3s ease;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 30px;
+    }
+
+    .nav-links a {
+      font-weight: 500;
+      position: relative;
+      padding: 5px 0;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      transition: width 0.3s ease;
+      border-radius: 2px;
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      width: 100%;
+    }
+
+    .nav-links a.active {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .auth-buttons {
+      display: flex;
+      gap: 15px;
+    }
+
+    .login-btn {
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .login-btn:hover {
+      color: var(--primary);
+    }
+
+    .signup-btn {
+      padding: 8px 20px;
+      border-radius: 50px;
+      background: linear-gradient(to right, var(--primary), var(--primary-light));
+      color: var(--white);
+      font-weight: 500;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(30, 64, 175, 0.25);
+    }
+
+    .signup-btn:hover {
+      background: linear-gradient(to right, var(--primary-dark), var(--primary));
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(30, 64, 175, 0.35);
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--primary);
+      cursor: pointer;
+    }
+    
+    /* ===== Hero Section ===== */
+    .hero {
+      position: relative;
+      padding: 160px 0 70px;
+      background: linear-gradient(135deg, var(--primary), #004e92);
+      color: var(--white);
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1SignalskIwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3QgZmlsbD0idXJsKCNwYXR0ZXJuKSIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIvPjwvc3ZnPg==');
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-size: 2.8rem;
+      margin-bottom: 20px;
+      line-height: 1.2;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .hero h1 span {
+      color: var(--secondary);
+      position: relative;
+    }
+
+    .hero h1 span::after {
+      content: '';
+      position: absolute;
+      bottom: 5px;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background-color: rgba(255, 255, 255, 0.3);
+      z-index: -1;
+      border-radius: 4px;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 40px;
+      opacity: 0.9;
+    }
+
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .hero .btn-secondary {
+      background-color: transparent;
+      color: var(--white);
+      border-color: var(--white);
+    }
+
+    .hero .btn-secondary:hover {
+      background-color: var(--white);
+      color: var(--primary);
+    }
+
+    .floating-shape {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      z-index: 0;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .shape-1 {
+      width: 150px;
+      height: 150px;
+      top: 10%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .shape-2 {
+      width: 100px;
+      height: 100px;
+      bottom: 15%;
+      right: 10%;
+      animation-delay: 0.5s;
+    }
+
+    .shape-3 {
+      width: 80px;
+      height: 80px;
+      top: 30%;
+      right: 20%;
+      animation-delay: 1s;
+    }
+    
+    /* ===== Card Styles ===== */
+    .card {
+      background-color: var(--white);
+      border-radius: 16px;
+      padding: 25px;
+      margin: 20px 0;
+      box-shadow: var(--card-shadow);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--primary), var(--secondary));
+      transition: width 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--hover-shadow);
+    }
+    
+    .card:hover::before {
+      width: 8px;
+    }
+
+    .card h2 {
+      color: var(--primary);
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    .card h3 {
+      color: var(--primary);
+      font-size: 1.4rem;
+      margin: 20px 0 15px;
+      font-weight: 600;
+      position: relative;
+      padding-left: 15px;
+    }
+    
+    .card h3::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 6px;
+      height: 6px;
+      background: var(--secondary);
+      border-radius: 50%;
+    }
+
+    .card p {
+      color: var(--text-light);
+      margin-bottom: 15px;
+      line-height: 1.7;
+    }
+    
+    .math-expression {
+      font-family: 'Courier New', monospace;
+      font-size: 18px;
+      padding: 12px;
+      background-color: #f5f5f5;
+      border-radius: 5px;
+      margin: 12px 0;
+      overflow-x: auto;
+    }
+    
+    /* Special card styles from chapter1_high.html */
+    .jingle-box {
+      background: #fff3cd;
+      border: 2px solid #f1c40f;
+    }
+    
+    #q8 {
+      border:2px solid #6a5acd;
+      background:#f9f7ff;
+    }
+    #q8 h2 { color:#6a5acd; }
+    
+    #qX {
+      border:2px solid #6a5acd;
+      background:#f9f7ff;
+    }
+    #qX h2 { color:#6a5acd; }
+    #qX h3 { color:#6a5acd; }
+    
+    /* ===== Footer ===== */
+    .footer {
+      background: linear-gradient(to bottom, var(--primary-dark), #0f172a);
+      color: var(--white);
+      padding: 60px 0 20px;
+      position: relative;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 10px;
+      background: linear-gradient(90deg, var(--secondary), var(--primary));
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+
+    .footer-about {
+      grid-column: span 2;
+    }
+
+    .footer-logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .footer-logo-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--white), var(--gray));
+      color: var(--primary);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .footer-about p {
+      opacity: 0.8;
+      margin-bottom: 25px;
+      line-height: 1.7;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 15px;
+    }
+
+    .social-link {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+      background: linear-gradient(135deg, var(--secondary), var(--accent));
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
+    }
+
+    .footer-links h3 {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      position: relative;
+      padding-bottom: 10px;
+      color: var(--white);
+    }
+
+    .footer-links h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 3px;
+      background: linear-gradient(to right, var(--secondary), var(--accent));
+    }
+
+    .footer-links ul {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 12px;
+    }
+
+    .footer-links a {
+      opacity: 0.8;
+      transition: all 0.3s ease;
+      position: relative;
+      padding-left: 15px;
+    }
+
+    .footer-links a::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      opacity: 1;
+      padding-left: 20px;
+    }
+
+    .footer-links a:hover::before {
+      opacity: 1;
+      left: -5px;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-bottom p {
+      opacity: 0.7;
+      margin-bottom: 15px;
+    }
+
+    .footer-tags {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 5px 15px;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+    }
+
+    .tag:hover {
+      background: linear-gradient(to right, var(--secondary), var(--accent));
+      color: var(--text);
+      transform: translateY(-2px);
+    }
+    
+    /* ===== Floating Action Button ===== */
+    .fab {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: 0 6px 15px rgba(30, 64, 175, 0.3);
+      cursor: pointer;
+      z-index: 999;
+      transition: all 0.3s ease;
+      animation: pulse 2s infinite;
+    }
+    
+    .fab:hover {
+      transform: scale(1.1) rotate(90deg);
+      box-shadow: 0 8px 20px rgba(30, 64, 175, 0.4);
+    }
+    
+    /* ===== Responsive Styles ===== */
+    @media (max-width: 992px) {
+      .nav-links {
+        gap: 20px;
+      }
+      
+      .footer-content {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .footer-about {
+        grid-column: span 2;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 15px 0;
+      }
+      
+      .nav-links {
+        display: none;
+      }
+      
+      .mobile-menu-btn {
+        display: block;
+      }
+      
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+      
+      .hero-buttons {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .footer-content {
+        grid-template-columns: 1fr;
+      }
+      
+      .footer-about {
+        grid-column: span 1;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .section-title h2 {
+        font-size: 1.8rem;
+      }
+      
+      .hero {
+        padding: 140px 0 60px;
+      }
+      
+      .hero h1 {
+        font-size: 1.8rem;
+      }
+      
+      .hero p {
+        font-size: 1rem;
+      }
+    }
+    
+    /* MathJax styling */
+    .MathJax {
+      font-size: 1.1em;
+    }
+    
+    @keyframes breathe {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.5); }
+    }
+    
+  </style>
+  
+  <style>
+    #fallArea {
+      position: relative;
+      width: 120px;
+      height: 300px;
+      margin: 20px auto;
+      border: 2px solid #333;
+      background: linear-gradient(white, lightblue);
+      overflow: hidden;
+      border-radius: 10px;
+    }
+    #stone {
+      position: absolute;
+      top: 0;
+      left: 40px;
+      font-size: 50px;
+      transition: top 0.2s;
+    }
+    #ground {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 20px;
+      background: green;
+    }
+
+    .chapter-end {
+      margin-top: 60px;
+      padding: 30px;
+      border: 3px dashed #32cd32;
+      border-radius: 20px;
+      background: #f0fff0;
+      text-align: center;
+      animation: glow 2s infinite alternate;
+    }
+    .chapter-end h2 {
+      color: #2e8b57;
+      font-size: 26px;
+      animation: bounce 2s infinite;
+    }
+    .chapter-end .highlight {
+      color: #6a5acd;
+      font-size: 18px;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+    .motivation-box {
+      background: #f0faff;
+      border: 2px solid #87ceeb;
+      border-radius: 15px;
+      padding: 20px;
+      margin-top: 20px;
+      animation: fadeIn 3s ease-in-out;
+    }
+    .motivation-box h3 {
+      color: #007acc;
+    }
+
+    /* ✨ Animations */
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    @keyframes glow {
+      from { box-shadow: 0 0 10px #32cd32; }
+      to { box-shadow: 0 0 20px #6a5acd; }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+  
+</head>
+<body>
+
+  <header id="header">
+    <div class="container">
+      <nav class="navbar">
+        <a href="#" class="logo">
+          <div class="logo-icon">S</div>
+          <span class="logo-text">Sentellect</span>
+        </a>
+        
+        <ul class="nav-links">
+          <li><a href="#" class="active">Chapter 1</a></li>
+          <li><a href="#chapter-content">Functions</a></li>
+          <li><a href="#chapter-content">Limits</a></li>
+        </ul>
+    
+        <button class="mobile-menu-btn">
+          <i class="fas fa-bars"></i>
+        </button>
+      </nav>
+    </div>
+  </header>
+  
+  <section class="hero">
+    <div class="floating-shape shape-1"></div>
+    <div class="floating-shape shape-2"></div>
+    <div class="floating-shape shape-3"></div>
+    
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="animate">Chapter 1: <span>Function & Limits</span></h1>
+        <p class="animate delay-1">Explore core concepts of functions, domains, ranges, and introductory limits.</p>
+        <div class="hero-buttons">
+          <a href="#chapter-content" class="btn btn-primary animate delay-2">Start Learning</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+    <section id="chapter-content" class="section">
+      
+      <div class="card animate">
+        <h2>🎮 Play the Function Machine</h2>
+        <p>Click the button below to try the interactive function machine game:</p>
+        <a href="https://www.mathplayground.com/functionmachine.html" target="_blank" class="game-link">
+          🔗 Play Function Machine
+        </a>
+      </div>
+
+      <div class="card animate">
+        <h2>📘 Step-by-Step Solving: f(x) = x² - x</h2>
+        <p>Plug in \( x = -2 \)</p>
+        <button onclick="showStep(1)">Step 1</button>
+        <button onclick="showStep(2)">Step 2</button>
+        <button onclick="showStep(3)">Step 3</button>
+        <button onclick="showStep(4)">Final Answer</button>
+        <p id="solution"></p>
+      </div>
+
+      <div class="card animate">
+        <h2>✍️ First Principle Exercise</h2>
+        <p>Find and simplify \( \dfrac{f(a+h) - f(a)}{h} \) where:</p>
+        <ul>
+          <li>(i) \( f(x) = 6x - 9 \)</li>
+          <li>(ii) \( f(x) = \sin x \)</li>
+          <li>(iii) \( f(x) = x^3 + 2x^2 - 1 \)</li>
+          <li>(iv) \( f(x) = \cos x \)</li>
+        </ul>
+        <p>Select a function and values of <code>a</code> and <code>h</code> to see human-friendly steps:</p>
+
+        <label for="fn">Choose Function</label>
+        <select id="fn">
+          <option value="linear">(i) f(x) = 6x - 9</option>
+          <option value="sin">(ii) f(x) = sin x</option>
+          <option value="poly">(iii) f(x) = x³ + 2x² - 1</option>
+          <option value="cos">(iv) f(x) = cos x</option>
+        </select>
+
+        <div style="margin-top:10px; display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div>
+            <label for="a">Value of a</label>
+            <input id="a" type="number" step="any" value="2">
+          </div>
+          <div>
+            <label for="h">Value of h</label>
+            <input id="h" type="number" step="any" value="0.1">
+          </div>
+        </div>
+
+        <div style="margin-top:12px; display:flex; gap:10px; align-items:center;">
+          <button id="run">Show Steps</button>
+          <button id="limit">Show Limit as h → 0</button>
+        </div>
+
+        <div class="steps" id="steps"></div>
+        <pre id="numeric">—</pre>
+      </div>
+
+      <div class="card animate">
+        <h2>📘 Question 3: Express as Functions</h2>
+        <p>(a) The perimeter P of a square as a function of its area A.</p>
+        <button onclick="showQ3('square',1)">Step 1</button>
+        <button onclick="showQ3('square',2)">Step 2</button>
+        <button onclick="showQ3('square',3)">Final Answer</button>
+        <p id="q3square"></p>
+
+        <p>(b) The area A of a circle as a function of its circumference C.</p>
+        <button onclick="showQ3('circle',1)">Step 1</button>
+        <button onclick="showQ3('circle',2)">Step 2</button>
+        <button onclick="showQ3('circle',3)">Final Answer</button>
+        <p id="q3circle"></p>
+
+        <p>(c) The volume V of a cube as a function of the area A of its base.</p>
+        <button onclick="showQ3('cube',1)">Step 1</button>
+        <button onclick="showQ3('cube',2)">Step 2</button>
+        <button onclick="showQ3('cube',3)">Final Answer</button>
+        <p id="q3cube"></p>
+      </div>
+
+      <div class="card animate">
+        <h2>🔎 Types of Functions (Interactive Graphs)</h2>
+        <p>Select function type to see its graph:</p>
+        <select id="functionSelect" onchange="plotFunction()">
+          <option value="x+3">One-to-One (f(x) = x + 3)</option>
+          <option value="x*x">Many-to-One (f(x) = x²)</option>
+          <option value="identity">Identity (f(x) = x)</option>
+          <option value="constant">Constant (f(x) = 7)</option>
+        </select>
+        <canvas id="functionChart" style="max-width: 100%; height: 350px;"></canvas>
+      </div>
+
+      <div class="card jingle-box animate">
+        <h2>🎶 Domain & Range Jingle</h2>
+        <p id="jingleText">
+          Domain is where x can go,<br>
+          Range is y, the high and low.<br>
+          Check the roots and check the line,<br>
+          Make sure values are all fine.<br>
+          Domain is where x can go,<br>
+          Range is y, the high and low.
+        </p>
+
+        <button onclick="showJingleStep(1)">Step 1</button>
+        <button onclick="showJingleStep(2)">Step 2</button>
+        <button onclick="showJingleStep(3)">Step 3</button>
+        <button onclick="showJingleStep(4)">Final Meaning</button>
+        <p id="jingleSteps"></p>
+
+        <button onclick="speakJingle()">🔊 Listen to Jingle</button>
+      </div>
+    
+        <div class="card animate">
+        <h2>📘 Question 4: Domain and Range</h2>
+        <p>Find the domain and the range of the function g defined below:</p>
+        <ol>
+          <li>\( g(x) = 2x - 5 \)</li>
+          <li>\( g(x) = \sqrt{x^2 - 4} \)</li>
+          <li>\( g(x) = \sqrt{x+1} \)</li>
+          <li>\( g(x) = |x - 3| \)</li>
+          <li>
+            \[
+            g(x) =
+            \begin{cases} 
+            6x+7, & x \le -2 \\
+            4-3x, & -2 < x
+            \end{cases}
+            \]
+          </li>
+          <li>
+            \[
+            g(x) =
+            \begin{cases} 
+            x-1, & x < 3 \\
+            2x+1, & x \ge 3
+            \end{cases}
+            \]
+          </li>
+          <li>\( g(x) = \dfrac{x^2 - 3x + 2}{x+1}, \; x \ne -1 \)</li>
+          <li>\( g(x) = \dfrac{x^2 - 16}{x-4}, \; x \ne 4 \)</li>
+        </ol>
+
+        <p>Click each button to reveal the solution:</p>
+        <button onclick="showDR(1)">Solution (i)</button>
+        <button onclick="showDR(2)">Solution (ii)</button>
+        <button onclick="showDR(3)">Solution (iii)</button>
+        <button onclick="showDR(4)">Solution (iv)</button>
+        <button onclick="showDR(5)">Solution (v)</button>
+        <button onclick="showDR(6)">Solution (vi)</button>
+        <button onclick="showDR(7)">Solution (vii)</button>
+        <button onclick="showDR(8)">Solution (viii)</button>
+
+        <p id="drSolution"></p>
+      </div>
+
+    <div class="card animate">
+      <h2>🧠 Gentle Question: Let's Find a Relationship Between a and b</h2>
+      <p>
+        Don’t worry — this one looks tricky, but we’ll take it slow. 💛<br><br>
+        We’re given this function:
+        <br><br>
+        <code>f(x) = x² - ax + bx + 1</code>
+        <br><br>
+        And we know:
+        <ul>
+          <li>f(2) = 1</li>
+          <li>f(1) = 0</li>
+        </ul>
+        Let’s figure out what this tells us about <code>a</code> and <code>b</code>. Just click one step at a time. You’ve got this. 😊
+      </p>
+
+      <button onclick="showABStep(1)">🌱 Step 1: Clean it up</button>
+      <button onclick="showABStep(2)">🔍 Step 2: Plug in x = 2</button>
+      <button onclick="showABStep(3)">🔎 Step 3: Plug in x = 1</button>
+      <button onclick="showABStep(4)">🎉 Final Answer</button>
+
+      <p id="abSolution" style="font-size: 1.05em;"></p>
+    </div>
+
+    <div class="card animate">
+      <h2>🪨 Falling Stone Game</h2>
+      <p>
+        The stone's height after <code>x</code> seconds is given by:<br>
+        <b>h(x) = 40 - 10x²</b>
+      </p>
+
+      <label for="timeInput">⏲️ Enter time (x in seconds):</label>
+      <input id="timeInput" type="number" step="0.1" value="1">
+      <button onclick="checkHeight()">Check Height</button>
+      <button onclick="startStoneAnimation()">▶ Start Animation</button>
+
+      <p id="heightResult">👉 Try x = 1, 1.5, 1.7 ...</p>
+
+      <div id="fallArea">
+        <div id="stone">🪨</div>
+        <div id="ground"></div>
+      </div>
+
+      <h3>📘 Step-by-Step Solution</h3>
+      <button onclick="showStep(1)">Case (a) x = 1 sec</button>
+      <button onclick="showStep(2)">Case (b) x = 1.5 sec</button>
+      <button onclick="showStep(3)">Case (c) x = 1.7 sec</button>
+      <button onclick="showStep(4)">When does it hit the ground?</button>
+      <p id="solutionSteps"></p>
+    </div>
+
+    <div class="card animate">
+      <h2>✨ Parametric → Conic Equations (Super Simple Steps)</h2>
+      <p>
+        Imagine parametric equations as “secret codes” 🤫.  
+        Our job: remove the secret (t or θ) and show the real face (the usual x–y equation).
+      </p>
+
+      <div style="margin-top:12px; border-top:1px dashed #ddd; padding-top:12px;">
+        <h3>(i) Parabola: <code>x = a t², &nbsp; y = 2 a t</code></h3>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button onclick="showParabola(1)">Step 1</button>
+          <button onclick="showParabola(2)">Step 2</button>
+          <button onclick="showParabola(3)">Step 3</button>
+          <button onclick="showParabola(4)">Final</button>
+        </div>
+        <div id="parabSteps" style="margin-top:10px; line-height:1.6;">
+          👉 Start with Step 1.
+        </div>
+      </div>
+
+      <div style="margin-top:16px; border-top:1px dashed #ddd; padding-top:12px;">
+        <h3>(ii) Ellipse: <code>x = a cosθ, &nbsp; y = b sinθ</code></h3>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button onclick="showEllipse(1)">Step 1</button>
+          <button onclick="showEllipse(2)">Step 2</button>
+          <button onclick="showEllipse(3)">Final</button>
+        </div>
+        <div id="ellipseSteps" style="margin-top:10px; line-height:1.6;">
+          👉 Start with Step 1.
+        </div>
+      </div>
+
+      <div style="margin-top:16px; border-top:1px dashed #ddd; padding-top:12px;">
+        <h3>(iii) Hyperbola: <code>x = a secθ, &nbsp; y = b tanθ</code></h3>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button onclick="showHyperbola(1)">Step 1</button>
+          <button onclick="showHyperbola(2)">Step 2</button>
+          <button onclick="showHyperbola(3)">Final</button>
+        </div>
+        <div id="hyperSteps" style="margin-top:10px; line-height:1.6;">
+          👉 Start with Step 1.
+        </div>
+      </div>
+    </div>
+    
+    <div id="q8" class="card animate">
+      <h2 style="color:#6a5acd;">Question 8: Prove Hyperbolic Identities</h2>
+      <p style="font-size:16px; color:#444;">Let’s learn 3 hyperbolic identities in a very easy, fun way — like sandwiches, closets, and laundry baskets 😄</p>
+
+      <div id="cardsQ8" style="margin-top:20px; display:flex; gap:15px; justify-content:center; flex-wrap:wrap;">
+        
+        <div style="border:2px solid #4CAF50; border-radius:12px; padding:15px; width:260px; text-align:left; background:#f9fff9; box-shadow:0 4px 8px rgba(0,0,0,0.1); line-height:1.5;">
+          <h3 style="color:#4CAF50; font-size:18px;">Identity 1 🥪</h3>
+          <p style="font-size:14px; color:#333;">
+            We want <b>sinh(2x)</b>.  
+            <br>Step 1: Use the rule → sinh(A+B) = sinh(A)cosh(B) + cosh(A)sinh(B).  
+            <br>Step 2: Put A = x and B = x → sinh(x+x).  
+            <br>Step 3: That becomes sinh(x)cosh(x) + cosh(x)sinh(x).  
+            <br>Step 4: Both are same, like half sandwich + half sandwich = full sandwich 🥪.  
+            <br><b>Answer: sinh(2x) = 2 sinh(x) cosh(x).</b>
+          </p>
+        </div>
+
+        <div style="border:2px solid #2196F3; border-radius:12px; padding:15px; width:260px; text-align:left; background:#f0f8ff; box-shadow:0 4px 8px rgba(0,0,0,0.1); line-height:1.5;">
+          <h3 style="color:#2196F3; font-size:18px;">Identity 2 👚</h3>
+          <p style="font-size:14px; color:#333;">
+            We want <b>sech²x</b>.  
+            <br>Step 1: Start with golden rule → cosh²x - sinh²x = 1.  
+            <br>Step 2: Divide everything by cosh²x (like putting clothes neatly on a shelf 👚).  
+            <br>Step 3: Now we have 1 - (sinh²/cosh²) = 1/cosh².  
+            <br>Step 4: sinh/cosh = tanh, so (sinh²/cosh²) = tanh².  
+            <br>Step 5: 1/cosh² = sech².  
+            <br><b>Answer: sech²x = 1 - tanh²x.</b>
+          </p>
+        </div>
+
+        <div style="border:2px solid #FF9800; border-radius:12px; padding:15px; width:260px; text-align:left; background:#fff8e1; box-shadow:0 4px 8px rgba(0,0,0,0.1); line-height:1.5;">
+          <h3 style="color:#FF9800; font-size:18px;">Identity 3 🧺</h3>
+          <p style="font-size:14px; color:#333;">
+            We want <b>csch²x</b>.  
+            <br>Step 1: Again start with golden rule → cosh²x - sinh²x = 1.  
+            <br>Step 2: This time divide everything by sinh²x (like putting clothes in a laundry basket 🧺).  
+            <br>Step 3: That gives (cosh²/sinh²) - 1 = 1/sinh².  
+            <br>Step 4: cosh/sinh = coth → so cosh²/sinh² = coth².  
+            <br>Step 5: 1/sinh² = csch².  
+            <br><b>Answer: csch²x = coth²x - 1.</b>
+          </p>
+        </div>
+
+      </div>
+    </div>
+    
+    <div id="qX" class="card animate">
+      <h2 style="color:#6a5acd;">Question X: Even, Odd, or Neither Functions</h2>
+      <p style="font-size:16px; color:#444;">Let’s learn how to check if a function is <b>Even</b>, <b>Odd</b>, or <b>Neither</b>.</p>
+
+      <ul style="color:#333; font-size:16px;">
+        <li><b>Even:</b> f(-x) = f(x) → symmetric about the y-axis</li>
+        <li><b>Odd:</b> f(-x) = -f(x) → symmetric about the origin</li>
+        <li><b>Neither:</b> if it satisfies neither rule</li>
+      </ul>
+
+      <button onclick="animateEven()">Even Animation</button>
+      <button onclick="animateOdd()">Odd Animation</button>
+      <button onclick="animateNeither()">Neither Animation</button>
+
+      <div id="functionBox" style="margin-top:20px; padding:20px; border:2px dashed #888; width:220px; text-align:center; font-weight:bold; font-size:18px;">
+        f(x) = ?
+      </div>
+
+      <h3 style="margin-top:20px; color:#6a5acd;">Quick Quiz:</h3>
+      <p>1. f(x) = x² → <button onclick="revealEven()" style="margin-left:5px;">Reveal Answer</button></p>
+      <div id="ans1" style="margin-left:20px; font-size:15px; color:#333;"></div>
+
+      <p>2. f(x) = x³ → <button onclick="revealOdd()" style="margin-left:5px;">Reveal Answer</button></p>
+      <div id="ans2" style="margin-left:20px; font-size:15px; color:#333;"></div>
+
+      <p>3. f(x) = x² + x → <button onclick="revealNeither()" style="margin-left:5px;">Reveal Answer</button></p>
+      <div id="ans3" style="margin-left:20px; font-size:15px; color:#333;"></div>
+    </div>
+
+    <div class="chapter-end animate">
+      <h2>🎉 Chapter 1 – Exercise 1.1 Completed! ✅</h2>
+      <p class="highlight">Amazing job — you made it through Even, Odd & Neither Functions 🎭 + the Domain & Range Jingle 🎵</p>
+      
+      <div class="motivation-box">
+        <h3>💌 A Note for You</h3>
+        <p>
+          If you’re feeling <b>stressed or overwhelmed</b>, remember this:  
+          <br><br>
+          <em>“You don’t have to be perfect, you just have to keep going.”</em> 🌈  
+          <br><br>
+          Take a deep breath, smile 😊, and know that you’re doing better than you think.  
+          <br>
+          Small steps every day lead to big achievements. Keep shining ✨ — you’ve got this! 💪
+        </p>
+      </div>
+    </div>
+
+      </section>
+
+  </div>
+  <div class="container" style="text-align: center; margin: 40px 0;">
+    <div class="card animate" style="border-top: 4px solid var(--secondary);">
+      <h2>🚀 Ready for More?</h2>
+      <p>You've completed the core concepts. Level up with advanced interactive games in Part 2!</p>
+      
+      <a href="{{ url_for('serve_chapter_part2', chapter_num=1) }}" class="btn btn-primary" style="font-size: 1.1rem; padding: 15px 30px;">
+        Go to Part 2: Games & Quests <i class="fas fa-arrow-right"></i>
+      </a>
+    </div>
+  </div>
+
+  <div class="fab">
+    <i class="fas fa-graduation-cap"></i>
+  </div>
+
+  
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-about">
+          <div class="footer-logo">
+            <div class="footer-logo-icon">S</div>
+            Sentellect
+          </div>
+          <p>Personalizing learning through emotions to improve educational experience for HSSC Mathematics.</p>
+        </div>
+        
+        <div class="footer-links">
+          <h3>Platform</h3>
+          <ul>
+            <li><a href="#">Functions</a></li>
+            <li><a href="#">Limits</a></li>
+            <li><a href="#">Domain & Range</a></li>
+            <li><a href="#">Exercises</a></li>
+          </ul>
+        </div>
+
+      </div>
+      
+      <div class="footer-bottom">
+        <p>© 2024 Sentellect. Final Year Project - Educational Technology.</p>
+        <div class="footer-tags">
+          <a href="#" class="tag">Functions</a>
+          <a href="#" class="tag">Limits</a>
+          <a href="#" class="tag">Calculus</a>
+          <a href="#" class="tag">Mental Wellness</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Header scroll effect
+    window.addEventListener('scroll', function() {
+      const header = document.getElementById('header');
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+
+    // Mobile menu functionality
+    document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+      document.querySelector('.nav-links').classList.toggle('active');
+    });
+
+    // Animation trigger
+    document.addEventListener('DOMContentLoaded', function() {
+      const animatedElements = document.querySelectorAll('.animate');
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+          }
+        });
+      }, { threshold: 0.1 });
+      
+      animatedElements.forEach(element => {
+        observer.observe(element);
+      });
+    });
+
+    // --- Placeholder JS functions from template ---
+    function startLimitBreathing() { console.log("Breathing exercise started..."); }
+    function startEyeExercise() { console.log("Eye exercise started..."); }
+    function startPostureExercise() { console.log("Posture exercise started..."); }
+    function startBoxBreathing() { console.log("Box breathing started..."); }
+    function startGrounding() { console.log("Grounding exercise started..."); }
+    function showPositiveTalk() { console.log("Positive talk shown..."); }
+    function startSquareBreathing() { console.log("Square breathing started..."); }
+    function startClenchRelease() { console.log("Clench/release started..."); }
+    function startAnchorExercise() { console.log("Anchor exercise started..."); }
+    function startUnfocusExercise() { console.log("Unfocus exercise started..."); }
+    function flipTheWhatIf() { console.log("What-if flip started..."); }
+    function startAudioExercise() { console.log("Audio exercise started..."); }
+  </script>
+  
+  <script>
+    // Step by Step Exercise f(x)=x²-x
+    function showStep(step) {
+      const steps = {
+        1: "f(-2) = (-2)² - (-2)",
+        2: "f(-2) = 4 - (-2)",
+        3: "f(-2) = 4 + 2",
+        4: "✅ Final Answer: f(-2) = 6"
+      };
+      document.getElementById("solution").innerHTML = steps[step];
+      if (window.MathJax) MathJax.typeset();
+    }
+
+    // First Principle Exercise
+    const fnEl = document.getElementById('fn');
+    const aEl = document.getElementById('a');
+    const hEl = document.getElementById('h');
+    const stepsEl = document.getElementById('steps');
+    const runBtn = document.getElementById('run');
+    const limitBtn = document.getElementById('limit');
+
+    function showSteps(showLimit=false){
+      if (!fnEl) return; // Safety check
+      const fn = fnEl.value;
+      const a = parseFloat(aEl.value);
+      const h = parseFloat(hEl.value);
+      let html = '';
+
+      if (fn === 'linear'){
+        html += `<p>Start with f(x) = 6x - 9. Replace x with (a+h): f(a+h) = 6a + 6h - 9.</p>`;
+        html += `<p>Subtract f(a) = 6a - 9 → difference = 6h.</p>`;
+        html += `<p>Divide by h → (6h)/h = <b>6</b>.</p>`;
+        if (showLimit) html += `<p>As h → 0, nothing changes. Final answer = <b>6</b>.</p>`;
+      }
+
+      if (fn === 'sin'){
+        html += `<p>Start with f(x) = sin(x). So f(a+h) - f(a) = sin(a+h) - sin(a).</p>`;
+        html += `<p>Use identity sinC - sinD = 2cos((C+D)/2)·sin((C-D)/2).</p>`;
+        html += `<p>So it becomes 2cos(a + h/2)·sin(h/2).</p>`;
+        html += `<p>Divide by h → [2cos(a + h/2)·sin(h/2)]/h.</p>`;
+        if (showLimit) html += `<p>As h → 0, sin(h/2)/(h/2) → 1. Final derivative = <b>cos(a)</b>.</p>`;
+      }
+
+      if (fn === 'poly'){
+        html += `<p>Start with f(x) = x³ + 2x² - 1.</p>`;
+        html += `<p>Expand f(a+h) = (a+h)³ + 2(a+h)² - 1.</p>`;
+        html += `<p>(a+h)³ = a³ + 3a²h + 3ah² + h³.</p>`;
+        html += `<p>2(a+h)² = 2a² + 4ah + 2h².</p>`;
+        html += `<p>So f(a+h) = a³ + 3a²h + 3ah² + h³ + 2a² + 4ah + 2h² - 1.</p>`;
+        html += `<p>Subtract f(a) = a³ + 2a² - 1 → left with 3a²h + 3ah² + h³ + 4ah + 2h².</p>`;
+        html += `<p>Factor h → h(3a² + 3ah + h² + 4a + 2h).</p>`;
+        html += `<p>Divide by h → <b>3a² + 3ah + h² + 4a + 2h</b>.</p>`;
+        if (showLimit) html += `<p>As h → 0 → <b>3a² + 4a</b>.</p>`;
+      }
+
+      if (fn === 'cos'){
+        html += `<p>Start with f(x) = cos(x). So f(a+h) - f(a) = cos(a+h) - cos(a).</p>`;
+        html += `<p>Use identity cosC - cosD = -2sin((C+D)/2)·sin((C-D)/2).</p>`;
+        html += `<p>So it becomes -2sin(a + h/2)·sin(h/2).</p>`;
+        html += `<p>Divide by h → [-2sin(a + h/2)·sin(h/2)]/h.</p>`;
+        if (showLimit) html += `<p>As h → 0, sin(h/2)/(h/2) → 1. Final derivative = <b>-sin(a)</b>.</p>`;
+      }
+
+      if (stepsEl) stepsEl.innerHTML = html;
+    }
+
+    if(runBtn) runBtn.addEventListener('click', ()=> showSteps(false));
+    if(limitBtn) limitBtn.addEventListener('click', ()=> showSteps(true));
+
+    // Question 3 Functions
+    function showQ3(shape, step) {
+      if (shape === 'square') {
+        const steps = {
+          1: "👉 A square’s area is side × side. If area = A, side = √A.",
+          2: "👉 Perimeter = 4 × side = 4√A.",
+          3: "✅ Final Answer: P(A) = 4√A."
+        };
+        document.getElementById("q3square").innerHTML = steps[step];
+      }
+
+      if (shape === 'circle') {
+        const steps = {
+          1: "👉 Circumference C = 2πr, so r = C ÷ (2π).",
+          2: "👉 Area = πr² = π(C ÷ 2π)².",
+          3: "✅ Final Answer: A(C) = C² ÷ (4π)."
+        };
+        document.getElementById("q3circle").innerHTML = steps[step];
+      }
+
+      if (shape === 'cube') {
+        const steps = {
+          1: "👉 Base area A = side² → side = √A.",
+          2: "👉 Volume = side³ = (√A)³.",
+          3: "✅ Final Answer: V(A) = A^(3/2)."
+        };
+        document.getElementById("q3cube").innerHTML = steps[step];
+      }
+
+      if (window.MathJax) MathJax.typeset();
+    }
+
+    // Function Graphs
+    let funcChart;
+    function generateData(expr) {
+      let data = [];
+      for (let x = -5; x <= 5; x += 0.5) {
+        let y;
+        if (expr === "x+3") y = x + 3;
+        else if (expr === "x*x") y = x * x;
+        else if (expr === "identity") y = x;
+        else if (expr === "constant") y = 7;
+        data.push({x, y});
+      }
+      return data;
+    }
+
+    function plotFunction() {
+      let ctxFunc = document.getElementById("functionChart")?.getContext("2d");
+      if (!ctxFunc) return; // Exit if canvas not found
+      
+      const expr = document.getElementById("functionSelect").value;
+      if (funcChart) funcChart.destroy();
+      funcChart = new Chart(ctxFunc, {
+        type: "scatter",
+        data: {
+          datasets: [{
+            label: "f(x)",
+            data: generateData(expr),
+            borderColor: "blue",
+            showLine: true,
+            fill: false,
+          }]
+        },
+        options: {
+          scales: {
+            x: {title: {display: true, text: "x"}},
+            y: {title: {display: true, text: "f(x)"}}
+          }
+        }
+      });
+    }
+    
+    // Initial plot on load
+    document.addEventListener('DOMContentLoaded', plotFunction);
+
+    // 🎵 Jingle Steps
+    function showJingleStep(step) {
+      const steps = {
+        1: "👉 Domain means: all x-values you can put into the function.",
+        2: "👉 Range means: all y-values the function gives back.",
+        3: "👉 Always check: do square roots, fractions, or trig functions block some values?",
+        4: "✅ Final Meaning: Domain is allowed x’s, Range is possible y’s."
+      };
+      document.getElementById("jingleSteps").innerHTML = steps[step];
+    }
+
+    // 🔊 Speak Jingle
+    function speakJingle() {
+      if ('speechSynthesis' in window) {
+        let text = "Domain is where x can go. Range is y, the high and low. Check the roots and check the line. Make sure values are all fine. Domain is where x can go. Range is y, the high and low.";
+        let utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = "en-US";
+        speechSynthesis.speak(utterance);
+      } else {
+        alert("Sorry, your browser doesn't support text-to-speech.");
+      }
+    }
+
+    // Domain & Range Solutions with Simple Explanations
+    function showDR(num) {
+      const solutions = {
+        1: "👉 Domain = all numbers.<br>Reason: Linear functions accept any x.<br>👉 Range = all numbers.<br>Reason: You can make 2x-5 equal any y.",
+        
+        2: "👉 Domain = x ≤ -2 or x ≥ 2.<br>Reason: Inside √ must be ≥ 0.<br>👉 Range = y ≥ 0.<br>Reason: √ never gives negative numbers.",
+        
+        3: "👉 Domain = x ≥ -1.<br>Reason: Inside √ must be ≥ 0.<br>👉 Range = y ≥ 0.<br>Reason: √ always gives positive numbers or 0.",
+        
+        4: "👉 Domain = all numbers.<br>Reason: |x-3| works for any x.<br>👉 Range = y ≥ 0.<br>Reason: Absolute value is never negative.",
+        
+        5: "👉 Domain = all numbers.<br>Reason: Both rules cover all x.<br>👉 Range = y < 10.<br>Reason: Left side gives (−∞,−5], right side gives (−∞,10). So together → (−∞,10).",
+        
+        6: "👉 Domain = all numbers.<br>Reason: Both rules cover all x.<br>👉 Range = y < 2 or y ≥ 7.<br>Reason: Left side goes up to (but not 2), right side starts from 7 upwards. Gap between 2 and 7 not covered.",
+        
+        7: "👉 Domain = all numbers except −1.<br>Reason: Denominator cannot be 0.<br>👉 Range = y ≤ −9.9 or y ≥ −0.1.<br>Reason: Middle values between −9.9 and −0.1 are skipped by the fraction.",
+        
+        8: "👉 Domain = all numbers except 4.<br>Reason: Denominator cannot be 0.<br>👉 Range = all numbers except 8.<br>Reason: Simplifies to y=x+4, but at x=4 (not allowed) → y=8 is missing."
+      };
+
+      document.getElementById("drSolution").innerHTML = solutions[num];
+      if (window.MathJax) MathJax.typeset();
+    }
+
+    function showABStep(step) {
+      const abSteps = {
+        1: `
+          ✨ Let’s simplify the function first:<br>
+          \( f(x) = x^2 - ax + bx + 1 \)<br>
+          👉 Group the like terms:<br>
+          <code>f(x) = x² + (b - a)x + 1</code><br>
+          ✅ Now it’s easier to work with!
+        `,
+        2: `
+          📌 We know that f(2) = 1. So plug in x = 2:<br>
+          \( f(2) = 4 + 2(b - a) + 1 = 1 \)<br>
+          👉 That simplifies to:<br>
+          \( 5 + 2(b - a) = 1 \)<br>
+          Subtract 5: \( 2(b - a) = -4 \)<br>
+          ✅ Divide by 2: <b>b - a = -2</b>
+        `,
+        3: `
+          📌 Now use f(1) = 0. Plug in x = 1:<br>
+          \( f(1) = 1 + (b - a) + 1 = 0 \)<br>
+          👉 That simplifies to:<br>
+          \( 2 + (b - a) = 0 \)<br>
+          ✅ Subtract 2: <b>b - a = -2</b>
+        `,
+        4: `
+          🎉 We got the same answer from both values!<br>
+          ✅ So the final relationship is:<br><br>
+          <span style="font-size: 1.3em; font-weight: bold;">b - a = -2</span><br><br>
+          That means: <b>b is 2 less than a</b>.<br><br>
+          🌟 Great job sticking through it — proud of you!
+        `
+      };
+
+      document.getElementById("abSolution").innerHTML = abSteps[step];
+      if (window.MathJax) MathJax.typeset();
+    }
+
+    function checkHeight() {
+      const x = parseFloat(document.getElementById("timeInput").value);
+      let h = 40 - 10 * x * x;
+      let result = "";
+
+      if (h > 0) {
+        result = `⏱️ At ${x} sec → Height = ${h.toFixed(2)} m 📍`;
+      } else {
+        result = "💥 Stone hit the ground at 2 sec!";
+        h = 0;
+      }
+
+      document.getElementById("heightResult").innerHTML = result;
+
+      // Move stone visually
+      let fallAreaHeight = 250; // pixels for 40m
+      let topPx = fallAreaHeight - (h / 40) * fallAreaHeight;
+      document.getElementById("stone").style.top = topPx + "px";
+    }
+
+    // Animate falling stone automatically
+    function startStoneAnimation() {
+      let x = 0;
+      let stone = document.getElementById("stone");
+      let info = document.getElementById("heightResult");
+
+      clearInterval(window.fallInterval); // reset any old animation
+
+      window.fallInterval = setInterval(() => {
+        x += 0.1;
+        let h = 40 - 10 * x * x;
+
+        if (h <= 0) {
+          h = 0;
+          info.innerHTML = `💥 The stone hit the ground at x = ${x.toFixed(1)} sec!`;
+          clearInterval(window.fallInterval);
+        } else {
+          info.innerHTML = `⏱️ At ${x.toFixed(1)} sec → Height = ${h.toFixed(1)} m`;
+        }
+
+        // Convert height to pixels
+        let fallAreaHeight = 250;
+        let topPx = fallAreaHeight - (h / 40) * fallAreaHeight;
+        stone.style.top = topPx + "px";
+      }, 200);
+    }
+
+    // Step-by-step explanation (for falling stone)
+    // Note: This re-uses the showStep function name, which was already defined.
+    // This is bad practice, but it's how the original file was structured.
+    // I'll rename the first one to showCalcStep to avoid conflict.
+    
+    // Rename the first showStep
+    (function() {
+      // Find the original function
+      let oldShowStep = window.showStep;
+      // Rename it
+      window.showCalcStep = oldShowStep;
+      // Redefine showStep for the stone game
+      window.showStep = function(step) {
+        const steps = {
+          1: "✅ For x = 1 sec: h(1) = 40 - 10(1²) = 30 m",
+          2: "✅ For x = 1.5 sec: h(1.5) = 40 - 10(2.25) = 17.5 m",
+          3: "✅ For x = 1.7 sec: h(1.7) = 40 - 10(2.89) ≈ 11.1 m",
+          4: "💥 Solve 40 - 10x² = 0 → x² = 4 → x = 2 sec. The stone hits the ground at 2 seconds."
+        };
+        // Check if the target element exists
+        if(document.getElementById("solutionSteps")) {
+            document.getElementById("solutionSteps").innerHTML = steps[step];
+        } else if (document.getElementById("solution")) {
+            // Fallback to the first one if the stone game one isn't the target
+            window.showCalcStep(step);
+        }
+      };
+      // Update the first card's buttons to use the new name
+      let calcCard = document.getElementById("solution")?.parentElement;
+      if (calcCard) {
+          calcCard.querySelector('button[onclick="showStep(1)"]').setAttribute('onclick', 'showCalcStep(1)');
+          calcCard.querySelector('button[onclick="showStep(2)"]').setAttribute('onclick', 'showCalcStep(2)');
+          calcCard.querySelector('button[onclick="showStep(3)"]').setAttribute('onclick', 'showCalcStep(3)');
+          calcCard.querySelector('button[onclick="showStep(4)"]').setAttribute('onclick', 'showCalcStep(4)');
+      }
+    })();
+
+
+    function showParabola(step) {
+      const text = {
+        1: `<b>Step 1:</b> We have x = a t² and y = 2 a t.<br>
+            Think of t as the “mask” 😷. We want to remove it and see only x and y.`,
+
+        2: `<b>Step 2:</b> y = 2 a t → if you divide by 2a, you get t = y / (2a).<br>
+            (Like peeling a banana 🍌 to see t inside.)`,
+
+        3: `<b>Step 3:</b> Now replace t in x = a t².<br>
+            So x = a (y / (2a))².<br>
+            (We swapped the mask for y.)`,
+
+        4: `<b>Final:</b> Simplify gently: x = y² / (4a).<br>
+            Rearrange → y² = 4 a x.<br>
+            🎉 That’s the parabola equation!`
+      };
+      document.getElementById('parabSteps').innerHTML = text[step];
+    }
+
+    // --- ELLIPSE ---
+    function showEllipse(step) {
+      const text = {
+        1: `<b>Step 1:</b> From x = a cosθ, we get cosθ = x / a. Square both sides:<br>
+            cos²θ = x² / a².<br>
+            From y = b sinθ, we get sin²θ = y² / b².<br>
+            (It’s like translating secret code into fractions 🍕).`,
+
+        2: `<b>Step 2:</b> Add them: (x² / a²) + (y² / b²) = cos²θ + sin²θ.<br>
+            (Like adding apples + oranges 🍎🍊 but they match here).`,
+
+        3: `<b>Final:</b> cos²θ + sin²θ = 1 (basic identity).<br>
+            So (x² / a²) + (y² / b²) = 1.<br>
+            🎉 That’s the ellipse equation!`
+      };
+      document.getElementById('ellipseSteps').innerHTML = text[step];
+    }
+
+    // --- HYPERBOLA ---
+    function showHyperbola(step) {
+      const text = {
+        1: `<b>Step 1:</b> From x = a secθ → secθ = x / a.<br>
+            From y = b tanθ → tanθ = y / b.<br>
+            (Like giving each a nickname 🏷️).`,
+
+        2: `<b>Step 2:</b> Square and subtract: (x/a)² - (y/b)² = sec²θ - tan²θ.<br>
+            (Think: compare two siblings 👦👧 by subtraction).`,
+
+        3: `<b>Final:</b> We know sec²θ - tan²θ = 1.<br>
+            So (x² / a²) - (y² / b²) = 1.<br>
+            🎉 That’s the hyperbola equation!`
+      };
+      document.getElementById('hyperSteps').innerHTML = text[step];
+    }
+    
+    document.addEventListener("DOMContentLoaded", () => {
+      const cards = document.querySelectorAll("#cardsQ8 div");
+      cards.forEach((card, index) => {
+        // entrance animation
+        setTimeout(() => {
+          card.style.transition = "transform 0.5s ease, box-shadow 0.5s ease";
+          card.style.transform = "scale(1.05)";
+          card.style.boxShadow = "0 6px 12px rgba(0,0,0,0.2)";
+          setTimeout(() => {
+            card.style.transform = "scale(1)";
+            card.style.boxShadow = "0 4px 8px rgba(0,0,0,0.1)";
+          }, 500);
+        }, index * 600);
+
+        // bounce on hover
+        card.addEventListener("mouseenter", () => {
+          card.style.animation = "bounce 0.6s";
+        });
+        card.addEventListener("animationend", () => {
+          card.style.animation = "";
+        });
+      });
+
+      // add bounce keyframes
+      const style = document.createElement('style');
+      style.innerHTML = `
+        @keyframes bounce {
+          0%, 100% { transform: translateY(0); }
+          30% { transform: translateY(-12px); }
+          60% { transform: translateY(6px); }
+        }
+      `;
+      document.head.appendChild(style);
+    });
+    
+    function animateEven() {
+      let box = document.getElementById("functionBox");
+      box.innerText = "f(x) = x² (Even)";
+      box.style.transition = "transform 1s";
+      box.style.transform = "scaleX(-1)";
+      setTimeout(() => box.style.transform = "scaleX(1)", 1000);
+    }
+
+    function animateOdd() {
+      let box = document.getElementById("functionBox");
+      box.innerText = "f(x) = x³ (Odd)";
+      box.style.transition = "transform 1s";
+      box.style.transform = "rotate(180deg)";
+      setTimeout(() => box.style.transform = "rotate(0deg)", 1000);
+    }
+
+    function animateNeither() {
+      let box = document.getElementById("functionBox");
+      box.innerText = "f(x) = x² + x (Neither)";
+      box.style.transition = "transform 0.2s";
+      let count = 0;
+      let interval = setInterval(() => {
+        box.style.transform = `translateX(${count % 2 === 0 ? 10 : -10}px)`;
+        count++;
+        if (count > 5) {
+          clearInterval(interval);
+          box.style.transform = "translateX(0)";
+        }
+      }, 200);
+    }
+
+    // ✅ Reveal Answers with Steps
+    function revealEven() {
+      document.getElementById("ans1").innerHTML = `
+        <b>Step 1:</b> f(x) = x² <br>
+        <b>Step 2:</b> f(-x) = (-x)² = x² <br>
+        <b>Step 3:</b> Since f(-x) = f(x), the function is <b style="color:green;">Even ✅</b>.
+      `;
+    }
+
+    function revealOdd() {
+      document.getElementById("ans2").innerHTML = `
+        <b>Step 1:</b> f(x) = x³ <br>
+        <b>Step 2:</b> f(-x) = (-x)³ = -x³ <br>
+        <b>Step 3:</b> f(-x) = -f(x), so the function is <b style="color:green;">Odd ✅</b>.
+      `;
+    }
+
+    function revealNeither() {
+      document.getElementById("ans3").innerHTML = `
+        <b>Step 1:</b> f(x) = x² + x <br>
+        <b>Step 2:</b> f(-x) = (-x)² + (-x) = x² - x <br>
+        <b>Step 3:</b> Compare: f(-x) = x² - x ≠ f(x) and ≠ -f(x) <br>
+        Therefore, the function is <b style="color:red;">Neither ❌</b>.
+      `;
+    }
+  </script>
+
+</body>
+</html>
