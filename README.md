@@ -10,14 +10,15 @@ and a database instance containing user records.
 
 # **Demo Link**
 
-# [![🚂 Live Demo – Railway](https://img.shields.io/badge/🚂-Live%20Demo%20%E2%80%93%20Railway-0B0D0F?style=for-the-badge&logo=railway&logoColor=white)](https://personalized-learning-through-emotions-for-edu-production.up.railway.app/)
-
-If you want a more unique and larger UI, here's a custom HTML button you can use in your Markdown (e.g., in a README.md file). It incorporates Railway's brand colors (dark theme with white text) and a train emoji to evoke the logo, with bigger size and padding for prominence:
-
-```html
-<a href="https://ai-pet-classifier-rjgrtbjr6d6keilh6b8vhm.streamlit.app/" style="display: inline-block; padding: 15px 30px; background-color: #0B0D0F; color: white; text-decoration: none; border-radius: 8px; font-size: 20px; font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.3); transition: transform 0.2s;">🚂 Live Demo on Railway</a>
-
-
+<a href="https://personalized-learning-through-emotions-for-edu-production.up.railway.app/" style="display: inline-block; padding: 20px 40px; background: linear-gradient(45deg, #FF6B35, #F7931E); color: white; text-decoration: none; border-radius: 12px; font-size: 24px; font-weight: bold; box-shadow: 0 6px 12px rgba(0,0,0,0.4); transition: all 0.3s ease; transform: scale(1);">
+  🚀 Live Demo
+</a>
+<style>
+  a:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+  }
+</style>
 
 
 ---
