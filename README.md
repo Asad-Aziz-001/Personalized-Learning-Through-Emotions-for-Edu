@@ -1,5 +1,5 @@
 
-# 📘 **Sentellect — Personalized Learning for HSSC Part 2**
+# 📘 **Sentellect — Personalized Learning for Education**
 
 Sentellect is a **personalized learning platform** designed for **HSSC Part 2 students**.
 It uses **machine learning (joblib model)** and a **Flask + HTML** framework to provide
@@ -7,6 +7,12 @@ customized learning recommendations and user-specific insights.
 
 The project includes a backend model, a structured Flask environment,
 and a database instance containing user records.
+
+# **Demo Link**
+
+# [![🚀 Live Demo – Railway](https://img.shields.io/badge/🚀-Live%20Demo%20%E2%80%93%20Railway-0D87E0?logo=railway&logoColor=white)](
+https://personalized-learning-through-emotions-for-edu-production.up.railway.app/)
+
 
 ---
 
