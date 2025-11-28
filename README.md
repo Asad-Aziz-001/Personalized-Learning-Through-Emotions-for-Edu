@@ -10,9 +10,7 @@ and a database instance containing user records.
 
 # **Demo Link**
 
-# [![🚀 Live Demo – Railway](https://img.shields.io/badge/🚀-Live%20Demo%20%E2%80%93%20Railway-0D87E0?logo=railway&logoColor=white)](
-https://personalized-learning-through-emotions-for-edu-production.up.railway.app/)
-
+[![🚄 Live Demo – Railway](https://img.shields.io/badge/🚄-Live%20Demo%20%E2%80%93%20Railway-black?logo=railway&logoColor=white)](https://personalized-learning-through-emotions-for-edu-production.up.railway.app/)
 
 ---
 
