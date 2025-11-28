@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account - Sentellect</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css"> <!-- your main theme CSS -->
+  <style>
+     :root {
+
+      --primary: #1e40af;
+
+      --primary-light: #3b82f6;
+
+      --primary-dark: #1e3a8a;
+
+      --secondary: #f59e0b;
+
+      --text: #1e293b;
+
+      --text-light: #64748b;
+
+      --bg: #f8fafc;
+
+      --white: #ffffff;
+
+      --gray: #e2e8f0;
+
+      --success: #10b981;
+
+    }
+
+
+
+    * {
+
+      margin: 0;
+
+      padding: 0;
+
+      box-sizing: border-box;
+
+    }
+
+
+
+    body {
+
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+
+      background-color: var(--bg);
+
+      color: var(--text);
+
+      line-height: 1.6;
+
+      overflow-x: hidden;
+
+    }
+
+
+
+    h1, h2, h3, h4 {
+
+      font-weight: 700;
+
+      line-height: 1.2;
+
+    }
+
+
+
+    a {
+
+      text-decoration: none;
+
+      color: inherit;
+
+    }
+
+
+
+    .container {
+
+      width: 100%;
+
+      max-width: 1200px;
+
+      margin: 0 auto;
+
+      padding: 0 20px;
+
+    }
+
+
+
+    section {
+
+      padding: 80px 0;
+
+    }
+
+
+
+    .section-title {
+
+      text-align: center;
+
+      margin-bottom: 50px;
+
+    }
+
+
+
+    .section-title h2 {
+
+      font-size: 2.5rem;
+
+      color: var(--primary);
+
+      margin-bottom: 15px;
+
+      position: relative;
+
+      display: inline-block;
+
+    }
+
+
+
+    .section-title h2::after {
+
+      content: '';
+
+      position: absolute;
+
+      bottom: -10px;
+
+      left: 50%;
+
+      transform: translateX(-50%);
+
+      width: 80px;
+
+      height: 4px;
+
+      background: var(--secondary);
+
+      border-radius: 2px;
+
+    }
+
+
+
+    .section-title p {
+
+      color: var(--text-light);
+
+      font-size: 1.1rem;
+
+      max-width: 700px;
+
+      margin: 0 auto;
+
+    }
+
+
+
+    .btn {
+
+      display: inline-block;
+
+      padding: 12px 28px;
+
+      border-radius: 50px;
+
+      font-weight: 600;
+
+      transition: all 0.3s ease;
+
+      text-align: center;
+
+      cursor: pointer;
+
+    }
+
+
+
+    .btn-primary {
+
+      background-color: var(--primary);
+
+      color: var(--white);
+
+      box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
+
+    }
+
+
+
+    .btn-primary:hover {
+
+      background-color: var(--primary-dark);
+
+      transform: translateY(-2px);
+
+      box-shadow: 0 6px 20px rgba(30, 64, 175, 0.4);
+
+    }
+
+
+
+    .btn-secondary {
+
+      background-color: var(--white);
+
+      color: var(--primary);
+
+      border: 2px solid var(--primary);
+
+    }
+
+
+
+    .btn-secondary:hover {
+
+      background-color: var(--primary);
+
+      color: var(--white);
+
+      transform: translateY(-2px);
+
+    }
+
+
+
+    /* ===== Animations ===== */
+
+    @keyframes fadeIn {
+
+      from { opacity: 0; transform: translateY(20px); }
+
+      to { opacity: 1; transform: translateY(0); }
+
+    }
+
+
+
+    @keyframes float {
+
+      0%, 100% { transform: translateY(0); }
+
+      50% { transform: translateY(-10px); }
+
+    }
+
+
+
+    @keyframes pulse {
+
+      0%, 100% { transform: scale(1); }
+
+      50% { transform: scale(1.05); }
+
+    }
+
+
+
+    .animate {
+
+      animation: fadeIn 0.8s ease forwards;
+
+    }
+
+
+
+    .delay-1 { animation-delay: 0.2s; }
+
+    .delay-2 { animation-delay: 0.4s; }
+
+    .delay-3 { animation-delay: 0.6s; }
+
+    .delay-4 { animation-delay: 0.8s; }
+
+
+
+    /* ===== Header/Navbar ===== */
+
+    header {
+
+      position: fixed;
+
+      top: 0;
+
+      left: 0;
+
+      width: 100%;
+
+      z-index: 1000;
+
+      background-color: var(--white);
+
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+
+      transition: all 0.3s ease;
+
+    }
+
+
+
+    header.scrolled {
+
+      padding: 10px 0;
+
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+
+    }
+
+
+
+    .navbar {
+
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+
+      padding: 20px 0;
+
+    }
+
+
+
+    .logo {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 10px;
+
+    }
+
+
+
+    .logo-icon {
+
+      width: 36px;
+
+      height: 36px;
+
+      background-color: var(--primary);
+
+      color: var(--white);
+
+      border-radius: 50%;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      font-weight: 700;
+
+      font-size: 18px;
+
+      transition: all 0.3s ease;
+
+    }
+
+
+
+    .logo-text {
+
+      font-size: 1.5rem;
+
+      font-weight: 700;
+
+      color: var(--primary);
+
+      transition: all 0.3s ease;
+
+    }
+
+
+
+    .nav-links {
+
+      display: flex;
+
+      list-style: none;
+
+      gap: 30px;
+
+    }
+
+
+
+    .nav-links a {
+
+      font-weight: 500;
+
+      position: relative;
+
+      padding: 5px 0;
+
+    }
+
+
+
+    .nav-links a::after {
+
+      content: '';
+
+      position: absolute;
+
+      bottom: 0;
+
+      left: 0;
+
+      width: 0;
+
+      height: 2px;
+
+      background-color: var(--primary);
+
+      transition: width 0.3s ease;
+
+    }
+
+
+
+    .nav-links a:hover::after,
+
+    .nav-links a.active::after {
+
+      width: 100%;
+
+    }
+
+
+
+    .nav-links a.active {
+
+      color: var(--primary);
+
+      font-weight: 600;
+
+    }
+
+
+
+
+
+
+    .mobile-menu-btn {
+
+      display: none;
+
+      background: none;
+
+      border: none;
+
+      font-size: 1.5rem;
+
+      color: var(--primary);
+
+      cursor: pointer;
+
+    }
+
+
+
+
+    /* ===== Footer ===== */
+
+    .footer {
+
+      background-color: var(--primary-dark);
+
+      color: var(--white);
+
+      padding: 80px 0 30px;
+
+      position: relative;
+
+    }
+
+
+
+    .footer::before {
+
+      content: '';
+
+      position: absolute;
+
+      top: 0;
+
+      left: 0;
+
+      width: 100%;
+
+      height: 10px;
+
+      background: linear-gradient(90deg, var(--secondary), var(--primary));
+
+    }
+
+
+
+    .footer-content {
+
+      display: grid;
+
+      grid-template-columns: repeat(4, 1fr);
+
+      gap: 40px;
+
+      margin-bottom: 60px;
+
+    }
+
+
+
+    .footer-about {
+
+      grid-column: span 2;
+
+    }
+
+
+
+    .footer-logo {
+
+      font-size: 1.8rem;
+
+      font-weight: 700;
+
+      margin-bottom: 20px;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 10px;
+
+    }
+
+
+
+    .footer-logo-icon {
+
+      width: 40px;
+
+      height: 40px;
+
+      background-color: var(--white);
+
+      color: var(--primary);
+
+      border-radius: 50%;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      font-weight: 700;
+
+      font-size: 1.2rem;
+
+    }
+
+
+
+    .footer-about p {
+
+      opacity: 0.8;
+
+      margin-bottom: 25px;
+
+      line-height: 1.7;
+
+    }
+
+
+
+    .social-links {
+
+      display: flex;
+
+      gap: 15px;
+
+    }
+
+
+
+    .social-link {
+
+      width: 40px;
+
+      height: 40px;
+
+      border-radius: 50%;
+
+      background-color: rgba(255, 255, 255, 0.1);
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      transition: all 0.3s ease;
+
+    }
+
+
+
+    .social-link:hover {
+
+      background-color: var(--secondary);
+
+      transform: translateY(-3px);
+
+    }
+
+
+
+    .footer-links h3 {
+
+      font-size: 1.2rem;
+
+      margin-bottom: 25px;
+
+      position: relative;
+
+      padding-bottom: 10px;
+
+    }
+
+
+
+    .footer-links h3::after {
+
+      content: '';
+
+      position: absolute;
+
+      bottom: 0;
+
+      left: 0;
+
+      width: 40px;
+
+      height: 3px;
+
+      background-color: var(--secondary);
+
+    }
+
+
+
+    .footer-links ul {
+
+      list-style: none;
+
+    }
+
+
+
+    .footer-links li {
+
+      margin-bottom: 12px;
+
+    }
+
+
+
+    .footer-links a {
+
+      opacity: 0.8;
+
+      transition: all 0.3s ease;
+
+      position: relative;
+
+      padding-left: 15px;
+
+    }
+
+
+
+    .footer-links a::before {
+
+      content: '→';
+
+      position: absolute;
+
+      left: 0;
+
+      opacity: 0;
+
+      transition: all 0.3s ease;
+
+    }
+
+
+
+    .footer-links a:hover {
+
+      opacity: 1;
+
+      padding-left: 20px;
+
+    }
+
+
+
+    .footer-links a:hover::before {
+
+      opacity: 1;
+
+      left: -5px;
+
+    }
+
+
+
+    .footer-bottom {
+
+      text-align: center;
+
+      padding-top: 30px;
+
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+    }
+
+
+
+    .footer-bottom p {
+
+      opacity: 0.7;
+
+      margin-bottom: 20px;
+
+    }
+
+
+
+    .footer-tags {
+
+      display: flex;
+
+      justify-content: center;
+
+      gap: 15px;
+
+      flex-wrap: wrap;
+
+    }
+
+
+
+    .tag {
+
+      background-color: rgba(255, 255, 255, 0.1);
+
+      padding: 5px 15px;
+
+      border-radius: 50px;
+
+      font-size: 0.9rem;
+
+      transition: all 0.3s ease;
+
+    }
+
+
+
+    .tag:hover {
+
+      background-color: var(--secondary);
+
+      color: var(--text);
+
+    }
+ @media (max-width: 992px) {
+
+      .nav-links {
+
+        gap: 20px;
+
+      }
+
+      
+
+      .stats-grid,
+
+      .testimonials-grid {
+
+        grid-template-columns: repeat(2, 1fr);
+
+      }
+
+      
+
+      .footer-content {
+
+        grid-template-columns: repeat(2, 1fr);
+
+      }
+
+      
+
+      .footer-about {
+
+        grid-column: span 2;
+
+      }
+
+    }
+
+    @media (max-width: 768px) {
+
+      .navbar {
+
+        padding: 15px 0;
+
+      }
+
+      
+
+      .nav-links {
+
+        display: none;
+
+      }
+
+      
+
+      .mobile-menu-btn {
+
+        display: block;
+
+      }
+
+
+
+      .footer-content {
+
+        grid-template-columns: 1fr;
+
+      }
+
+      
+
+      .footer-about {
+
+        grid-column: span 1;
+
+      }
+    }
+    .signup-section {
+      min-height: calc(100vh - 200px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 120px 20px 80px;
+    }
+
+    .signup-container {
+      background: var(--white);
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .signup-container h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: var(--primary);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--gray);
+      font-size: 1rem;
+    }
+
+    .form-group input:focus {
+      border-color: var(--primary-light);
+      outline: none;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .btn:hover {
+      background: var(--primary-dark);
+    }
+
+    .extra-links {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .extra-links a {
+      color: var(--primary-light);
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .extra-links a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header/Navbar -->
+  <header id="header">
+    <div class="container">
+      <nav class="navbar">
+        <a href="sent.html" class="logo">
+          <div class="logo-icon">S</div>
+          <span class="logo-text">Sentellect</span>
+        </a>
+        <ul class="nav-links">
+          <li><a href="sent.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="features.html">Features</a></li>
+        </ul>
+        <button class="mobile-menu-btn">
+          <i class="fas fa-bars"></i>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Signup Form -->
+  <section class="signup-section">
+    <div class="signup-container">
+      <h2>Create Account</h2>
+      <form>
+        <div class="form-group">
+          <label for="fullname"><i class="fas fa-user"></i> Full Name</label>
+          <input type="text" id="fullname" name="fullname" placeholder="Enter your full name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="email"><i class="fas fa-envelope"></i> Email Address</label>
+          <input type="email" id="email" name="email" placeholder="Enter your email" required>
+        </div>
+
+        <div class="form-group">
+          <label for="phone"><i class="fas fa-phone"></i> Phone Number</label>
+          <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+        </div>
+
+        <div class="form-group">
+          <label for="matric"><i class="fas fa-graduation-cap"></i> Matric Result (%)</label>
+          <input type="number" id="matric" name="matric" placeholder="Enter your Matric result" required>
+        </div>
+
+        <div class="form-group">
+          <label for="firstyear"><i class="fas fa-book"></i> First Year Result (%) <span style="color: var(--text-light);">(Optional)</span></label>
+          <input type="number" id="firstyear" name="firstyear" placeholder="Enter your First Year result">
+        </div>
+        <div class="form-group">
+            <label for="password"><i class="fas fa-lock"></i> Password</label>
+            <input type="password" id="password" name="password" placeholder="Create a password" required>
+        </div>
+
+        <button type="submit" class="btn">Create Account</button>
+      </form>
+      <div class="extra-links">
+        <p>Already have an account? <a href="login.html">Login</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-about">
+          <div class="footer-logo">
+            <div class="footer-logo-icon">S</div>
+            Sentellect
+          </div>
+          <p>Personalizing learning through emotions to improve educational experience for HSSC Mathematics.</p>
+          <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-links">
+          <h3>Platform</h3>
+          <ul>
+            <li><a href="features.html">Features</a></li>
+            <li><a href="chapters.html">Chapters</a></li>
+            <li><a href="demo.html">Demo</a></li>
+            <li><a href="progress.html">Progress</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-links">
+          <h3>Resources</h3>
+          <ul>
+            <li><a href="#">Study Materials</a></li>
+            <li><a href="about.html">About Project</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="#">Support</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-links">
+          <h3>Account</h3>
+          <ul>
+            <li><a href="login.html">Student Login</a></li>
+            <li><a href="signup.html">Create Account</a></li>
+            <li><a href="#">Help Center</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2024 Sentellect. Final Year Project - Educational Technology.</p>
+        <div class="footer-tags">
+          <a href="#" class="tag">PTB HSSC Mathematics</a>
+          <a href="#" class="tag">Emotion-Aware Learning</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.querySelector('form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const submitBtn = document.querySelector('.btn');
+      submitBtn.textContent = "Creating Account...";
+      submitBtn.disabled = true;
+
+      // 1. Collect Data
+      const fullname = document.getElementById('fullname').value; // Get the Name
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      
+      // 2. Send to Python Backend
+      fetch('/auth/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+              username: email,  // Login with Email
+              name: fullname,   // Send the Real Name
+              password: password 
+          })
+      })
+      .then(res => res.json())
+      .then(data => {
+          if (data.error) {
+              alert("Error: " + data.error);
+              submitBtn.textContent = "Create Account";
+              submitBtn.disabled = false;
+          } else {
+              alert("Account created successfully! Please login.");
+              window.location.href = "/login";
+          }
+      })
+      .catch(err => {
+          console.error(err);
+          alert("Connection error.");
+          submitBtn.textContent = "Create Account";
+          submitBtn.disabled = false;
+      });
+    });
+  </script>
+</body>
+</html>

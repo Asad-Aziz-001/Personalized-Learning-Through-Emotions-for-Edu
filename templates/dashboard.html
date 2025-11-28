@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Sentellect</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+         :root {
+            --primary: #1e40af;
+            --bg: #f8fafc;
+            --white: #ffffff;
+            --text: #1e293b;
+            --success: #10b981;
+            --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            flex: 1;
+        }
+        
+        header {
+            background: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--primary);
+            color: white;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .nav-btn {
+            padding: 8px 20px;
+            border-radius: 50px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: var(--text);
+            transition: 0.3s;
+            background: white;
+        }
+        
+        .nav-btn:hover {
+            background: #eff6ff;
+            color: var(--primary);
+        }
+        
+        .nav-btn.logout:hover {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .welcome-card {
+            background: linear-gradient(135deg, var(--primary), #1e3a8a);
+            color: white;
+            padding: 40px;
+            border-radius: 16px;
+            text-align: center;
+            margin-top: 30px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .level-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        /* SHAP BOX STYLE */
+        
+        .shap-box {
+            margin-top: 30px;
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            text-align: center;
+            animation: fadeIn 1s ease;
+        }
+        
+        .shap-text-highlight {
+            font-size: 1.1rem;
+            background: #f0f9ff;
+            border-left: 5px solid var(--primary);
+            padding: 15px;
+            margin: 20px auto;
+            max-width: 800px;
+            text-align: left;
+            border-radius: 8px;
+            color: #334155;
+        }
+        /* Progress Section */
+        
+        .progress-container {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 30px 0;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .progress-bar-bg {
+            height: 15px;
+            background: #e2e8f0;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #34d399);
+            width: 0%;
+            transition: width 1s ease-in-out;
+            border-radius: 20px;
+        }
+        /* Chapter Grid */
+        
+        .chapter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+        
+        .chapter-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid #f1f5f9;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .chapter-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .chapter-card.completed {
+            border-left: 5px solid #10b981;
+        }
+        
+        .chapter-card.active {
+            border-left: 5px solid var(--primary);
+        }
+        
+        .chapter-card h3 {
+            color: var(--primary);
+            margin: 15px 0 10px 0;
+            font-size: 1.3rem;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .chapter-number {
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+        
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status-done {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .status-next {
+            background: #dbeafe;
+            color: var(--primary);
+        }
+        
+        .status-lock {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+        
+        .card-body p {
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .btn-start {
+            display: block;
+            padding: 12px;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary), #1e3a8a);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            margin-top: 15px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-start:hover {
+            background: linear-gradient(135deg, #1e3a8a, var(--primary));
+            box-shadow: 0 5px 15px rgba(30, 64, 175, 0.3);
+        }
+        
+        .btn-completed {
+            display: block;
+            padding: 12px;
+            text-align: center;
+            background: #10b981;
+            color: white;
+            border-radius: 8px;
+            cursor: default;
+            margin-top: 15px;
+            font-weight: 600;
+        }
+        
+        .btn-locked {
+            display: block;
+            padding: 12px;
+            text-align: center;
+            background: #f1f5f9;
+            color: #94a3b8;
+            border-radius: 8px;
+            cursor: not-allowed;
+            margin-top: 15px;
+            font-weight: 600;
+        }
+        
+        .review-link {
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .review-link:hover {
+            text-decoration: underline;
+        }
+        
+        .footer {
+            margin-top: auto;
+            background: #1e3a8a;
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+        
+        .footer p {
+            margin: 0;
+            opacity: 0.9;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        /* Responsive Design */
+        
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .nav-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+            .chapter-grid {
+                grid-template-columns: 1fr;
+            }
+            .welcome-card {
+                padding: 25px 20px;
+            }
+            .shap-box {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="container navbar">
+            <a href="{{ url_for('dashboard') }}" class="logo">
+                <div class="logo-icon">S</div>
+                <span>Sentellect</span>
+            </a>
+            <div class="nav-buttons">
+                <a href="{{ url_for('chatbot_page') }}" class="nav-btn">
+                    <i class="fas fa-robot"></i> SentiBot
+                </a>
+                <a href="{{ url_for('profile') }}" class="nav-btn">
+                    <i class="fas fa-user"></i> Profile
+                </a>
+                <a href="{{ url_for('logout') }}" class="nav-btn logout">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <section class="welcome-section">
+            <div class="welcome-card">
+                <h1>Welcome Back, {{ current_user.name }}!</h1>
+                <p>Your personalized mental wellness journey continues</p>
+                <div class="level-badge">{{ label }} Distress Level</div>
+            </div>
+        </section>
+
+        {% if shap_image %}
+        <div class="shap-box">
+            <h2 style="color: var(--primary); font-size: 1.8rem; margin-bottom: 10px;">
+                <i class="fas fa-chart-bar"></i> Your Assessment Insights
+            </h2>
+
+            {% if shap_text %}
+            <div class="shap-text-highlight">
+                <i class="fas fa-info-circle" style="color: var(--primary); margin-right: 8px;"></i> {{ shap_text | safe }}
+            </div>
+            {% endif %}
+
+            <p style="font-size: 1rem; color: #64748b; margin-bottom: 20px;">
+                <span style="color: #ef4444; font-weight: bold;">
+          <i class="fas fa-arrow-up"></i> Red bars
+        </span> indicate factors that increased your assessment level, while
+                <span style="color: #10b981; font-weight: bold;">
+          <i class="fas fa-arrow-down"></i> Blue bars
+        </span> indicate factors that decreased it.
+            </p>
+
+            <div style="display: inline-block; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; padding: 15px; background: #f8fafc; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                <img src="data:image/png;base64,{{ shap_image }}" alt="AI Explanation Chart showing factors influencing your mental health assessment" style="max-width: 100%; height: auto; display: block; border-radius: 8px;">
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="progress-container">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <strong style="color: var(--primary); font-size: 1.2rem;">
+          <i class="fas fa-tasks"></i> Your Progress
+        </strong>
+                <strong style="color: var(--text); font-size: 1.2rem;">{{ progress }}% Completed</strong>
+            </div>
+            <div class="progress-bar-bg">
+                <div class="progress-fill" style="width: {{ progress }}%;"></div>
+            </div>
+            <p style="font-size: 0.9rem; color: #64748b; margin-top: 10px;">
+                <i class="fas fa-check-circle" style="color: #10b981;"></i> {{ completed_chapters|length }} of 6 Wellness Modules Completed
+            </p>
+        </div>
+
+        <section class="chapters-section">
+            <h2 style="color: var(--text); margin-bottom: 25px; font-size: 1.8rem;">
+                <i class="fas fa-book-open"></i> Your Wellness Modules
+            </h2>
+
+            <div class="chapter-grid">
+                {% for i in range(1, 7) %} {% set titles = [ "Understanding Your Emotions", "Building Resilience", "Mindfulness & Stress Management", "Healthy Thought Patterns", "Social Connections & Support", "Maintaining Wellness" ] %} {% set descs = [ "Learn to identify
+                and understand your emotional patterns and triggers.", "Develop coping strategies and build emotional strength during challenging times.", "Practice mindfulness techniques and effective stress reduction methods.", "Identify and reframe
+                negative thinking patterns that affect your wellbeing.", "Build and maintain supportive relationships for better mental health.", "Create sustainable habits and routines for long-term mental wellness." ] %} {% set is_completed = i|string
+                in completed_chapters %} {% set is_next = (i == 1 or (i-1)|string in completed_chapters) and not is_completed %} {% set is_locked = not is_completed and not is_next %}
+
+                <div class="chapter-card {% if is_completed %}completed{% elif is_next %}active{% endif %}">
+                    <div class="card-header">
+                        <span class="chapter-number">Module 0{{ i }}</span> {% if is_completed %}
+                        <span class="status-badge status-done"><i class="fas fa-check"></i> Completed</span> {% elif is_next %}
+                        <span class="status-badge status-next"><i class="fas fa-star"></i> Ready</span> {% else %}
+                        <span class="status-badge status-lock"><i class="fas fa-lock"></i> Locked</span> {% endif %}
+                    </div>
+
+                    <div class="card-body">
+                        <h3>{{ titles[i-1] }}</h3>
+                        <p>{{ descs[i-1] }}</p>
+                    </div>
+
+                    <div class="card-footer">
+                        {% if is_completed %}
+                        <div class="btn-completed">
+                            <i class="fas fa-check-circle"></i> Module Completed
+                        </div>
+                        <a href="{{ url_for('serve_chapter', chapter_num=i) }}" class="review-link">
+                            <i class="fas fa-redo"></i> Review Content
+                        </a>
+                        {% elif is_next %}
+                        <a href="{{ url_for('serve_chapter', chapter_num=i) }}" class="btn-start">
+                            <i class="fas fa-play-circle"></i> Start Module {{ i }}
+                        </a>
+                        {% else %}
+                        <div class="btn-locked">
+                            <i class="fas fa-lock"></i> Complete Previous Module
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2025 Sentellect. Mental Wellness Platform - Educational Technology Project.</p>
+            <p style="margin-top: 10px; font-size: 0.9rem; opacity: 0.7;">
+                Your journey to better mental health starts here. Progress at your own pace.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Add smooth animation to progress bar
+        document.addEventListener('DOMContentLoaded', function() {
+            const progressFill = document.querySelector('.progress-fill');
+            // Trigger the animation
+            setTimeout(() => {
+                progressFill.style.transition = 'width 1.5s ease-in-out';
+            }, 500);
+
+            // Add click animation to cards
+            const cards = document.querySelectorAll('.chapter-card');
+            cards.forEach(card => {
+                card.addEventListener('click', function(e) {
+                    if (!e.target.closest('.btn-locked')) {
+                        this.style.transform = 'scale(0.98)';
+                        setTimeout(() => {
+                            this.style.transform = '';
+                        }, 150);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

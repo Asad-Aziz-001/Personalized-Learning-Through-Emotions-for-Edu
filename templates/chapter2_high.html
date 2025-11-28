@@ -1,0 +1,6805 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Sentellect — Differentiation (Chapter 2)</title>
+
+
+
+  <!-- MathJax -->
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+
+  <!-- Font Awesome -->
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+
+
+  <!-- Google Font -->
+
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+
+
+
+  <style>
+
+    /* ===== Base Styles ===== */
+
+    :root {
+
+      --primary: #1e40af;
+
+      --primary-light: #3b82f6;
+
+      --primary-dark: #1e3a8a;
+
+      --secondary: #f59e0b;
+
+      --accent: #ec4899;
+
+      --text: #1e293b;
+
+      --text-light: #64748b;
+
+      --text-lighter: #94a3b8;
+
+      --bg: #f8fafc;
+
+      --white: #ffffff;
+
+      --gray: #e2e8f0;
+
+      --gray-light: #f1f5f9;
+
+      --success: #10b981;
+
+      --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+
+      --hover-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+
+      --pastel-bg: #f3f8ff;
+
+      --muted: #64748b;
+
+    }
+
+
+
+    * {
+
+      margin: 0;
+
+      padding: 0;
+
+      box-sizing: border-box;
+
+    }
+
+
+
+    body {
+
+      font-family: 'Quicksand', system-ui, -apple-system, 'Segoe UI', Roboto, Arial;
+
+      background-color: var(--bg);
+
+      color: var(--text);
+
+      line-height: 1.6;
+
+      overflow-x: hidden;
+
+    }
+
+
+
+    h1, h2, h3, h4 {
+
+      font-weight: 700;
+
+      line-height: 1.2;
+
+    }
+
+
+
+    a {
+
+      text-decoration: none;
+
+      color: inherit;
+
+    }
+
+
+
+    .container {
+
+      width: 100%;
+
+      max-width: 1200px;
+
+      margin: 0 auto;
+
+      padding: 0 20px;
+
+    }
+
+
+
+    section {
+
+      padding: 80px 0;
+
+      padding-top: 0;
+
+      padding-bottom: 0;
+
+    }
+
+
+
+    .section-title {
+
+      text-align: center;
+
+      margin-bottom: 50px;
+
+    }
+
+
+
+    .section-title h2 {
+
+      font-size: 2.5rem;
+
+      color: var(--primary);
+
+      margin-bottom: 15px;
+
+      position: relative;
+
+      display: inline-block;
+
+    }
+
+
+
+    .section-title h2::after {
+
+      content: '';
+
+      position: absolute;
+
+      bottom: -10px;
+
+      left: 50%;
+
+      transform: translateX(-50%);
+
+      width: 80px;
+
+      height: 4px;
+
+      background: var(--secondary);
+
+      border-radius: 2px;
+
+    }
+
+
+
+    .section-title p {
+
+      color: var(--text-light);
+
+      font-size: 1.1rem;
+
+      max-width: 700px;
+
+      margin: 0 auto;
+
+    }
+
+
+
+    .btn {
+
+      display: inline-block;
+
+      padding: 12px 28px;
+
+      border-radius: 50px;
+
+      font-weight: 600;
+
+      transition: all 0.3s ease;
+
+      text-align: center;
+
+      cursor: pointer;
+
+    }
+
+
+
+    .btn-primary {
+
+      background-color: var(--primary);
+
+      color: var(--white);
+
+      box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
+
+    }
+
+
+
+    .btn-primary:hover {
+
+      background-color: var(--primary-dark);
+
+      transform: translateY(-2px);
+
+      box-shadow: 0 6px 20px rgba(30, 64, 175, 0.4);
+
+    }
+
+
+
+    .btn-secondary {
+
+      background-color: var(--white);
+
+      color: var(--primary);
+
+      border: 2px solid var(--primary);
+
+    }
+
+
+
+    .btn-secondary:hover {
+
+      background-color: var(--primary);
+
+      color: var(--white);
+
+      transform: translateY(-2px);
+
+    }
+
+
+
+    /* ===== Animations ===== */
+
+    @keyframes fadeIn {
+
+      from { opacity: 0; transform: translateY(20px); }
+
+      to { opacity: 1; transform: translateY(0); }
+
+    }
+
+
+
+    @keyframes float {
+
+      0%, 100% { transform: translateY(0); }
+
+      50% { transform: translateY(-10px); }
+
+    }
+
+
+
+    @keyframes pulse {
+
+      0%, 100% { transform: scale(1); }
+
+      50% { transform: scale(1.05); }
+
+    }
+
+    
+
+    @keyframes shimmer {
+
+      0% { background-position: -1000px 0; }
+
+      100% { background-position: 1000px 0; }
+
+    }
+
+    
+
+    @keyframes slideIn {
+
+      from { transform: translateX(-20px); opacity: 0; }
+
+      to { transform: translateX(0); opacity: 1; }
+
+    }
+
+    
+
+    @keyframes bounceIn {
+
+      0% { transform: scale(0.95); opacity: 0; }
+
+      50% { transform: scale(1.02); }
+
+      100% { transform: scale(1); opacity: 1; }
+
+    }
+
+
+
+    @keyframes breathe {
+
+      0%, 100% { transform: scale(1); }
+
+      50% { transform: scale(1.45); }
+
+    }
+
+
+
+    @keyframes wavey {
+
+      0% { transform: translateY(0); }
+
+      50% { transform: translateY(-6px); }
+
+      100% { transform: translateY(0); }
+
+    }
+
+
+
+    .animate {
+
+      animation: fadeIn 0.8s ease forwards;
+
+    }
+
+    
+
+    .animate-slide {
+
+      animation: slideIn 0.6s ease forwards;
+
+    }
+
+    
+
+    .animate-bounce {
+
+      animation: bounceIn 0.8s ease forwards;
+
+    }
+
+
+
+    .delay-1 { animation-delay: 0.2s; }
+
+    .delay-2 { animation-delay: 0.4s; }
+
+    .delay-3 { animation-delay: 0.6s; }
+
+    .delay-4 { animation-delay: 0.8s; }
+
+
+
+    /* ===== Header/Navbar ===== */
+
+    header {
+
+      position: fixed;
+
+      top: 0;
+
+      left: 0;
+
+      width: 100%;
+
+      z-index: 1000;
+
+      background-color: var(--white);
+
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+
+      transition: all 0.3s ease;
+
+    }
+
+
+
+    header.scrolled {
+
+      padding: 10px 0;
+
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+
+    }
+
+
+
+    .navbar {
+
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+
+      padding: 20px 0;
+
+    }
+
+
+
+    .logo {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 10px;
+
+    }
+
+
+
+    .logo-icon {
+
+      width: 36px;
+
+      height: 36px;
+
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+
+      color: var(--white);
+
+      border-radius: 10px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      font-weight: 700;
+
+      font-size: 18px;
+
+      transition: all 0.3s ease;
+
+      box-shadow: 0 4px 8px rgba(30, 64, 175, 0.2);
+
+    }
+
+
+
+    .logo-text {
+
+      font-size: 1.5rem;
+
+      font-weight: 700;
+
+      color: var(--primary);
+
+      transition: all 0.3s ease;
+
+    }
+
+
+
+    .nav-links {
+
+      display: flex;
+
+      list-style: none;
+
+      gap: 30px;
+
+      margin: 0 auto;
+
+    }
+
+
+
+    .nav-links a {
+
+      font-weight: 500;
+
+      position: relative;
+
+      padding: 5px 0;
+
+      transition: color 0.3s ease;
+
+    }
+
+
+
+    .nav-links a::after {
+
+      content: '';
+
+      position: absolute;
+
+      bottom: 0;
+
+      left: 0;
+
+      width: 0;
+
+      height: 3px;
+
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+
+      transition: width 0.3s ease;
+
+      border-radius: 2px;
+
+    }
+
+
+
+    .nav-links a:hover::after,
+
+    .nav-links a.active::after {
+
+      width: 100%;
+
+    }
+
+
+
+    .nav-links a.active {
+
+      color: var(--primary);
+
+      font-weight: 600;
+
+    }
+
+
+
+    .mobile-menu-btn {
+
+      display: none;
+
+      background: none;
+
+      border: none;
+
+      font-size: 1.5rem;
+
+      color: var(--primary);
+
+      cursor: pointer;
+
+    }
+
+
+
+    /* Sound controls in header */
+
+    .header-sound-controls {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 10px;
+
+      position: absolute;
+
+      right: 20px;
+
+      top: 50%;
+
+      transform: translateY(-50%);
+
+    }
+
+    
+
+    .sound-btn {
+
+      background: var(--primary);
+
+      color: white;
+
+      border: none;
+
+      border-radius: 50%;
+
+      width: 40px;
+
+      height: 40px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      cursor: pointer;
+
+      transition: all 0.3s;
+
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+    }
+
+    
+
+    .sound-btn:hover {
+
+      transform: scale(1.1);
+
+      background: var(--primary-light);
+
+    }
+
+    
+
+    .sound-btn.muted {
+
+      background: var(--muted);
+
+    }
+
+    
+
+    /* ===== Hero Section ===== */
+
+    .hero {
+
+      position: relative;
+
+      padding: 180px 0 80px;
+
+      background: linear-gradient(135deg, var(--primary), #004e92);
+
+      color: var(--white);
+
+      overflow: hidden;
+
+      text-align: center;
+
+    }
+
+
+
+    .hero::before {
+
+      content: '';
+
+      position: absolute;
+
+      top: 0;
+
+      left: 0;
+
+      width: 100%;
+
+      height: 100%;
+
+      background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3QgZmlsbD0idXJsKCNwYXR0ZXJuKSIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIvPjwvc3ZnPg==');
+
+    }
+
+
+
+    .hero-content {
+
+      position: relative;
+
+      z-index: 1;
+
+      max-width: 800px;
+
+      margin: 0 auto;
+
+    }
+
+
+
+    .hero h1 {
+
+      font-size: 3.2rem;
+
+      margin-bottom: 20px;
+
+      line-height: 1.2;
+
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+
+    }
+
+
+
+    .hero h1 span {
+
+      color: var(--secondary);
+
+      position: relative;
+
+    }
+
+
+
+    .hero h1 span::after {
+
+      content: '';
+
+      position: absolute;
+
+      bottom: 5px;
+
+      left: 0;
+
+      width: 100%;
+
+      height: 8px;
+
+      background-color: rgba(255, 255, 255, 0.3);
+
+      z-index: -1;
+
+      border-radius: 4px;
+
+    }
+
+
+
+    .hero p {
+
+      font-size: 1.2rem;
+
+      margin-bottom: 40px;
+
+      opacity: 0.9;
+
+    }
+
+
+
+    .hero-buttons {
+
+      display: flex;
+
+      justify-content: center;
+
+      gap: 20px;
+
+      margin-top: 30px;
+
+    }
+
+
+
+    .hero .btn-secondary {
+
+      background-color: transparent;
+
+      color: var(--white);
+
+      border-color: var(--white);
+
+    }
+
+
+
+    .hero .btn-secondary:hover {
+
+      background-color: var(--white);
+
+      color: var(--primary);
+
+    }
+
+
+
+    .floating-shape {
+
+      position: absolute;
+
+      border-radius: 50%;
+
+      background: rgba(255, 255, 255, 0.1);
+
+      z-index: 0;
+
+      animation: float 6s ease-in-out infinite;
+
+    }
+
+
+
+    .shape-1 {
+
+      width: 150px;
+
+      height: 150px;
+
+      top: 10%;
+
+      left: 10%;
+
+      animation-delay: 0s;
+
+    }
+
+
+
+    .shape-2 {
+
+      width: 100px;
+
+      height: 100px;
+
+      bottom: 15%;
+
+      right: 10%;
+
+      animation-delay: 0.5s;
+
+    }
+
+
+
+    .shape-3 {
+
+      width: 80px;
+
+      height: 80px;
+
+      top: 30%;
+
+      right: 20%;
+
+      animation-delay: 1s;
+
+    }
+
+    
+
+    .particles {
+
+      position: absolute;
+
+      top: 0;
+
+      left: 0;
+
+      width: 100%;
+
+      height: 100%;
+
+      overflow: hidden;
+
+      z-index: 0;
+
+    }
+
+    
+
+    .particle {
+
+      position: absolute;
+
+      background: rgba(255, 255, 255, 0.3);
+
+      border-radius: 50%;
+
+      animation: float 8s infinite ease-in-out;
+
+    }
+
+
+
+    /* ===== Card Styles ===== */
+
+    .card {
+
+      background-color: var(--white);
+
+      border-radius: 16px;
+
+      padding: 30px;
+
+      margin: 25px 0;
+
+      box-shadow: var(--card-shadow);
+
+      transition: all 0.3s ease;
+
+      position: relative;
+
+      overflow: hidden;
+
+    }
+
+    
+
+    .card::before {
+
+      content: '';
+
+      position: absolute;
+
+      top: 0;
+
+      left: 0;
+
+      width: 5px;
+
+      height: 100%;
+
+      background: linear-gradient(to bottom, var(--primary), var(--secondary));
+
+      transition: width 0.3s ease;
+
+    }
+
+
+
+    .card:hover {
+
+      transform: translateY(-5px);
+
+      box-shadow: var(--hover-shadow);
+
+    }
+
+    
+
+    .card:hover::before {
+
+      width: 8px;
+
+    }
+
+
+
+    h2 {
+
+      color: var(--primary);
+
+      font-size: 1.8rem;
+
+      margin-bottom: 20px;
+
+      font-weight: 600;
+
+    }
+
+
+
+    h3 {
+
+      color: var(--primary);
+
+      font-size: 1.4rem;
+
+      margin: 25px 0 15px;
+
+      font-weight: 600;
+
+      position: relative;
+
+      padding-left: 15px;
+
+    }
+
+    
+
+    h3::before {
+
+      content: '';
+
+      position: absolute;
+
+      left: 0;
+
+      top: 50%;
+
+      transform: translateY(-50%);
+
+      width: 6px;
+
+      height: 6px;
+
+      background: var(--secondary);
+
+      border-radius: 50%;
+
+    }
+
+
+
+    p {
+
+      color: var(--text-light);
+
+      margin-bottom: 20px;
+
+      line-height: 1.7;
+
+    }
+
+
+
+    .lead {
+
+      color: var(--muted);
+
+      margin-bottom: 10px;
+
+    }
+
+
+
+    /* ===== Step Buttons ===== */
+
+    .step-buttons {
+
+      display: flex;
+
+      gap: 12px;
+
+      margin: 20px 0;
+
+      flex-wrap: wrap;
+
+    }
+
+
+
+    .step-btn {
+
+      padding: 10px 16px;
+
+      background: linear-gradient(to right, var(--primary), var(--primary-light));
+
+      color: var(--white);
+
+      border: none;
+
+      border-radius: 8px;
+
+      cursor: pointer;
+
+      transition: all 0.3s ease;
+
+      font-weight: 500;
+
+      box-shadow: 0 4px 8px rgba(30, 64, 175, 0.2);
+
+    }
+
+
+
+    .step-btn:hover {
+
+      background: linear-gradient(to right, var(--primary-dark), var(--primary));
+
+      transform: translateY(-2px);
+
+      box-shadow: 0 6px 12px rgba(30, 64, 175, 0.3);
+
+    }
+
+
+
+    /* ===== Solution Display ===== */
+
+    .solution {
+
+      background: var(--gray-light);
+
+      border-left: 4px solid var(--secondary);
+
+      padding: 20px;
+
+      margin: 15px 0;
+
+      border-radius: 0 8px 8px 0;
+
+      transition: all 0.3s ease;
+
+      position: relative;
+
+      overflow: hidden;
+
+    }
+
+    
+
+    .solution::before {
+
+      content: '';
+
+      position: absolute;
+
+      top: 0;
+
+      left: 0;
+
+      width: 100%;
+
+      height: 100%;
+
+      background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.5), transparent);
+
+      transform: translateX(-100%);
+
+    }
+
+    
+
+    .solution.active::before {
+
+      animation: shimmer 1.5s ease;
+
+    }
+
+
+
+    /* ===== Progress Bar ===== */
+
+    .progress-container {
+
+      width: 100%;
+
+      height: 8px;
+
+      background-color: var(--gray);
+
+      border-radius: 4px;
+
+      margin: 20px 0;
+
+      overflow: hidden;
+
+    }
+
+
+
+    .progress-bar {
+
+      height: 100%;
+
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+
+      border-radius: 4px;
+
+      width: 0%;
+
+      transition: width 1s ease;
+
+    }
+
+
+
+    /* ===== Self-Care Notes ===== */
+
+    .self-care {
+
+      background: linear-gradient(135deg, #e0f2fe, #f0f9ff);
+
+      border-radius: 12px;
+
+      padding: 20px;
+
+      margin: 25px 0;
+
+      text-align: center;
+
+      border-left: 5px solid var(--accent);
+
+      animation: pulse 3s infinite;
+
+    }
+
+
+
+    .self-care h4 {
+
+      color: var(--accent);
+
+      margin-bottom: 10px;
+
+      font-size: 1.3rem;
+
+    }
+
+
+
+    .self-care p {
+
+      color: var(--text);
+
+      font-size: 1.1rem;
+
+      margin-bottom: 0;
+
+    }
+
+
+
+    /* ===== Visual Elements ===== */
+
+    .math-emoji {
+
+      font-size: 2rem;
+
+      margin: 0 10px;
+
+      animation: float 3s ease-in-out infinite;
+
+    }
+
+
+
+    .visual-element {
+
+      text-align: center;
+
+      margin: 20px 0;
+
+    }
+
+
+
+    .emoji-row {
+
+      display: flex;
+
+      justify-content: center;
+
+      gap: 15px;
+
+      margin: 15px 0;
+
+    }
+
+
+
+    /* Coordinate Visuals */
+
+    .concept-visual {
+
+      display: flex;
+
+      justify-content: center;
+
+      margin: 15px 0;
+
+    }
+
+
+
+    .coordinate-visual {
+
+      position: relative;
+
+      width: 280px;
+
+      height: 200px;
+
+      background: #fff;
+
+      border-radius: 12px;
+
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+
+      overflow: hidden;
+
+    }
+
+
+
+    .grid-lines {
+
+      position: absolute;
+
+      width: 100%;
+
+      height: 100%;
+
+      background-image: linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
+
+      background-size: 20px 20px;
+
+    }
+
+
+
+    .axis {
+
+      position: absolute;
+
+      background: #333;
+
+    }
+
+
+
+    .x-axis {
+
+      bottom: 50%;
+
+      left: 0;
+
+      width: 100%;
+
+      height: 2px;
+
+    }
+
+
+
+    .y-axis {
+
+      left: 50%;
+
+      top: 0;
+
+      width: 2px;
+
+      height: 100%;
+
+    }
+
+
+
+    .point {
+
+      position: absolute;
+
+      width: 12px;
+
+      height: 12px;
+
+      border-radius: 50%;
+
+      transform: translate(-50%, -50%);
+
+    }
+
+
+
+    .point-label {
+
+      position: absolute;
+
+      font-size: 12px;
+
+      font-weight: bold;
+
+      transform: translate(5px, -5px);
+
+    }
+
+
+
+    .line {
+
+      position: absolute;
+
+      height: 2px;
+
+      transform-origin: left center;
+
+    }
+
+
+
+    /* Concept visuals */
+
+    .visual-box {
+
+      width: 220px;
+
+      height: 160px;
+
+      background: #fff;
+
+      border-radius: 10px;
+
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+
+      padding: 10px;
+
+      position: relative;
+
+      overflow: hidden;
+
+    }
+
+
+
+    /* ===== Chapter 2 Specific Styles ===== */
+
+    .definition {
+
+      background: #f3fbff;
+
+      border-left: 6px solid var(--primary);
+
+      padding: 12px;
+
+      border-radius: 8px;
+
+      margin-top: 10px;
+
+      color: var(--text);
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 15px;
+
+    }
+
+    .definition-content{flex:1}
+
+    .definition-cartoon{flex-shrink:0;width:80px;height:80px;display:flex;align-items:center;justify-content:center}
+
+
+
+    .controls {
+
+      display: flex;
+
+      gap: 8px;
+
+      flex-wrap: wrap;
+
+      margin-top: 10px;
+
+    }
+
+
+
+    .example {
+
+      background: #fff;
+
+      padding: 12px;
+
+      border-radius: 10px;
+
+      margin-top: 12px;
+
+      border-left: 6px solid #bfe9ff;
+
+    }
+
+
+
+    .big {
+
+      font-weight: 700;
+
+      color: var(--primary);
+
+      margin-bottom: 6px;
+
+    }
+
+
+
+    .step-block {
+
+      margin-top: 10px;
+
+    }
+
+
+
+    .step-line {
+
+      display: none;
+
+      padding: 10px;
+
+      border-radius: 8px;
+
+      background: #f7fbff;
+
+      margin-top: 8px;
+
+      border-left: 4px solid #d6eefc;
+
+    }
+
+
+
+    .next-step {
+
+      margin-top: 8px;
+
+      background: var(--primary);
+
+      color: white;
+
+      padding: 8px 10px;
+
+      border-radius: 8px;
+
+      border: none;
+
+      cursor: pointer;
+
+    }
+
+
+
+    input[type="text"] {
+
+      padding: 10px;
+
+      border-radius: 8px;
+
+      border: 1px solid #d9ecff;
+
+      width: 100%;
+
+      font-size: 15px;
+
+    }
+
+    input[type="number"] {
+
+      padding: 10px;
+
+      border-radius: 8px;
+
+      border: 1px solid #d9ecff;
+
+      max-width: 100px;
+
+      font-size: 15px;
+
+    }
+
+
+
+    .row {
+
+      display: flex;
+
+      gap: 10px;
+
+      align-items: center;
+
+      margin-top: 8px;
+
+      flex-wrap: wrap;
+
+    }
+
+
+
+    button.check {
+
+      background: var(--primary);
+
+      color: white;
+
+      border: none;
+
+      padding: 10px 14px;
+
+      border-radius: 8px;
+
+      cursor: pointer;
+
+    }
+
+
+
+    .result {
+
+      margin-top: 8px;
+
+      padding: 10px;
+
+      border-radius: 8px;
+
+      display: none;
+
+    }
+
+
+
+    .result.good {
+
+      background: #e6fff0;
+
+      border-left: 4px solid #2fb46a;
+
+    }
+
+
+
+    .result.warn {
+
+      background: #fff7e6;
+
+      border-left: 4px solid #ffb74d;
+
+    }
+
+
+
+    .calm {
+
+      margin-top: 14px;
+
+      padding: 14px;
+
+      border-radius: 10px;
+
+      background: linear-gradient(180deg, #fff8f0, #f8ffff);
+
+      text-align: center;
+
+      border: 1px solid #e6f7ff;
+
+    }
+
+
+
+    .breath {
+
+      width: 48px;
+
+      height: 48px;
+
+      background: #ffd08a;
+
+      border-radius: 50%;
+
+      margin: 12px auto;
+
+      animation: breathe 4s infinite ease-in-out;
+
+    }
+
+
+
+    .wave {
+
+      font-size: 36px;
+
+      display: inline-block;
+
+      animation: wavey 2.6s infinite;
+
+    }
+
+
+
+    .divider {
+
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+
+      color: white;
+
+      padding: 10px 14px;
+
+      border-radius: 10px;
+
+      margin: 18px 0;
+
+      font-weight: 700;
+
+      box-shadow: 0 6px 18px rgba(3, 102, 214, 0.08);
+
+      text-align: center;
+
+    }
+
+
+
+    .small-note {
+
+      font-size: 13px;
+
+      color: var(--text-light);
+
+      margin-top: 6px;
+
+    }
+
+
+
+    .funny-note {
+
+      font-size: 14px;
+
+      color: var(--primary);
+
+      margin-top: 6px;
+
+    }
+
+
+
+    .scenario {
+
+      display: none;
+
+    }
+
+
+
+    .try-yourself {
+
+      background: #fffaf0;
+
+      border-radius: 10px;
+
+      padding: 15px;
+
+      margin: 15px 0;
+
+      border: 1px dashed rgba(245,158,11,0.16);
+
+    }
+
+
+
+    .try-title {
+
+      font-weight: 700;
+
+      color: var(--primary);
+
+      margin-bottom: 10px;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+    }
+
+
+
+    .example-container {
+
+      display: grid;
+
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+
+      gap: 15px;
+
+      margin-top: 15px;
+
+    }
+
+
+
+    .example-box {
+
+      background: var(--pastel-bg);
+
+      padding: 15px;
+
+      border-radius: 10px;
+
+      border: 1px solid rgba(30,64,175,0.04);
+
+    }
+
+
+
+    .motivate{
+
+      background:linear-gradient(180deg,#fff,#fffaf6);
+
+      border-radius:10px;
+
+      padding:10px;
+
+      border-left:6px solid var(--accent);
+
+      margin-top:12px;
+
+      display:flex;
+
+      align-items:center;
+
+      gap:12px
+
+    }
+
+    .motivate .emoji{font-size:24px}
+
+    .motivate .text{font-weight:700;color:var(--primary);font-size:0.95rem}
+
+
+
+    /* ===== Interactive Games ===== */
+
+    .game-card-grid {
+
+      display: grid;
+
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+
+      gap: 20px;
+
+      margin-top: 20px;
+
+    }
+
+    
+
+    .game-card-style{
+
+      display:flex;
+
+      gap:16px;
+
+      align-items:center;
+
+      background:var(--white);
+
+      padding:20px;
+
+      border-radius:16px;
+
+      box-shadow:0 8px 25px rgba(2,6,23,0.08);
+
+      cursor:pointer;
+
+      border:1px solid rgba(30,64,175,0.04);
+
+      transition:all 0.3s ease;
+
+      position:relative;
+
+      overflow:hidden
+
+    }
+
+    .game-card-style:hover{
+
+      transform:translateY(-8px);
+
+      box-shadow:0 15px 35px rgba(30,64,175,0.15)
+
+    }
+
+    .game-card-style::before{
+
+      content:"";
+
+      position:absolute;
+
+      top:0;
+
+      left:0;
+
+      width:100%;
+
+      height:5px;
+
+      background:linear-gradient(90deg,var(--primary),var(--accent))
+
+    }
+
+    .game-card-left{
+
+      min-width:110px;
+
+      display:flex;
+
+      flex-direction:column;
+
+      align-items:center;
+
+      gap:8px
+
+    }
+
+    .svg-icon{
+
+      width:100px;
+
+      height:100px;
+
+      border-radius:16px;
+
+      background:linear-gradient(180deg,#fff,#fffaf6);
+
+      display:flex;
+
+      align-items:center;
+
+      justify-content:center;
+
+      box-shadow:0 8px 20px rgba(30,64,175,0.08);
+
+      border:2px solid rgba(255,255,255,0.7);
+
+      overflow:hidden;
+
+      font-size: 48px;
+
+      color: var(--primary);
+
+    }
+
+    .game-card-title{
+
+      font-weight:800;
+
+      color:var(--primary);
+
+      font-size:1.2rem;
+
+      margin-bottom:6px
+
+    }
+
+    .game-card-desc{
+
+      color:var(--muted);
+
+      font-size:0.95rem;
+
+      line-height:1.4
+
+    }
+
+    .start-btn {
+
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+
+      color: white;
+
+      border: none;
+
+      padding: 10px 20px;
+
+      border-radius: 999px;
+
+      cursor: pointer;
+
+      font-weight: 700;
+
+      transition: all 0.3s ease;
+
+      box-shadow: 0 4px 12px rgba(30,64,175,0.2);
+
+    }
+
+    .start-btn:hover {
+
+      transform: scale(1.05);
+
+      box-shadow: 0 6px 16px rgba(30,64,175,0.3);
+
+    }
+
+
+
+    .game-play-area {
+
+      display: none;
+
+      margin-top: 20px;
+
+      padding: 20px;
+
+      border: 2px solid var(--accent);
+
+      border-radius: 12px;
+
+      background: #fffafc;
+
+      text-align: center;
+
+    }
+
+    
+
+    .score-board {
+
+      font-weight: 700;
+
+      color: var(--primary);
+
+      background: #f0f9ff;
+
+      padding: 6px 10px;
+
+      border-radius: 6px;
+
+      display: inline-block;
+
+      margin-bottom: 10px;
+
+    }
+
+    
+
+    .game-message {
+
+      margin-top: 12px;
+
+      color: var(--primary);
+
+      font-weight: 600;
+
+    }
+
+    
+
+    .game-input-group {
+
+        display: flex;
+
+        justify-content: center;
+
+        align-items: center;
+
+        gap: 10px;
+
+        margin-bottom: 15px;
+
+        font-weight: 600;
+
+        color: var(--primary);
+
+    }
+
+    
+
+    .game-icon-visual {
+
+      font-size: 48px;
+
+      margin-bottom: 10px;
+
+    }
+
+
+
+    /* Celebration Overlay */
+
+    .celebration {
+
+      position: fixed;
+
+      top: 0;
+
+      left: 0;
+
+      width: 100%;
+
+      height: 100%;
+
+      pointer-events: none;
+
+      z-index: 2000;
+
+      display: none;
+
+    }
+
+    
+
+    .confetti {
+
+      position: absolute;
+
+      width: 10px;
+
+      height: 10px;
+
+      background: #f00;
+
+      opacity: 0;
+
+    }
+
+    
+
+    .hurray-text {
+
+      position: absolute;
+
+      top: 40%;
+
+      left: 50%;
+
+      transform: translate(-50%, -50%);
+
+      font-size: 48px;
+
+      font-weight: bold;
+
+      color: #ff6b6b;
+
+      text-shadow: 2px 2px 0 #ffd166, 4px 4px 0 #06d6a0;
+
+      opacity: 0;
+
+    }
+
+
+
+    /* Party popper */
+
+    .party-popper {
+
+      position: absolute;
+
+      font-size: 30px;
+
+      opacity: 0;
+
+    }
+
+    
+
+    /* ===== Footer ===== */
+
+    .footer {
+
+      background: linear-gradient(to bottom, var(--primary-dark), #0f172a);
+
+      color: var(--white);
+
+      padding: 80px 0 30px;
+
+      position: relative;
+
+    }
+
+
+
+    .footer::before {
+
+      content: '';
+
+      position: absolute;
+
+      top: 0;
+
+      left: 0;
+
+      width: 100%;
+
+      height: 10px;
+
+      background: linear-gradient(90deg, var(--secondary), var(--primary));
+
+    }
+
+
+
+    .footer-content {
+
+      display: grid;
+
+      grid-template-columns: repeat(4, 1fr);
+
+      gap: 40px;
+
+      margin-bottom: 60px;
+
+    }
+
+
+
+    .footer-about {
+
+      grid-column: span 2;
+
+    }
+
+
+
+    .footer-logo {
+
+      font-size: 1.8rem;
+
+      font-weight: 700;
+
+      margin-bottom: 20px;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 10px;
+
+    }
+
+
+
+    .footer-logo-icon {
+
+      width: 40px;
+
+      height: 40px;
+
+      background: linear-gradient(135deg, var(--white), var(--gray));
+
+      color: var(--primary);
+
+      border-radius: 10px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      font-weight: 700;
+
+      font-size: 1.2rem;
+
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    }
+
+
+
+    .footer-about p {
+
+      opacity: 0.8;
+
+      margin-bottom: 25px;
+
+      line-height: 1.7;
+
+    }
+
+
+
+    .social-links {
+
+      display: flex;
+
+      gap: 15px;
+
+    }
+
+
+
+    .social-link {
+
+      width: 40px;
+
+      height: 40px;
+
+      border-radius: 50%;
+
+      background-color: rgba(255, 255, 255, 0.1);
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      transition: all 0.3s ease;
+
+    }
+
+
+
+    .social-link:hover {
+
+      background: linear-gradient(135deg, var(--secondary), var(--accent));
+
+      transform: translateY(-3px);
+
+      box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
+
+    }
+
+
+
+    .footer-links h3 {
+
+      font-size: 1.2rem;
+
+      margin-bottom: 25px;
+
+      position: relative;
+
+      padding-bottom: 10px;
+
+      color: var(--white);
+
+    }
+
+
+
+    .footer-links h3::after {
+
+      content: '';
+
+      position: absolute;
+
+      bottom: 0;
+
+      left: 0;
+
+      width: 40px;
+
+      height: 3px;
+
+      background: linear-gradient(to right, var(--secondary), var(--accent));
+
+    }
+
+
+
+    .footer-links ul {
+
+      list-style: none;
+
+    }
+
+
+
+    .footer-links li {
+
+      margin-bottom: 12px;
+
+    }
+
+
+
+    .footer-links a {
+
+      opacity: 0.8;
+
+      transition: all 0.3s ease;
+
+      position: relative;
+
+      padding-left: 15px;
+
+    }
+
+
+
+    .footer-links a::before {
+
+      content: '→';
+
+      position: absolute;
+
+      left: 0;
+
+      opacity: 0;
+
+      transition: all 0.3s ease;
+
+    }
+
+
+
+    .footer-links a:hover {
+
+      opacity: 1;
+
+      padding-left: 20px;
+
+    }
+
+
+
+    .footer-links a:hover::before {
+
+      opacity: 1;
+
+      left: -5px;
+
+    }
+
+
+
+    .footer-bottom {
+
+      text-align: center;
+
+      padding-top: 30px;
+
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+    }
+
+
+
+    .footer-bottom p {
+
+      opacity: 0.7;
+
+      margin-bottom: 20px;
+
+    }
+
+
+
+    .footer-tags {
+
+      display: flex;
+
+      justify-content: center;
+
+      gap: 15px;
+
+      flex-wrap: wrap;
+
+    }
+
+
+
+    .tag {
+
+      background-color: rgba(255, 255, 255, 0.1);
+
+      padding: 5px 15px;
+
+      border-radius: 50px;
+
+      font-size: 0.9rem;
+
+      transition: all 0.3s ease;
+
+    }
+
+
+
+    .tag:hover {
+
+      background: linear-gradient(to right, var(--secondary), var(--accent));
+
+      color: var(--text);
+
+      transform: translateY(-2px);
+
+    }
+
+    
+
+    /* ===== Floating Action Button ===== */
+
+    .fab {
+
+      position: fixed;
+
+      bottom: 30px;
+
+      right: 30px;
+
+      width: 60px;
+
+      height: 60px;
+
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+
+      color: var(--white);
+
+      border-radius: 50%;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      font-size: 1.5rem;
+
+      box-shadow: 0 6px 15px rgba(30, 64, 175, 0.3);
+
+      cursor: pointer;
+
+      z-index: 999;
+
+      transition: all 0.3s ease;
+
+      animation: pulse 2s infinite;
+
+    }
+
+    
+
+    .fab:hover {
+
+      transform: scale(1.1) rotate(90deg);
+
+      box-shadow: 0 8px 20px rgba(30, 64, 175, 0.4);
+
+    }
+
+
+
+    /* ===== Responsive Styles ===== */
+
+    @media (max-width: 992px) {
+
+      .nav-links {
+
+        gap: 20px;
+
+      }
+
+      
+
+      .footer-content {
+
+        grid-template-columns: repeat(2, 1fr);
+
+      }
+
+      
+
+      .footer-about {
+
+        grid-column: span 2;
+
+      }
+
+      
+
+      .scenario .card-mini {
+
+        width: 45%;
+
+      }
+
+    }
+
+
+
+    @media (max-width: 768px) {
+
+      .navbar {
+
+        padding: 15px 0;
+
+      }
+
+      
+
+      .nav-links {
+
+        display: none;
+
+      }
+
+      
+
+      .mobile-menu-btn {
+
+        display: block;
+
+      }
+
+      
+
+      .hero h1 {
+
+        font-size: 2.5rem;
+
+      }
+
+      
+
+      .hero-buttons {
+
+        flex-direction: column;
+
+        gap: 15px;
+
+      }
+
+      
+
+      .footer-content {
+
+        grid-template-columns: 1fr;
+
+      }
+
+      
+
+      .footer-about {
+
+        grid-column: span 1;
+
+      }
+
+      
+
+      .scenario .card-mini {
+
+        width: 100%;
+
+      }
+
+      
+
+      .header-sound-controls {
+
+        right: 60px;
+
+      }
+
+    }
+
+
+
+    @media (max-width: 576px) {
+
+      .section-title h2 {
+
+        font-size: 2rem;
+
+      }
+
+      
+
+      .hero {
+
+        padding: 150px 0 80px;
+
+      }
+
+      
+
+      .hero h1 {
+
+        font-size: 2rem;
+
+      }
+
+      
+
+      .hero p {
+
+        font-size: 1rem;
+
+      }
+
+      
+
+      .header-sound-controls {
+
+        right: 50px;
+
+      }
+
+    }
+    /* =========================================
+   MANUAL MODE SWITCHER & SCROLL DETECTION
+   ========================================= */
+
+/* 1. Mode Switcher (Floating Top Right) */
+.mode-indicator {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid #dc2626; /* Red for High Stress */
+    padding: 10px 20px;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(220, 38, 38, 0.2);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    animation: slideInRight 0.5s ease-out;
+}
+
+.mode-text {
+    color: #dc2626;
+    font-weight: bold;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.switch-btn {
+    background: linear-gradient(to right, #3b82f6, #2563eb);
+    color: white;
+    padding: 6px 15px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    text-decoration: none;
+}
+
+.switch-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+    color: white;
+}
+
+/* 2. Scroll Modal (Hidden by default) */
+#scrollModal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(2px);
+}
+
+.scroll-modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    max-width: 450px;
+    text-align: center;
+    border-top: 6px solid #f59e0b; /* Orange for Warning */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Animations & Responsiveness */
+@keyframes slideInRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@media (max-width: 768px) {
+    .mode-indicator {
+        top: auto;
+        bottom: 20px;
+        right: 50%;
+        transform: translateX(50%);
+        width: 90%;
+        justify-content: space-between;
+    }
+}
+
+  </style>
+
+</head>
+
+<body>
+  <div class="mode-indicator">
+    <div class="mode-text">
+        <i class="fas fa-fire"></i> Challenge Mode
+    </div>
+    <a href="{{ url_for('serve_chapter', chapter_num=2) }}?mode=mid" class="switch-btn">
+        Switch to Standard
+    </a>
+</div>
+
+<div id="scrollModal">
+    <div class="scroll-modal-content">
+        <h3 style="color:#d97706; margin-bottom:15px;">🏎️ Woah, slowing down?</h3>
+        <p style="font-size:1.1rem; color:#555; margin-bottom:20px;">
+            We noticed you are scrolling quite fast. <br><br>
+            If you are looking for a more structured flow without the relaxation elements, the <b>Standard Mode</b> might be a better fit.
+        </p>
+        
+        <div style="display:flex; gap:15px; justify-content:center; margin-top:20px;">
+            <button onclick="closeScrollModal()" style="padding:10px 20px; border:1px solid #ccc; background:white; border-radius:50px; cursor:pointer; font-weight:600; color:#666;">I'm just skimming</button>
+            <a href="{{ url_for('serve_chapter', chapter_num=2) }}?mode=mid" style="padding:10px 25px; background:#3b82f6; color:white; border-radius:50px; text-decoration:none; font-weight:600; box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);">
+                Switch to Standard
+            </a>
+        </div>
+    </div>
+</div>
+
+  <!-- Celebration Overlay -->
+
+  <div class="celebration" id="celebration"></div>
+
+
+
+  <!-- Header with updated navigation -->
+
+  <header>
+
+    <div class="container">
+
+      <nav class="navbar">
+
+        <a href="#" class="logo">
+
+          <div class="logo-icon">S</div>
+
+          <span class="logo-text">Sentellect</span>
+
+        </a>
+
+        
+
+        <ul class="nav-links">
+
+         <li><a class="active" href="#">Home</a></li>
+
+	<li><a href="#homogeneous">Introduction</a></li>
+
+	<li><a href="#angles">Graphing</a></li>
+
+	<li><a href="#perpendicular">System</a></li>
+
+	<li><a href="#area">Practice</a></li>
+
+	<li><a href="#games">Games</a></li>  
+
+        </ul>
+
+        
+
+        <!-- Sound controls in header - moved to top right -->
+
+        <div class="header-sound-controls">
+
+          <button class="sound-btn" id="toggleSound" title="Toggle sound effects">
+
+            <i class="fas fa-volume-up"></i>
+
+          </button>
+
+        </div>
+
+        
+
+        <button class="mobile-menu-btn">
+
+          <i class="fas fa-bars"></i>
+
+        </button>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+
+
+  <!-- HERO -->
+
+  <section class="hero" role="banner" aria-label="Chapter 2 hero">
+
+    <div class="particles">
+
+      <div class="particle" style="top: 20%; left: 5%; width: 10px; height: 10px; animation-delay: 0s;"></div>
+
+      <div class="particle" style="top: 60%; left: 15%; width: 15px; height: 15px; animation-delay: 1s;"></div>
+
+      <div class="particle" style="top: 30%; right: 10%; width: 12px; height: 12px; animation-delay: 2s;"></div>
+
+      <div class="particle" style="bottom: 20%; left: 20%; width: 8px; height: 8px; animation-delay: 3s;"></div>
+
+      <div class="particle" style="bottom: 40%; right: 15%; width: 14px; height: 14px; animation-delay: 4s;"></div>
+
+    </div>
+
+    
+
+    <div class="floating-shape shape-1"></div>
+
+    <div class="floating-shape shape-2"></div>
+
+    <div class="floating-shape shape-3"></div>
+
+    
+
+    <div class="container">
+
+      <div class="hero-content">
+
+        <h1 class="animate">Differentiation — Chapter 2</h1>
+
+        <p class="animate delay-1">Master All 8 Exercises with Interactive Examples and Calm Learning. Explore the fundamental concept of derivatives and their applications.</p>
+
+        <div class="hero-buttons">
+
+          <a href="#intro" class="btn btn-primary animate delay-2">Start Learning</a>
+
+          <a href="#games" class="btn btn-secondary animate delay-3">Open Games</a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- MAIN CONTENT -->
+
+  <div class="container" style="padding-bottom:60px;">
+
+
+
+    <!-- Welcome card -->
+
+    <div class="card animate">
+
+      <h2>Welcome to Differentiation</h2>
+
+      <p class="lead">This module contains all examples, try-it-yourself exercises, and interactive games to practice the key concepts of differentiation - from first principles to advanced applications.</p>
+
+      
+
+      <!-- Welcome visual -->
+
+      <div class="concept-visual">
+
+        <div class="visual-box" style="background:linear-gradient(135deg, #e3f2fd, #f3e5f5); display:flex; align-items:center; justify-content:center;">
+
+          <div style="text-align:center">
+
+            <div style="font-size:40px; margin-bottom:10px">📈</div>
+
+            <div style="font-weight:bold; color:var(--primary)">Let's Explore Derivatives!</div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- ================= INTRODUCTION TO DERIVATIVES ================= -->
+
+    <div id="intro" class="divider">Introduction to Derivatives</div>
+
+    <section class="card animate delay-1">
+
+      <h2>What is a Derivative?</h2>
+
+      <p class="lead">A derivative represents the instantaneous rate of change - how fast something is changing at an exact moment. Think of it as the mathematical equivalent of a speedometer!</p>
+
+
+
+      <div class="definition">
+
+        <div class="definition-content">
+
+          <strong>Understanding Derivatives:</strong>
+
+          <p>The derivative, denoted as \(f'(x)\) or \(\frac{dy}{dx}\), is the <strong>slope</strong> of the tangent line touching the curve \(y=f(x)\) at point \(x\).</p>
+
+          <div style="margin-top:8px; display:flex; align-items:center; gap:8px;">
+
+            <span style="font-size:24px">🚗</span>
+
+            <span><strong>Real-World Example:</strong> Your car's <strong>speedometer</strong> reading is the derivative of your position (distance) with respect to time, \(s'(t)\).</span>
+
+          </div>
+
+        </div>
+
+        <div class="definition-cartoon">
+
+          <svg viewBox="0 0 100 100" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+
+            <path d="M10,80 Q50,10 90,80" fill="none" stroke="#3b82f6" stroke-width="3" />
+
+            <line x1="50" y1="80" x2="50" y2="10" stroke="#f59e0b" stroke-width="2" stroke-dasharray="5,5" />
+
+            <circle cx="50" cy="50" r="5" fill="#ec4899" />
+
+            <text x="50" y="45" font-size="8" fill="white" text-anchor="middle" font-weight="bold">P</text>
+
+            <text x="80" y="30" font-size="6" fill="#3b82f6">y=f(x)</text>
+
+            <text x="55" y="65" font-size="6" fill="#f59e0b">tangent</text>
+
+          </svg>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- Examples -->
+
+      <div class="example-container">
+
+        <div class="example-box">
+
+          <div class="big">Example: Speed as a Derivative</div>
+
+          <p class="small-note">If position is \( s(t) \), then speed is \( s'(t) \) - the derivative of position with respect to time.</p>
+
+        </div>
+
+
+
+        <div class="example-box">
+
+          <div class="big">Example: Slope as a Derivative</div>
+
+          <p class="small-note">For a curve \( y = f(x) \), the derivative \( f'(x) \) gives the slope of the tangent line at point \( x \).</p>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="try-yourself">
+
+        <div class="try-title">✨ Think About It</div>
+
+        <p>What would the derivative represent for a temperature function over time?</p>
+
+      </div>
+
+      
+
+      <div class="motivate" style="margin-top:14px">
+
+        <div class="emoji">🎯</div>
+
+        <div class="text" style="color:#ec4899;">You're building the foundation for understanding change in mathematics!</div>
+
+      </div>
+
+      
+
+      <div class="calm">
+
+        <div class="wave">🧘</div>
+
+        <div style="font-weight:700">Calm: Learning derivatives can be challenging, but remember to breathe and take breaks. You're building amazing mathematical reasoning skills!</div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ================= EXERCISE 2.1 - FIRST PRINCIPLES ================= -->
+
+    <div id="exercise-2-1" class="divider">1. Exercise 2.1 — First Principles (Differentiation by Definition)</div>
+
+    <section class="card animate delay-2">
+
+      <h2>The Foundation of Derivatives</h2>
+
+      <p class="lead">Learn how to find derivatives using the formal definition - the limit approach. This is the fundamental building block of all differentiation.</p>
+
+
+
+      <div class="definition">
+
+        <div class="definition-content">
+
+          <strong>First Principles Formula:</strong>
+
+          <p style="font-size:1.1rem; text-align:center; font-family: monospace;">
+
+            \[ f'(x) = \lim_{\delta x \to 0} \frac{f(x+\delta x) - f(x)}{\delta x} \]
+
+          </p>
+
+          <div style="margin-top:8px; display:flex; align-items:center; gap:8px;">
+
+            <span style="font-size:24px">🔍</span>
+
+            <span>We calculate the average rate of change over a tiny interval, then take the limit as the interval approaches zero.</span>
+
+          </div>
+
+        </div>
+
+        <div class="definition-cartoon">
+
+          <svg viewBox="0 0 100 100" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+
+            <path d="M10,80 Q50,10 90,80" fill="none" stroke="#3b82f6" stroke-width="3" />
+
+            <line x1="30" y1="65" x2="70" y2="65" stroke="#f59e0b" stroke-width="2" />
+
+            <circle cx="30" cy="65" r="3" fill="#ec4899" />
+
+            <circle cx="70" cy="65" r="3" fill="#ec4899" />
+
+            <text x="20" y="70" font-size="6" fill="#ec4899">x</text>
+
+            <text x="75" y="70" font-size="6" fill="#ec4899">x+δx</text>
+
+            <text x="50" y="50" font-size="6" fill="#3b82f6">f(x)</text>
+
+          </svg>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- Examples -->
+
+      <div class="example-container">
+
+        <div class="example-box">
+
+          <div class="big">Example 1: \( f(x) = 2x^2 + 1 \)</div>
+
+          <p class="small-note">Finding \( \frac{dy}{dx} \) using the formal 4 steps.</p>
+
+          <div class="controls">
+
+            <button class="step-btn" onclick="startSteps('ex1a'); playSound('concept')">Show Steps</button>
+
+          </div>
+
+          <div class="step-block" id="ex1a">
+
+            <div class="step-line" style="display:none"><b>Step 1:</b> Find \( y + \delta y = 2(x + \delta x)^2 + 1 = 2(x^2 + 2x\delta x + (\delta x)^2) + 1 \)</div>
+
+            <div class="step-line" style="display:none"><b>Step 2:</b> Compute change \( \delta y = (2x^2 + 4x\delta x + 2(\delta x)^2 + 1) - (2x^2 + 1) = 4x\delta x + 2(\delta x)^2 \)</div>
+
+            <div class="step-line" style="display:none"><b>Step 3:</b> Find average rate \( \frac{\delta y}{\delta x} = \frac{\delta x(4x + 2\delta x)}{\delta x} = 4x + 2\delta x \)</div>
+
+            <div class="step-line" style="display:none"><b>Step 4:</b> Take limit \( \frac{dy}{dx} = \lim_{\delta x \to 0}(4x + 2\delta x) = 4x \)</div>
+
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('ex1a'); playSound('click')">Next Step</button></div>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="example-box">
+
+          <div class="big">Example 2: \( f(x) = \frac{1}{\sqrt{x}} \)</div>
+
+          <p class="small-note">Finding \( \frac{dy}{dx} \) using the binomial theorem expansion.</p>
+
+          <div class="controls">
+
+            <button class="step-btn" onclick="startSteps('ex1b'); playSound('concept')">Show Steps</button>
+
+          </div>
+
+          <div class="step-block" id="ex1b">
+
+            <div class="step-line" style="display:none"><b>Step 1/2:</b> \(\delta y = (x+\delta x)^{-1/2} - x^{-1/2} = x^{-1/2} \left[ \left(1+\frac{\delta x}{x}\right)^{-1/2}-1 \right]\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 3:</b> Divide by \(\delta x\): \(\frac{\delta y}{\delta x} = x^{-1/2} \left[ -\frac{1}{2x}+\frac{3}{8}\cdot\frac{\delta x}{x^2}+\dots \right]\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 4:</b> Take limit \(\frac{dy}{dx} = \lim_{\delta x\to0} x^{-1/2} \left[ -\frac{1}{2x} + (\text{terms with } \delta x) \right] = -\frac{1}{2}x^{-3/2}\)</div>
+
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('ex1b'); playSound('click')">Next Step</button></div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="try-yourself">
+
+        <div class="try-title">✨ Try It Yourself: First Principles</div>
+
+        <p>1. Differentiate \(f(x) = \frac{1}{x-a}\) using First Principles</p>
+
+        <div class="row">
+
+          <input id="tfirst1" placeholder="Type your answer">
+
+          <button class="check" onclick="checkTextMotivate('tfirst1','-1/(x-a)^2','tfirst1_res')">Check</button>
+
+        </div>
+
+        <div id="tfirst1_res" class="result"></div>
+
+        
+
+        <p style="margin-top:10px">2. Differentiate \(f(x) = \frac{1}{x^3}\) using First Principles</p>
+
+        <div class="row">
+
+          <input id="tfirst2" placeholder="Type your answer">
+
+          <button class="check" onclick="checkTextMotivate('tfirst2','-3x^-4','tfirst2_res')">Check</button>
+
+        </div>
+
+        <div id="tfirst2_res" class="result"></div>
+
+      </div>
+
+      
+
+      <div class="motivate" style="margin-top:14px">
+
+        <div class="emoji">🧱</div>
+
+        <div class="text" style="color:#06D6A0;">Excellent! You've mastered the fundamental building block of calculus!</div>
+
+      </div>
+
+      
+
+      <!-- Game card for Exercise 2.1 -->
+
+      <h3 style="margin-top:18px;color:var(--accent)">Play the First Principles Games</h3>
+
+      <div class="game-card-grid">
+
+        <div class="game-card-style" onclick="showGame('first-principles-game'); playSound('gameStart')">
+
+          <div class="game-card-left">
+
+            <div class="svg-icon" aria-hidden="true" style="background: linear-gradient(135deg, #ff7eb3, #ff758c);">
+
+              <i class="fas fa-microscope"></i>
+
+            </div>
+
+            <div style="font-size:12px;color:var(--muted); margin-top:5px">Limit Check</div>
+
+          </div>
+
+          <div>
+
+            <div class="game-card-title">First Principles Builder</div>
+
+            <div class="game-card-desc">Drag and drop parts to complete the derivative definition.</div>
+
+            <div style="margin-top:12px"><button class="start-btn">Play Game</button></div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <div id="first-principles-game" class="game-play-area">
+
+        <h3 style="color:var(--primary); margin-bottom: 10px;">First Principles Builder: Complete the Formula!</h3>
+
+        <div class="game-icon-visual">🔬</div>
+
+        <div class="score-board" id="fp-score-display">Score: 0</div>
+
+        <div class="game-prompt" id="fp-prompt">Drag the correct pieces to complete the first principles formula</div>
+
+        <div class="game-input-group">
+
+            <div id="fp-drag-area" style="min-height: 100px; border: 2px dashed #ccc; border-radius: 8px; padding: 10px; margin: 10px 0;">
+
+              Drag formula pieces here
+
+            </div>
+
+        </div>
+
+        <div class="game-message" id="fp-status">Ready.</div>
+
+        <button class="step-btn" style="margin-top: 15px;" onclick="initFirstPrinciplesGame(); playSound('click')">New Problem</button>
+
+      </div>
+
+
+
+      <div class="calm">
+
+        <div class="breath"></div>
+
+        <div style="font-weight:700">Calm: Take a deep breath with the circle above. Inhale as it expands, exhale as it contracts.</div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ================= EXERCISE 2.2 - POWER RULE ================= -->
+
+    <div id="exercise-2-2" class="divider">2. Exercise 2.2 — Power Rule for \( (ax+b)^n \)</div>
+
+    <section class="card animate delay-3">
+
+      <h2>The Chain Rule Simplified</h2>
+
+      <p class="lead">Learn how to differentiate functions of the form \((ax+b)^n\) using a simplified version of the chain rule.</p>
+
+
+
+      <div class="definition">
+
+        <div class="definition-content">
+
+          <strong>Power Rule for \( (ax+b)^n \):</strong>
+
+          <p style="font-size:1.1rem; text-align:center; font-family: monospace;">
+
+            \[ \frac{d}{dx}(ax+b)^n = n(ax+b)^{n-1} \cdot a \]
+
+          </p>
+
+          <div style="margin-top:8px; display:flex; align-items:center; gap:8px;">
+
+            <span style="font-size:24px">🧅</span>
+
+            <span>Think of it like peeling an onion! Bring the power down, reduce it by one, and multiply by the derivative of the inside.</span>
+
+          </div>
+
+        </div>
+
+        <div class="definition-cartoon">
+
+          <svg viewBox="0 0 100 100" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+
+            <circle cx="50" cy="50" r="40" fill="#f59e0b" opacity="0.3" />
+
+            <circle cx="50" cy="50" r="30" fill="#3b82f6" opacity="0.5" />
+
+            <circle cx="50" cy="50" r="20" fill="#ec4899" opacity="0.7" />
+
+            <circle cx="50" cy="50" r="10" fill="#10b981" />
+
+            <text x="50" y="54" font-size="8" fill="white" text-anchor="middle" font-weight="bold">n</text>
+
+            <text x="50" y="25" font-size="6" fill="#3b82f6">(ax+b)</text>
+
+          </svg>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- Examples -->
+
+      <div class="example-container">
+
+        <div class="example-box">
+
+          <div class="big">Example 1: \( (2x+3)^5 \)</div>
+
+          <p class="small-note">Apply the rule: Power comes down, power reduces by one, multiply by the inner derivative (\( 2 \)).</p>
+
+          <div class="controls">
+
+            <button class="step-btn" onclick="startSteps('ex2a'); playSound('concept')">Show Steps</button>
+
+          </div>
+
+          <div class="step-block" id="ex2a">
+
+            <div class="step-line" style="display:none"><b>Step 1:</b> Bring the power forward and reduce: \( 5(2x+3)^{5-1} = 5(2x+3)^4 \)</div>
+
+            <div class="step-line" style="display:none"><b>Step 2:</b> Multiply by the derivative of the inside, \(\frac{d}{dx}(2x+3) = 2\): \(5(2x+3)^4 \cdot 2\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 3:</b> Simplify: \(10(2x+3)^4\)</div>
+
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('ex2a'); playSound('click')">Next Step</button></div>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="example-box">
+
+          <div class="big">Example 2: \( (ax+b)^{-5} \)</div>
+
+          <p class="small-note">Handling a negative integer power. Note the \(\frac{d}{dx}(ax+b) = a\) chain factor.</p>
+
+          <div class="controls">
+
+            <button class="step-btn" onclick="startSteps('ex2b'); playSound('concept')">Show Steps</button>
+
+          </div>
+
+          <div class="step-block" id="ex2b">
+
+            <div class="step-line" style="display:none"><b>Step 1:</b> Bring power forward and reduce: \(-5(ax+b)^{-5-1} = -5(ax+b)^{-6}\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 2:</b> Multiply by the derivative of the inside, \(\frac{d}{dx}(ax+b) = a\): \(-5(ax+b)^{-6} \cdot a\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 3:</b> Simplify: \(-5a(ax+b)^{-6}\) or \(\frac{-5a}{(ax+b)^6}\)</div>
+
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('ex2b'); playSound('click')">Next Step</button></div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="try-yourself">
+
+        <div class="try-title">✨ Try It Yourself: Power Rule</div>
+
+        <p>1. Differentiate \(\frac{1}{(az-b)^7}\) with respect to \(z\)</p>
+
+        <div class="row">
+
+          <input id="tpower1" placeholder="Type your answer">
+
+          <button class="check" onclick="checkTextMotivate('tpower1','-7a(az-b)^-8','tpower1_res')">Check</button>
+
+        </div>
+
+        <div id="tpower1_res" class="result"></div>
+
+        
+
+        <p style="margin-top:10px">2. Differentiate \((5x-1)^4\)</p>
+
+        <div class="row">
+
+          <input id="tpower2" placeholder="Type your answer">
+
+          <button class="check" onclick="checkTextMotivate('tpower2','20(5x-1)^3','tpower2_res')">Check</button>
+
+        </div>
+
+        <div id="tpower2_res" class="result"></div>
+
+      </div>
+
+      
+
+      <div class="motivate" style="margin-top:14px">
+
+        <div class="emoji">⚡</div>
+
+        <div class="text" style="color:#f59e0b;">Great work! You're mastering the power rule - a key shortcut in differentiation!</div>
+
+      </div>
+
+      
+
+      <!-- Game card for Exercise 2.2 -->
+
+      <h3 style="margin-top:16px;color:var(--accent)">Play the Power Rule Games</h3>
+
+      <div class="game-card-grid">
+
+        <div class="game-card-style" onclick="showGame('power-rule-game'); playSound('gameStart')">
+
+          <div class="game-card-left">
+
+            <div class="svg-icon" aria-hidden="true" style="background: linear-gradient(135deg, #FFD166, #EF476F);">
+
+              <i class="fas fa-bolt"></i>
+
+            </div>
+
+            <div style="font-size:12px;color:var(--muted); margin-top:5px">Lightning Round</div>
+
+          </div>
+
+          <div>
+
+            <div class="game-card-title">Power Rule Blitz</div>
+
+            <div class="game-card-desc">Differentiate \( (ax+b)^n \) quickly for a high score.</div>
+
+            <div style="margin-top:12px"><button class="start-btn">Play Game</button></div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      
+
+      <div id="power-rule-game" class="game-play-area">
+
+        <h3 style="color:var(--primary); margin-bottom: 20px;">Power Rule Blitz: Find the derivative!</h3>
+
+        <div class="game-icon-visual">⚡</div>
+
+        <div class="score-board" id="power-score-display">Score: 0</div>
+
+        <div class="game-prompt" id="power-prompt">Differentiate: \( (2x+3)^5 \)</div>
+
+        <div class="game-input-group">
+
+          <input type="text" id="power-input" placeholder="Enter derivative">
+
+        </div>
+
+        <button class="check" onclick="checkPowerRule()" style="background:var(--primary)">Submit</button>
+
+        <div class="game-message" id="power-status">Ready.</div>
+
+        <button class="step-btn" style="margin-top: 15px;" onclick="initPowerRuleGame(); playSound('click')">New Problem</button>
+
+      </div>
+
+
+
+      <div class="calm">
+
+        <div style="font-size:24px">🌊</div>
+
+        <div style="font-weight:700">Calm: Picture a slow wave rolling into the sand for 4 seconds.</div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ================= EXERCISE 2.3 - SUM, PRODUCT, QUOTIENT RULES ================= -->
+
+    <div id="exercise-2-3" class="divider">3. Exercise 2.3 — Sum, Product, and Quotient Rules</div>
+
+    <section class="card animate delay-4">
+
+      <h2>Multiple Rules for Complex Functions</h2>
+
+      <p class="lead">Learn how to differentiate functions that are sums, products, or quotients of simpler functions.</p>
+
+
+
+      <div class="definition">
+
+        <div class="definition-content">
+
+          <strong>Sum, Product, and Quotient Rules:</strong>
+
+          <p style="font-size:1.1rem; text-align:center; font-family: monospace;">
+
+            \[ \frac{d}{dx}(f+g) = f' + g' \]
+
+            \[ \frac{d}{dx}(fg) = f'g + fg' \]
+
+            \[ \frac{d}{dx}\left(\frac{f}{g}\right) = \frac{f'g - fg'}{g^2} \]
+
+          </p>
+
+          <div style="margin-top:8px; display:flex; align-items:center; gap:8px;">
+
+            <span style="font-size:24px">🧩</span>
+
+            <span>These rules help us differentiate functions when they are joined by basic arithmetic operations.</span>
+
+          </div>
+
+        </div>
+
+        <div class="definition-cartoon">
+
+          <svg viewBox="0 0 100 100" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+
+            <rect x="15" y="15" width="30" height="30" fill="#3b82f6" opacity="0.7" />
+
+            <text x="30" y="33" font-size="8" fill="white" text-anchor="middle">f</text>
+
+            <rect x="55" y="15" width="30" height="30" fill="#f59e0b" opacity="0.7" />
+
+            <text x="70" y="33" font-size="8" fill="white" text-anchor="middle">g</text>
+
+            <path d="M30,45 L30,55 L70,55 L70,45" fill="#ec4899" opacity="0.7" />
+
+            <text x="50" y="52" font-size="8" fill="white" text-anchor="middle">f+g</text>
+
+            <path d="M30,65 L30,75 L70,75 L70,65" fill="#10b981" opacity="0.7" />
+
+            <text x="50" y="72" font-size="8" fill="white" text-anchor="middle">fg</text>
+
+          </svg>
+
+        </div>
+
+      </div>
+
+      
+
+      <!-- Examples -->
+
+      <div class="example-container">
+
+        <div class="example-box">
+
+          <div class="big">Example 1: \( (x-5)(3-x) \)</div>
+
+          <p class="small-note">Use algebra first to avoid the Product Rule, then use the Power Rule.</p>
+
+          <div class="controls">
+
+            <button class="step-btn" onclick="startSteps('ex3a'); playSound('concept')">Show Steps</button>
+
+          </div>
+
+          <div class="step-block" id="ex3a">
+
+            <div class="step-line" style="display:none"><b>Step 1:</b> Expand: \(y = 3x - x^2 - 15 + 5x = -x^2 + 8x - 15\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 2:</b> Apply Power Rule to each term: \(\frac{dy}{dx} = -2x + 8(1) - 0\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 3:</b> Final result: \(\frac{dy}{dx} = -2x+8\)</div>
+
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('ex3a'); playSound('click')">Next Step</button></div>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="example-box">
+
+          <div class="big">Example 2: \( \frac{a+x}{a-x} \)</div>
+
+          <p class="small-note">Using the Quotient Rule. \(u'=1\) and \(v'=-1\).</p>
+
+          <div class="controls">
+
+            <button class="step-btn" onclick="startSteps('ex3b'); playSound('concept')">Show Steps</button>
+
+          </div>
+
+          <div class="step-block" id="ex3b">
+
+            <div class="step-line" style="display:none"><b>Step 1:</b> Identify parts: \(u=a+x\), \(v=a-x\). Derivatives: \(u'=1\), \(v'=-1\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 2:</b> Apply Quotient Rule: \(\frac{(1)(a-x) - (a+x)(-1)}{(a-x)^2}\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 3:</b> Simplify the top (numerator): \(a-x - (-a-x) = a-x+a+x = 2a\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 4:</b> Final result: \(\frac{dy}{dx} = \frac{2a}{(a-x)^2}\)</div>
+
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('ex3b'); playSound('click')">Next Step</button></div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="try-yourself">
+
+        <div class="try-title">✨ Try It Yourself: Sum/Product/Quotient</div>
+
+        <p>1. Differentiate \(\frac{2x-3}{2x+1}\) using Quotient Rule</p>
+
+        <div class="row">
+
+          <input id="tsum1" placeholder="Type your answer">
+
+          <button class="check" onclick="checkTextMotivate('tsum1','8/(2x+1)^2','tsum1_res')">Check</button>
+
+        </div>
+
+        <div id="tsum1_res" class="result"></div>
+
+        
+
+        <p style="margin-top:10px">2. If \(u=x-5\) and \(v=3-x\), find \(u'v + uv'\) (Product Rule)</p>
+
+        <div class="row">
+
+          <input id="tsum2" placeholder="Type your answer">
+
+          <button class="check" onclick="checkTextMotivate('tsum2','(1)(3-x)+(x-5)(-1)','tsum2_res')">Check</button>
+
+        </div>
+
+        <div id="tsum2_res" class="result"></div>
+
+      </div>
+
+      
+
+      <div class="motivate" style="margin-top:14px">
+
+        <div class="emoji">🧩</div>
+
+        <div class="text" style="color:#118AB2;">Excellent! You're mastering the rules for combining functions!</div>
+
+      </div>
+
+      
+
+      <!-- Game card for Exercise 2.3 -->
+
+      <h3 style="margin-top:14px;color:var(--accent)">Play the Rules Games</h3>
+
+      <div class="game-card-grid">
+
+        <div class="game-card-style" onclick="showGame('rules-game'); playSound('gameStart')">
+
+          <div class="game-card-left">
+
+            <div class="svg-icon" aria-hidden="true" style="background: linear-gradient(135deg, #65C7F7, #4ECDC4);">
+
+              <i class="fas fa-puzzle-piece"></i>
+
+            </div>
+
+            <div style="font-size:12px;color:var(--muted); margin-top:5px">Rule Finder</div>
+
+          </div>
+
+          <div>
+
+            <div class="game-card-title">Rule Identifier</div>
+
+            <div class="game-card-desc">Choose the correct primary rule for the given function.</div>
+
+            <div style="margin-top:12px"><button class="start-btn">Play Game</button></div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      
+
+      <div id="rules-game" class="game-play-area">
+
+        <h3 style="color:var(--primary); margin-bottom: 10px;">Rule Identifier: Which rule to use?</h3>
+
+        <div class="game-icon-visual">🧩</div>
+
+        <div class="score-board" id="rules-score-display">Score: 0</div>
+
+        <div class="game-prompt" id="rules-prompt">Which rule would you use for: \( (x+2)(x-3) \)</div>
+
+        <div class="options-grid" id="rules-choices" style="display:flex; flex-direction:column; gap:10px; max-width: 400px; margin: 15px auto;">
+
+          <button class="step-btn" onclick="checkRule('power')">Power Rule</button>
+
+          <button class="step-btn" onclick="checkRule('product')">Product Rule</button>
+
+          <button class="step-btn" onclick="checkRule('quotient')">Quotient Rule</button>
+
+          <button class="step-btn" onclick="checkRule('chain')">Chain Rule</button>
+
+        </div>
+
+        <div class="game-message" id="rules-status">Ready.</div>
+
+        <button class="step-btn" style="margin-top: 15px;" onclick="initRulesGame(); playSound('click')">New Challenge</button>
+
+      </div>
+
+
+
+      <div class="calm">
+
+        <div style="font-size:28px">🌱</div>
+
+        <div style="font-weight:700">Calm: Take three slow breaths, noticing the cool air enter and the warm air leave.</div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ================= EXERCISE 2.4 - CHAIN RULE ================= -->
+
+    <div id="exercise-2-4" class="divider">4. Exercise 2.4 — Chain Rule (Substitution) & Implicit/Parametric</div>
+
+    <section class="card animate">
+
+      <h2>The Chain Rule and Beyond</h2>
+
+      <p class="lead">Learn how to differentiate composite functions using the Chain Rule, and explore implicit and parametric differentiation.</p>
+
+
+
+      <div class="definition">
+
+        <div class="definition-content">
+
+          <strong>Chain Rule, Implicit and Parametric Differentiation:</strong>
+
+          <p style="font-size:1.1rem; text-align:center; font-family: monospace;">
+
+            \[ \frac{dy}{dx} = \frac{dy}{du} \cdot \frac{du}{dx} \]
+
+            \[ \text{Implicit: Differentiate both sides with respect to } x \]
+
+            \[ \text{Parametric: } \frac{dy}{dx} = \frac{dy/dt}{dx/dt} \]
+
+          </p>
+
+          <div style="margin-top:8px; display:flex; align-items:center; gap:8px;">
+
+            <span style="font-size:24px">🔗</span>
+
+            <span>The Chain Rule helps with functions within functions. Implicit differentiation handles equations where y is mixed with x.</span>
+
+          </div>
+
+        </div>
+
+        <div class="definition-cartoon">
+
+          <svg viewBox="0 0 100 100" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+
+            <circle cx="30" cy="30" r="20" fill="#3b82f6" opacity="0.7" />
+
+            <text x="30" y="34" font-size="8" fill="white" text-anchor="middle">f</text>
+
+            <circle cx="70" cy="70" r="20" fill="#f59e0b" opacity="0.7" />
+
+            <text x="70" y="74" font-size="8" fill="white" text-anchor="middle">g</text>
+
+            <path d="M40,40 L60,60" stroke="#ec4899" stroke-width="3" />
+
+            <text x="50" y="50" font-size="6" fill="#ec4899">Chain</text>
+
+          </svg>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- Examples -->
+
+      <div class="example-container">
+
+        <div class="example-box">
+
+          <div class="big">Example 1: \( y=(3x^2-2x+7)^6 \)</div>
+
+          <p class="small-note">Chain Rule with polynomial inside. Let \(u = 3x^2-2x+7\).</p>
+
+          <div class="controls">
+
+            <button class="step-btn" onclick="startSteps('ex4a'); playSound('concept')">Show Steps</button>
+
+          </div>
+
+          <div class="step-block" id="ex4a">
+
+            <div class="step-line" style="display:none"><b>Step 1 (Outer):</b> \(\frac{dy}{du}\) for \(y=u^6\): \(\frac{dy}{du}=6u^5 = 6(3x^2-2x+7)^5\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 2 (Inner):</b> \(\frac{du}{dx}\) for \(u=3x^2-2x+7\): \(\frac{du}{dx}=6x-2\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 3 (Chain):</b> \(\frac{dy}{dx} = \frac{dy}{du} \cdot \frac{du}{dx} = 6(3x^2-2x+7)^5 \cdot (6x-2)\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 4 (Simplify):</b> Factor out \(2\) from \((6x-2)\): \(\frac{dy}{dx} = 12(3x-1)(3x^2-2x+7)^5\)</div>
+
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('ex4a'); playSound('click')">Next Step</button></div>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="example-box">
+
+          <div class="big">Example 2: \( xy+y^2=2 \)</div>
+
+          <p class="small-note">Implicit Differentiation. Treat \(y\) as \(f(x)\) and apply Chain Rule.</p>
+
+          <div class="controls">
+
+            <button class="step-btn" onclick="startSteps('ex4b'); playSound('concept')">Show Steps</button>
+
+          </div>
+
+          <div class="step-block" id="ex4b">
+
+            <div class="step-line" style="display:none"><b>Step 1:</b> Differentiate all terms wrt \(x\). Use Product Rule for \(xy\): \(\frac{d}{dx}(xy)+\frac{d}{dx}(y^2)=\frac{d}{dx}(2) \implies (y\cdot1 + x\cdot y') + (2y\cdot y') = 0\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 2:</b> Isolate terms with \(y'\): \(x y' + 2y y' = -y\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 3:</b> Factor out \(y'\): \(y'(x+2y) = -y\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 4:</b> Solve for \(y'\): \(\frac{dy}{dx} = \frac{-y}{x+2y}\)</div>
+
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('ex4b'); playSound('click')">Next Step</button></div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="try-yourself">
+
+        <div class="try-title">✨ Try It Yourself: Chain Rule & Beyond</div>
+
+        <p>1. Chain Rule for \(y=\sqrt{\frac{1-x}{1+x}}\)</p>
+
+        <div class="row">
+
+          <input id="tchain1" placeholder="Type your answer">
+
+          <button class="check" onclick="checkTextMotivate('tchain1','-1/(√(1-x)*(1+x)^(3/2))','tchain1_res')">Check</button>
+
+        </div>
+
+        <div id="tchain1_res" class="result"></div>
+
+        
+
+        <p style="margin-top:10px">2. Implicit Diff for \(x^2-4xy-5y=0\)</p>
+
+        <div class="row">
+
+          <input id="tchain2" placeholder="Type your answer">
+
+          <button class="check" onclick="checkTextMotivate('tchain2','(2x-4y)/(4x+5)','tchain2_res')">Check</button>
+
+        </div>
+
+        <div id="tchain2_res" class="result"></div>
+
+      </div>
+
+      
+
+      <div class="motivate" style="margin-top:14px">
+
+        <div class="emoji">🔗</div>
+
+        <div class="text" style="color:#3b82f6;">Fantastic! You're mastering the chain rule - a key concept for complex functions!</div>
+
+      </div>
+
+      
+
+      <!-- Game card for Exercise 2.4 -->
+
+      <h3 style="margin-top:14px;color:var(--accent)">Play the Chain Rule Games</h3>
+
+      <div class="game-card-grid">
+
+        <div class="game-card-style" onclick="showGame('chain-rule-game'); playSound('gameStart')">
+
+          <div class="game-card-left">
+
+            <div class="svg-icon" aria-hidden="true" style="background: linear-gradient(135deg, #ff7eb3, #ff758c);">
+
+              <i class="fas fa-link"></i>
+
+            </div>
+
+            <div style="font-size:12px;color:var(--muted); margin-top:5px">Inner/Outer</div>
+
+          </div>
+
+          <div>
+
+            <div class="game-card-title">Chain Rule Builder</div>
+
+            <div class="game-card-desc">Select the correct outer and inner derivatives in order.</div>
+
+            <div style="margin-top:12px"><button class="start-btn">Play Game</button></div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      
+
+      <div id="chain-rule-game" class="game-play-area">
+
+        <h3 style="color:var(--primary); margin-bottom: 20px;">Chain Rule Builder: Find the derivative!</h3>
+
+        <div class="game-icon-visual">🔗</div>
+
+        <div class="score-board" id="chain-score-display">Score: 0</div>
+
+        <div class="game-prompt" id="chain-prompt">Differentiate: \( \sin(3x^2) \)</div>
+
+        <div class="game-input-group">
+
+          <input type="text" id="chain-input" placeholder="Enter derivative">
+
+        </div>
+
+        <button class="check" onclick="checkChainRule()" style="background:var(--primary)">Submit</button>
+
+        <div class="game-message" id="chain-status">Ready.</div>
+
+        <button class="step-btn" style="margin-top: 15px;" onclick="initChainRuleGame(); playSound('click')">New Problem</button>
+
+      </div>
+
+
+
+      <div class="calm">
+
+        <div style="font-size:30px">🌊</div>
+
+        <div style="font-weight:700">Calm: Imagine a slow wave rolling out to sea for 6 seconds.</div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ================= EXERCISE 2.5 - TRIGONOMETRIC DERIVATIVES ================= -->
+
+    <div class="divider">5. Exercise 2.5 — Trigonometric Derivatives (First Principles)</div>
+
+    <section class="card animate">
+
+      <h2>Trigonometric Functions from First Principles</h2>
+
+      <p class="lead">Learn how to derive the derivatives of trigonometric functions using the limit definition.</p>
+
+
+
+      <div class="definition">
+
+        <div class="definition-content">
+
+          <strong>Trigonometric Derivatives:</strong>
+
+          <p style="font-size:1.1rem; text-align:center; font-family: monospace;">
+
+            \[ \frac{d}{dx}(\sin x) = \cos x, \quad \frac{d}{dx}(\cos x) = -\sin x, \quad \frac{d}{dx}(\tan x) = \sec^2 x \]
+
+          </p>
+
+          <div style="margin-top:8px; display:flex; align-items:center; gap:8px;">
+
+            <span style="font-size:24px">🔄</span>
+
+            <span>The whole proof relies on transforming the expression into the fundamental limit: \(\lim_{\theta \to 0}\frac{\sin \theta}{\theta} = 1\).</span>
+
+          </div>
+
+        </div>
+
+        <div class="definition-cartoon">
+
+          <svg viewBox="0 0 100 100" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+
+            <path d="M10,50 Q50,10 90,50 Q50,90 10,50" fill="none" stroke="#3b82f6" stroke-width="3" />
+
+            <path d="M10,50 Q50,90 90,50" fill="none" stroke="#f59e0b" stroke-width="2" stroke-dasharray="5,5" />
+
+            <text x="50" y="30" font-size="6" fill="#3b82f6">sin x</text>
+
+            <text x="50" y="70" font-size="6" fill="#f59e0b">cos x</text>
+
+          </svg>
+
+        </div>
+
+      </div>
+
+      
+
+      <!-- Examples -->
+
+      <div class="example-container">
+
+        <div class="example-box">
+
+          <div class="big">Example 1: \( \sin(2x) \) (First Principles)</div>
+
+          <p class="small-note">Deriving the derivative of a composite sine function using the First Principle.</p>
+
+          <div class="controls">
+
+            <button class="step-btn" onclick="startSteps('ex5a'); playSound('concept')">Show Steps</button>
+
+          </div>
+
+          <div class="step-block" id="ex5a">
+
+            <div class="step-line" style="display:none"><b>Step 1/2:</b> \(\delta y = \sin(2x+2\delta x)-\sin(2x)\). Use identity: \(\delta y = 2\cos(2x+\delta x)\sin(\delta x)\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 3:</b> \(\frac{\delta y}{\delta x} = 2\cos(2x+\delta x)\frac{\sin(\delta x)}{\delta x}\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 4:</b> \(\frac{dy}{dx} = \lim_{\delta x\to0} 2\cos(2x+\delta x) \cdot \lim_{\delta x\to0}\frac{\sin(\delta x)}{\delta x}\)</div>
+
+            <div class="step-line" style="display:none"><b>Final:</b> \(\frac{dy}{dx} = 2\cos(2x+0) \cdot 1 = 2\cos(2x)\)</div>
+
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('ex5a'); playSound('click')">Next Step</button></div>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="example-box">
+
+          <div class="big">Example 2: \( \tan(3x) \) (First Principles)</div>
+
+          <p class="small-note">Deriving the derivative of \(\tan(3x)\) using \(\tan x = \frac{\sin x}{\cos x}\) and complex limit manipulation.</p>
+
+          <div class="controls">
+
+            <button class="step-btn" onclick="startSteps('ex5b'); playSound('concept')">Show Steps</button>
+
+          </div>
+
+          <div class="step-block" id="ex5b">
+
+            <div class="step-line" style="display:none"><b>Step 1/2:</b> \(\delta y = \tan(3x+3\delta x)-\tan(3x) = \frac{\sin(3\delta x)}{\cos(3x+3\delta x)\cos(3x)}\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 3:</b> \(\frac{\delta y}{\delta x} = \frac{1}{\cos(3x+3\delta x)\cos(3x)} \cdot \frac{\sin(3\delta x)}{\delta x}\). Adjust the limit: \(\frac{\sin(3\delta x)}{\delta x} = 3 \cdot \frac{\sin(3\delta x)}{3\delta x}\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 4:</b> Take limit \(\frac{dy}{dx} = \lim_{\delta x\to0} \frac{1}{\cos(3x+3\delta x)\cos(3x)} \cdot \lim_{\delta x\to0} 3 \cdot \frac{\sin(3\delta x)}{3\delta x}\)</div>
+
+            <div class="step-line" style="display:none"><b>Final:</b> \(\frac{dy}{dx} = \frac{1}{\cos(3x)\cos(3x)} \cdot 3 \cdot 1 = \frac{3}{\cos^2(3x)} = 3\sec^2(3x)\)</div>
+
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('ex5b'); playSound('click')">Next Step</button></div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="try-yourself">
+
+        <div class="try-title">✨ Try It Yourself: Trigonometric Derivatives</div>
+
+        <p>1. Find derivative of \(y=\cos(5x)\) (using Chain Rule)</p>
+
+        <div class="row">
+
+          <input id="ttrig1" placeholder="Type your answer">
+
+          <button class="check" onclick="checkTextMotivate('ttrig1','-5sin(5x)','ttrig1_res')">Check</button>
+
+        </div>
+
+        <div id="ttrig1_res" class="result"></div>
+
+        
+
+        <p style="margin-top:10px">2. Find derivative of \(\sec(x)\)</p>
+
+        <div class="row">
+
+          <input id="ttrig2" placeholder="Type your answer">
+
+          <button class="check" onclick="checkTextMotivate('ttrig2','sec(x)tan(x)','ttrig2_res')">Check</button>
+
+        </div>
+
+        <div id="ttrig2_res" class="result"></div>
+
+      </div>
+
+      
+
+      <div class="motivate" style="margin-top:14px">
+
+        <div class="emoji">📐</div>
+
+        <div class="text" style="color:#f59e0b;">Excellent work with trigonometric derivatives! These are essential for many applications!</div>
+
+      </div>
+
+      
+
+      <!-- Game card for Exercise 2.5 -->
+
+      <h3 style="margin-top:14px;color:var(--accent)">Play the Trigonometric Games</h3>
+
+      <div class="game-card-grid">
+
+        <div class="game-card-style" onclick="showGame('trig-game'); playSound('gameStart')">
+
+          <div class="game-card-left">
+
+            <div class="svg-icon" aria-hidden="true" style="background: linear-gradient(135deg, #06D6A0, #118AB2);">
+
+              <i class="fas fa-wave-square"></i>
+
+            </div>
+
+            <div style="font-size:12px;color:var(--muted); margin-top:5px">Wave Match</div>
+
+          </div>
+
+          <div>
+
+            <div class="game-card-title">Trig Derivative Match</div>
+
+            <div class="game-card-desc">Match the trig function to its correct derivative.</div>
+
+            <div style="margin-top:12px"><button class="start-btn">Play Game</button></div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      
+
+      <div id="trig-game" class="game-play-area">
+
+        <h3 style="color:var(--primary); margin-bottom: 20px;">Trig Derivative Match: Match the function to its derivative!</h3>
+
+        <div class="game-icon-visual">📐</div>
+
+        <div class="score-board" id="trig-score-display">Score: 0</div>
+
+        <div class="game-prompt" id="trig-prompt">Match the trigonometric function with its derivative</div>
+
+        <div class="options-grid" id="trig-choices" style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; max-width: 400px; margin: 15px auto;">
+
+          <div class="step-btn">\( \sin x \)</div>
+
+          <div class="step-btn">\( \cos x \)</div>
+
+          <div class="step-btn">\( \cos x \)</div>
+
+          <div class="step-btn">\( -\sin x \)</div>
+
+          <div class="step-btn">\( \tan x \)</div>
+
+          <div class="step-btn">\( \sec^2 x \)</div>
+
+        </div>
+
+        <div class="game-message" id="trig-status">Ready.</div>
+
+        <button class="step-btn" style="margin-top: 15px;" onclick="initTrigGame(); playSound('click')">New Challenge</button>
+
+      </div>
+
+
+
+      <div class="calm">
+
+        <div style="font-size:28px">🖐️</div>
+
+        <div style="font-weight:700">Calm: Shake your hands gently twice. You're doing great with the hardest part!</div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ================= EXERCISE 2.6 - EXPONENTIAL AND LOGARITHMIC ================= -->
+
+    <div class="divider">6. Exercise 2.6 — Exponential and Logarithmic Functions</div>
+
+    <section class="card animate">
+
+      <h2>Exponential and Logarithmic Derivatives</h2>
+
+      <p class="lead">Learn how to differentiate exponential and logarithmic functions using specialized rules.</p>
+
+
+
+      <div class="definition">
+
+        <div class="definition-content">
+
+          <strong>Exponential and Logarithmic Rules:</strong>
+
+          <p style="font-size:1.1rem; text-align:center; font-family: monospace;">
+
+            \[ \frac{d}{dx}(e^x) = e^x, \quad \frac{d}{dx}(a^x) = a^x \ln a \]
+
+            \[ \frac{d}{dx}(\ln x) = \frac{1}{x}, \quad \frac{d}{dx}(\log_a x) = \frac{1}{x \ln a} \]
+
+          </p>
+
+          <div style="margin-top:8px; display:flex; align-items:center; gap:8px;">
+
+            <span style="font-size:24px">✨</span>
+
+            <span>The derivative of \(e^x\) is \(e^x\)! For bases other than \(e\), multiply by the natural log of the base.</span>
+
+          </div>
+
+        </div>
+
+        <div class="definition-cartoon">
+
+          <svg viewBox="0 0 100 100" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+
+            <path d="M10,90 Q30,10 90,10" fill="none" stroke="#3b82f6" stroke-width="3" />
+
+            <text x="50" y="30" font-size="8" fill="#3b82f6">e^x</text>
+
+            <path d="M10,10 L90,90" fill="none" stroke="#f59e0b" stroke-width="2" stroke-dasharray="5,5" />
+
+            <text x="70" y="50" font-size="6" fill="#f59e0b">ln x</text>
+
+          </svg>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- Examples -->
+
+      <div class="example-container">
+
+        <div class="example-box">
+
+          <div class="big">Example 1: \( f(x)=\ln(e^x+e^{-x}) \)</div>
+
+          <p class="small-note">Using Chain Rule for \(\ln(u)\): \(\frac{d}{dx}(\ln u) = \frac{1}{u} \cdot u'\).</p>
+
+          <div class="controls">
+
+            <button class="step-btn" onclick="startSteps('ex6a'); playSound('concept')">Show Steps</button>
+
+          </div>
+
+          <div class="step-block" id="ex6a">
+
+            <div class="step-line" style="display:none"><b>Step 1 (Outer):</b> \(\frac{d}{dx}(\ln u) = \frac{1}{e^x+e^{-x}}\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 2 (Inner):</b> \(\frac{d}{dx}(e^x+e^{-x}) = e^x - e^{-x}\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 3 (Chain):</b> \(f'(x) = \frac{e^x-e^{-x}}{e^x+e^{-x}}\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 4 (Simplify):</b> \(\frac{e^{2x}-1}{e^{2x}+1\) (Multiply top/bottom by \(e^x\))</div>
+
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('ex6a'); playSound('click')">Next Step</button></div>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="example-box">
+
+          <div class="big">Example 2: \( y=x^2 \ln(\sqrt{x}) \)</div>
+
+          <p class="small-note">Simplify the log term first: \(y = \frac{1}{2}x^2 \ln x\). Then use the Product Rule.</p>
+
+          <div class="controls">
+
+            <button class="step-btn" onclick="startSteps('ex6b'); playSound('concept')">Show Steps</button>
+
+          </div>
+
+          <div class="step-block" id="ex6b">
+
+            <div class="step-line" style="display:none"><b>Step 1:</b> Simplify \(y = \frac{1}{2}x^2 \ln x\). Set \(u=\frac{1}{2}x^2\), \(v=\ln x\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 2:</b> Apply Product Rule: \(\frac{dy}{dx} = (\frac{1}{2}\cdot2x)\ln x + \frac{1}{2}x^2 (\frac{1}{x})\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 3:</b> Simplify: \(\frac{dy}{dx} = x \ln x + \frac{1}{2}x\)</div>
+
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('ex6b'); playSound('click')">Next Step</button></div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="try-yourself">
+
+        <div class="try-title">✨ Try It Yourself: Exponential & Logarithmic</div>
+
+        <p>1. Differentiate \(\frac{x}{\ln x}\) using the Quotient Rule</p>
+
+        <div class="row">
+
+          <input id="texp1" placeholder="Type your answer">
+
+          <button class="check" onclick="checkTextMotivate('texp1','(lnx-1)/(lnx)^2','texp1_res')">Check</button>
+
+        </div>
+
+        <div id="texp1_res" class="result"></div>
+
+        
+
+        <p style="margin-top:10px">2. Differentiate \(f(x)=e^{\sqrt{x}-1}\) (Chain Rule required)</p>
+
+        <div class="row">
+
+          <input id="texp2" placeholder="Type your answer">
+
+          <button class="check" onclick="checkTextMotivate('texp2','e^(√x-1)/(2√x)','texp2_res')">Check</button>
+
+        </div>
+
+        <div id="texp2_res" class="result"></div>
+
+      </div>
+
+      
+
+      <div class="motivate" style="margin-top:14px">
+
+        <div class="emoji">📈</div>
+
+        <div class="text" style="color:#ec4899;">Fantastic! You're mastering exponential and logarithmic derivatives!</div>
+
+      </div>
+
+      
+
+      <!-- Game card for Exercise 2.6 -->
+
+      <h3 style="margin-top:14px;color:var(--accent)">Play the Exponential & Logarithmic Games</h3>
+
+      <div class="game-card-grid">
+
+        <div class="game-card-style" onclick="showGame('exp-log-game'); playSound('gameStart')">
+
+          <div class="game-card-left">
+
+            <div class="svg-icon" aria-hidden="true" style="background: linear-gradient(135deg, #ff7eb3, #ff758c);">
+
+              <i class="fas fa-chart-line"></i>
+
+            </div>
+
+            <div style="font-size:12px;color:var(--muted); margin-top:5px">Exponential</div>
+
+          </div>
+
+          <div>
+
+            <div class="game-card-title">Exponential & Logarithmic</div>
+
+            <div class="game-card-desc">Match exponential and logarithmic functions with their derivatives.</div>
+
+            <div style="margin-top:12px"><button class="start-btn">Play Game</button></div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      
+
+      <div id="exp-log-game" class="game-play-area">
+
+        <h3 style="color:var(--primary); margin-bottom: 20px;">Exponential & Logarithmic: Match the function to its derivative!</h3>
+
+        <div class="game-icon-visual">📈</div>
+
+        <div class="score-board" id="exp-log-score-display">Score: 0</div>
+
+        <div class="game-prompt" id="exp-log-prompt">Match the function with its derivative</div>
+
+        <div class="options-grid" id="exp-log-choices" style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; max-width: 400px; margin: 15px auto;">
+
+          <div class="step-btn">\( e^x \)</div>
+
+          <div class="step-btn">\( e^x \)</div>
+
+          <div class="step-btn">\( a^x \)</div>
+
+          <div class="step-btn">\( a^x \ln a \)</div>
+
+          <div class="step-btn">\( \ln x \)</div>
+
+          <div class="step-btn">\( \frac{1}{x} \)</div>
+
+        </div>
+
+        <div class="game-message" id="exp-log-status">Ready.</div>
+
+        <button class="step-btn" style="margin-top: 15px;" onclick="initExpLogGame(); playSound('click')">New Challenge</button>
+
+      </div>
+
+
+
+      <div class="calm">
+
+        <div style="font-size:28px">🌊</div>
+
+        <div style="font-weight:700">Calm: Imagine a slow wave rolling out to sea for 6 seconds.</div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ================= EXERCISE 2.7 - HIGHER DERIVATIVES ================= -->
+
+    <div class="divider">7. Exercise 2.7 — Higher Derivatives (Successive Differentiation)</div>
+
+    <section class="card animate">
+
+      <h2>Higher Order Derivatives</h2>
+
+      <p class="lead">Learn how to take derivatives multiple times to find higher order derivatives like acceleration and concavity.</p>
+
+
+
+      <div class="definition">
+
+        <div class="definition-content">
+
+          <strong>Higher Derivatives:</strong>
+
+          <p style="font-size:1.1rem; text-align:center; font-family: monospace;">
+
+            \[ y_1 = \frac{dy}{dx}, \quad y_2 = \frac{d}{dx}\left(\frac{dy}{dx}\right) = \frac{d^2y}{dx^2}, \quad y_n = \frac{d^ny}{dx^n} \]
+
+          </p>
+
+          <div style="margin-top:8px; display:flex; align-items:center; gap:8px;">
+
+            <span style="font-size:24px">🔁</span>
+
+            <span>If \(y\) is <strong>position</strong>, \(y'\) is <strong>velocity</strong>, and \(y''\) is <strong>acceleration</strong>.</span>
+
+          </div>
+
+        </div>
+
+        <div class="definition-cartoon">
+
+          <svg viewBox="0 0 100 100" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+
+            <path d="M10,80 Q25,40 50,50 Q75,60 90,20" fill="none" stroke="#3b82f6" stroke-width="3" />
+
+            <text x="50" y="40" font-size="6" fill="#3b82f6">Position</text>
+
+            <path d="M15,65 Q32,45 50,50 Q68,55 85,35" fill="none" stroke="#f59e0b" stroke-width="2" stroke-dasharray="5,5" />
+
+            <text x="50" y="60" font-size="5" fill="#f59e0b">Velocity</text>
+
+            <path d="M20,50 Q35,48 50,50 Q65,52 80,50" fill="none" stroke="#ec4899" stroke-width="1" stroke-dasharray="3,3" />
+
+            <text x="50" y="48" font-size="4" fill="#ec4899">Acceleration</text>
+
+          </svg>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- Examples -->
+
+      <div class="example-container">
+
+        <div class="example-box">
+
+          <div class="big">Example 1: \( y=2x^5-3x^4+4x^3+x-2 \)</div>
+
+          <p class="small-note">Simple Power Rule application, twice.</p>
+
+          <div class="controls">
+
+            <button class="step-btn" onclick="startSteps('ex7a'); playSound('concept')">Show Steps</button>
+
+          </div>
+
+          <div class="step-block" id="ex7a">
+
+            <div class="step-line" style="display:none"><b>Step 1 (Find \( y_1 \)):</b> \(y_1 = 10x^4-12x^3+12x^2+1\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 2 (Find \( y_2 \)):</b> Differentiate \(y_1\) again: \(y_2 = 40x^3-36x^2+24x+0\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 3 (Final):</b> \(y_2 = 40x^3-36x^2+24x\)</div>
+
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('ex7a'); playSound('click')">Next Step</button></div>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="example-box">
+
+          <div class="big">Example 2: \( y=x^2e^{-x} \)</div>
+
+          <p class="small-note">Requires Product Rule for \(y_1\) and Product Rule again for \(y_2\).</p>
+
+          <div class="controls">
+
+            <button class="step-btn" onclick="startSteps('ex7b'); playSound('concept')">Show Steps</button>
+
+          </div>
+
+          <div class="step-block" id="ex7b">
+
+            <div class="step-line" style="display:none"><b>Step 1 (Find \( y_1 \)):</b> \(y_1 = x^2(-e^{-x}) + (2x)e^{-x} = e^{-x}(2x-x^2)\) (Product Rule)</div>
+
+            <div class="step-line" style="display:none"><b>Step 2 (Find \( y_2 \)):</b> \(y_2 = \frac{d}{dx}(e^{-x})(2x-x^2) + e^{-x}\frac{d}{dx}(2x-x^2)\) (Product Rule again)</div>
+
+            <div class="step-line" style="display:none"><b>Step 3:</b> \(y_2 = (-e^{-x})(2x-x^2) + e^{-x}(2-2x) = e^{-x}(-2x+x^2+2-2x)\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 4 (Final):</b> \(y_2 = e^{-x}(x^2-4x+2)\)</div>
+
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('ex7b'); playSound('click')">Next Step</button></div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="try-yourself">
+
+        <div class="try-title">✨ Try It Yourself: Higher Derivatives</div>
+
+        <p>1. Find \(y_2\) for \(y=(2x+5)^{3/2}\)</p>
+
+        <div class="row">
+
+          <input id="thigh1" placeholder="Type your answer">
+
+          <button class="check" onclick="checkTextMotivate('thigh1','3/√(2x+5)','thigh1_res')">Check</button>
+
+        </div>
+
+        <div id="thigh1_res" class="result"></div>
+
+        
+
+        <p style="margin-top:10px">2. Find \(y_2\) for \(y=x^{1/2}-x^{-1/2}\)</p>
+
+        <div class="row">
+
+          <input id="thigh2" placeholder="Type your answer">
+
+          <button class="check" onclick="checkTextMotivate('thigh2','-1/4x^(-3/2)-3/4x^(-5/2)','thigh2_res')">Check</button>
+
+        </div>
+
+        <div id="thigh2_res" class="result"></div>
+
+      </div>
+
+      
+
+      <div class="motivate" style="margin-top:14px">
+
+        <div class="emoji">🔁</div>
+
+        <div class="text" style="color:#06D6A0;">Excellent work with higher derivatives! You're mastering the concept of rates of change!</div>
+
+      </div>
+
+      
+
+      <!-- Game card for Exercise 2.7 -->
+
+      <h3 style="margin-top:14px;color:var(--accent)">Play the Higher Derivatives Games</h3>
+
+      <div class="game-card-grid">
+
+        <div class="game-card-style" onclick="showGame('higher-derivatives-game'); playSound('gameStart')">
+
+          <div class="game-card-left">
+
+            <div class="svg-icon" aria-hidden="true" style="background: linear-gradient(135deg, #FFD166, #FF9E6D);">
+
+              <i class="fas fa-layer-group"></i>
+
+            </div>
+
+            <div style="font-size:12px;color:var(--muted); margin-top:5px">Second Derivative</div>
+
+          </div>
+
+          <div>
+
+            <div class="game-card-title">Higher Derivatives</div>
+
+            <div class="game-card-desc">Find second derivatives of various functions.</div>
+
+            <div style="margin-top:12px"><button class="start-btn">Play Game</button></div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      
+
+      <div id="higher-derivatives-game" class="game-play-area">
+
+        <h3 style="color:var(--primary); margin-bottom: 20px;">Higher Derivatives: Find the second derivative!</h3>
+
+        <div class="game-icon-visual">🔁</div>
+
+        <div class="score-board" id="higher-score-display">Score: 0</div>
+
+        <div class="game-prompt" id="higher-prompt">Find \( y'' \) for: \( y = x^3 - 2x^2 + x - 5 \)</div>
+
+        <div class="game-input-group">
+
+          <input type="text" id="higher-input" placeholder="Enter y''">
+
+        </div>
+
+        <button class="check" onclick="checkHigherDerivative()" style="background:var(--primary)">Submit</button>
+
+        <div class="game-message" id="higher-status">Ready.</div>
+
+        <button class="step-btn" style="margin-top: 15px;" onclick="initHigherDerivativeGame(); playSound('click')">New Problem</button>
+
+      </div>
+
+
+
+      <div class="calm">
+
+        <div style="font-size:28px">🌱</div>
+
+        <div style="font-weight:700">Calm: Take three slow breaths, noticing the cool air enter and the warm air leave.</div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ================= EXERCISE 2.8 - MACLAURIN AND TAYLOR SERIES ================= -->
+
+    <div class="divider">8. Exercise 2.8 — Maclaurin and Taylor Series</div>
+
+    <section class="card animate">
+
+      <h2>Function Approximation with Series</h2>
+
+      <p class="lead">Learn how to approximate functions using infinite polynomial series - the foundation of many numerical methods.</p>
+
+
+
+      <div class="definition">
+
+        <div class="definition-content">
+
+          <strong>Maclaurin and Taylor Series:</strong>
+
+          <p style="font-size:1.1rem; text-align:center; font-family: monospace;">
+
+            \[ f(x)=f(0)+xf^{\prime}(0)+\frac{x^{2}}{2!}f^{\prime\prime}(0)+\frac{x^{3}}{3!}f^{\prime\prime\prime}(0)+\dots \]
+
+            \[ f(x+h)=f(x)+hf^{\prime}(x)+\frac{h^{2}}{2!}f^{\prime\prime}(x)+\frac{h^{3}}{3!}f^{\prime\prime\prime}(x)+\dots \]
+
+          </p>
+
+          <div style="margin-top:8px; display:flex; align-items:center; gap:8px;">
+
+            <span style="font-size:24px">🌟</span>
+
+            <span>The <strong>Maclaurin series</strong> is a <strong>Taylor series</strong> centered at \(x=0\).</span>
+
+          </div>
+
+        </div>
+
+        <div class="definition-cartoon">
+
+          <svg viewBox="0 0 100 100" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+
+            <path d="M10,50 Q25,30 50,50 Q75,70 90,50" fill="none" stroke="#3b82f6" stroke-width="3" />
+
+            <path d="M10,50 L90,50" fill="none" stroke="#f59e0b" stroke-width="1" stroke-dasharray="5,5" />
+
+            <path d="M50,10 L50,90" fill="none" stroke="#f59e0b" stroke-width="1" stroke-dasharray="5,5" />
+
+            <circle cx="50" cy="50" r="3" fill="#ec4899" />
+
+            <text x="50" y="45" font-size="6" fill="#ec4899">0</text>
+
+            <text x="80" y="30" font-size="6" fill="#3b82f6">f(x)</text>
+
+          </svg>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- Examples -->
+
+      <div class="example-container">
+
+        <div class="example-box">
+
+          <div class="big">Example 1: Maclaurin Series for \( \ln(1+x) \)</div>
+
+          <p class="small-note">Finding the series for \(\ln(1+x)\) around \(x=0\). Requires successive derivatives of \(\frac{1}{x+1}\).</p>
+
+          <div class="controls">
+
+            <button class="step-btn" onclick="startSteps('ex8a'); playSound('concept')">Show Steps</button>
+
+          </div>
+
+          <div class="step-block" id="ex8a">
+
+            <div class="step-line" style="display:none"><b>Step 1:</b> Find \(f(0)=0\), \(f'(0)=1\), \(f''(0)=-1\), \(f'''(0)=2\), \(f^{(4)}(0)=-6\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 2:</b> Plug values into the formula: \(f(x) = 0+x(1)+\frac{x^2}{2!}(-1)+\frac{x^3}{3!}(2)+\frac{x^4}{4!}(-6)+\dots\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 3 (Final):</b> \(\ln(1+x) = x-\frac{x^2}{2}+\frac{x^3}{3}-\frac{x^4}{4}+\dots\)</div>
+
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('ex8a'); playSound('click')">Next Step</button></div>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="example-box">
+
+          <div class="big">Example 2: Maclaurin Series for \( e^x \)</div>
+
+          <p class="small-note">Since \(\frac{d}{dx}(e^x)=e^x\), all derivatives evaluated at \(x=0\) are \(e^0=1\).</p>
+
+          <div class="controls">
+
+            <button class="step-btn" onclick="startSteps('ex8b'); playSound('concept')">Show Steps</button>
+
+          </div>
+
+          <div class="step-block" id="ex8b">
+
+            <div class="step-line" style="display:none"><b>Step 1:</b> Find successive derivatives at \(x=0\): \(f(0)=1\), \(f'(0)=1\), \(f''(0)=1\), \(f'''(0)=1\), etc.</div>
+
+            <div class="step-line" style="display:none"><b>Step 2:</b> Plug into the Maclaurin formula: \(e^x = 1+x(1)+\frac{x^2}{2!}(1)+\frac{x^3}{3!}(1)+\dots\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 3 (Final):</b> \(e^x = 1+x+\frac{x^2}{2!}+\frac{x^3}{3!}+\dots\)</div>
+
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('ex8b'); playSound('click')">Next Step</button></div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="try-yourself">
+
+        <div class="try-title">✨ Try It Yourself: Taylor Series</div>
+
+        <p>1. Find \(f''(0)\) for \(f(x)=\cos x\)</p>
+
+        <div class="row">
+
+          <input id="ttaylor1" placeholder="Type your answer" type="number">
+
+          <button class="check" onclick="checkNumeric('ttaylor1',-1,'ttaylor1_res')">Check</button>
+
+        </div>
+
+        <div id="ttaylor1_res" class="result"></div>
+
+        
+
+        <p style="margin-top:10px">2. Find \(f'(0)\) for \(f(x)=\sqrt{1+x}\)</p>
+
+        <div class="row">
+
+          <input id="ttaylor2" placeholder="Type your answer" type="number">
+
+          <button class="check" onclick="checkNumeric('ttaylor2',0.5,'ttaylor2_res')">Check</button>
+
+        </div>
+
+        <div id="ttaylor2_res" class="result"></div>
+
+      </div>
+
+      
+
+      <div class="motivate" style="margin-top:14px">
+
+        <div class="emoji">🌟</div>
+
+        <div class="text" style="color:#3b82f6;">Incredible! You've mastered function approximation with infinite series!</div>
+
+      </div>
+
+      
+
+      <!-- Game card for Exercise 2.8 -->
+
+      <h3 style="margin-top:14px;color:var(--accent)">Play the Series Games</h3>
+
+      <div class="game-card-grid">
+
+        <div class="game-card-style" onclick="showGame('series-game'); playSound('gameStart')">
+
+          <div class="game-card-left">
+
+            <div class="svg-icon" aria-hidden="true" style="background: linear-gradient(135deg, #65C7F7, #4ECDC4);">
+
+              <i class="fas fa-infinity"></i>
+
+            </div>
+
+            <div style="font-size:12px;color:var(--muted); margin-top:5px">Series</div>
+
+          </div>
+
+          <div>
+
+            <div class="game-card-title">Maclaurin Series</div>
+
+            <div class="game-card-desc">Complete the Maclaurin series expansion for functions.</div>
+
+            <div style="margin-top:12px"><button class="start-btn">Play Game</button></div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      
+
+      <div id="series-game" class="game-play-area">
+
+        <h3 style="color:var(--primary); margin-bottom: 20px;">Maclaurin Series: Complete the expansion!</h3>
+
+        <div class="game-icon-visual">🌟</div>
+
+        <div class="score-board" id="series-score-display">Score: 0</div>
+
+        <div class="game-prompt" id="series-prompt">Complete the Maclaurin series for \( e^x \): \( 1 + x + \) ____ \( + \frac{x^3}{3!} + \dots \)</div>
+
+        <div class="game-input-group">
+
+          <input type="text" id="series-input" placeholder="Enter missing term">
+
+        </div>
+
+        <button class="check" onclick="checkSeries()" style="background:var(--primary)">Submit</button>
+
+        <div class="game-message" id="series-status">Ready.</div>
+
+        <button class="step-btn" style="margin-top: 15px;" onclick="initSeriesGame(); playSound('click')">New Problem</button>
+
+      </div>
+
+
+
+      <div class="calm">
+
+        <div style="font-size:40px;animation:wavey 2s infinite">✨</div>
+
+        <div style="font-weight:700">Calm: One small clap — you finished a comprehensive session! Well done!</div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- Chapter complete -->
+
+    <div class="card" style="text-align:center;margin-top:18px">
+
+      <h2>🎉 Chapter 2 — Differentiation Completed!</h2>
+
+      <p class="lead">You've successfully worked through all 8 exercises of differentiation, from first principles to Taylor series. Replay games and review examples whenever you want. Keep up the great work!</p>
+
+      
+
+      <!-- Completion visual -->
+
+      <div class="concept-visual">
+
+        <div class="visual-box" style="background:linear-gradient(135deg, #e8f5e9, #f3e5f5); display:flex; align-items:center; justify-content:center;">
+
+          <div style="text-align:center">
+
+            <div style="font-size:40px; margin-bottom:10px">🎓</div>
+
+            <div style="font-weight:bold; color:var(--primary)">Differentiation Master!</div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- GAMES landing -->
+
+    <div id="games" class="divider">Stress-Relief Games</div>
+
+    <section class="card">
+
+      <h2>Quick Access to All Chapter 2 Games</h2>
+
+      <p class="lead">Click any game below to open it and start practicing what you've learned in a fun way!</p>
+
+      <div class="game-card-grid">
+
+        <div class="game-card-style" onclick="showGame('first-principles-game'); playSound('gameStart')">
+
+          <div class="game-card-left">
+
+            <div class="svg-icon" style="background: linear-gradient(135deg, #ff7eb3, #ff758c);">
+
+              <i class="fas fa-microscope"></i>
+
+            </div>
+
+            <div style="font-size:12px;color:var(--muted); margin-top:5px">Exercise 2.1</div>
+
+          </div>
+
+          <div>
+
+            <div class="game-card-title">First Principles Builder</div>
+
+            <div class="game-card-desc">Drag and drop parts to complete the derivative definition.</div>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="game-card-style" onclick="showGame('power-rule-game'); playSound('gameStart')">
+
+          <div class="game-card-left">
+
+            <div class="svg-icon" style="background: linear-gradient(135deg, #FFD166, #EF476F);">
+
+              <i class="fas fa-bolt"></i>
+
+            </div>
+
+            <div style="font-size:12px;color:var(--muted); margin-top:5px">Exercise 2.2</div>
+
+          </div>
+
+          <div>
+
+            <div class="game-card-title">Power Rule Blitz</div>
+
+            <div class="game-card-desc">Differentiate \( (ax+b)^n \) quickly for a high score.</div>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="game-card-style" onclick="showGame('rules-game'); playSound('gameStart')">
+
+          <div class="game-card-left">
+
+            <div class="svg-icon" style="background: linear-gradient(135deg, #65C7F7, #4ECDC4);">
+
+              <i class="fas fa-puzzle-piece"></i>
+
+            </div>
+
+            <div style="font-size:12px;color:var(--muted); margin-top:5px">Exercise 2.3</div>
+
+          </div>
+
+          <div>
+
+            <div class="game-card-title">Rule Identifier</div>
+
+            <div class="game-card-desc">Choose the correct primary rule for the given function.</div>
+
+          </div>
+
+        </div>
+
+        
+
+        <div class="game-card-style" onclick="showGame('chain-rule-game'); playSound('gameStart')">
+
+          <div class="game-card-left">
+
+            <div class="svg-icon" style="background: linear-gradient(135deg, #ff7eb3, #ff758c);">
+
+              <i class="fas fa-link"></i>
+
+            </div>
+
+            <div style="font-size:12px;color:var(--muted); margin-top:5px">Exercise 2.4</div>
+
+          </div>
+
+          <div>
+
+            <div class="game-card-title">Chain Rule Builder</div>
+
+            <div class="game-card-desc">Select the correct outer and inner derivatives in order.</div>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="game-card-style" onclick="showGame('trig-game'); playSound('gameStart')">
+
+          <div class="game-card-left">
+
+            <div class="svg-icon" style="background: linear-gradient(135deg, #06D6A0, #118AB2);">
+
+              <i class="fas fa-wave-square"></i>
+
+            </div>
+
+            <div style="font-size:12px;color:var(--muted); margin-top:5px">Exercise 2.5</div>
+
+          </div>
+
+          <div>
+
+            <div class="game-card-title">Trig Derivative Match</div>
+
+            <div class="game-card-desc">Match the trig function to its correct derivative.</div>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="game-card-style" onclick="showGame('exp-log-game'); playSound('gameStart')">
+
+          <div class="game-card-left">
+
+            <div class="svg-icon" style="background: linear-gradient(135deg, #ff7eb3, #ff758c);">
+
+              <i class="fas fa-chart-line"></i>
+
+            </div>
+
+            <div style="font-size:12px;color:var(--muted); margin-top:5px">Exercise 2.6</div>
+
+          </div>
+
+          <div>
+
+            <div class="game-card-title">Exponential & Logarithmic</div>
+
+            <div class="game-card-desc">Match exponential and logarithmic functions with their derivatives.</div>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="game-card-style" onclick="showGame('higher-derivatives-game'); playSound('gameStart')">
+
+          <div class="game-card-left">
+
+            <div class="svg-icon" style="background: linear-gradient(135deg, #FFD166, #FF9E6D);">
+
+              <i class="fas fa-layer-group"></i>
+
+            </div>
+
+            <div style="font-size:12px;color:var(--muted); margin-top:5px">Exercise 2.7</div>
+
+          </div>
+
+          <div>
+
+            <div class="game-card-title">Higher Derivatives</div>
+
+            <div class="game-card-desc">Find second derivatives of various functions.</div>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="game-card-style" onclick="showGame('series-game'); playSound('gameStart')">
+
+          <div class="game-card-left">
+
+            <div class="svg-icon" style="background: linear-gradient(135deg, #65C7F7, #4ECDC4);">
+
+              <i class="fas fa-infinity"></i>
+
+            </div>
+
+            <div style="font-size:12px;color:var(--muted); margin-top:5px">Exercise 2.8</div>
+
+          </div>
+
+          <div>
+
+            <div class="game-card-title">Maclaurin Series</div>
+
+            <div class="game-card-desc">Complete the Maclaurin series expansion for functions.</div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+<div style="margin: 50px 0; text-align: center; padding: 30px; background: #f0fdf4; border: 2px dashed #10b981; border-radius: 12px;">
+    <h3 style="color: #047857; margin-bottom: 10px;">Module Complete?</h3>
+    <p style="color: #065f46; margin-bottom: 20px;">Test your understanding of Differentiation to unlock the next step.</p>
+    
+    <a href="{{ url_for('serve_quiz', chapter_num=2) }}" class="btn btn-primary" style="background-color: #10b981; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); padding: 15px 40px; font-size: 1.1rem;">
+        Take Chapter 2 Quiz <i class="fas fa-arrow-right"></i>
+    </a>
+</div>
+
+  <!-- Floating quick games button -->
+
+  <div class="fab">
+
+    <i class="fas fa-gamepad"></i>
+
+  </div>
+
+
+
+  <!-- Footer -->
+
+  <footer class="footer">
+
+    <div class="container">
+
+      <div class="footer-content">
+
+        <div class="footer-about">
+
+          <div class="footer-logo">
+
+            <div class="footer-logo-icon">S</div>
+
+            Sentellect
+
+          </div>
+
+          <p>Personalizing learning through emotions to improve educational experience for HSSC Mathematics.</p>
+
+          <div class="social-links">
+
+            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+
+            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+
+          </div>
+
+        </div>
+
+        
+
+        <div class="footer-links">
+
+          <h3>Platform</h3>
+
+          <ul>
+
+            <li><a href="#intro">Introduction</a></li>
+
+            <li><a href="#exercise-2-1">First Principles</a></li>
+
+            <li><a href="#exercise-2-2">Power Rule</a></li>
+
+            <li><a href="#exercise-2-3">Sum/Product/Quotient</a></li>
+
+            <li><a href="#exercise-2-4">Chain Rule</a></li>
+
+            <li><a href="#exercise-2-5">Trigonometric</a></li>
+
+            <li><a href="#exercise-2-6">Exponential & Logarithmic</a></li>
+
+            <li><a href="#exercise-2-7">Higher Derivatives</a></li>
+
+            <li><a href="#exercise-2-8">Maclaurin & Taylor Series</a></li>
+
+          </ul>
+
+        </div>
+
+        
+
+        <div class="footer-links">
+
+          <h3>Resources</h3>
+
+          <ul>
+
+            <li><a href="#">Study Materials</a></li>
+
+            <li><a href="#">About Project</a></li>
+
+            <li><a href="#">Contact</a></li>
+
+            <li><a href="#">Support</a></li>
+
+          </ul>
+
+        </div>
+
+        
+
+        <div class="footer-links">
+
+          <h3>Account</h3>
+
+          <ul>
+
+            <li><a href="#">Student Login</a></li>
+
+            <li><a href="#">Create Account</a></li>
+
+            <li><a href="#">Help Center</a></li>
+
+          </ul>
+
+        </div>
+
+      </div>
+
+      
+
+      <div class="footer-bottom">
+
+        <p>© 2025 Sentellect. Final Year Project - Educational Technology.</p>
+
+        <div class="footer-tags">
+
+          <a href="#" class="tag">PTB HSSC Mathematics</a>
+
+          <a href="#" class="tag">Emotion-Aware Learning</a>
+
+          <a href="#" class="tag">Differentiation</a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+
+
+  <!-- ================= JS: games + UI functions ================= -->
+
+  <script>
+/* ==========================================
+   SCROLL SPEED DETECTOR (Anxiety Check)
+   ========================================== */
+
+let lastScrollTop = 0;
+let fastScrollCount = 0;
+let scrollAlertShown = false; // To prevent spamming the popup
+
+// Check scroll speed every 200ms
+setInterval(() => {
+    if (scrollAlertShown) return; // Stop checking if we already showed the modal
+
+    // Get current scroll position
+    const st = window.pageYOffset || document.documentElement.scrollTop;
+    
+    // Calculate distance moved in last 200ms
+    const distance = Math.abs(st - lastScrollTop);
+    
+    // Threshold: If moved more than 300px in 0.2 seconds (Very Fast)
+    if (distance > 300) {
+        fastScrollCount++;
+        console.log("⚠️ Fast Scroll Detected:", fastScrollCount);
+    } else {
+        // Decay counter (if they slow down, forgive them)
+        if (fastScrollCount > 0) fastScrollCount--;
+    }
+
+    // Trigger: If they speed-scroll 4 times consecutively
+    if (fastScrollCount >= 4) {
+        showScrollModal();
+        fastScrollCount = 0; // Reset
+    }
+
+    lastScrollTop = st;
+}, 200); 
+
+function showScrollModal() {
+    const modal = document.getElementById('scrollModal');
+    if (modal) {
+        modal.style.display = 'flex';
+        scrollAlertShown = true; // Ensure it only pops up once per session
+        
+        // Optional: Log to backend
+        if(typeof fetch !== 'undefined') {
+            fetch('/api/log_behavior', { 
+                method: 'POST', 
+                headers: {'Content-Type': 'application/json'}, 
+                body: JSON.stringify({ reason: 'rapid_scrolling', context: 'high_stress_chapter2' }) 
+            }).catch(e => console.log(e));
+        }
+    }
+}
+
+function closeScrollModal() {
+    document.getElementById('scrollModal').style.display = 'none';
+    // scrollAlertShown remains true so we don't bug them again
+}
+    // Celebration system
+
+    function celebrate() {
+
+      if (!soundEnabled) return;
+
+      
+
+      const celebration = document.getElementById('celebration');
+
+      celebration.style.display = 'block';
+
+      
+
+      // Play celebration sound
+
+      playSound('celebration');
+
+      
+
+      // Create confetti
+
+      for (let i = 0; i < 150; i++) {
+
+        createConfetti();
+
+      }
+
+      
+
+      // Create party poppers
+
+      for (let i = 0; i < 20; i++) {
+
+        createPartyPopper();
+
+      }
+
+      
+
+      // Create hurray text
+
+      createHurrayText();
+
+      
+
+      // Hide celebration after 3 seconds
+
+      setTimeout(() => {
+
+        celebration.style.display = 'none';
+
+        celebration.innerHTML = '';
+
+      }, 3000);
+
+    }
+
+    
+
+    function createConfetti() {
+
+      const celebration = document.getElementById('celebration');
+
+      const confetti = document.createElement('div');
+
+      confetti.className = 'confetti';
+
+      
+
+      // Random position
+
+      const left = Math.random() * 100;
+
+      const colors = ['#ff6b6b', '#ffd166', '#06d6a0', '#118ab2', '#ef476f'];
+
+      const color = colors[Math.floor(Math.random() * colors.length)];
+
+      
+
+      confetti.style.left = `${left}%`;
+
+      confetti.style.backgroundColor = color;
+
+      
+
+      celebration.appendChild(confetti);
+
+      
+
+      // Animate confetti
+
+      const animation = confetti.animate([
+
+        { transform: 'translateY(-20px) rotate(0deg)', opacity: 1 },
+
+        { transform: `translateY(${window.innerHeight}px) rotate(720deg)`, opacity: 0 }
+
+      ], {
+
+        duration: 2000 + Math.random() * 1000,
+
+        easing: 'cubic-bezier(0.215, 0.61, 0.355, 1)'
+
+      });
+
+      
+
+      animation.onfinish = () => {
+
+        confetti.remove();
+
+      };
+
+    }
+
+    
+
+    function createPartyPopper() {
+
+      const celebration = document.getElementById('celebration');
+
+      const popper = document.createElement('div');
+
+      popper.className = 'party-popper';
+
+      popper.textContent = '🎉';
+
+      
+
+      // Random position
+
+      const left = Math.random() * 100;
+
+      const top = Math.random() * 100;
+
+      
+
+      popper.style.left = `${left}%`;
+
+      popper.style.top = `${top}%`;
+
+      
+
+      celebration.appendChild(popper);
+
+      
+
+      // Animate party popper
+
+      const animation = popper.animate([
+
+        { transform: 'scale(0) rotate(0deg)', opacity: 1 },
+
+        { transform: 'scale(1.5) rotate(360deg)', opacity: 0 }
+
+      ], {
+
+        duration: 1000 + Math.random() * 500,
+
+        easing: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+
+      });
+
+      
+
+      animation.onfinish = () => {
+
+        popper.remove();
+
+      };
+
+    }
+
+    
+
+    function createHurrayText() {
+
+      const celebration = document.getElementById('celebration');
+
+      const hurray = document.createElement('div');
+
+      hurray.className = 'hurray-text';
+
+      hurray.textContent = 'HURRAY!';
+
+      
+
+      celebration.appendChild(hurray);
+
+      
+
+      // Animate hurray text
+
+      const animation = hurray.animate([
+
+        { transform: 'translate(-50%, -50%) scale(0)', opacity: 0 },
+
+        { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
+
+        { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
+
+        { transform: 'translate(-50%, -50%) scale(1.2)', opacity: 0 }
+
+      ], {
+
+        duration: 3000,
+
+        easing: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+
+      });
+
+      
+
+      animation.onfinish = () => {
+
+        hurray.remove();
+
+      };
+
+    }
+
+
+
+    // Sound system
+
+    let soundEnabled = true;
+
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+    
+
+    // Sound functions
+
+    function playSound(type) {
+
+      if (!soundEnabled) return;
+
+      
+
+      const oscillator = audioContext.createOscillator();
+
+      const gainNode = audioContext.createGain();
+
+      
+
+      oscillator.connect(gainNode);
+
+      gainNode.connect(audioContext.destination);
+
+      
+
+      // Set sound parameters based on type
+
+      switch(type) {
+
+        case 'success':
+
+          oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
+
+          gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+
+          gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+
+          oscillator.start();
+
+          oscillator.stop(audioContext.currentTime + 0.5);
+
+          break;
+
+          
+
+        case 'error':
+
+          oscillator.frequency.setValueAtTime(220, audioContext.currentTime); // A3
+
+          gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+
+          gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+
+          oscillator.start();
+
+          oscillator.stop(audioContext.currentTime + 0.3);
+
+          break;
+
+          
+
+        case 'click':
+
+          oscillator.frequency.setValueAtTime(784, audioContext.currentTime); // G5
+
+          gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+
+          gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+
+          oscillator.start();
+
+          oscillator.stop(audioContext.currentTime + 0.1);
+
+          break;
+
+          
+
+        case 'gameStart':
+
+          // Play a little melody
+
+          playMelody([784, 659, 523, 659, 784], [0.15, 0.15, 0.15, 0.15, 0.3]);
+
+          break;
+
+          
+
+        case 'celebration':
+
+          // Play a celebratory melody
+
+          playMelody([523.25, 659.25, 783.99, 1046.50, 1318.51, 1567.98], [0.15, 0.15, 0.15, 0.15, 0.15, 0.5]);
+
+          break;
+
+          
+
+        case 'concept':
+
+          // Play a gentle sound for understanding concepts
+
+          playMelody([261.63, 329.63, 392.00], [0.3, 0.3, 0.5]);
+
+          break;
+
+      }
+
+    }
+
+    
+
+    function playMelody(frequencies, durations) {
+
+      let time = audioContext.currentTime;
+
+      
+
+      frequencies.forEach((freq, i) => {
+
+        const oscillator = audioContext.createOscillator();
+
+        const gainNode = audioContext.createGain();
+
+        
+
+        oscillator.connect(gainNode);
+
+        gainNode.connect(audioContext.destination);
+
+        
+
+        oscillator.frequency.setValueAtTime(freq, time);
+
+        gainNode.gain.setValueAtTime(0.2, time);
+
+        gainNode.gain.exponentialRampToValueAtTime(0.01, time + durations[i]);
+
+        
+
+        oscillator.start(time);
+
+        oscillator.stop(time + durations[i]);
+
+        
+
+        time += durations[i];
+
+      });
+
+    }
+
+    
+
+    // Toggle sound
+
+    document.getElementById('toggleSound').addEventListener('click', function() {
+
+      soundEnabled = !soundEnabled;
+
+      const icon = this.querySelector('i');
+
+      
+
+      if (soundEnabled) {
+
+        icon.className = 'fas fa-volume-up';
+
+        this.classList.remove('muted');
+
+        playSound('click');
+
+      } else {
+
+        icon.className = 'fas fa-volume-mute';
+
+        this.classList.add('muted');
+
+      }
+
+    });
+
+
+
+    /* -------- Helpers (step reveals & answer checking) -------- */
+
+    function startSteps(blockId){
+
+      const block = document.getElementById(blockId);
+
+      if(!block) return;
+
+      const lines = block.querySelectorAll('.step-line');
+
+      lines.forEach(l => l.style.display = 'none');
+
+      if(lines.length) lines[0].style.display = 'block';
+
+      playSound('concept');
+
+    }
+
+    
+
+    function nextStep(blockId){
+
+      const block = document.getElementById(blockId);
+
+      if(!block) return;
+
+      const lines = block.querySelectorAll('.step-line');
+
+      let shown = 0;
+
+      for(let i=0;i<lines.length;i++) if(getComputedStyle(lines[i]).display !== 'none') shown++;
+
+      if(shown < lines.length) {
+
+        lines[shown].style.display = 'block';
+
+        playSound('success');
+
+        // Celebrate on the last step
+
+        if (shown === lines.length - 1) {
+
+          setTimeout(celebrate, 500);
+
+        }
+
+      }
+
+    }
+
+
+
+    function checkTextMotivate(inputId, correctText, resultId){
+
+      const val = (document.getElementById(inputId).value || '').trim().toLowerCase().replace(/\s/g,'');
+
+      const correct = (''+correctText).trim().toLowerCase().replace(/\s/g,'');
+
+      const resEl = document.getElementById(resultId);
+
+      if(!resEl){
+
+        // create a simple inline feedback if result element missing
+
+        const el = document.createElement('div'); el.style.marginTop='8px';
+
+        if(val === correct){ 
+
+          el.style.color='#047857'; 
+
+          el.textContent='Nice! Correct ✅';
+
+          playSound('success');
+
+          celebrate();
+
+        } else { 
+
+          el.style.color='#92400e'; 
+
+          el.textContent='Not quite — try again.';
+
+          playSound('error');
+
+        }
+
+        document.getElementById(inputId).insertAdjacentElement('afterend', el);
+
+        return;
+
+      }
+
+      if(val === correct){
+
+        resEl.style.color = '#047857'; 
+
+        resEl.textContent = 'Nice! Correct ✅';
+
+        resEl.className = "result good";
+
+        playSound('success');
+
+        celebrate();
+
+      } else {
+
+        resEl.style.color = '#92400e'; 
+
+        resEl.textContent = 'Not quite — try again.';
+
+        resEl.className = "result warn";
+
+        playSound('error');
+
+      }
+
+      resEl.style.display = "block";
+
+    }
+
+
+
+    function checkNumeric(inputId, correct, resultId) {
+
+      const userAns = parseFloat(document.getElementById(inputId).value);
+
+      const resultEl = document.getElementById(resultId);
+
+      
+
+      if (!isNaN(userAns) && Math.abs(userAns - correct) < 0.01) {
+
+        resultEl.innerHTML = `✅ Correct!`;
+
+        resultEl.className = "result good";
+
+        playSound('success');
+
+        celebrate();
+
+      } else {
+
+        resultEl.innerHTML = `❌ Try again. Expected: ${correct}`;
+
+        resultEl.className = "result warn";
+
+        playSound('error');
+
+      }
+
+      resultEl.style.display = "block";
+
+    }
+
+
+
+    /* ---------- Game datasets ---------- */
+
+    const firstPrinciplesData = [
+
+      { question: "Complete the first principles formula: \\( f'(x) = \\lim_{\\delta x \\to 0} \\frac{f(x+\\delta x) - f(x)}{\\delta x} \\)", answer: "δx" }
+
+    ];
+
+
+
+    const powerRuleData = [
+
+      { function: "\\( (2x+3)^5 \\)", derivative: "10(2x+3)^4" },
+
+      { function: "\\( (3x-1)^4 \\)", derivative: "12(3x-1)^3" },
+
+      { function: "\\( (5x+2)^3 \\)", derivative: "15(5x+2)^2" }
+
+    ];
+
+
+
+    const rulesData = [
+
+      { function: "\\( (x+2)(x-3) \\)", rule: "product" },
+
+      { function: "\\( (2x+5)^4 \\)", rule: "power" },
+
+      { function: "\\( \\sin(3x) \\)", rule: "chain" },
+
+      { function: "\\( \\frac{x^2+1}{x-1} \\)", rule: "quotient" }
+
+    ];
+
+
+
+    const chainRuleData = [
+
+      { function: "\\( \\sin(3x^2) \\)", derivative: "6x cos(3x^2)" },
+
+      { function: "\\( e^{2x+1} \\)", derivative: "2e^(2x+1)" },
+
+      { function: "\\( \\ln(5x) \\)", derivative: "1/x" }
+
+    ];
+
+
+
+    const trigData = [
+
+      { function: "\\( \\sin x \\)", derivative: "\\( \\cos x \\)" },
+
+      { function: "\\( \\cos x \\)", derivative: "\\( -\\sin x \\)" },
+
+      { function: "\\( \\tan x \\)", derivative: "\\( \\sec^2 x \\)" }
+
+    ];
+
+
+
+    const expLogData = [
+
+      { function: "\\( e^x \\)", derivative: "\\( e^x \\)" },
+
+      { function: "\\( a^x \\)", derivative: "\\( a^x \\ln a \\)" },
+
+      { function: "\\( \\ln x \\)", derivative: "\\( \\frac{1}{x} \\)" }
+
+    ];
+
+
+
+    const higherDerivativeData = [
+
+      { function: "\\( x^3 - 2x^2 + x - 5 \\)", derivative: "\\( 6x - 4 \\)" },
+
+      { function: "\\( \\sin x \\)", derivative: "\\( -\\sin x \\)" },
+
+      { function: "\\( e^x \\)", derivative: "\\( e^x \\)" }
+
+    ];
+
+
+
+    const seriesData = [
+
+      { question: "Complete the Maclaurin series for \\( e^x \\): \\( 1 + x + \\) ____ \\( + \\frac{x^3}{3!} + \\dots \\)", answer: "\\( \\frac{x^2}{2!} \\)" },
+
+      { question: "Complete the Maclaurin series for \\( \\sin x \\): \\( x - \\frac{x^3}{3!} + \\) ____ \\( - \\dots \\)", answer: "\\( \\frac{x^5}{5!} \\)" },
+
+      { question: "Complete the Maclaurin series for \\( \\cos x \\): \\( 1 - \\frac{x^2}{2!} + \\) ____ \\( - \\dots \\)", answer: "\\( \\frac{x^4}{4!} \\)" }
+
+    ];
+
+
+
+    function shuffle(arr){ for(let i=arr.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]] } return arr }
+
+
+
+    /* ---------------- First Principles Game ---------------- */
+
+    let fpScore = 0;
+
+    let currentFPProblem = null;
+
+
+
+    function initFirstPrinciplesGame(){
+
+      const problem = firstPrinciplesData[0];
+
+      currentFPProblem = problem;
+
+      
+
+      document.getElementById('fp-prompt').innerHTML = problem.question;
+
+      document.getElementById('fp-status').textContent = `Score: ${fpScore}`;
+
+      document.getElementById('fp-score-display').textContent = `Score: ${fpScore}`;
+
+      document.getElementById('fp-status').classList.remove('success', 'wrong');
+
+      MathJax.typeset();
+
+    }
+
+
+
+    /* ---------------- Power Rule Game ---------------- */
+
+    let powerScore = 0;
+
+    let currentPowerProblem = null;
+
+
+
+    function initPowerRuleGame() {
+
+      const problem = powerRuleData[Math.floor(Math.random() * powerRuleData.length)];
+
+      currentPowerProblem = problem;
+
+      
+
+      document.getElementById('power-prompt').innerHTML = `Differentiate: ${problem.function}`;
+
+      document.getElementById('power-input').value = '';
+
+      document.getElementById('power-status').textContent = `Score: ${powerScore}`;
+
+      document.getElementById('power-score-display').textContent = `Score: ${powerScore}`;
+
+      document.getElementById('power-status').classList.remove('success', 'wrong');
+
+      MathJax.typeset();
+
+    }
+
+
+
+    function checkPowerRule() {
+
+      const answer = document.getElementById('power-input').value.trim().toLowerCase().replace(/\s/g,'');
+
+      const correct = currentPowerProblem.derivative.toLowerCase().replace(/\s/g,'');
+
+
+
+      if (answer === correct) {
+
+        powerScore++;
+
+        document.getElementById('power-status').className = 'game-message success';
+
+        document.getElementById('power-status').textContent = `✅ Correct! Score: ${powerScore}`;
+
+        document.getElementById('power-score-display').textContent = `Score: ${powerScore}`;
+
+        playSound('success');
+
+        setTimeout(initPowerRuleGame, 1000);
+
+      } else {
+
+        document.getElementById('power-status').className = 'game-message wrong';
+
+        document.getElementById('power-status').textContent = `❌ Try again. Hint: ${currentPowerProblem.derivative}`;
+
+        playSound('error');
+
+      }
+
+    }
+
+
+
+    /* ---------------- Rules Game ---------------- */
+
+    let rulesScore = 0;
+
+    let currentRulesProblem = null;
+
+
+
+    function initRulesGame() {
+
+      const problem = rulesData[Math.floor(Math.random() * rulesData.length)];
+
+      currentRulesProblem = problem;
+
+      
+
+      document.getElementById('rules-prompt').innerHTML = `Which rule would you use for: ${problem.function}`;
+
+      document.getElementById('rules-status').textContent = `Score: ${rulesScore}`;
+
+      document.getElementById('rules-score-display').textContent = `Score: ${rulesScore}`;
+
+      document.getElementById('rules-status').classList.remove('success', 'wrong');
+
+      MathJax.typeset();
+
+    }
+
+
+
+    function checkRule(guess) {
+
+      if (guess === currentRulesProblem.rule) {
+
+        rulesScore++;
+
+        document.getElementById('rules-status').className = 'game-message success';
+
+        document.getElementById('rules-status').textContent = `✅ Correct! Score: ${rulesScore}`;
+
+        document.getElementById('rules-score-display').textContent = `Score: ${rulesScore}`;
+
+        playSound('success');
+
+        setTimeout(initRulesGame, 1000);
+
+      } else {
+
+        document.getElementById('rules-status').className = 'game-message wrong';
+
+        document.getElementById('rules-status').textContent = `❌ Try again! Hint: It's the ${currentRulesProblem.rule} rule.`;
+
+        playSound('error');
+
+      }
+
+    }
+
+
+
+    /* ---------------- Chain Rule Game ---------------- */
+
+    let chainScore = 0;
+
+    let currentChainProblem = null;
+
+
+
+    function initChainRuleGame() {
+
+      const problem = chainRuleData[Math.floor(Math.random() * chainRuleData.length)];
+
+      currentChainProblem = problem;
+
+      
+
+      document.getElementById('chain-prompt').innerHTML = `Differentiate: ${problem.function}`;
+
+      document.getElementById('chain-input').value = '';
+
+      document.getElementById('chain-status').textContent = `Score: ${chainScore}`;
+
+      document.getElementById('chain-score-display').textContent = `Score: ${chainScore}`;
+
+      document.getElementById('chain-status').classList.remove('success', 'wrong');
+
+      MathJax.typeset();
+
+    }
+
+
+
+    function checkChainRule() {
+
+      const answer = document.getElementById('chain-input').value.trim().toLowerCase().replace(/\s/g,'');
+
+      const correct = currentChainProblem.derivative.toLowerCase().replace(/\s/g,'');
+
+
+
+      if (answer === correct) {
+
+        chainScore++;
+
+        document.getElementById('chain-status').className = 'game-message success';
+
+        document.getElementById('chain-status').textContent = `✅ Correct! Score: ${chainScore}`;
+
+        document.getElementById('chain-score-display').textContent = `Score: ${chainScore}`;
+
+        playSound('success');
+
+        setTimeout(initChainRuleGame, 1000);
+
+      } else {
+
+        document.getElementById('chain-status').className = 'game-message wrong';
+
+        document.getElementById('chain-status').textContent = `❌ Try again. Hint: ${currentChainProblem.derivative}`;
+
+        playSound('error');
+
+      }
+
+    }
+
+
+
+    /* ---------------- Trig Game ---------------- */
+
+    let trigScore = 0;
+
+    let currentTrigProblem = null;
+
+
+
+    function initTrigGame() {
+
+      shuffle(trigData);
+
+      document.getElementById('trig-status').textContent = `Score: ${trigScore}`;
+
+      document.getElementById('trig-score-display').textContent = `Score: ${trigScore}`;
+
+      document.getElementById('trig-status').classList.remove('success', 'wrong');
+
+      MathJax.typeset();
+
+    }
+
+
+
+    /* ---------------- Exponential & Logarithmic Game ---------------- */
+
+    let expLogScore = 0;
+
+    let currentExpLogProblem = null;
+
+
+
+    function initExpLogGame() {
+
+      shuffle(expLogData);
+
+      document.getElementById('exp-log-status').textContent = `Score: ${expLogScore}`;
+
+      document.getElementById('exp-log-score-display').textContent = `Score: ${expLogScore}`;
+
+      document.getElementById('exp-log-status').classList.remove('success', 'wrong');
+
+      MathJax.typeset();
+
+    }
+
+
+
+    /* ---------------- Higher Derivatives Game ---------------- */
+
+    let higherScore = 0;
+
+    let currentHigherProblem = null;
+
+
+
+    function initHigherDerivativeGame() {
+
+      const problem = higherDerivativeData[Math.floor(Math.random() * higherDerivativeData.length)];
+
+      currentHigherProblem = problem;
+
+      
+
+      document.getElementById('higher-prompt').innerHTML = `Find \\( y'' \\) for: ${problem.function}`;
+
+      document.getElementById('higher-input').value = '';
+
+      document.getElementById('higher-status').textContent = `Score: ${higherScore}`;
+
+      document.getElementById('higher-score-display').textContent = `Score: ${higherScore}`;
+
+      document.getElementById('higher-status').classList.remove('success', 'wrong');
+
+      MathJax.typeset();
+
+    }
+
+
+
+    function checkHigherDerivative() {
+
+      const answer = document.getElementById('higher-input').value.trim().toLowerCase().replace(/\s/g,'');
+
+      const correct = currentHigherProblem.derivative.toLowerCase().replace(/\s/g,'');
+
+
+
+      if (answer === correct) {
+
+        higherScore++;
+
+        document.getElementById('higher-status').className = 'game-message success';
+
+        document.getElementById('higher-status').textContent = `✅ Correct! Score: ${higherScore}`;
+
+        document.getElementById('higher-score-display').textContent = `Score: ${higherScore}`;
+
+        playSound('success');
+
+        setTimeout(initHigherDerivativeGame, 1000);
+
+      } else {
+
+        document.getElementById('higher-status').className = 'game-message wrong';
+
+        document.getElementById('higher-status').textContent = `❌ Try again. Hint: ${currentHigherProblem.derivative}`;
+
+        playSound('error');
+
+      }
+
+    }
+
+
+
+    /* ---------------- Series Game ---------------- */
+
+    let seriesScore = 0;
+
+    let currentSeriesProblem = null;
+
+
+
+    function initSeriesGame() {
+
+      const problem = seriesData[Math.floor(Math.random() * seriesData.length)];
+
+      currentSeriesProblem = problem;
+
+      
+
+      document.getElementById('series-prompt').innerHTML = problem.question;
+
+      document.getElementById('series-input').value = '';
+
+      document.getElementById('series-status').textContent = `Score: ${seriesScore}`;
+
+      document.getElementById('series-score-display').textContent = `Score: ${seriesScore}`;
+
+      document.getElementById('series-status').classList.remove('success', 'wrong');
+
+      MathJax.typeset();
+
+    }
+
+
+
+    function checkSeries() {
+
+      const answer = document.getElementById('series-input').value.trim().toLowerCase().replace(/\s/g,'');
+
+      const correct = currentSeriesProblem.answer.toLowerCase().replace(/\s/g,'');
+
+
+
+      if (answer === correct) {
+
+        seriesScore++;
+
+        document.getElementById('series-status').className = 'game-message success';
+
+        document.getElementById('series-status').textContent = `✅ Correct! Score: ${seriesScore}`;
+
+        document.getElementById('series-score-display').textContent = `Score: ${seriesScore}`;
+
+        playSound('success');
+
+        setTimeout(initSeriesGame, 1000);
+
+      } else {
+
+        document.getElementById('series-status').className = 'game-message wrong';
+
+        document.getElementById('series-status').textContent = `❌ Try again. Hint: ${currentSeriesProblem.answer}`;
+
+        playSound('error');
+
+      }
+
+    }
+
+
+
+    /* ---------- show/hide game area helper ---------- */
+
+    function showGame(gameId){
+
+      document.querySelectorAll('.game-play-area').forEach(e => e.style.display = 'none');
+
+      const area = document.getElementById(gameId);
+
+      if(area){ 
+
+        area.style.display = 'block'; 
+
+        area.scrollIntoView({behavior:'smooth', block:'center'}); 
+
+      }
+
+      if(gameId === 'first-principles-game') initFirstPrinciplesGame();
+
+      if(gameId === 'power-rule-game') initPowerRuleGame();
+
+      if(gameId === 'rules-game') initRulesGame();
+
+      if(gameId === 'chain-rule-game') initChainRuleGame();
+
+      if(gameId === 'trig-game') initTrigGame();
+
+      if(gameId === 'exp-log-game') initExpLogGame();
+
+      if(gameId === 'higher-derivatives-game') initHigherDerivativeGame();
+
+      if(gameId === 'series-game') initSeriesGame();
+
+    }
+
+
+
+    /* ---------- init on load ---------- */
+
+    window.addEventListener('load', function(){
+
+      // hide game areas
+
+      document.querySelectorAll('.game-play-area').forEach(g => g.style.display = 'none');
+
+      
+
+      // Header scroll effect
+
+      window.addEventListener('scroll', function() {
+
+        const header = document.querySelector('header');
+
+        if (window.scrollY > 50) {
+
+          header.classList.add('scrolled');
+
+        } else {
+
+          header.classList.remove('scrolled');
+
+        }
+
+      });
+
+
+
+      // Animation on scroll
+
+      const animateElements = document.querySelectorAll('.animate');
+
+      
+
+      const observer = new IntersectionObserver((entries) => {
+
+        entries.forEach(entry => {
+
+          if (entry.isIntersecting) {
+
+            const delay = entry.target.classList.contains('delay-1') ? 0.2 : 
+
+                         entry.target.classList.contains('delay-2') ? 0.4 :
+
+                         entry.target.classList.contains('delay-3') ? 0.6 : 0;
+
+            
+
+            setTimeout(() => {
+
+              entry.target.style.opacity = 1;
+
+              entry.target.style.transform = 'translateY(0)';
+
+            }, delay * 1000);
+
+          }
+
+        });
+
+      }, { threshold: 0.1 });
+
+      
+
+      animateElements.forEach(element => {
+
+        element.style.opacity = 0;
+
+        element.style.transform = 'translateY(20px)';
+
+        element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+
+        observer.observe(element);
+
+      });
+
+      
+
+      // Create floating particles for hero section
+
+      createParticles();
+
+      
+
+      // Play welcome sound
+
+      setTimeout(() => {
+
+        playSound('gameStart');
+
+      }, 500);
+
+    });
+
+    
+
+    function createParticles() {
+
+      const particlesContainer = document.querySelector('.particles');
+
+      for (let i = 0; i < 15; i++) {
+
+        const particle = document.createElement('div');
+
+        particle.classList.add('particle');
+
+        
+
+        const size = Math.random() * 10 + 5;
+
+        const posX = Math.random() * 100;
+
+        const posY = Math.random() * 100;
+
+        const delay = Math.random() * 5;
+
+        
+
+        particle.style.width = `${size}px`;
+
+        particle.style.height = `${size}px`;
+
+        particle.style.left = `${posX}%`;
+
+        particle.style.top = `${posY}%`;
+
+        particle.style.animationDelay = `${delay}s`;
+
+        
+
+        particlesContainer.appendChild(particle);
+
+      }
+
+    }
+
+
+
+    // nav links smooth scroll
+
+    document.querySelectorAll('.nav-links a').forEach(a => {
+
+      a.addEventListener('click', function(e){
+
+        e.preventDefault();
+
+        const href = this.getAttribute('href') || '#';
+
+        if(href.startsWith('#')){
+
+          const t = document.querySelector(href);
+
+          if(t) t.scrollIntoView({behavior:'smooth', block:'center'});
+
+        }
+
+        playSound('click');
+
+      });
+
+    });
+
+    
+
+    // FAB scroll to games
+
+    document.querySelector('.fab').addEventListener('click', function() {
+
+      document.querySelector('#games').scrollIntoView({behavior:'smooth'});
+
+      playSound('click');
+
+    });
+
+  </script>
+
+</body>
+
+</html>

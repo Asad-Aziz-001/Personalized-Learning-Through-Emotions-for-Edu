@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Sentellect — Coordinate Geometry (Chapter 4)</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<style> /* ===== Base Styles ===== */ :root { --primary: #1e40af; --primary-light: #3b82f6; --primary-dark: #1e3a8a; --secondary: #f59e0b; --accent: #ec4899; --text: #1e293b; --text-light: #64748b; --text-lighter: #94a3b8; --bg: #f8fafc; --white: #ffffff; --gray: #e2e8f0; --gray-light: #f1f5f9; --success: #10b981; --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); --hover-shadow: 0 15px 35px rgba(0, 0, 0, 0.1); --pastel-bg: #f3f8ff; --muted: #64748b; } * { margin: 0; padding: 0; box-sizing: border-box; } body { font-family: 'Quicksand', system-ui, -apple-system, 'Segoe UI', Roboto, Arial; background-color: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; } h1, h2, h3, h4 { font-weight: 700; line-height: 1.2; } a { text-decoration: none; color: inherit; } .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 20px; } section { padding: 80px 0; padding-top: 0; padding-bottom: 0; } 
+    .section-title { text-align: center; margin-bottom: 50px; }
+    
+    /* =========================================
+   MANUAL MODE SWITCHER & SCROLL DETECTION
+   ========================================= */
+
+/* 1. Mode Switcher (Floating Top Right) */
+.mode-indicator {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid #dc2626; /* Red for High Stress */
+    padding: 10px 20px;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(220, 38, 38, 0.2);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    animation: slideInRight 0.5s ease-out;
+}
+
+.mode-text {
+    color: #dc2626;
+    font-weight: bold;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.switch-btn {
+    background: linear-gradient(to right, #3b82f6, #2563eb);
+    color: white;
+    padding: 6px 15px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    text-decoration: none;
+}
+
+.switch-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+    color: white;
+}
+
+/* 2. Scroll Modal (Hidden by default) */
+#scrollModal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(2px);
+}
+
+.scroll-modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    max-width: 450px;
+    text-align: center;
+    border-top: 6px solid #f59e0b; /* Orange for Warning */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Animations & Responsiveness */
+@keyframes slideInRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@media (max-width: 768px) {
+    .mode-indicator {
+        top: auto;
+        bottom: 20px;
+        right: 50%;
+        transform: translateX(50%);
+        width: 90%;
+        justify-content: space-between;
+    }
+}
+.section-title h2 { font-size: 2.5rem; color: var(--primary); margin-bottom: 15px; position: relative; display: inline-block; } .section-title h2::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 80px; height: 4px; background: var(--secondary); border-radius: 2px; } .section-title p { color: var(--text-light); font-size: 1.1rem; max-width: 700px; margin: 0 auto; } .btn { display: inline-block; padding: 12px 28px; border-radius: 50px; font-weight: 600; transition: all 0.3s ease; text-align: center; cursor: pointer; } .btn-primary { background-color: var(--primary); color: var(--white); box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3); } .btn-primary:hover { background-color: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(30, 64, 175, 0.4); } .btn-secondary { background-color: var(--white); color: var(--primary); border: 2px solid var(--primary); } .btn-secondary:hover { background-color: var(--primary); color: var(--white); transform: translateY(-2px); } /* ===== Animations ===== */ @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } } @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } } @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } } @keyframes shimmer { 0% { background-position: -1000px 0; } 100% { background-position: 1000px 0; } } @keyframes slideIn { from { transform: translateX(-20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } } @keyframes bounceIn { 0% { transform: scale(0.95); opacity: 0; } 50% { transform: scale(1.02); } 100% { transform: scale(1); opacity: 1; } } @keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.45); } } @keyframes wavey { 0% { transform: translateY(0); } 50% { transform: translateY(-6px); } 100% { transform: translateY(0); } } .animate { animation: fadeIn 0.8s ease forwards; } .animate-slide { animation: slideIn 0.6s ease forwards; } .animate-bounce { animation: bounceIn 0.8s ease forwards; } .delay-1 { animation-delay: 0.2s; } .delay-2 { animation-delay: 0.4s; } .delay-3 { animation-delay: 0.6s; } .delay-4 { animation-delay: 0.8s; } /* ===== Header/Navbar ===== */ header { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; background-color: var(--white); box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1); transition: all 0.3s ease; } header.scrolled { padding: 10px 0; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15); } .navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; } .logo { display: flex; align-items: center; gap: 10px; } .logo-icon { width: 36px; height: 36px; background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: var(--white); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px; transition: all 0.3s ease; box-shadow: 0 4px 8px rgba(30, 64, 175, 0.2); } .logo-text { font-size: 1.5rem; font-weight: 700; color: var(--primary); transition: all 0.3s ease; } .nav-links { display: flex; list-style: none; gap: 30px; margin: 0 auto; } .nav-links a { font-weight: 500; position: relative; padding: 5px 0; transition: color 0.3s ease; } .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 3px; background: linear-gradient(to right, var(--primary), var(--secondary)); transition: width 0.3s ease; border-radius: 2px; } .nav-links a:hover::after, .nav-links a.active::after { width: 100%; } .nav-links a.active { color: var(--primary); font-weight: 600; } .mobile-menu-btn { display: none; background: none; border: none; font-size: 1.5rem; color: var(--primary); cursor: pointer; } /* Sound controls in header */ .header-sound-controls { display: flex; align-items: center; gap: 10px; position: absolute; right: 20px; top: 50%; transform: translateY(-50%); } .sound-btn { background: var(--primary); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.1); } .sound-btn:hover { transform: scale(1.1); background: var(--primary-light); } .sound-btn.muted { background: var(--muted); } /* ===== Hero Section ===== */ .hero { position: relative; padding: 180px 0 80px; background: linear-gradient(135deg, var(--primary), #004e92); color: var(--white); overflow: hidden; text-align: center; } .hero::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3QgZmlsbD0idXJsKCNwYXR0ZXJuKSIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIvPjwvc3ZnPg=='); } .hero-content { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; } .hero h1 { font-size: 3.2rem; margin-bottom: 20px; line-height: 1.2; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); white-space: nowrap; } .hero h1 span { color: var(--secondary); position: relative; } .hero h1 span::after { content: ''; position: absolute; bottom: 5px; left: 0; width: 100%; height: 8px; background-color: rgba(255, 255, 255, 0.3); z-index: -1; border-radius: 4px; } .hero p { font-size: 1.2rem; margin-bottom: 40px; opacity: 0.9; } .hero-buttons { display: flex; justify-content: center; gap: 20px; margin-top: 30px; } .hero .btn-secondary { background-color: transparent; color: var(--white); border-color: var(--white); } .hero .btn-secondary:hover { background-color: var(--white); color: var(--primary); } .floating-shape { position: absolute; border-radius: 50%; background: rgba(255, 255, 255, 0.1); z-index: 0; animation: float 6s ease-in-out infinite; } .shape-1 { width: 150px; height: 150px; top: 10%; left: 10%; animation-delay: 0s; } .shape-2 { width: 100px; height: 100px; bottom: 15%; right: 10%; animation-delay: 0.5s; } .shape-3 { width: 80px; height: 80px; top: 30%; right: 20%; animation-delay: 1s; } .particles { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 0; } .particle { position: absolute; background: rgba(255, 255, 255, 0.3); border-radius: 50%; animation: float 8s infinite ease-in-out; } /* ===== Card Styles ===== */ .card { background-color: var(--white); border-radius: 16px; padding: 30px; margin: 25px 0; box-shadow: var(--card-shadow); transition: all 0.3s ease; position: relative; overflow: hidden; } .card::before { content: ''; position: absolute; top: 0; left: 0; width: 5px; height: 100%; background: linear-gradient(to bottom, var(--primary), var(--secondary)); transition: width 0.3s ease; } .card:hover { transform: translateY(-5px); box-shadow: var(--hover-shadow); } .card:hover::before { width: 8px; } h2 { color: var(--primary); font-size: 1.8rem; margin-bottom: 20px; font-weight: 600; } h3 { color: var(--primary); font-size: 1.4rem; margin: 25px 0 15px; font-weight: 600; position: relative; padding-left: 15px; } h3::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 6px; height: 6px; background: var(--secondary); border-radius: 50%; } p { color: var(--text-light); margin-bottom: 20px; line-height: 1.7; } .lead { color: var(--muted); margin-bottom: 10px; } /* ===== Step Buttons ===== */ .step-buttons { display: flex; gap: 12px; margin: 20px 0; flex-wrap: wrap; } .step-btn { padding: 10px 16px; background: linear-gradient(to right, var(--primary), var(--primary-light)); color: var(--white); border: none; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; font-weight: 500; box-shadow: 0 4px 8px rgba(30, 64, 175, 0.2); } .step-btn:hover { background: linear-gradient(to right, var(--primary-dark), var(--primary)); transform: translateY(-2px); box-shadow: 0 6px 12px rgba(30, 64, 175, 0.3); } /* ===== Solution Display ===== */ .solution { background: var(--gray-light); border-left: 4px solid var(--secondary); padding: 20px; margin: 15px 0; border-radius: 0 8px 8px 0; transition: all 0.3s ease; position: relative; overflow: hidden; } .solution::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.5), transparent); transform: translateX(-100%); } .solution.active::before { animation: shimmer 1.5s ease; } /* ===== Progress Bar ===== */ .progress-container { width: 100%; height: 8px; background-color: var(--gray); border-radius: 4px; margin: 20px 0; overflow: hidden; } .progress-bar { height: 100%; background: linear-gradient(to right, var(--primary), var(--secondary)); border-radius: 4px; width: 0%; transition: width 1s ease; } /* ===== Self-Care Notes ===== */ .self-care { background: linear-gradient(135deg, #e0f2fe, #f0f9ff); border-radius: 12px; padding: 20px; margin: 25px 0; text-align: center; border-left: 5px solid var(--accent); animation: pulse 3s infinite; } .self-care h4 { color: var(--accent); margin-bottom: 10px; font-size: 1.3rem; } .self-care p { color: var(--text); font-size: 1.1rem; margin-bottom: 0; } /* ===== Visual Elements ===== */ .math-emoji { font-size: 2rem; margin: 0 10px; animation: float 3s ease-in-out infinite; } .visual-element { text-align: center; margin: 20px 0; } .emoji-row { display: flex; justify-content: center; gap: 15px; margin: 15px 0; } /* Coordinate Visuals */ .concept-visual { display: flex; justify-content: center; margin: 15px 0; } .coordinate-visual { position: relative; width: 280px; height: 200px; background: #fff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); overflow: hidden; } .grid-lines { position: absolute; width: 100%; height: 100%; background-image: linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px); background-size: 20px 20px; } .axis { position: absolute; background: #333; } .x-axis { bottom: 50%; left: 0; width: 100%; height: 2px; } .y-axis { left: 50%; top: 0; width: 2px; height: 100%; } .point { position: absolute; width: 12px; height: 12px; border-radius: 50%; transform: translate(-50%, -50%); } .point-label { position: absolute; font-size: 12px; font-weight: bold; transform: translate(5px, -5px); } .line { position: absolute; height: 2px; transform-origin: left center; } /* Concept visuals */ .visual-box { width: 220px; height: 160px; background: #fff; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); padding: 10px; position: relative; overflow: hidden; } /* ===== Chapter 4 Specific Styles ===== */ .definition { background: #f3fbff; border-left: 6px solid var(--primary); padding: 12px; border-radius: 8px; margin-top: 10px; color: var(--text); display: flex; align-items: center; gap: 15px; } .definition-content{flex:1} .definition-cartoon{flex-shrink:0;width:80px;height:80px;display:flex;align-items:center;justify-content:center} .controls { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; } .example { background: #fff; padding: 12px; border-radius: 10px; margin-top: 12px; border-left: 6px solid #bfe9ff; } .big { font-weight: 700; color: var(--primary); margin-bottom: 6px; } .step-block { margin-top: 10px; } .step-line { display: none; padding: 10px; border-radius: 8px; background: #f7fbff; margin-top: 8px; border-left: 4px solid #d6eefc; } .next-step { margin-top: 8px; background: var(--primary); color: white; padding: 8px 10px; border-radius: 8px; border: none; cursor: pointer; } input[type="text"] { padding: 10px; border-radius: 8px; border: 1px solid #d9ecff; width: 100%; font-size: 15px; } input[type="number"] { padding: 10px; border-radius: 8px; border: 1px solid #d9ecff; max-width: 100px; font-size: 15px; } .row { display: flex; gap: 10px; align-items: center; margin-top: 8px; flex-wrap: wrap; } button.check { background: var(--primary); color: white; border: none; padding: 10px 14px; border-radius: 8px; cursor: pointer; } .result { margin-top: 8px; padding: 10px; border-radius: 8px; display: none; } .result.good { background: #e6fff0; border-left: 4px solid #2fb46a; } .result.warn { background: #fff7e6; border-left: 4px solid #ffb74d; } .calm { margin-top: 14px; padding: 14px; border-radius: 10px; background: linear-gradient(180deg, #fff8f0, #f8ffff); text-align: center; border: 1px solid #e6f7ff; } .breath { width: 48px; height: 48px; background: #ffd08a; border-radius: 50%; margin: 12px auto; animation: breathe 4s infinite ease-in-out; } .wave { font-size: 36px; display: inline-block; animation: wavey 2.6s infinite; } .divider { background: linear-gradient(90deg, var(--primary), var(--primary-light)); color: white; padding: 10px 14px; border-radius: 10px; margin: 18px 0; font-weight: 700; box-shadow: 0 6px 18px rgba(3, 102, 214, 0.08); text-align: center; } .small-note { font-size: 13px; color: var(--text-light); margin-top: 6px; } .funny-note { font-size: 14px; color: var(--primary); margin-top: 6px; } /* Concept Clarifier Styles */ .concept-clarifier { background: linear-gradient(135deg, #f0faff, #f7f9ff); border-radius: 10px; padding: 15px; border-left: 5px solid var(--secondary); margin: 10px 0; } .concept-clarifier h4 { color: var(--primary); margin-bottom: 8px; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; } .concept-clarifier p { margin-bottom: 8px; font-size: 0.95rem; color: var(--text-light); } .clarifier-buttons { display: flex; gap: 10px; margin-top: 10px; } .clarifier-btn { background: var(--primary-light); color: white; border: none; padding: 6px 12px; border-radius: 50px; cursor: pointer; font-size: 0.85rem; transition: background 0.2s ease; } .clarifier-btn:hover { background: var(--accent); } .clarifier-content { display: none; margin-top: 10px; padding: 8px; border-left: 3px solid var(--accent); background: var(--white); border-radius: 4px; } .clarifier-content.active { display: block; } .scenario { display: none; } .try-yourself { background: #fffaf0; border-radius: 10px; padding: 15px; margin: 15px 0; border: 1px dashed rgba(245,158,11,0.16); } .try-title { font-weight: 700; color: var(--primary); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; } .example-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-top: 15px; } .example-box { background: var(--pastel-bg); padding: 15px; border-radius: 10px; border: 1px solid rgba(30,64,175,0.04); } .motivate{ background:linear-gradient(180deg,#fff,#fffaf6); border-radius:10px; padding:10px; border-left:6px solid var(--accent); margin-top:12px; display:flex; align-items:center; gap:12px } .motivate .emoji{font-size:24px} .motivate .text{font-weight:700;color:var(--primary);font-size:0.95rem} /* ===== Interactive Games ===== */ .game-card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px; } .game-card-style{ display:flex; gap:16px; align-items:center; background:var(--white); padding:20px; border-radius:16px; box-shadow:0 8px 25px rgba(2,6,23,0.08); cursor:pointer; border:1px solid rgba(30,64,175,0.04); transition:all 0.3s ease; position:relative; overflow:hidden } .game-card-style:hover{ transform:translateY(-8px); box-shadow:0 15px 35px rgba(30,64,175,0.15) } .game-card-style::before{ content:""; position:absolute; top:0; left:0; width:100%; height:5px; background:linear-gradient(90deg,var(--primary),var(--accent)) } .game-card-left{ min-width:110px; display:flex; flex-direction:column; align-items:center; gap:8px } .svg-icon{ width:100px; height:100px; border-radius:16px; background:linear-gradient(180deg,#fff,#fffaf6); display:flex; align-items:center; justify-content:center; box-shadow:0 8px 20px rgba(30,64,175,0.08); border:2px solid rgba(255,255,255,0.7); overflow:hidden; font-size: 48px; color: var(--primary); } .game-card-title{ font-weight:800; color:var(--primary); font-size:1.2rem; margin-bottom:6px } .game-card-desc{ color:var(--muted); font-size:0.95rem; line-height:1.4 } .start-btn { background: linear-gradient(90deg, var(--primary), var(--primary-light)); color: white; border: none; padding: 10px 20px; border-radius: 999px; cursor: pointer; font-weight: 700; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(30,64,175,0.2); } .start-btn:hover { transform: scale(1.05); box-shadow: 0 6px 16px rgba(30,64,175,0.3); } .game-play-area { display: none; margin-top: 20px; padding: 20px; border: 2px solid var(--accent); border-radius: 12px; background: #fffafc; text-align: center; } .score-board { font-weight: 700; color: var(--primary); background: #f0f9ff; padding: 6px 10px; border-radius: 6px; display: inline-block; margin-bottom: 10px; } .game-message { margin-top: 12px; color: var(--primary); font-weight: 600; } .game-input-group { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; font-weight: 600; color: var(--primary); } .game-icon-visual { font-size: 48px; margin-bottom: 10px; } /* Midpoint game specific styles - restoring original styling */ .midpoint-grid { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 12px; } .midpoint-source { background: #fff0f6; border-radius: 8px; padding: 12px; border: 2px dashed rgba(236,72,153,0.18); cursor: grab; min-width: 150px; text-align: center; margin-bottom: 10px; } .midpoint-target { background: #eef9ff; border-radius: 8px; padding: 12px; border: 2px solid rgba(59,130,246,0.12); min-width: 150px; text-align: center; margin-bottom: 10px; } .midpoint-source:hover, .midpoint-target:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); } /* Celebration Overlay */ .celebration { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2000; display: none; } .confetti { position: absolute; width: 10px; height: 10px; background: #f00; opacity: 0; } .hurray-text { position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); font-size: 48px; font-weight: bold; color: #ff6b6b; text-shadow: 2px 2px 0 #ffd166, 4px 4px 0 #06d6a0; opacity: 0; } /* Party popper */ .party-popper { position: absolute; font-size: 30px; opacity: 0; } /* ===== Footer ===== */ .footer { background: linear-gradient(to bottom, var(--primary-dark), #0f172a); color: var(--white); padding: 80px 0 30px; position: relative; } .footer::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 10px; background: linear-gradient(90deg, var(--secondary), var(--primary)); } .footer-content { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; margin-bottom: 60px; } .footer-about { grid-column: span 2; } .footer-logo { font-size: 1.8rem; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; } .footer-logo-icon { width: 40px; height: 40px; background: linear-gradient(135deg, var(--white), var(--gray)); color: var(--primary); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.2rem; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); } .footer-about p { opacity: 0.8; margin-bottom: 25px; line-height: 1.7; } .social-links { display: flex; gap: 15px; } .social-link { width: 40px; height: 40px; border-radius: 50%; background-color: rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; } .social-link:hover { background: linear-gradient(135deg, var(--secondary), var(--accent)); transform: translateY(-3px); box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3); } .footer-links h3 { font-size: 1.2rem; margin-bottom: 25px; position: relative; padding-bottom: 10px; color: var(--white); } .footer-links h3::after { content: ''; position: absolute; bottom: 0; left: 0; width: 40px; height: 3px; background: linear-gradient(to right, var(--secondary), var(--accent)); } .footer-links ul { list-style: none; } .footer-links li { margin-bottom: 12px; } .footer-links a { opacity: 0.8; transition: all 0.3s ease; position: relative; padding-left: 15px; } .footer-links a::before { content: '→'; position: absolute; left: 0; opacity: 0; transition: all 0.3s ease; } .footer-links a:hover { opacity: 1; padding-left: 20px; } .footer-links a:hover::before { opacity: 1; left: -5px; } .footer-bottom { text-align: center; padding-top: 30px; border-top: 1px solid rgba(255, 255, 255, 0.1); } .footer-bottom p { opacity: 0.7; margin-bottom: 20px; } .footer-tags { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; } .tag { background-color: rgba(255, 255, 255, 0.1); padding: 5px 15px; border-radius: 50px; font-size: 0.9rem; transition: all 0.3s ease; } .tag:hover { background: linear-gradient(to right, var(--secondary), var(--accent)); color: var(--text); transform: translateY(-2px); } /* ===== Floating Action Button ===== */ .fab { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: var(--white); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 6px 15px rgba(30, 64, 175, 0.3); cursor: pointer; z-index: 999; animation: pulse 2s infinite; } .fab:hover { transform: scale(1.1) rotate(90deg); box-shadow: 0 8px 20px rgba(30, 64, 175, 0.4); } /* ===== Responsive Styles ===== */ @media (max-width: 992px) { .nav-links { gap: 20px; } .footer-content { grid-template-columns: repeat(2, 1fr); } .footer-about { grid-column: span 2; } .scenario .card-mini { width: 45%; } } @media (max-width: 768px) { .navbar { padding: 15px 0; } .nav-links { display: none; } .mobile-menu-btn { display: block; } .hero h1 { font-size: 2.5rem; } .hero-buttons { flex-direction: column; gap: 15px; } .footer-content { grid-template-columns: 1fr; } .footer-about { grid-column: span 1; } .scenario .card-mini { width: 100%; } .header-sound-controls { right: 60px; } } @media (max-width: 576px) { .section-title h2 { font-size: 2rem; } .hero { padding: 150px 0 80px; } .hero h1 { font-size: 2rem; } .hero p { font-size: 1rem; } .header-sound-controls { right: 50px; } } </style>
+</head>
+<body>
+    <div class="mode-indicator">
+    <div class="mode-text">
+        <i class="fas fa-fire"></i> Challenge Mode
+    </div>
+    <a href="{{ url_for('serve_chapter', chapter_num=2) }}?mode=mid" class="switch-btn">
+        Switch to Standard
+    </a>
+</div>
+
+<div id="scrollModal">
+    <div class="scroll-modal-content">
+        <h3 style="color:#d97706; margin-bottom:15px;">🏎️ Woah, slowing down?</h3>
+        <p style="font-size:1.1rem; color:#555; margin-bottom:20px;">
+            We noticed you are scrolling quite fast. <br><br>
+            If you are looking for a more structured flow without the relaxation elements, the <b>Standard Mode</b> might be a better fit.
+        </p>
+        
+        <div style="display:flex; gap:15px; justify-content:center; margin-top:20px;">
+            <button onclick="closeScrollModal()" style="padding:10px 20px; border:1px solid #ccc; background:white; border-radius:50px; cursor:pointer; font-weight:600; color:#666;">I'm just skimming</button>
+            <a href="{{ url_for('serve_chapter', chapter_num=2) }}?mode=mid" style="padding:10px 25px; background:#3b82f6; color:white; border-radius:50px; text-decoration:none; font-weight:600; box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);">
+                Switch to Standard
+            </a>
+        </div>
+    </div>
+</div>
+<div class="celebration" id="celebration"></div>
+<header>
+<div class="container">
+<nav class="navbar">
+<a class="logo" href="#">
+<div class="logo-icon">S</div>
+<span class="logo-text">Sentellect</span>
+</a>
+<ul class="nav-links">
+<li><a class="active" href="#">Home</a></li>
+<li><a href="#homogeneous">Introduction</a></li>
+<li><a href="#angles">Graphing</a></li>
+<li><a href="#perpendicular">System</a></li>
+<li><a href="#area">Practice</a></li>
+<li><a href="#games">Games</a></li>
+</ul>
+<div class="header-sound-controls">
+<button class="sound-btn" id="toggleSound" title="Toggle sound effects">
+<i class="fas fa-volume-up"></i>
+</button>
+</div>
+<button class="mobile-menu-btn">
+<i class="fas fa-bars"></i>
+</button>
+</nav>
+</div>
+</header>
+<section aria-label="Chapter 4 hero" class="hero" role="banner">
+<div class="particles">
+<div class="particle" style="top: 20%; left: 5%; width: 10px; height: 10px; animation-delay: 0s;"></div>
+<div class="particle" style="top: 60%; left: 15%; width: 15px; height: 15px; animation-delay: 1s;"></div>
+<div class="particle" style="top: 30%; right: 10%; width: 12px; height: 12px; animation-delay: 2s;"></div>
+<div class="particle" style="bottom: 20%; left: 20%; width: 8px; height: 8px; animation-delay: 3s;"></div>
+<div class="particle" style="bottom: 40%; right: 15%; width: 14px; height: 14px; animation-delay: 4s;"></div>
+</div>
+<div class="floating-shape shape-1"></div>
+<div class="floating-shape shape-2"></div>
+<div class="floating-shape shape-3"></div>
+<div class="container">
+<div class="hero-content">
+<h1 class="animate">Coordinate Geometry — Chapter 4</h1>
+<p class="animate delay-1">Exercise 4.5(H): **Homogeneous Equations**, **Angles**, and **Area** — explained and practised with interactive games.</p>
+<div class="hero-buttons">
+<a class="btn btn-primary animate delay-2" href="#homogeneous">Start Learning</a>
+<a class="btn btn-secondary animate delay-3" href="#games">Open Games</a>
+</div>
+</div>
+</div>
+</section>
+<div class="container" style="padding-bottom:60px;">
+<div class="card animate">
+<h2>Welcome to Exercise 4.5 — Homogeneous Equations</h2>
+<p class="lead">This page contains all examples, try-it-yourself exercises, and interactive games to practice **homogeneous equations**, **angles between lines**, and **area calculations** with confidence.</p>
+<div class="concept-visual">
+<div class="visual-box" style="background:linear-gradient(135deg, #e3f2fd, #f3e5f5); display:flex; align-items:center; justify-content:center;">
+<div style="text-align:center">
+<div style="font-size:40px; margin-bottom:10px">📐</div>
+<div style="font-weight:bold; color:var(--primary)">Let's Master Homogeneous Equations!</div>
+</div>
+</div>
+</div>
+</div>
+<div class="divider" id="homogeneous">1. Homogeneous Equation &amp; Lines</div>
+<section class="card animate delay-1">
+<h2>The Origin Pair: ax<sup>2</sup> + 2hxy + by<sup>2</sup> = 0</h2>
+<p class="lead">This second-degree equation always represents a **pair of straight lines passing through the origin** (0,0).</p>
+<div class="definition">
+<div class="definition-content">
+<div class="concept-clarifier">
+<h4><span style="font-size:24px">🏡</span> Homogeneous = Always Home</h4>
+<p>Think of the origin (0,0) as the **home** of the lines. Since the equation ax<sup>2</sup> + 2hxy + by<sup>2</sup> = 0 **has no constant term**, it means that if you plug in (x, y) = (0, 0), the equation holds true (0=0).</p>
+<div class="clarifier-buttons">
+<button class="clarifier-btn" onclick="showClarifierContent('homo-clarifier', 'analogy')">Analogy</button>
+<button class="clarifier-btn" onclick="showClarifierContent('homo-clarifier', 'key')">Key Insight</button>
+</div>
+<div class="clarifier-content active" id="homo-clarifier-analogy">
+<p><strong>Analogy:</strong> Imagine two crossing roads. The intersection point is **always** the origin (0,0). The homogeneous equation is the map showing just these two roads passing through that center point.</p>
+</div>
+<div class="clarifier-content" id="homo-clarifier-key">
+<p><strong>Key Insight:</strong> The process of **factoring** the quadratic is what separates the two lines: ax<sup>2</sup> + 2hxy + by<sup>2</sup> = (m<sub>1x</sub> - y)(m<sub>2x</sub> - y) = 0. Each factor represents one straight line passing through the origin.</p>
+</div>
+</div>
+</div>
+<div class="definition-cartoon">
+<svg height="80" viewbox="0 0 100 100" width="80" xmlns="http://www.w3.org/2000/svg">
+<rect fill="#FFD166" height="40" rx="5" width="70" x="15" y="30"></rect>
+<text fill="#5D4037" font-size="8" font-weight="bold" text-anchor="middle" x="50" y="50">ax² + 2hxy + by² = 0</text>
+<path d="M50 70 L50 80" fill="none" stroke="#EF476F" stroke-width="2"></path>
+<path d="M45 75 L50 80 L55 75" fill="none" stroke="#EF476F" stroke-width="2"></path>
+<rect fill="#06D6A0" height="30" rx="5" width="80" x="10" y="85"></rect>
+<text fill="white" font-size="6" font-weight="bold" text-anchor="middle" x="50" y="100">(m₁x - y)(m₂x - y) = 0</text>
+<line stroke="#118AB2" stroke-width="3" x1="20" x2="40" y1="115" y2="125"></line>
+<line stroke="#FF6B6B" stroke-width="3" x1="60" x2="80" y1="115" y2="125"></line>
+<circle cx="30" cy="120" fill="#FFD166" r="3"></circle>
+<circle cx="70" cy="120" fill="#FF9E6D" r="3"></circle>
+</svg>
+</div>
+</div>
+<div class="concept-visual">
+<div class="coordinate-visual">
+<div class="grid-lines"></div>
+<div class="x-axis"></div>
+<div class="y-axis"></div>
+<div class="point" style="background:#ec4899; top:50%; left:50%; width:16px; height:16px;"></div>
+<div class="point-label" style="top:50%; left:50%; color:#ec4899;">Origin (0,0)</div>
+<div class="line" style="background:#3b82f6; top:30%; left:30%; width:60%; transform:rotate(30deg);"></div>
+<div class="line" style="background:#f59e0b; top:70%; left:30%; width:60%; transform:rotate(-30deg);"></div>
+<div class="point-label" style="top:30%; left:70%; color:#3b82f6; font-size:10px;">Line 1</div>
+<div class="point-label" style="top:70%; left:70%; color:#f59e0b; font-size:10px;">Line 2</div>
+</div>
+</div>
+<div class="example-container">
+<div class="example-box">
+<div class="big">Example 1: Factoring and Finding Lines</div>
+<p class="tip-note">Find the lines represented by 10x<sup>2</sup> - 23xy - 5y<sup>2</sup> = 0.</p>
+<div class="controls">
+<button class="step-btn" onclick="startSteps('homo1'); playSound('concept')">Show Steps</button>
+</div>
+<div class="step-block" id="homo1">
+<div class="step-line" style="display:none">Step 1: Factor middle term: 10x<sup>2</sup> - 25xy + 2xy - 5y<sup>2</sup> = 0.</div>
+<div class="step-line" style="display:none">Step 2: Group and factor: 5x(2x - 5y) + y(2x - 5y) = 0.</div>
+<div class="step-line" style="display:none">Step 3: Joint equation: (2x - 5y)(5x + y) = 0.</div>
+<div class="step-line" style="display:none"><b>Answer:</b> The two separate lines are 2x - 5y = 0 and 5x + y = 0.</div>
+<div style="margin-top:8px"><button class="next-step" onclick="nextStep('homo1'); playSound('click')">Next Step</button></div>
+</div>
+</div>
+<div class="example-box">
+<div class="big">Example 2: Factoring with General Coefficients</div>
+<p class="tip-note">Find the lines represented by 2x<sup>2</sup> + 3xy - 5y<sup>2</sup> = 0.</p>
+<div class="controls">
+<button class="step-btn" onclick="startSteps('homo2'); playSound('concept')">Show Steps</button>
+</div>
+<div class="step-block" id="homo2">
+<div class="step-line" style="display:none">Step 1: Factor middle term: 2x<sup>2</sup> + 5xy - 2xy - 5y<sup>2</sup> = 0.</div>
+<div class="step-line" style="display:none">Step 2: Group and factor: x(2x + 5y) - y(2x + 5y) = 0.</div>
+<div class="step-line" style="display:none">Step 3: Joint equation: (2x + 5y)(x - y) = 0.</div>
+<div class="step-line" style="display:none"><b>Answer:</b> The two separate lines are 2x + 5y = 0 and x - y = 0.</div>
+<div style="margin-top:8px"><button class="next-step" onclick="nextStep('homo2'); playSound('click')">Next Step</button></div>
+</div>
+</div>
+<div class="example-box">
+<div class="big">Example 3: Coincident Lines (Repeated Roots)</div>
+<p class="tip-note">Find the lines represented by 9x<sup>2</sup> + 24xy + 16y<sup>2</sup> = 0.</p>
+<div class="controls">
+<button class="step-btn" onclick="startSteps('homo3'); playSound('concept')">Show Steps</button>
+</div>
+<div class="step-block" id="homo3">
+<div class="step-line" style="display:none">Step 1: Recognize perfect square: (3x)<sup>2</sup> + 2(3x)(4y) + (4y)<sup>2</sup> = 0.</div>
+<div class="step-line" style="display:none">Step 2: Factor: (3x + 4y)<sup>2</sup> = 0.</div>
+<div class="step-line" style="display:none"><b>Answer:</b>The equation represents two coincident lines: 3x + 4y = 0. (Angle is 0<sup>c</sup>irc).</div>
+<div style="margin-top:8px"><button class="next-step" onclick="nextStep('homo3'); playSound('click')">Next Step</button></div>
+</div>
+</div>
+</div>
+<div class="try-yourself">
+<div class="try-title">✨ Try It Yourself: Factoring Lines</div>
+<p>1. Find the two lines represented by 3x<sup>2</sup> + 7xy + 2y<sup>2</sup> = 0. (Enter factored form: e.g., (3x+y)(x+2y))</p>
+<div class="row">
+<input id="t_homo1" placeholder="e.g. (3x+y)(x+2y)"/>
+<button class="check" onclick="checkTextMotivate('t_homo1','(3x+y)(x+2y)','t_homo1_res')">Check</button>
+</div>
+<div class="result" id="t_homo1_res"></div>
+<p>2. What is the product of slopes (m<sub>1</sub> m<sub>2</sub>) for 6x<sup>2</sup> - 19xy + 15y<sup>2</sup> = 0? (Hint: Use a{b})</p>
+<div class="row">
+<input id="t_homo2" placeholder="Enter simplified fraction"/>
+<button class="check" onclick="checkTextMotivate('t_homo2','6/15','t_homo2_res')">Check</button>
+</div>
+<div class="result" id="t_homo2_res"></div>
+</div>
+<div class="motivate">
+<div class="emoji">🌼✨</div>
+<div class="text" style="color:#ec4899;">Wow! You're mastering homogeneous equations like a pro! 🎯</div>
+</div>
+<h3 style="margin-top:18px;color:var(--accent)">Play the Line Factor Frenzy Game</h3>
+<div class="game-card-grid">
+<div class="game-card-style" onclick="showGame('factor-game'); playSound('gameStart')">
+<div class="game-card-left">
+<div aria-hidden="true" class="svg-icon" style="background: linear-gradient(135deg, #ff7eb3, #ff758c);">
+<svg height="100" viewbox="0 0 100 100" width="100" xmlns="http://www.w3.org/2000/svg">
+<rect fill="#FFD166" height="25" rx="5" width="70" x="15" y="20"></rect>
+<text fill="#5D4037" font-size="6" font-weight="bold" text-anchor="middle" x="50" y="35">ax² + 2hxy + by²</text>
+<path d="M50 45 L50 55" fill="none" stroke="#EF476F" stroke-width="2"></path>
+<path d="M45 50 L50 55 L55 50" fill="none" stroke="#EF476F" stroke-width="2"></path>
+<rect fill="#06D6A0" height="20" rx="3" width="35" x="10" y="60"></rect>
+<rect fill="#118AB2" height="20" rx="3" width="35" x="55" y="60"></rect>
+<text fill="white" font-size="5" font-weight="bold" text-anchor="middle" x="27" y="72">(mx - y)</text>
+<text fill="white" font-size="5" font-weight="bold" text-anchor="middle" x="72" y="72">(nx - y)</text>
+<text fill="#5D4037" font-size="8" font-weight="bold" text-anchor="middle" x="50" y="72">×</text>
+<polygon fill="#FFD700" points="20,30 22,35 27,35 23,38 25,43 20,40 15,43 17,38 13,35 18,35"></polygon>
+<polygon fill="#FFD700" points="80,30 82,35 87,35 83,38 85,43 80,40 75,43 77,38 73,35 78,35"></polygon>
+</svg>
+</div>
+<div style="font-size:12px;color:var(--muted); margin-top:5px">Factor Challenge</div>
+</div>
+<div>
+<div class="game-card-title">Line Factor Frenzy</div>
+<div class="game-card-desc">Factor homogeneous equations into two linear factors as quickly as you can!</div>
+<div style="margin-top:12px"><button class="start-btn">Start Factoring</button></div>
+</div>
+</div>
+</div>
+<div class="game-play-area" id="factor-game">
+<div class="score-board" id="factor-score">Score: 0</div>
+<div class="game-icon-visual">✂️</div>
+<div class="game-prompt" id="factor-prompt">Factor the given homogeneous equation into two linear factors (enter the X-coefficients of each factor).</div>
+<div class="game-input-group">
+<div class="game-input-label">Factor 1 X: <input class="game-input" id="factor-input-a" placeholder="e.g. 3" step="1" type="number"/></div>
+<div class="game-input-label">Factor 2 X: <input class="game-input" id="factor-input-c" placeholder="e.g. 1" step="1" type="number"/></div>
+</div>
+<div>
+<button class="check" onclick="checkLineFactor()" title="Check factor">Factor!</button>
+<button class="btn" onclick="initLineFactorGame()" style="margin-left:8px">New Problem</button>
+</div>
+<div class="game-message" id="factor-status">Ready.</div>
+</div>
+<div class="calm">
+<div class="wave">🌈</div>
+<div style="font-weight:700">Take a breath — you're doing great!</div>
+</div>
+</section>
+<div class="divider" id="angles">2. Angle Between the Lines</div>
+<section class="card animate delay-2">
+<h2>Angle Formula: tanθ = | 2 √{h<sup>2</sup>- ab}a + b |</h2>
+<p class="lead">The **acute angle** (θ) between the two lines can be found directly from the coefficients **a, h, b** of the equation.</p>
+<div class="definition">
+<div class="definition-content">
+<div class="concept-clarifier">
+<h4><span style="font-size:24px">📏</span> Angle Detector</h4>
+<p>Instead of factoring the equation to find two separate lines, calculating their slopes (m<sub>1</sub>, m<sub>2</sub>), and *then* using the slope formula (tan θ = |(m<sub>1</sub> - m<sub>2</sub>) / (1 + m<sub>1</sub> m<sub>2</sub>)|), we can use this **shortcut!**</p>
+<div class="clarifier-buttons">
+<button class="clarifier-btn" onclick="showClarifierContent('angle-clarifier', 'analogy')">Analogy</button>
+<button class="clarifier-btn" onclick="showClarifierContent('angle-clarifier', 'conditions')">Conditions</button>
+</div>
+<div class="clarifier-content active" id="angle-clarifier-analogy">
+<p><strong>Analogy:</strong> Think of this formula as a smart protractor. You just input the three magic numbers (a, 2h, b) from the equation, and it instantly spits out the angle, saving you all the factoring work!</p>
+</div>
+<div class="clarifier-content" id="angle-clarifier-conditions">
+<p><strong>Key Conditions:</strong></p>
+<ul>
+<li>If h<sup>2</sup> - ab &gt; 0, the lines are **real and distinct**.</li>
+<li>If a + b = 0, the lines are **perpendicular** (θ = 90<sup>c</sup>irc).</li>
+<li>If h<sup>2</sup>- ab = 0, the lines are **coincident** (θ = 0<sup>c</sup>irc).</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="definition-cartoon">
+<svg height="80" viewbox="0 0 100 100" width="80" xmlns="http://www.w3.org/2000/svg">
+<line stroke="#3b82f6" stroke-width="3" x1="20" x2="80" y1="70" y2="30"></line>
+<line stroke="#f59e0b" stroke-width="3" x1="20" x2="80" y1="30" y2="70"></line>
+<circle cx="50" cy="50" fill="#ef476f" r="5"></circle>
+<path d="M60 40 A20 20 0 0 0 45 35" fill="none" stroke="#10b981" stroke-width="2"></path>
+<text fill="#10b981" font-size="6" font-weight="bold" text-anchor="middle" x="55" y="35">θ</text>
+<rect fill="#ffd166" height="15" rx="3" width="70" x="15" y="10"></rect>
+<text fill="#5d4037" font-size="4" text-anchor="middle" x="50" y="20">tanθ = |2√(h²-ab)/(a+b)|</text>
+<path d="M30 75 Q50 85 70 75" fill="none" stroke="#94a3b8" stroke-width="2"></path>
+<line stroke="#94a3b8" stroke-width="1" x1="35" x2="40" y1="77" y2="72"></line>
+<line stroke="#94a3b8" stroke-width="1" x1="65" x2="60" y1="77" y2="72"></line>
+</svg>
+</div>
+</div>
+<div class="concept-visual">
+<div class="coordinate-visual">
+<div class="grid-lines"></div>
+<div class="x-axis"></div>
+<div class="y-axis"></div>
+<div class="point" style="background:#ec4899; top:50%; left:50%; width:16px; height:16px;"></div>
+<div class="point-label" style="top:50%; left:50%; color:#ec4899;">Origin (0,0)</div>
+<div class="line" style="background:#3b82f6; top:30%; left:30%; width:60%; transform:rotate(20deg);"></div>
+<div class="line" style="background:#f59e0b; top:30%; left:30%; width:60%; transform:rotate(60deg);"></div>
+<div class="point-label" style="top:25%; left:60%; color:#10b981; font-size:10px;">θ ≈ 40°</div>
+<div style="position:absolute; top:30%; left:30%; width:40px; height:40px; border:2px solid #10b981; border-radius:50%; border-right:transparent; border-bottom:transparent; transform:rotate(20deg);"></div>
+</div>
+</div>
+<div class="example-container">
+<div class="example-box">
+<div class="big">Example 1: Finding Acute Angle</div>
+<p class="tip-note">Find θ for 10x<sup>2</sup> - 23xy - 5y<sup>2</sup> = 0. (a=10, b=-5, h=-23/2)</p>
+<div class="controls">
+<button class="step-btn" onclick="startSteps('angle1'); playSound('concept')">Show Steps</button>
+</div>
+<div class="step-block" id="angle1">
+<div class="step-line" style="display:none">Step 1: Identify: a=10, b=-5, h = -23{2}.</div>
+<div class="step-line" style="display:none">Step 2: Calculate h<sup>2</sup>- ab = /{5294 + 50} = /{7294} = 272.</div>
+<div class="step-line" style="display:none">Step 3: Substitute: tanθ = | 2 · /{272}10 + (-5) | = 275.</div>
+<div class="step-line" style="display:none"><b>Answer:</b>θ = arctan(275) approx 79<sup>c</sup>irc 31'.</div>
+<div style="margin-top:8px"><button class="next-step" onclick="nextStep('angle1'); playSound('click')">Next Step</button></div>
+</div>
+</div>
+<div class="example-box">
+<div class="big">Example 2: Obtuse and Acute Angles</div>
+<p class="tip-note">Find the angle θ between 2x<sup>2</sup> + 3xy - 5y<sup>2</sup> = 0. (a=2, b=-5, h=3/2)</p>
+<div class="controls">
+<button class="step-btn" onclick="startSteps('angle2'); playSound('concept')">Show Steps</button>
+</div>
+<div class="step-block" id="angle2">
+<div class="step-line" style="display:none">Step 1: Identify: a=2, b=-5, h = 3{2}.</div>
+<div class="step-line" style="display:none">Step 2: Substitute: tanθ = | 2 √{/{94 + 10}}2 - 5 | = | 2 · /{72}-3 | = | -73 |.</div>
+<div class="step-line" style="display:none">Step 3: θ_acute = arctan(73) approx 66<sup>c</sup>irc 48'.</div>
+<div class="step-line" style="display:none"><b>Answer:</b>The acute angle is 66<sup>c</sup>irc 48'. The obtuse angle is 180<sup>c</sup>irc - 66<sup>c</sup>irc 48' = 113<sup>c</sup>irc 12'.</div>
+<div style="margin-top:8px"><button class="next-step" onclick="nextStep('angle2'); playSound('click')">Next Step</button></div>
+</div>
+</div>
+<div class="example-box">
+<div class="big">Example 3: Angle Involving a Variable (alpha)</div>
+<p class="tip-note">Find θ for x<sup>2</sup>- 2xy secalpha + y<sup>2</sup>= 0. (Use identity sec<sup>2</sup>alpha - 1 = tan<sup>2</sup>alpha)</p>
+<div class="controls">
+<button class="step-btn" onclick="startSteps('angle3'); playSound('concept')">Show Steps</button>
+</div>
+<div class="step-block" id="angle3">
+<div class="step-line" style="display:none">Step 1: Identify: a=1, b=1, h=-secalpha.</div>
+<div class="step-line" style="display:none">Step 2: Substitute: tanθ = | 2 √{(-secalpha)<sup>2</sup>- (1)(1)}1 + 1 |.</div>
+<div class="step-line" style="display:none">Step 3: Simplify: tanθ = 2 √{sec<sup>2</sup>alpha - 1}2 = tan<sup>2</sup>alpha = |tanalpha|.</div>
+<div class="step-line" style="display:none"><b>Answer:</b>θ = alpha (if alpha is acute).</div>
+<div style="margin-top:8px"><button class="next-step" onclick="nextStep('angle3'); playSound('click')">Next Step</button></div>
+</div>
+</div>
+</div>
+<div class="try-yourself">
+<div class="try-title">✨ Try It Yourself: Angle Formula Check</div>
+<p>1. If a + b = 0, what is the angle (θ) between the lines? (Enter degrees)</p>
+<div class="row">
+<input id="t_angle1" placeholder="e.g. 90"/>
+<button class="check" onclick="checkTextMotivate('t_angle1','90','t_angle1_res')">Check</button>
+</div>
+<div class="result" id="t_angle1_res"></div>
+<p>2. For x<sup>2</sup> + 4xy + y<sup>2</sup> = 0, calculate the discriminant h<sup>2</sup> - ab.</p>
+<div class="row">
+<input id="t_angle2" placeholder="Enter number"/>
+<button class="check" onclick="checkTextMotivate('t_angle2','3','t_angle2_res')">Check</button>
+</div>
+<div class="result" id="t_angle2_res"></div>
+</div>
+<div class="motivate">
+<div class="emoji">🌸💫</div>
+<div class="text" style="color:#f59e0b;">Amazing! Your angle calculation skills are out of this world! 🚀</div>
+</div>
+<h3 style="margin-top:16px;color:var(--accent)">Play the Angle Ace Game</h3>
+<div class="game-card-grid">
+<div class="game-card-style" onclick="showGame('angle-game'); playSound('gameStart')">
+<div class="game-card-left">
+<div aria-hidden="true" class="svg-icon" style="background: linear-gradient(135deg, #65C7F7, #4ECDC4);">
+<svg height="100" viewbox="0 0 100 100" width="100" xmlns="http://www.w3.org/2000/svg">
+<path d="M20 70 Q50 30 80 70" fill="none" stroke="#FFD166" stroke-linecap="round" stroke-width="8"></path>
+<path d="M20 70 Q50 30 80 70" fill="none" stroke="#FFECB3" stroke-linecap="round" stroke-width="6"></path>
+<line stroke="#3b82f6" stroke-width="3" x1="50" x2="30" y1="30" y2="65"></line>
+<line stroke="#f59e0b" stroke-width="3" x1="50" x2="70" y1="30" y2="65"></line>
+<path d="M55 40 A15 15 0 0 0 45 40" fill="none" stroke="#ef476f" stroke-width="2"></path>
+<text fill="#ef476f" font-size="6" font-weight="bold" text-anchor="middle" x="50" y="50">θ = ?</text>
+<line stroke="#94a3b8" stroke-width="1" x1="35" x2="37" y1="65" y2="60"></line>
+<line stroke="#94a3b8" stroke-width="1" x1="50" x2="52" y1="55" y2="53"></line>
+<line stroke="#94a3b8" stroke-width="1" x1="65" x2="63" y1="65" y2="60"></line>
+<rect fill="#06D6A0" height="10" rx="2" width="50" x="25" y="75"></rect>
+<text fill="white" font-size="4" text-anchor="middle" x="50" y="82">tanθ = |2√(h²-ab)/(a+b)|</text>
+</svg>
+</div>
+<div style="font-size:12px;color:var(--muted); margin-top:5px">Angle Challenge</div>
+</div>
+<div>
+<div class="game-card-title">Angle Ace</div>
+<div class="game-card-desc">Calculate angles between lines using the angle formula!</div>
+<div style="margin-top:12px"><button class="start-btn">Start Measuring</button></div>
+</div>
+</div>
+</div>
+<div class="game-play-area" id="angle-game">
+<div class="score-board" id="angle-score">Score: 0</div>
+<div class="game-icon-visual">📐</div>
+<div class="game-prompt" id="angle-prompt">Given a joint equation, enter the numerator and denominator components of tanθ (numerator = 2√(h² - ab), denominator = a+b).</div>
+<div class="game-input-group">
+<div class="game-input-label">Numerator: <input class="game-input" id="angle-input-num" placeholder="e.g. 27" step="any" type="number"/></div>
+<div class="game-input-label">Denominator: <input class="game-input" id="angle-input-den" placeholder="e.g. 5" step="1" type="number"/></div>
+</div>
+<div>
+<button class="check" onclick="checkAngle()">Find tanθ!</button>
+<button class="btn" onclick="initAngleGame()" style="margin-left:8px">New Problem</button>
+</div>
+<div class="game-message" id="angle-status">Ready.</div>
+</div>
+<div class="calm">
+<div class="breath"></div>
+<div style="font-weight:700">Keep going — small steps make big improvements.</div>
+</div>
+</section>
+<div class="divider" id="perpendicular">3. Perpendicular Joint Equation</div>
+<section class="card animate delay-3">
+<h2>The Perpendicular Flip: bx<sup>2</sup> - 2hxy + ay<sup>2</sup> = 0</h2>
+<p class="lead">The joint equation of lines perpendicular to ax<sup>2</sup> + 2hxy + by<sup>2</sup> = 0 is a simple **swap** of a and b and a **sign change** of the 2h term.</p>
+<div class="definition">
+<div class="definition-content">
+<div class="concept-clarifier">
+<h4><span style="font-size:24px">🔄</span> The Coefficient Swap Trick</h4>
+<p>If you have a line m x - y = 0, the perpendicular line is -x - m y = 0, or x + m y = 0. The coefficients of x and y are swapped and one is negated. The same idea applies to the joint equation!</p>
+<div class="clarifier-buttons">
+<button class="clarifier-btn" onclick="showClarifierContent('perp-clarifier', 'trick')">Trick</button>
+<button class="clarifier-btn" onclick="showClarifierContent('perp-clarifier', 'check')">Quick Check</button>
+</div>
+<div class="clarifier-content active" id="perp-clarifier-trick">
+<p><strong>The Trick:</strong> To find the equation perpendicular to ax<sup>2</sup> + 2hxy + by<sup>2</sup> = 0:</p>
+<ul>
+<li>The coefficient of x<sup>2</sup> becomes b.</li>
+<li>The coefficient of y<sup>2</sup> becomes a.</li>
+<li>The sign of the xy term (2h) is flipped.</li>
+</ul>
+</div>
+<div class="clarifier-content" id="perp-clarifier-check">
+<p><strong>Quick Check:</strong> The sum of x<sup>2</sup> and y<sup>2</sup> coefficients in the original equation is a+b. In the perpendicular equation, the sum is b+a. The sums are the same! (This is useful, but only a+b=0 guarantees perpendicular lines).</p>
+</div>
+</div>
+</div>
+<div class="definition-cartoon">
+<svg height="80" viewbox="0 0 100 100" width="80" xmlns="http://www.w3.org/2000/svg">
+<rect fill="#FFD166" height="20" rx="3" width="80" x="10" y="15"></rect>
+<text fill="#5D4037" font-size="5" font-weight="bold" text-anchor="middle" x="50" y="27">ax² + 2hxy + by² = 0</text>
+<path d="M50 35 L50 45" fill="none" stroke="#EF476F" stroke-width="2"></path>
+<path d="M45 40 L50 45 L55 40" fill="none" stroke="#EF476F" stroke-width="2"></path>
+<circle cx="30" fill="#3b82f6" r="8" y="55"></circle>
+<text fill="white" font-size="5" font-weight="bold" text-anchor="middle" x="30" y="59">a</text>
+<circle cx="70" fill="#f59e0b" r="8" y="55"></circle>
+<text fill="white" font-size="5" font-weight="bold" text-anchor="middle" x="70" y="59">b</text>
+<path d="M35 55 L45 55 L45 65 L55 65 L55 55 L65 55" fill="none" stroke="#10b981" stroke-width="2"></path>
+<rect fill="#06D6A0" height="20" rx="3" width="80" x="10" y="75"></rect>
+<text fill="white" font-size="5" font-weight="bold" text-anchor="middle" x="50" y="87">bx² - 2hxy + ay² = 0</text>
+<path d="M45 60 L50 55 L55 60" fill="none" stroke="#ef476f" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+<div class="concept-visual">
+<div class="coordinate-visual">
+<div class="grid-lines"></div>
+<div class="x-axis"></div>
+<div class="y-axis"></div>
+<div class="point" style="background:#ec4899; top:50%; left:50%; width:16px; height:16px;"></div>
+<div class="point-label" style="top:50%; left:50%; color:#ec4899;">Origin (0,0)</div>
+<div class="line" style="background:#3b82f6; top:30%; left:30%; width:60%; transform:rotate(30deg);"></div>
+<div class="line" style="background:#f59e0b; top:30%; left:30%; width:60%; transform:rotate(120deg);"></div>
+<div class="point-label" style="top:20%; left:60%; color:#10b981; font-size:10px;">90°</div>
+<div style="position:absolute; top:30%; left:30%; width:20px; height:20px; border:2px solid #10b981; border-radius:0; border-top:transparent; border-left:transparent; transform:rotate(30deg);"></div>
+</div>
+</div>
+<div class="example-container">
+<div class="example-box">
+<div class="big">Example 1: General Perpendicular Form</div>
+<p class="tip-note">Find the joint equation perpendicular to ax<sup>2</sup> + 2hxy + by<sup>2</sup> = 0.</p>
+<div class="controls">
+<button class="step-btn" onclick="startSteps('perp1'); playSound('concept')">Show Steps</button>
+</div>
+<div class="step-block" id="perp1">
+<div class="step-line" style="display:none">Step 1: Substitute x \rightarrow y and y \rightarrow -x into the original equation.</div>
+<div class="step-line" style="display:none">Step 2: a(y)<sup>2</sup> + 2h(y)(-x) + b(-x)<sup>2</sup> = 0.</div>
+<div class="step-line" style="display:none">Step 3: ay<sup>2</sup> - 2hxy + bx<sup>2</sup> = 0.</div>
+<div class="step-line" style="display:none"><b>Answer:</b> bx<sup>2</sup> - 2hxy + ay<sup>2</sup> = 0. (This confirms the swap rule).</div>
+<div style="margin-top:8px"><button class="next-step" onclick="nextStep('perp1'); playSound('click')">Next Step</button></div>
+</div>
+</div>
+<div class="example-box">
+<div class="big">Example 2: Simple Perpendicular Form</div>
+<p class="tip-note">Find the joint equation perpendicular to 10x<sup>2</sup> - 23xy - 5y<sup>2</sup> = 0.</p>
+<div class="controls">
+<button class="step-btn" onclick="startSteps('perp2'); playSound('concept')">Show Steps</button>
+</div>
+<div class="step-block" id="perp2">
+<div class="step-line" style="display:none">Step 1: Original: a=10, b=-5, 2h=-23.</div>
+<div class="step-line" style="display:none">Step 2: Apply the swap: b \rightarrow -5, a \rightarrow 10.</div>
+<div class="step-line" style="display:none">Step 3: Change xy sign: -23xy \rightarrow +23xy.</div>
+<div class="step-line" style="display:none">Step 4: Construct: -5x<sup>2</sup> + 23xy + 10y<sup>2</sup> = 0.</div>
+<div class="step-line" style="display:none"><b>Answer:</b> 5x<sup>2</sup> - 23xy - 10y<sup>2</sup> = 0. (Multiply by -1 for positive x<sup>2</sup> term).</div>
+<div style="margin-top:8px"><button class="next-step" onclick="nextStep('perp2'); playSound('click')">Next Step</button></div>
+</div>
+</div>
+<div class="example-box">
+<div class="big">Example 3: Perpendicular to x<sup>2</sup> - 2xy \tan\alpha - y<sup>2</sup> = 0</div>
+<p class="tip-note">Since a+b=0 (1 + (-1) = 0), the original lines are already perpendicular.</p>
+<div class="controls">
+<button class="step-btn" onclick="startSteps('perp3'); playSound('concept')">Show Steps</button>
+</div>
+<div class="step-block" id="perp3">
+<div class="step-line" style="display:none">Step 1: Original: a=1, b=-1, 2h=-2\tan\alpha.</div>
+<div class="step-line" style="display:none">Step 2: Apply the swap: b \rightarrow -1, a \rightarrow 1.</div>
+<div class="step-line" style="display:none">Step 3: Change xy sign: -2xy \tan\alpha \rightarrow +2xy \tan\alpha.</div>
+<div class="step-line" style="display:none">Step 4: Construct: -x<sup>2</sup> + 2xy \tan\alpha + y<sup>2</sup> = 0.</div>
+<div class="step-line" style="display:none"><b>Answer:</b> x<sup>2</sup> - 2xy \tan\alpha - y<sup>2</sup> = 0 (The original equation is the same as the perpendicular one).</div>
+<div style="margin-top:8px"><button class="next-step" onclick="nextStep('perp3'); playSound('click')">Next Step</button></div>
+</div>
+</div>
+</div>
+<div class="try-yourself">
+<div class="try-title">✨ Try It Yourself: The Perpendicular Flip</div>
+<p>1. Find the perpendicular joint equation for 5x<sup>2</sup> + 10xy + 2y<sup>2</sup> = 0.</p>
+<div class="row">
+<input id="t_perp1" placeholder="e.g. 2x^2-10xy+5y^2=0"/>
+<button class="check" onclick="checkTextMotivate('t_perp1','2x^2-10xy+5y^2=0','t_perp1_res')">Check</button>
+</div>
+<div class="result" id="t_perp1_res"></div>
+<p>2. If the original equation is x<sup>2</sup> - y<sup>2</sup> = 0, what is the perpendicular joint equation?</p>
+<div class="row">
+<input id="t_perp2" placeholder="Enter equation = 0"/>
+<button class="check" onclick="checkTextMotivate('t_perp2','-x^2+y^2=0','t_perp2_res')">Check</button>
+</div>
+<div class="result" id="t_perp2_res"></div>
+</div>
+<div class="motivate">
+<div class="emoji">🍫🌈</div>
+<div class="text" style="color:#06D6A0;">Sweet! You're flipping equations like a math wizard! ✨</div>
+</div>
+<h3 style="margin-top:14px;color:var(--accent)">Play the Perpendicular Pair Match Game</h3>
+<div class="game-card-grid">
+<div class="game-card-style" onclick="showGame('perp-game'); playSound('gameStart')">
+<div class="game-card-left">
+<div aria-hidden="true" class="svg-icon" style="background: linear-gradient(135deg, #FFD166, #EF476F);">
+<svg height="100" viewbox="0 0 100 100" width="100" xmlns="http://www.w3.org/2000/svg">
+<rect fill="#FFD166" height="15" rx="3" width="80" x="10" y="10"></rect>
+<text fill="#5D4037" font-size="4" font-weight="bold" text-anchor="middle" x="50" y="20">ax² + 2hxy + by²</text>
+<path d="M30 25 L30 35" fill="none" stroke="#EF476F" stroke-width="2"></path>
+<path d="M25 30 L30 35 L35 30" fill="none" stroke="#EF476F" stroke-width="2"></path>
+<path d="M50 25 L50 35" fill="none" stroke="#EF476F" stroke-width="2"></path>
+<path d="M45 30 L50 35 L55 30" fill="none" stroke="#EF476F" stroke-width="2"></path>
+<path d="M70 25 L70 35" fill="none" stroke="#EF476F" stroke-width="2"></path>
+<path d="M65 30 L70 35 L75 30" fill="none" stroke="#EF476F" stroke-width="2"></path>
+<circle cx="30" fill="#3b82f6" r="6" y="45"></circle>
+<text fill="white" font-size="4" font-weight="bold" text-anchor="middle" x="30" y="49">a</text>
+<circle cx="50" fill="#94a3b8" r="6" y="45"></circle>
+<text fill="white" font-size="4" font-weight="bold" text-anchor="middle" x="50" y="49">2h</text>
+<circle cx="70" fill="#f59e0b" r="6" y="45"></circle>
+<text fill="white" font-size="4" font-weight="bold" text-anchor="middle" x="70" y="49">b</text>
+<path d="M36 45 L44 45 L44 55 L56 55 L56 45 L64 45" fill="none" stroke="#10b981" stroke-width="2"></path>
+<circle cx="70" fill="#3b82f6" r="6" y="65"></circle>
+<text fill="white" font-size="4" font-weight="bold" text-anchor="middle" x="70" y="69">b</text>
+<circle cx="50" fill="#ef476f" r="6" y="65"></circle>
+<text fill="white" font-size="4" font-weight="bold" text-anchor="middle" x="50" y="69">-2h</text>
+<circle cx="30" fill="#f59e0b" r="6" y="65"></circle>
+<text fill="white" font-size="4" font-weight="bold" text-anchor="middle" x="30" y="69">a</text>
+<rect fill="#06D6A0" height="15" rx="3" width="80" x="10" y="75"></rect>
+<text fill="white" font-size="4" font-weight="bold" text-anchor="middle" x="50" y="84">bx² - 2hxy + ay²</text>
+<path d="M45 55 L50 50 L55 55" fill="none" stroke="#ef476f" stroke-width="2"></path>
+</svg>
+</div>
+<div style="font-size:12px;color:var(--muted); margin-top:5px">Transformation Challenge</div>
+</div>
+<div>
+<div class="game-card-title">Perpendicular Pair Match</div>
+<div class="game-card-desc">Match original equations with their perpendicular counterparts!</div>
+<div style="margin-top:12px"><button class="start-btn">Start Matching</button></div>
+</div>
+</div>
+</div>
+<div class="game-play-area" id="perp-game">
+<div class="score-board" id="perp-score">Score: 0</div>
+<div class="game-icon-visual">🔄</div>
+<div class="game-prompt" id="perp-prompt">Given original coefficients (a, 2h, b), enter the perpendicular joint equation's coefficients: (new x² coeff, new 2h coeff, new y² coeff).</div>
+<div class="game-input-group">
+<div class="game-input-label">New x² Coeff: <input class="game-input" id="perp-input-b" placeholder="e.g. 2" step="1" type="number"/></div>
+<div class="game-input-label">New 2h (xy) Coeff: <input class="game-input" id="perp-input-2h" placeholder="e.g. -10" step="1" type="number"/></div>
+<div class="game-input-label">New y² Coeff: <input class="game-input" id="perp-input-a" placeholder="e.g. 5" step="1" type="number"/></div>
+</div>
+<div>
+<button class="check" onclick="checkPerpendicular()">Match!</button>
+<button class="btn" onclick="initPerpendicularGame()" style="margin-left:8px">New Problem</button>
+</div>
+<div class="game-message" id="perp-status">Ready.</div>
+</div>
+<div class="calm">
+<div style="font-size:24px">🧠</div>
+<div style="font-weight:700">Great — understanding transformations makes math magical.</div>
+</div>
+</section>
+<div class="divider" id="area">4. Area Bounded by Lines</div>
+<section class="card animate">
+<h2>Area Bounded by L<sub>1</sub>, L<sub>2</sub> and L<sub>3</sub></h2>
+<p class="lead">To find the area of the triangle formed by the homogeneous pair (L<sub>1</sub>, L<sub>2</sub>) and a third line (L<sub>3</sub>), you need the three vertices.</p>
+<div class="definition">
+<div class="definition-content">
+<div class="concept-clarifier">
+<h4><span style="font-size:24px">🔺</span> The Triangle Locator</h4>
+<p>A homogeneous equation ax<sup>2</sup> + 2hxy + by<sup>2</sup> = 0 is two lines (L<sub>1</sub> and L<sub>2</sub>) that always intersect at the **origin**, which is your first vertex A(0,0).</p>
+<div class="clarifier-buttons">
+<button class="clarifier-btn" onclick="showClarifierContent('area-clarifier', 'find')">Find Vertices</button>
+<button class="clarifier-btn" onclick="showClarifierContent('area-clarifier', 'simplify')">Area Shortcut</button>
+</div>
+<div class="clarifier-content active" id="area-clarifier-find">
+<p><strong>Finding Vertices:</strong></p>
+<ul>
+<li>A: Intersection of L<sub>1</sub> and L<sub>2</sub> (always **(0,0)**).</li>
+<li>B: Intersection of L<sub>1</sub> and L<sub>3</sub>.</li>
+<li>C: Intersection of L<sub>2</sub> and L<sub>3</sub>.</li>
+</ul>
+<p>You must first **factor** the homogeneous equation to get L<sub>1</sub> and L<sub>2</sub>.</p>
+</div>
+<div class="clarifier-content" id="area-clarifier-simplify">
+<p><strong>Area Shortcut (with Origin):</strong> Since one vertex is A(0,0), the standard area formula simplifies significantly for vertices (x<sub>A</sub>, y<sub>A</sub>)=(0,0), B(x<sub>B</sub>, y<sub>B</sub>), and C(x<sub>C</sub>, y<sub>C</sub>):</p>
+<p style="font-weight:bold; color:var(--primary); text-align:center;">Area = 1{2} | x<sub>B</sub> y<sub>C</sub> - x<sub>C</sub> y<sub>B</sub> |</p>
+</div>
+</div>
+</div>
+<div class="definition-cartoon">
+<svg height="80" viewbox="0 0 100 100" width="80" xmlns="http://www.w3.org/2000/svg">
+<polygon fill="#e0f2fe" points="30,70 50,30 70,70" stroke="#3b82f6" stroke-width="2"></polygon>
+<circle cx="30" cy="70" fill="#ef476f" r="4"></circle>
+<circle cx="50" cy="30" fill="#10b981" r="4"></circle>
+<circle cx="70" cy="70" fill="#f59e0b" r="4"></circle>
+<text fill="#ef476f" font-size="4" font-weight="bold" text-anchor="middle" x="25" y="75">A(0,0)</text>
+<text fill="#10b981" font-size="4" font-weight="bold" text-anchor="middle" x="50" y="25">B</text>
+<text fill="#f59e0b" font-size="4" font-weight="bold" text-anchor="middle" x="75" y="75">C</text>
+<text fill="#3b82f6" font-size="5" font-weight="bold" text-anchor="middle" x="50" y="50">Area = ?</text>
+<rect fill="#ffd166" height="15" rx="3" width="70" x="15" y="80"></rect>
+<text fill="#5d4037" font-size="4" text-anchor="middle" x="50" y="89">½|x<sub>B</sub> y<sub>C</sub> - x<sub>C</sub> y<sub>B</sub>|</text>
+</svg>
+</div>
+</div>
+<div class="concept-visual">
+<div class="coordinate-visual">
+<div class="grid-lines"></div>
+<div class="x-axis"></div>
+<div class="y-axis"></div>
+<div class="point" style="background:#ec4899; top:50%; left:50%; width:16px; height:16px;"></div>
+<div class="point-label" style="top:50%; left:50%; color:#ec4899;">A(0,0)</div>
+<div class="point" style="background:#3b82f6; top:30%; left:30%;"></div>
+<div class="point-label" style="top:30%; left:30%; color:#3b82f6;">B</div>
+<div class="point" style="background:#f59e0b; top:30%; left:70%;"></div>
+<div class="point-label" style="top:30%; left:70%; color:#f59e0b;">C</div>
+<div class="line" style="background:#3b82f6; top:50%; left:50%; width:40%; transform:rotate(150deg);"></div>
+<div class="line" style="background:#f59e0b; top:50%; left:50%; width:40%; transform:rotate(30deg);"></div>
+<div class="line" style="background:#10b981; top:30%; left:30%; width:60%; transform:rotate(0deg);"></div>
+<div style="position:absolute; top:50%; left:50%; width:0; height:0; border-left: 70px solid transparent; border-right: 70px solid transparent; border-bottom: 100px solid rgba(59, 130, 246, 0.1); transform: translate(-50%, -50%) rotate(0deg);"></div>
+</div>
+</div>
+<div class="example-container" style="grid-template-columns: 1fr;">
+<div class="example-box">
+<div class="big">Example: Area bounded by 10x<sup>2</sup> - xy - 21y<sup>2</sup> = 0 and x + y + 1 = 0</div>
+<p class="tip-note">Factoring gives: L<sub>1</sub>: 2x - 3y = 0 and L<sub>2</sub>: 5x + 7y = 0. L<sub>3</sub>: x + y + 1 = 0.</p>
+<div class="controls">
+<button class="step-btn" onclick="startSteps('area1'); playSound('concept')">Show Steps</button>
+</div>
+<div class="step-block" id="area1">
+<div class="step-line" style="display:none">Step 1: Vertices: A(0, 0).</div>
+<div class="step-line" style="display:none">Step 2: L<sub>1</sub> \cap L<sub>3</sub>: Solve 2x - 3y = 0 and x = -y - 1 to get B(-3{5}, -2{5}).</div>
+<div class="step-line" style="display:none">Step 3: L<sub>2</sub> \cap L<sub>3</sub>: Solve 5x + 7y = 0 and x = -y - 1 to get C(7{2}, -9{2}).</div>
+<div class="step-line" style="display:none">Step 4: Use Area formula (simplified for A(0,0)): 1{2} | x<sub>B</sub> y<sub>C</sub> - x<sub>C</sub> y<sub>B</sub> |.</div>
+<div class="step-line" style="display:none">Step 5: Area = 1{2} \left| (-3{5})(-9{2}) - (7{2})(-2{5}) \right| = 1{2} \left| 27{10} + 14{10} \right|.</div>
+<div class="step-line" style="display:none"><b>Answer:</b> Area is 41{20} sq. units (or 2.05 sq. units).</div>
+<div style="margin-top:8px"><button class="next-step" onclick="nextStep('area1'); playSound('click')">Next Step</button></div>
+</div>
+</div>
+</div>
+<div class="try-yourself">
+<div class="try-title">✨ Try It Yourself: Area Calculation</div>
+<p>1. A triangle is formed by x<sup>2</sup> - y<sup>2</sup> = 0 and x + y = 2. Find the area of this triangle. (Vertices are (0,0), (1,1), and (2,0)).</p>
+<div class="row">
+<input id="t_area1" placeholder="Enter number"/>
+<button class="check" onclick="checkTextMotivate('t_area1','1','t_area1_res')">Check</button>
+</div>
+<div class="result" id="t_area1_res"></div>
+</div>
+<div class="motivate">
+<div class="emoji">🧭💖</div>
+<div class="text" style="color:#118AB2;">Incredible! You're calculating areas like a geometry detective! 🔍</div>
+</div>
+<div class="calm">
+<div style="font-size:28px">🧘</div>
+<div style="font-weight:700">Nice — recognizing patterns takes practice and you're doing it.</div>
+</div>
+</section>
+<div class="divider" id="games">Stress-Relief Games</div>
+<section class="card">
+<h2>Quick Access to Games</h2>
+<p class="lead">Click any game below to open it — each has a cute cartoon illustration to help identify it.</p>
+<div class="game-card-grid">
+<div class="game-card-style" onclick="showGame('factor-game'); playSound('gameStart')">
+<div class="game-card-left">
+<div class="svg-icon" style="background: linear-gradient(135deg, #ff7eb3, #ff758c);">
+<svg height="100" viewbox="0 0 100 100" width="100">
+<rect fill="#FFD166" height="25" rx="5" width="70" x="15" y="20"></rect>
+<text fill="#5D4037" font-size="6" font-weight="bold" text-anchor="middle" x="50" y="35">ax² + 2hxy + by²</text>
+<path d="M50 45 L50 55" fill="none" stroke="#EF476F" stroke-width="2"></path>
+<rect fill="#06D6A0" height="20" rx="3" width="35" x="10" y="60"></rect>
+<rect fill="#118AB2" height="20" rx="3" width="35" x="55" y="60"></rect>
+<text fill="white" font-size="5" font-weight="bold" text-anchor="middle" x="27" y="72">(mx - y)</text>
+<text fill="white" font-size="5" font-weight="bold" text-anchor="middle" x="72" y="72">(nx - y)</text>
+</svg>
+</div>
+<div style="font-size:12px;color:var(--muted); margin-top:5px">Factor Challenge</div>
+</div>
+<div>
+<div class="game-card-title">Line Factor Frenzy</div>
+<div class="game-card-desc">Factor homogeneous equations into two linear factors.</div>
+</div>
+</div>
+<div class="game-card-style" onclick="showGame('angle-game'); playSound('gameStart')">
+<div class="game-card-left">
+<div class="svg-icon" style="background: linear-gradient(135deg, #65C7F7, #4ECDC4);">
+<svg height="100" viewbox="0 0 100 100" width="100">
+<path d="M20 70 Q50 30 80 70" fill="none" stroke="#FFD166" stroke-linecap="round" stroke-width="8"></path>
+<line stroke="#3b82f6" stroke-width="3" x1="50" x2="30" y1="30" y2="65"></line>
+<line stroke="#f59e0b" stroke-width="3" x1="50" x2="70" y1="30" y2="65"></line>
+<path d="M55 40 A15 15 0 0 0 45 40" fill="none" stroke="#ef476f" stroke-width="2"></path>
+<text fill="#ef476f" font-size="6" font-weight="bold" text-anchor="middle" x="50" y="50">θ</text>
+</svg>
+</div>
+<div style="font-size:12px;color:var(--muted); margin-top:5px">Angle Challenge</div>
+</div>
+<div>
+<div class="game-card-title">Angle Ace</div>
+<div class="game-card-desc">Calculate angles between lines using the angle formula.</div>
+</div>
+</div>
+<div class="game-card-style" onclick="showGame('perp-game'); playSound('gameStart')">
+<div class="game-card-left">
+<div class="svg-icon" style="background: linear-gradient(135deg, #FFD166, #EF476F);">
+<svg height="100" viewbox="0 0 100 100" width="100">
+<rect fill="#FFD166" height="15" rx="3" width="80" x="10" y="10"></rect>
+<text fill="#5D4037" font-size="4" font-weight="bold" text-anchor="middle" x="50" y="20">ax² + 2hxy + by²</text>
+<path d="M50 25 L50 35" fill="none" stroke="#EF476F" stroke-width="2"></path>
+<rect fill="#06D6A0" height="15" rx="3" width="80" x="10" y="40"></rect>
+<text fill="white" font-size="4" font-weight="bold" text-anchor="middle" x="50" y="50">bx² - 2hxy + ay²</text>
+<path d="M45 30 L50 25 L55 30" fill="none" stroke="#ef476f" stroke-width="2"></path>
+</svg>
+</div>
+<div style="font-size:12px;color:var(--muted); margin-top:5px">Transformation Challenge</div>
+</div>
+<div>
+<div class="game-card-title">Perpendicular Pair Match</div>
+<div class="game-card-desc">Match equations with their perpendicular counterparts.</div>
+</div>
+</div>
+</div>
+</section>
+<div style="text-align: center; margin: 40px 0; padding: 30px; background: #f0fdf4; border: 2px dashed #10b981; border-radius: 12px;">
+    <h3 style="color: #047857;">Module Complete!</h3>
+    <p>You've finished all 5 parts. Time to test your skills.</p>
+    <a href="{{ url_for('serve_quiz', chapter_num=4) }}" class="btn btn-primary" style="background-color: #10b981;">
+        Take Chapter 4 Quiz <i class="fas fa-check-circle"></i>
+    </a>
+</div>
+</div>
+<div class="fab" onclick="document.querySelector('#games').scrollIntoView({behavior: 'smooth'});">
+<i class="fas fa-gamepad"></i>
+</div>
+<footer class="footer">
+<div class="container">
+<div class="footer-content">
+<div class="footer-about">
+<div class="footer-logo">
+<div class="footer-logo-icon">S</div> Sentellect </div>
+<p>Personalizing learning through emotions to improve educational experience for HSSC Mathematics.</p>
+<div class="social-links">
+<a class="social-link" href="#"><i class="fab fa-facebook-f"></i></a>
+<a class="social-link" href="#"><i class="fab fa-twitter"></i></a>
+<a class="social-link" href="#"><i class="fab fa-instagram"></i></a>
+<a class="social-link" href="#"><i class="fab fa-linkedin-in"></i></a>
+</div>
+</div>
+<div class="footer-links">
+<h3>Platform</h3>
+<ul>
+<li><a href="#homogeneous">Homogeneous Equations</a></li>
+<li><a href="#angles">Angle Between Lines</a></li>
+<li><a href="#perpendicular">Perpendicular Equations</a></li>
+<li><a href="#area">Area Bounded by Lines</a></li>
+</ul>
+</div>
+<div class="footer-links">
+<h3>Resources</h3>
+<ul>
+<li><a href="#">Study Materials</a></li>
+<li><a href="#">About Project</a></li>
+<li><a href="#">Contact</a></li>
+<li><a href="#">Support</a></li>
+</ul>
+</div>
+<div class="footer-links">
+<h3>Account</h3>
+<ul>
+            <li><a href="#">Your Account</a></li>    
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms & Conditions</a></li>
+</ul>
+</div>
+</div>
+<div class="footer-bottom">
+<p>© 2025 Sentellect. Final Year Project - Educational Technology.</p>
+<div class="footer-tags">
+<a class="tag" href="#">PTB HSSC Mathematics</a>
+<a class="tag" href="#">Emotion-Aware Learning</a>
+<a class="tag" href="#">Coordinate Geometry</a>
+</div>
+</div>
+</div>
+</footer>
+<script>
+    /* ==========================================
+   SCROLL SPEED DETECTOR (Anxiety Check)
+   ========================================== */
+
+let lastScrollTop = 0;
+let fastScrollCount = 0;
+let scrollAlertShown = false; // To prevent spamming the popup
+
+// Check scroll speed every 200ms
+setInterval(() => {
+    if (scrollAlertShown) return; // Stop checking if we already showed the modal
+
+    // Get current scroll position
+    const st = window.pageYOffset || document.documentElement.scrollTop;
+    
+    // Calculate distance moved in last 200ms
+    const distance = Math.abs(st - lastScrollTop);
+    
+    // Threshold: If moved more than 300px in 0.2 seconds (Very Fast)
+    if (distance > 300) {
+        fastScrollCount++;
+        console.log("⚠️ Fast Scroll Detected:", fastScrollCount);
+    } else {
+        // Decay counter (if they slow down, forgive them)
+        if (fastScrollCount > 0) fastScrollCount--;
+    }
+
+    // Trigger: If they speed-scroll 4 times consecutively
+    if (fastScrollCount >= 4) {
+        showScrollModal();
+        fastScrollCount = 0; // Reset
+    }
+
+    lastScrollTop = st;
+}, 200); 
+
+function showScrollModal() {
+    const modal = document.getElementById('scrollModal');
+    if (modal) {
+        modal.style.display = 'flex';
+        scrollAlertShown = true; // Ensure it only pops up once per session
+        
+        // Optional: Log to backend
+        if(typeof fetch !== 'undefined') {
+            fetch('/api/log_behavior', { 
+                method: 'POST', 
+                headers: {'Content-Type': 'application/json'}, 
+                body: JSON.stringify({ reason: 'rapid_scrolling', context: 'high_stress_chapter2' }) 
+            }).catch(e => console.log(e));
+        }
+    }
+}
+
+function closeScrollModal() {
+    document.getElementById('scrollModal').style.display = 'none';
+    // scrollAlertShown remains true so we don't bug them again
+}
+     // Helper function to show content in the new clarifier boxes function showClarifierContent(baseId, contentId) { // Hide all content divs related to the baseId document.querySelectorAll(`#{baseId} .clarifier-content`).forEach(el => { el.classList.remove('active'); }); // Show the requested content const target = document.getElementById(`{baseId}-{contentId}`); if (target) { target.classList.add('active'); } playSound('click'); } // Celebration system function celebrate() { if (!soundEnabled) return; const celebration = document.getElementById('celebration'); celebration.style.display = 'block'; // Play celebration sound playSound('celebration'); // Create confetti for (let i = 0; i < 150; i++) { createConfetti(); } // Create party poppers for (let i = 0; i < 20; i++) { createPartyPopper(); } // Create hurray text createHurrayText(); // Hide celebration after 3 seconds setTimeout(() => { celebration.style.display = 'none'; celebration.innerHTML = ''; }, 3000); } function createConfetti() { const celebration = document.getElementById('celebration'); const confetti = document.createElement('div'); confetti.className = 'confetti'; // Random position const left = Math.random() * 100; const colors = ['#ff6b6b', '#ffd166', '#06d6a0', '#118ab2', '#ef476f']; const color = colors[Math.floor(Math.random() * colors.length)]; confetti.style.left = `{left}%`; confetti.style.backgroundColor = color; celebration.appendChild(confetti); // Animate confetti const animation = confetti.animate([ { transform: 'translateY(-20px) rotate(0deg)', opacity: 1 }, { transform: `translateY({window.innerHeight}px) rotate(720deg)`, opacity: 0 } ], { duration: 2000 + Math.random() * 1000, easing: 'cubic-bezier(0.215, 0.61, 0.355, 1)' }); animation.onfinish = () => { confetti.remove(); }; } function createPartyPopper() { const celebration = document.getElementById('celebration'); const popper = document.createElement('div'); popper.className = 'party-popper'; popper.textContent = '🎉'; // Random position const left = Math.random() * 100; const top = Math.random() * 100; popper.style.left = `{left}%`; popper.style.top = `{top}%`; celebration.appendChild(popper); // Animate party popper const animation = popper.animate([ { transform: 'scale(0) rotate(0deg)', opacity: 1 }, { transform: 'scale(1.5) rotate(360deg)', opacity: 0 } ], { duration: 1000 + Math.random() * 500, easing: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)' }); animation.onfinish = () => { popper.remove(); }; } function createHurrayText() { const celebration = document.getElementById('celebration'); const hurray = document.createElement('div'); hurray.className = 'hurray-text'; hurray.textContent = 'HURRAY!'; celebration.appendChild(hurray); // Animate hurray text const animation = hurray.animate([ { transform: 'translate(-50%, -50%) scale(0)', opacity: 0 }, { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 }, { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 }, { transform: 'translate(-50%, -50%) scale(1.2)', opacity: 0 } ], { duration: 3000, easing: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)' }); animation.onfinish = () => { hurray.remove(); }; } // Sound system let soundEnabled = true; const audioContext = new (window.AudioContext || window.webkitAudioContext)(); // Sound functions function playSound(type) { if (!soundEnabled) return; const oscillator = audioContext.createOscillator(); const gainNode = audioContext.createGain(); oscillator.connect(gainNode); gainNode.connect(audioContext.destination); // Set sound parameters based on type switch(type) { case 'success': oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5 gainNode.gain.setValueAtTime(0.3, audioContext.currentTime); gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5); oscillator.start(); oscillator.stop(audioContext.currentTime + 0.5); break; case 'error': oscillator.frequency.setValueAtTime(220, audioContext.currentTime); // A3 gainNode.gain.setValueAtTime(0.3, audioContext.currentTime); gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3); oscillator.start(); oscillator.stop(audioContext.currentTime + 0.3); break; case 'click': oscillator.frequency.setValueAtTime(784, audioContext.currentTime); // G5 gainNode.gain.setValueAtTime(0.2, audioContext.currentTime); gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1); oscillator.start(); oscillator.stop(audioContext.currentTime + 0.1); break; case 'gameStart': // Play a little melody playMelody([784, 659, 523, 659, 784], [0.15, 0.15, 0.15, 0.15, 0.3]); break; case 'celebration': // Play a celebratory melody playMelody([523.25, 659.25, 783.99, 1046.50, 1318.51, 1567.98], [0.15, 0.15, 0.15, 0.15, 0.15, 0.5]); break; case 'concept': // Play a gentle sound for understanding concepts playMelody([261.63, 329.63, 392.00], [0.3, 0.3, 0.5]); break; } } function playMelody(frequencies, durations) { let time = audioContext.currentTime; frequencies.forEach((freq, i) => { const oscillator = audioContext.createOscillator(); const gainNode = audioContext.createGain(); oscillator.connect(gainNode); gainNode.connect(audioContext.destination); oscillator.frequency.setValueAtTime(freq, time); gainNode.gain.setValueAtTime(0.2, time); gainNode.gain.exponentialRampToValueAtTime(0.01, time + durations[i]); oscillator.start(time); oscillator.stop(time + durations[i]); time += durations[i]; }); } // Toggle sound document.getElementById('toggleSound').addEventListener('click', function() { soundEnabled = !soundEnabled; const icon = this.querySelector('i'); if (soundEnabled) { icon.className = 'fas fa-volume-up'; this.classList.remove('muted'); playSound('click'); } else { icon.className = 'fas fa-volume-mute'; this.classList.add('muted'); } }); /* -------- Helpers (step reveals & answer checking) -------- */ function startSteps(blockId){ const block = document.getElementById(blockId); if(!block) return; const lines = block.querySelectorAll('.step-line'); lines.forEach(l => l.style.display = 'none'); if(lines.length) lines[0].style.display = 'block'; playSound('concept'); } function nextStep(blockId){ const block = document.getElementById(blockId); if(!block) return; const lines = block.querySelectorAll('.step-line'); let shown = 0; for(let i=0;i<lines.length;i++) !="none" '').trim().tolowercase().replace(="" (shown="lines.length" )="" *="" -="" ----------="" 1)="" 2,="" 500);="" ;="" <="" \s="" a="" a:3,="" b:2,="" celebrate="" celebrate();="" checktextmotivate(inputid,="" const="" correct="(''+correctText).trim().toLowerCase().replace(/\s/g,'');" correcttext,="" create="" datasets="" document.getelementbyid(inputid).insertadjacentelement('afterend',="" el="document.createElement('div');" el);="" el.style.color="#92400e" el.style.margintop="8px" el.textcontent="Not quite — try again." element="" else="" eq:'3x<sup="" factorproblems="[" feedback="" function="" g,'');="" game="" h:7="" if="" if(!resel){="" if(getcomputedstyle(lines[i]).display="" if(shown="" if(val="correct){" inline="" last="" lines.length)="" lines[shown].style.display="block" missing="" on="" playsound('error');="" playsound('success');="" resel="document.getElementById(resultId);" resel.classname="result warn" resel.style.color="#92400e" resel.style.display="block" resel.textcontent="Not quite — try again." result="" resultid){="" return;="" settimeout(celebrate,="" shown++;="" simple="" step="" the="" val="(document.getElementById(inputId).value" {="" ||="" }="">2 + 7xy + 2y<sup>2</sup> = 0', factors:[[3,1],[1,2]] }, { a:6, h:-19/2, b:15, eq:'6x<sup>2</sup> - 19xy + 15y<sup>2</sup> = 0', factors:[[3,-5],[2,-3]] }, { a:1, h:3/2, b:-4, eq:'x<sup>2</sup> + 3xy - 4y<sup>2</sup> = 0', factors:[[1,4],[1,-1]] }, { a:4, h:4, b:1, eq:'4x<sup>2</sup> + 8xy + y<sup>2</sup> = 0', factors:[[2,1],[2,1]] } ]; const angleProblems = [ { a:1, h:3/2, b:-4, eq:'x<sup>2</sup> + 3xy - 4y<sup>2</sup> = 0', num:27, den:5 }, // uses 2*sqrt(...) = 27, a+b = 5 -&gt; tan = 27/5 { a:2, h:3/2, b:-5, eq:'2x<sup>2</sup> + 3xy - 5y<sup>2</sup> = 0', num:7, den:-3 }, // tan = 7/3 (den -3) { a:1, h:2, b:1, eq:'x<sup>2</sup> + 4xy + y<sup>2</sup> = 0', num:3.999, den:2, isFloat:true }, // approximate { a:1, h:0, b:-1, eq:'x<sup>2</sup> - y<sup>2</sup> = 0', num:2, den:0 } // special: denom 0 ]; const perpProblems = [ { a:10, h:-23/2, b:-5, eq:'10x<sup>2</sup> - 23xy - 5y<sup>2</sup> = 0' }, // expected perpendicular: b, -2h, a =&gt; -5, 23, 10 { a:2, h:3/2, b:-5, eq:'2x<sup>2</sup> + 3xy - 5y<sup>2</sup> = 0' }, // expected -5, -3, 2? careful: original 2h=3 =&gt; h=1.5 =&gt; -2h = -3 { a:1, h:2, b:1, eq:'x<sup>2</sup> + 4xy + y<sup>2</sup> = 0' }, // 2h=4 -&gt; h=2 =&gt; -2h = -4 =&gt; new: b=1, -2h=-4, a=1 { a:6, h:-1, b:5, eq:'6x<sup>2</sup> - 2xy + 5y<sup>2</sup> = 0' } // 2h=-2 -&gt; h=-1 -&gt; -2h=2 -&gt; new: b=5, 2, a=6 ]; /* ---------------- Line Factor Frenzy ---------------- */ let factorScore = 0; let currentFactorProblem = null; function initLineFactorGame(){ currentFactorProblem = factorProblems[Math.floor(Math.random()*factorProblems.length)]; document.getElementById('factor-prompt').innerHTML = `Factor <b>{currentFactorProblem.eq}</b><br/><small>Enter coefficients of x in each factor (e.g. (ax + ...)(cx + ...)).</small>`; document.getElementById('factor-input-a').value = ''; document.getElementById('factor-input-c').value = ''; document.getElementById('factor-status').textContent = 'Enter X coefficients.'; document.getElementById('factor-status').className = 'game-message'; document.getElementById('factor-score').textContent = 'Score: ' + factorScore; } function checkLineFactor(){ const a = parseInt(document.getElementById('factor-input-a').value, 10); const c = parseInt(document.getElementById('factor-input-c').value, 10); const s = document.getElementById('factor-status'); if (isNaN(a) || isNaN(c)) { s.textContent = 'Enter two numbers!'; s.className='game-message warn'; return; } const fx = [currentFactorProblem.factors[0][0], currentFactorProblem.factors[1][0]]; const ok = (a === fx[0] &amp;&amp; c === fx[1]) || (a === fx[1] &amp;&amp; c === fx[0]); if (ok) { factorScore++; s.textContent = '✅ Correct! Score: ' + factorScore; s.className = 'game-message good'; playSound('success'); celebrate(); setTimeout(initLineFactorGame, 700); } else { factorScore = Math.max(0, factorScore - 1); s.textContent = '❌ Try again. Score: ' + factorScore; s.className = 'game-message warn'; playSound('error'); } document.getElementById('factor-score').textContent = 'Score: ' + factorScore; } /* ---------------- Angle Ace ---------------- */ let angleScore = 0; let currentAngleProblem = null; function initAngleGame(){ currentAngleProblem = angleProblems[Math.floor(Math.random()*angleProblems.length)]; document.getElementById('angle-prompt').innerHTML = `Find components of <b>tanθ</b> for <b>{currentAngleProblem.eq}</b><br/><small>Enter numerator and denominator (numerator = 2√(h²-ab), denominator = a+b).</small>`; document.getElementById('angle-input-num').value = ''; document.getElementById('angle-input-den').value = ''; document.getElementById('angle-status').textContent = 'Enter N and D.'; document.getElementById('angle-status').className = 'game-message'; document.getElementById('angle-score').textContent = 'Score: ' + angleScore; } function checkAngle(){ const nRaw = document.getElementById('angle-input-num').value; const dRaw = document.getElementById('angle-input-den').value; const n = parseFloat(nRaw); const d = parseFloat(dRaw); const s = document.getElementById('angle-status'); if (nRaw === '' || dRaw === '' || isNaN(n) || isNaN(d)) { s.textContent = 'Enter numbers!'; s.className='game-message warn'; return; } const cp = currentAngleProblem; let ok = false; if (cp.isFloat) { ok = Math.abs(n - cp.num) &lt; 0.05 &amp;&amp; Math.abs(d - cp.den) &lt; 1e-6; } else { // handle sign-insensitive numerator and denominator in most problems except where denom 0 matters if (cp.den === 0) { ok = Math.abs(n) === Math.abs(cp.num) &amp;&amp; Math.abs(d) === 0; } else { ok = (Math.abs(Math.abs(n) - Math.abs(cp.num)) &lt; 1e-9) &amp;&amp; (Math.abs(Math.abs(d) - Math.abs(cp.den)) &lt; 1e-9); } } if (ok) { angleScore++; s.textContent = '✅ Correct! Score: ' + angleScore; s.className = 'game-message good'; playSound('success'); celebrate(); setTimeout(initAngleGame, 700); } else { angleScore = Math.max(0, angleScore - 1); s.textContent = '❌ Try again. Score: ' + angleScore; s.className = 'game-message warn'; playSound('error'); } document.getElementById('angle-score').textContent = 'Score: ' + angleScore; } /* ---------------- Perpendicular Pair Match ---------------- */ let perpScore = 0; let currentPerpProblem = null; function initPerpendicularGame(){ currentPerpProblem = perpProblems[Math.floor(Math.random()*perpProblems.length)]; document.getElementById('perp-prompt').innerHTML = `Original: <b>{currentPerpProblem.eq}</b><br/><small>Enter: new x² coeff (b), new 2h (xy) coeff, new y² coeff (a).</small>`; document.getElementById('perp-input-b').value = ''; document.getElementById('perp-input-2h').value = ''; document.getElementById('perp-input-a').value = ''; document.getElementById('perp-status').textContent = 'Enter numbers!'; document.getElementById('perp-status').className = 'game-message'; document.getElementById('perp-score').textContent = 'Score: ' + perpScore; } function checkPerpendicular(){ const bIn = parseInt(document.getElementById('perp-input-b').value, 10); const hIn = parseInt(document.getElementById('perp-input-2h').value, 10); const aIn = parseInt(document.getElementById('perp-input-a').value, 10); const s = document.getElementById('perp-status'); if (isNaN(bIn) || isNaN(hIn) || isNaN(aIn)) { s.textContent = 'Enter numbers!'; s.className='game-message warn'; return; } const p = currentPerpProblem; const expectedB = p.b; const expected2h = -2 * p.h; const expectedA = p.a; // Accept sign-flipped whole equation as correct as well (i.e., multiply all by -1) const okDirect = (bIn === expectedB &amp;&amp; hIn === expected2h &amp;&amp; aIn === expectedA); const okNeg = (bIn === -expectedB &amp;&amp; hIn === -expected2h &amp;&amp; aIn === -expectedA); if (okDirect || okNeg) { perpScore++; s.textContent = '✅ Correct! Score: ' + perpScore; s.className = 'game-message good'; playSound('success'); celebrate(); setTimeout(initPerpendicularGame, 700); } else { perpScore = Math.max(0, perpScore - 1); s.textContent = '❌ Try again. Score: ' + perpScore; s.className = 'game-message warn'; playSound('error'); } document.getElementById('perp-score').textContent = 'Score: ' + perpScore; } /* ---------- show/hide game area helper ---------- */ function showGame(gameId){ document.querySelectorAll('.game-play-area').forEach(e =&gt; e.style.display = 'none'); const area = document.getElementById(gameId); if(area){ area.style.display = 'block'; area.scrollIntoView({behavior:'smooth', block:'center'}); } if(gameId === 'factor-game') initLineFactorGame(); if(gameId === 'angle-game') initAngleGame(); if(gameId === 'perp-game') initPerpendicularGame(); } /* ---------- init on load ---------- */ window.addEventListener('load', function(){ // hide game areas document.querySelectorAll('.game-play-area').forEach(g =&gt; g.style.display = 'none'); // init default game so first click shows fresh problem initLineFactorGame(); // Header scroll effect window.addEventListener('scroll', function() { const header = document.querySelector('header'); if (window.scrollY &gt; 50) { header.classList.add('scrolled'); } else { header.classList.remove('scrolled'); } }); // Animation on scroll const animateElements = document.querySelectorAll('.animate'); const observer = new IntersectionObserver((entries) =&gt; { entries.forEach(entry =&gt; { if (entry.isIntersecting) { const delay = entry.target.classList.contains('delay-1') ? 0.2 : entry.target.classList.contains('delay-2') ? 0.4 : entry.target.classList.contains('delay-3') ? 0.6 : 0; setTimeout(() =&gt; { entry.target.style.opacity = 1; entry.target.style.transform = 'translateY(0)'; }, delay * 1000); } }); }, { threshold: 0.1 }); animateElements.forEach(element =&gt; { element.style.opacity = 0; element.style.transform = 'translateY(20px)'; element.style.transition = 'opacity 0.6s ease, transform 0.6s ease'; observer.observe(element); }); // Create floating particles for hero section createParticles(); // Play welcome sound setTimeout(() =&gt; { playSound('gameStart'); }, 500); }); function createParticles() { const particlesContainer = document.querySelector('.particles'); for (let i = 0; i &lt; 15; i++) { const particle = document.createElement('div'); particle.classList.add('particle'); const size = Math.random() * 10 + 5; const posX = Math.random() * 100; const posY = Math.random() * 100; const delay = Math.random() * 5; particle.style.width = `{size}px`; particle.style.height = `{size}px`; particle.style.left = `{posX}%`; particle.style.top = `{posY}%`; particle.style.animationDelay = `{delay}s`; particlesContainer.appendChild(particle); } } // nav links smooth scroll document.querySelectorAll('.nav-links a').forEach(a =&gt; { a.addEventListener('click', function(e){ e.preventDefault(); const href = this.getAttribute('href') || '#'; if(href.startsWith('#')){ const t = document.querySelector(href); if(t) t.scrollIntoView({behavior:'smooth', block:'center'}); } playSound('click'); }); }); // FAB scroll to games document.querySelector('.fab').addEventListener('click', function() { document.querySelector('#games').scrollIntoView({behavior:'smooth'}); playSound('click'); }); </lines.length;i++)></script>
+</body>
+</html>

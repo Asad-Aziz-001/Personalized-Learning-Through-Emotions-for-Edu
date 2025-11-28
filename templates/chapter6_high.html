@@ -1,0 +1,5966 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8" />
+
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <title>Sentellect — Conic Sections (High-Stress Version)</title>
+
+
+
+  <!-- MathJax -->
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+
+  <!-- Font Awesome -->
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+
+
+  <!-- Google Font -->
+
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+
+
+
+  <style>
+
+    /* ===== Base Styles ===== */
+
+    :root {
+
+      --primary: #1e40af;
+
+      --primary-light: #3b82f6;
+
+      --primary-dark: #1e3a8a;
+
+      --secondary: #f59e0b;
+
+      --accent: #ec4899;
+
+      --text: #1e293b;
+
+      --text-light: #64748b;
+
+      --text-lighter: #94a3b8;
+
+      --bg: #f8fafc;
+
+      --white: #ffffff;
+
+      --gray: #e2e8f0;
+
+      --gray-light: #f1f5f9;
+
+      --success: #10b981;
+
+      --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+
+      --hover-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+
+      --pastel-bg: #f3f8ff;
+
+      --muted: #64748b;
+
+    }
+
+
+
+    * {
+
+      margin: 0;
+
+      padding: 0;
+
+      box-sizing: border-box;
+
+    }
+
+
+
+    body {
+
+      font-family: 'Quicksand', system-ui, -apple-system, 'Segoe UI', Roboto, Arial;
+
+      background-color: var(--bg);
+
+      color: var(--text);
+
+      line-height: 1.6;
+
+      overflow-x: hidden;
+
+    }
+
+
+
+    h1, h2, h3, h4 {
+
+      font-weight: 700;
+
+      line-height: 1.2;
+
+    }
+
+
+
+    a {
+
+      text-decoration: none;
+
+      color: inherit;
+
+    }
+
+
+
+    .container {
+
+      width: 100%;
+
+      max-width: 1200px;
+
+      margin: 0 auto;
+
+      padding: 0 20px;
+
+    }
+
+
+
+    section {
+
+      padding: 80px 0;
+
+      padding-top: 0;
+
+      padding-bottom: 0;
+
+    }
+
+
+
+    .section-title {
+
+      text-align: center;
+
+      margin-bottom: 50px;
+
+    }
+
+
+
+    .section-title h2 {
+
+      font-size: 2.5rem;
+
+      color: var(--primary);
+
+      margin-bottom: 15px;
+
+      position: relative;
+
+      display: inline-block;
+
+    }
+
+
+
+    .section-title h2::after {
+
+      content: '';
+
+      position: absolute;
+
+      bottom: -10px;
+
+      left: 50%;
+
+      transform: translateX(-50%);
+
+      width: 80px;
+
+      height: 4px;
+
+      background: var(--secondary);
+
+      border-radius: 2px;
+
+    }
+
+
+
+    .section-title p {
+
+      color: var(--text-light);
+
+      font-size: 1.1rem;
+
+      max-width: 700px;
+
+      margin: 0 auto;
+
+    }
+
+
+
+    .btn {
+
+      display: inline-block;
+
+      padding: 12px 28px;
+
+      border-radius: 50px;
+
+      font-weight: 600;
+
+      transition: all 0.3s ease;
+
+      text-align: center;
+
+      cursor: pointer;
+
+    }
+
+
+
+    .btn-primary {
+
+      background-color: var(--primary);
+
+      color: var(--white);
+
+      box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
+
+    }
+
+
+
+    .btn-primary:hover {
+
+      background-color: var(--primary-dark);
+
+      transform: translateY(-2px);
+
+      box-shadow: 0 6px 20px rgba(30, 64, 175, 0.4);
+
+    }
+
+
+
+    .btn-secondary {
+
+      background-color: var(--white);
+
+      color: var(--primary);
+
+      border: 2px solid var(--primary);
+
+    }
+
+
+
+    .btn-secondary:hover {
+
+      background-color: var(--primary);
+
+      color: var(--white);
+
+      transform: translateY(-2px);
+
+    }
+
+
+
+    /* ===== Animations ===== */
+
+    @keyframes fadeIn {
+
+      from { opacity: 0; transform: translateY(20px); }
+
+      to { opacity: 1; transform: translateY(0); }
+
+    }
+
+
+
+    @keyframes float {
+
+      0%, 100% { transform: translateY(0); }
+
+      50% { transform: translateY(-10px); }
+
+    }
+
+
+
+    @keyframes pulse {
+
+      0%, 100% { transform: scale(1); }
+
+      50% { transform: scale(1.05); }
+
+    }
+
+    
+
+    @keyframes shimmer {
+
+      0% { background-position: -1000px 0; }
+
+      100% { background-position: 1000px 0; }
+
+    }
+
+    
+
+    @keyframes slideIn {
+
+      from { transform: translateX(-20px); opacity: 0; }
+
+      to { transform: translateX(0); opacity: 1; }
+
+    }
+
+    
+
+    @keyframes bounceIn {
+
+      0% { transform: scale(0.95); opacity: 0; }
+
+      50% { transform: scale(1.02); }
+
+      100% { transform: scale(1); opacity: 1; }
+
+    }
+
+
+
+    @keyframes breathe {
+
+      0%, 100% { transform: scale(1); }
+
+      50% { transform: scale(1.45); }
+
+    }
+
+
+
+    @keyframes wavey {
+
+      0% { transform: translateY(0); }
+
+      50% { transform: translateY(-6px); }
+
+      100% { transform: translateY(0); }
+
+    }
+
+    
+
+    @keyframes glow {
+
+      0%, 100% { box-shadow: 0 0 5px rgba(59, 130, 246, 0.5); }
+
+      50% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.8); }
+
+    }
+
+    
+
+    @keyframes rotate {
+
+      from { transform: rotate(0deg); }
+
+      to { transform: rotate(360deg); }
+
+    }
+
+    
+
+    @keyframes slideUp {
+
+      from { transform: translateY(20px); opacity: 0; }
+
+      to { transform: translateY(0); opacity: 1; }
+
+    }
+
+
+
+    .animate {
+
+      animation: fadeIn 0.8s ease forwards;
+
+    }
+
+    
+
+    .animate-slide {
+
+      animation: slideIn 0.6s ease forwards;
+
+    }
+
+    
+
+    .animate-bounce {
+
+      animation: bounceIn 0.8s ease forwards;
+
+    }
+
+    
+
+    .animate-glow {
+
+      animation: glow 2s infinite;
+
+    }
+
+    
+
+    .animate-rotate {
+
+      animation: rotate 4s linear infinite;
+
+    }
+
+    
+
+    .animate-slide-up {
+
+      animation: slideUp 0.8s ease forwards;
+
+    }
+
+
+
+    .delay-1 { animation-delay: 0.2s; }
+
+    .delay-2 { animation-delay: 0.4s; }
+
+    .delay-3 { animation-delay: 0.6s; }
+
+    .delay-4 { animation-delay: 0.8s; }
+
+
+
+    /* ===== Header/Navbar ===== */
+
+    header {
+
+      position: fixed;
+
+      top: 0;
+
+      left: 0;
+
+      width: 100%;
+
+      z-index: 1000;
+
+      background-color: var(--white);
+
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+
+      transition: all 0.3s ease;
+
+    }
+
+
+
+    header.scrolled {
+
+      padding: 10px 0;
+
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+
+    }
+
+
+
+    .navbar {
+
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+
+      padding: 20px 0;
+
+    }
+
+
+
+    .logo {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 10px;
+
+    }
+
+
+
+    .logo-icon {
+
+      width: 36px;
+
+      height: 36px;
+
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+
+      color: var(--white);
+
+      border-radius: 10px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      font-weight: 700;
+
+      font-size: 18px;
+
+      transition: all 0.3s ease;
+
+      box-shadow: 0 4px 8px rgba(30, 64, 175, 0.2);
+
+    }
+
+
+
+    .logo-text {
+
+      font-size: 1.5rem;
+
+      font-weight: 700;
+
+      color: var(--primary);
+
+      transition: all 0.3s ease;
+
+    }
+
+
+
+    .nav-links {
+
+      display: flex;
+
+      list-style: none;
+
+      gap: 30px;
+
+      margin: 0 auto;
+
+    }
+
+
+
+    .nav-links a {
+
+      font-weight: 500;
+
+      position: relative;
+
+      padding: 5px 0;
+
+      transition: color 0.3s ease;
+
+    }
+
+
+
+    .nav-links a::after {
+
+      content: '';
+
+      position: absolute;
+
+      bottom: 0;
+
+      left: 0;
+
+      width: 0;
+
+      height: 3px;
+
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+
+      transition: width 0.3s ease;
+
+      border-radius: 2px;
+
+    }
+
+
+
+    .nav-links a:hover::after,
+
+    .nav-links a.active::after {
+
+      width: 100%;
+
+    }
+
+
+
+    .nav-links a.active {
+
+      color: var(--primary);
+
+      font-weight: 600;
+
+    }
+
+
+
+    .mobile-menu-btn {
+
+      display: none;
+
+      background: none;
+
+      border: none;
+
+      font-size: 1.5rem;
+
+      color: var(--primary);
+
+      cursor: pointer;
+
+    }
+
+
+
+    /* Sound controls in header */
+
+    .header-sound-controls {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 10px;
+
+      position: absolute;
+
+      right: 20px;
+
+      top: 50%;
+
+      transform: translateY(-50%);
+
+    }
+
+    
+
+    .sound-btn {
+
+      background: var(--primary);
+
+      color: white;
+
+      border: none;
+
+      border-radius: 50%;
+
+      width: 40px;
+
+      height: 40px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      cursor: pointer;
+
+      transition: all 0.3s;
+
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+    }
+
+    
+
+    .sound-btn:hover {
+
+      transform: scale(1.1);
+
+      background: var(--primary-light);
+
+    }
+
+    
+
+    .sound-btn.muted {
+
+      background: var(--muted);
+
+    }
+
+    
+
+    /* ===== Hero Section ===== */
+
+    .hero {
+
+      position: relative;
+
+      padding: 180px 0 80px;
+
+      background: linear-gradient(135deg, var(--primary), #004e92);
+
+      color: var(--white);
+
+      overflow: hidden;
+
+      text-align: center;
+
+    }
+
+
+
+    .hero::before {
+
+      content: '';
+
+      position: absolute;
+
+      top: 0;
+
+      left: 0;
+
+      width: 100%;
+
+      height: 100%;
+
+      background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3QgZmlsbD0idXJsKCNwYXR0ZXJuKSIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIvPjwvc3ZnPg==');
+
+    }
+
+
+
+    .hero-content {
+
+      position: relative;
+
+      z-index: 1;
+
+      max-width: 800px;
+
+      margin: 0 auto;
+
+    }
+
+
+
+    .hero h1 {
+
+      font-size: 3.2rem;
+
+      margin-bottom: 20px;
+
+      line-height: 1.2;
+
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+
+    }
+
+
+
+    .hero h1 span {
+
+      color: var(--secondary);
+
+      position: relative;
+
+    }
+
+
+
+    .hero h1 span::after {
+
+      content: '';
+
+      position: absolute;
+
+      bottom: 5px;
+
+      left: 0;
+
+      width: 100%;
+
+      height: 8px;
+
+      background-color: rgba(255, 255, 255, 0.3);
+
+      z-index: -1;
+
+      border-radius: 4px;
+
+    }
+
+
+
+    .hero p {
+
+      font-size: 1.2rem;
+
+      margin-bottom: 40px;
+
+      opacity: 0.9;
+
+    }
+
+
+
+    .hero-buttons {
+
+      display: flex;
+
+      justify-content: center;
+
+      gap: 20px;
+
+      margin-top: 30px;
+
+    }
+
+
+
+    .hero .btn-secondary {
+
+      background-color: transparent;
+
+      color: var(--white);
+
+      border-color: var(--white);
+
+    }
+
+
+
+    .hero .btn-secondary:hover {
+
+      background-color: var(--white);
+
+      color: var(--primary);
+
+    }
+
+
+
+    .floating-shape {
+
+      position: absolute;
+
+      border-radius: 50%;
+
+      background: rgba(255, 255, 255, 0.1);
+
+      z-index: 0;
+
+      animation: float 6s ease-in-out infinite;
+
+    }
+
+
+
+    .shape-1 {
+
+      width: 150px;
+
+      height: 150px;
+
+      top: 10%;
+
+      left: 10%;
+
+      animation-delay: 0s;
+
+    }
+
+
+
+    .shape-2 {
+
+      width: 100px;
+
+      height: 100px;
+
+      bottom: 15%;
+
+      right: 10%;
+
+      animation-delay: 0.5s;
+
+    }
+
+
+
+    .shape-3 {
+
+      width: 80px;
+
+      height: 80px;
+
+      top: 30%;
+
+      right: 20%;
+
+      animation-delay: 1s;
+
+    }
+
+    
+
+    .particles {
+
+      position: absolute;
+
+      top: 0;
+
+      left: 0;
+
+      width: 100%;
+
+      height: 100%;
+
+      overflow: hidden;
+
+      z-index: 0;
+
+    }
+
+    
+
+    .particle {
+
+      position: absolute;
+
+      background: rgba(255, 255, 255, 0.3);
+
+      border-radius: 50%;
+
+      animation: float 8s infinite ease-in-out;
+
+    }
+
+
+
+    /* ===== Card Styles ===== */
+
+    .card {
+
+      background-color: var(--white);
+
+      border-radius: 16px;
+
+      padding: 30px;
+
+      margin: 25px 0;
+
+      box-shadow: var(--card-shadow);
+
+      transition: all 0.3s ease;
+
+      position: relative;
+
+      overflow: hidden;
+
+    }
+
+    
+
+    .card::before {
+
+      content: '';
+
+      position: absolute;
+
+      top: 0;
+
+      left: 0;
+
+      width: 5px;
+
+      height: 100%;
+
+      background: linear-gradient(to bottom, var(--primary), var(--secondary));
+
+      transition: width 0.3s ease;
+
+    }
+
+
+
+    .card:hover {
+
+      transform: translateY(-5px);
+
+      box-shadow: var(--hover-shadow);
+
+    }
+
+    
+
+    .card:hover::before {
+
+      width: 8px;
+
+    }
+
+
+
+    h2 {
+
+      color: var(--primary);
+
+      font-size: 1.8rem;
+
+      margin-bottom: 20px;
+
+      font-weight: 600;
+
+    }
+
+
+
+    h3 {
+
+      color: var(--primary);
+
+      font-size: 1.4rem;
+
+      margin: 25px 0 15px;
+
+      font-weight: 600;
+
+      position: relative;
+
+      padding-left: 15px;
+
+    }
+
+    
+
+    h3::before {
+
+      content: '';
+
+      position: absolute;
+
+      left: 0;
+
+      top: 50%;
+
+      transform: translateY(-50%);
+
+      width: 6px;
+
+      height: 6px;
+
+      background: var(--secondary);
+
+      border-radius: 50%;
+
+    }
+
+
+
+    p {
+
+      color: var(--text-light);
+
+      margin-bottom: 20px;
+
+      line-height: 1.7;
+
+    }
+
+
+
+    .lead {
+
+      color: var(--muted);
+
+      margin-bottom: 10px;
+
+    }
+
+
+
+    /* ===== Step Buttons ===== */
+
+    .step-buttons {
+
+      display: flex;
+
+      gap: 12px;
+
+      margin: 20px 0;
+
+      flex-wrap: wrap;
+
+    }
+
+
+
+    .step-btn {
+
+      padding: 10px 16px;
+
+      background: linear-gradient(to right, var(--primary), var(--primary-light));
+
+      color: var(--white);
+
+      border: none;
+
+      border-radius: 8px;
+
+      cursor: pointer;
+
+      transition: all 0.3s ease;
+
+      font-weight: 500;
+
+      box-shadow: 0 4px 8px rgba(30, 64, 175, 0.2);
+
+    }
+
+
+
+    .step-btn:hover {
+
+      background: linear-gradient(to right, var(--primary-dark), var(--primary));
+
+      transform: translateY(-2px);
+
+      box-shadow: 0 6px 12px rgba(30, 64, 175, 0.3);
+
+    }
+
+
+
+    /* ===== Solution Display ===== */
+
+    .solution {
+
+      background: var(--gray-light);
+
+      border-left: 4px solid var(--secondary);
+
+      padding: 20px;
+
+      margin: 15px 0;
+
+      border-radius: 0 8px 8px 0;
+
+      transition: all 0.3s ease;
+
+      position: relative;
+
+      overflow: hidden;
+
+    }
+
+    
+
+    .solution::before {
+
+      content: '';
+
+      position: absolute;
+
+      top: 0;
+
+      left: 0;
+
+      width: 100%;
+
+      height: 100%;
+
+      background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.5), transparent);
+
+      transform: translateX(-100%);
+
+    }
+
+    
+
+    .solution.active::before {
+
+      animation: shimmer 1.5s ease;
+
+    }
+
+
+
+    /* ===== Progress Bar ===== */
+
+    .progress-container {
+
+      width: 100%;
+
+      height: 8px;
+
+      background-color: var(--gray);
+
+      border-radius: 4px;
+
+      margin: 20px 0;
+
+      overflow: hidden;
+
+    }
+
+
+
+    .progress-bar {
+
+      height: 100%;
+
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+
+      border-radius: 4px;
+
+      width: 0%;
+
+      transition: width 1s ease;
+
+    }
+
+
+
+    /* ===== Graph Styles ===== */
+
+    .graph-container {
+
+      height: 300px;
+
+      margin: 15px 0;
+
+      background: var(--white);
+
+      border-radius: 10px;
+
+      padding: 15px;
+
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+
+      position: relative;
+
+    }
+
+
+
+    .graph {
+
+      width: 100%;
+
+      height: 100%;
+
+      position: relative;
+
+    }
+
+
+
+    .graph-axes {
+
+      position: absolute;
+
+      background-color: #64748b;
+
+    }
+
+
+
+    .graph-axes.x-axis {
+
+      width: 100%;
+
+      height: 2px;
+
+      top: 50%;
+
+      left: 0;
+
+    }
+
+
+
+    .graph-axes.y-axis {
+
+      width: 2px;
+
+      height: 100%;
+
+      top: 0;
+
+      left: 50%;
+
+    }
+
+
+
+    .graph-ellipse {
+
+      position: absolute;
+
+      border: 2px solid var(--primary);
+
+      border-radius: 50%;
+
+      top: 50%;
+
+      left: 50%;
+
+      transform: translate(-50%, -50%);
+
+      width: 80%;
+
+      height: 60%;
+
+    }
+
+
+
+    .graph-center {
+
+      position: absolute;
+
+      width: 8px;
+
+      height: 8px;
+
+      background-color: var(--primary);
+
+      border-radius: 50%;
+
+      transform: translate(-50%, -50%);
+
+    }
+
+
+
+    .graph-vertex {
+
+      position: absolute;
+
+      width: 10px;
+
+      height: 10px;
+
+      background-color: var(--accent);
+
+      border-radius: 50%;
+
+      transform: translate(-50%, -50%);
+
+    }
+
+
+
+    .graph-focus {
+
+      position: absolute;
+
+      width: 8px;
+
+      height: 8px;
+
+      background-color: var(--secondary);
+
+      border-radius: 50%;
+
+      transform: translate(-50%, -50%);
+
+    }
+
+
+
+    /* ===== Self-Care Notes ===== */
+
+    .self-care {
+
+      background: linear-gradient(135deg, #e0f2fe, #f0f9ff);
+
+      border-radius: 12px;
+
+      padding: 20px;
+
+      margin: 25px 0;
+
+      text-align: center;
+
+      border-left: 5px solid var(--accent);
+
+      animation: pulse 3s infinite;
+
+    }
+
+
+
+    .self-care h4 {
+
+      color: var(--accent);
+
+      margin-bottom: 10px;
+
+      font-size: 1.3rem;
+
+    }
+
+
+
+    .self-care p {
+
+      color: var(--text);
+
+      font-size: 1.1rem;
+
+      margin-bottom: 0;
+
+    }
+
+
+
+    /* ===== Visual Elements ===== */
+
+    .math-emoji {
+
+      font-size: 2rem;
+
+      margin: 0 10px;
+
+      animation: float 3s ease-in-out infinite;
+
+    }
+
+
+
+    .visual-element {
+
+      text-align: center;
+
+      margin: 20px 0;
+
+    }
+
+
+
+    .emoji-row {
+
+      display: flex;
+
+      justify-content: center;
+
+      gap: 15px;
+
+      margin: 15px 0;
+
+    }
+
+
+
+    /* Coordinate Visuals */
+
+    .concept-visual {
+
+      display: flex;
+
+      justify-content: center;
+
+      margin: 15px 0;
+
+    }
+
+
+
+    .coordinate-visual {
+
+      position: relative;
+
+      width: 280px;
+
+      height: 200px;
+
+      background: #fff;
+
+      border-radius: 12px;
+
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+
+      overflow: hidden;
+
+    }
+
+
+
+    .grid-lines {
+
+      position: absolute;
+
+      width: 100%;
+
+      height: 100%;
+
+      background-image: linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
+
+      background-size: 20px 20px;
+
+    }
+
+
+
+    .axis {
+
+      position: absolute;
+
+      background: #333;
+
+    }
+
+
+
+    .x-axis {
+
+      bottom: 50%;
+
+      left: 0;
+
+      width: 100%;
+
+      height: 2px;
+
+    }
+
+
+
+    .y-axis {
+
+      left: 50%;
+
+      top: 0;
+
+      width: 2px;
+
+      height: 100%;
+
+    }
+
+
+
+    .point {
+
+      position: absolute;
+
+      width: 12px;
+
+      height: 12px;
+
+      border-radius: 50%;
+
+      transform: translate(-50%, -50%);
+
+    }
+
+
+
+    .point-label {
+
+      position: absolute;
+
+      font-size: 12px;
+
+      font-weight: bold;
+
+      transform: translate(5px, -5px);
+
+    }
+
+
+
+    .line {
+
+      position: absolute;
+
+      height: 2px;
+
+      transform-origin: left center;
+
+    }
+
+
+
+    /* Concept visuals */
+
+    .visual-box {
+
+      width: 220px;
+
+      height: 160px;
+
+      background: #fff;
+
+      border-radius: 10px;
+
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+
+      padding: 10px;
+
+      position: relative;
+
+      overflow: hidden;
+
+    }
+
+
+
+    /* ===== Chapter 6 Specific Styles ===== */
+
+    .definition {
+
+      background: #f3fbff;
+
+      border-left: 6px solid var(--primary);
+
+      padding: 12px;
+
+      border-radius: 8px;
+
+      margin-top: 10px;
+
+      color: var(--text);
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 15px;
+
+    }
+
+    .definition-content{flex:1}
+
+    .definition-cartoon{flex-shrink:0;width:80px;height:80px;display:flex;align-items:center;justify-content:center}
+
+
+
+    .controls {
+
+      display: flex;
+
+      gap: 8px;
+
+      flex-wrap: wrap;
+
+      margin-top: 10px;
+
+    }
+
+
+
+    .example {
+
+      background: #fff;
+
+      padding: 12px;
+
+      border-radius: 10px;
+
+      margin-top: 12px;
+
+      border-left: 6px solid #bfe9ff;
+
+    }
+
+
+
+    .big {
+
+      font-weight: 700;
+
+      color: var(--primary);
+
+      margin-bottom: 6px;
+
+    }
+
+
+
+    .step-block {
+
+      margin-top: 10px;
+
+    }
+
+
+
+    .step-line {
+
+      display: none;
+
+      padding: 10px;
+
+      border-radius: 8px;
+
+      background: #f7fbff;
+
+      margin-top: 8px;
+
+      border-left: 4px solid #d6eefc;
+
+      animation: slideUp 0.5s ease forwards;
+
+    }
+
+
+
+    .next-step {
+
+      margin-top: 8px;
+
+      background: var(--primary);
+
+      color: white;
+
+      padding: 8px 10px;
+
+      border-radius: 8px;
+
+      border: none;
+
+      cursor: pointer;
+
+      transition: all 0.3s ease;
+
+    }
+
+    
+
+    .next-step:hover {
+
+      background: var(--primary-dark);
+
+      transform: translateY(-2px);
+
+      box-shadow: 0 4px 8px rgba(30, 64, 175, 0.3);
+
+    }
+
+
+
+    input[type="text"] {
+
+      padding: 10px;
+
+      border-radius: 8px;
+
+      border: 1px solid #d9ecff;
+
+      width: 100%;
+
+      font-size: 15px;
+
+    }
+
+    input[type="number"] {
+
+      padding: 10px;
+
+      border-radius: 8px;
+
+      border: 1px solid #d9ecff;
+
+      max-width: 100px;
+
+      font-size: 15px;
+
+    }
+
+
+
+    .row {
+
+      display: flex;
+
+      gap: 10px;
+
+      align-items: center;
+
+      margin-top: 8px;
+
+      flex-wrap: wrap;
+
+    }
+
+
+
+    button.check {
+
+      background: var(--primary);
+
+      color: white;
+
+      border: none;
+
+      padding: 10px 14px;
+
+      border-radius: 8px;
+
+      cursor: pointer;
+
+      transition: all 0.3s ease;
+
+    }
+
+    
+
+    button.check:hover {
+
+      background: var(--primary-dark);
+
+      transform: translateY(-2px);
+
+      box-shadow: 0 4px 8px rgba(30, 64, 175, 0.3);
+
+    }
+
+
+
+    .result {
+
+      margin-top: 8px;
+
+      padding: 10px;
+
+      border-radius: 8px;
+
+      display: none;
+
+      animation: slideUp 0.5s ease forwards;
+
+    }
+
+
+
+    .result.good {
+
+      background: #e6fff0;
+
+      border-left: 4px solid #2fb46a;
+
+    }
+
+
+
+    .result.warn {
+
+      background: #fff7e6;
+
+      border-left: 4px solid #ffb74d;
+
+    }
+
+
+
+    .calm {
+
+      margin-top: 14px;
+
+      padding: 14px;
+
+      border-radius: 10px;
+
+      background: linear-gradient(180deg, #fff8f0, #f8ffff);
+
+      text-align: center;
+
+      border: 1px solid #e6f7ff;
+
+    }
+
+
+
+    .breath {
+
+      width: 48px;
+
+      height: 48px;
+
+      background: #ffd08a;
+
+      border-radius: 50%;
+
+      margin: 12px auto;
+
+      animation: breathe 4s infinite ease-in-out;
+
+    }
+
+
+
+    .wave {
+
+      font-size: 36px;
+
+      display: inline-block;
+
+      animation: wavey 2.6s infinite;
+
+    }
+
+
+
+    .divider {
+
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+
+      color: white;
+
+      padding: 10px 14px;
+
+      border-radius: 10px;
+
+      margin: 18px 0;
+
+      font-weight: 700;
+
+      box-shadow: 0 6px 18px rgba(3, 102, 214, 0.08);
+
+      text-align: center;
+
+      animation: slideUp 0.8s ease forwards;
+
+    }
+
+
+
+    .small-note {
+
+      font-size: 13px;
+
+      color: var(--text-light);
+
+      margin-top: 6px;
+
+    }
+
+
+
+    .funny-note {
+
+      font-size: 14px;
+
+      color: var(--primary);
+
+      margin-top: 6px;
+
+    }
+
+
+
+    .scenario {
+
+      display: none;
+
+    }
+
+
+
+    .try-yourself {
+
+      background: #fffaf0;
+
+      border-radius: 10px;
+
+      padding: 15px;
+
+      margin: 15px 0;
+
+      border: 1px dashed rgba(245,158,11,0.16);
+
+      animation: slideUp 0.8s ease forwards;
+
+    }
+
+
+
+    .try-title {
+
+      font-weight: 700;
+
+      color: var(--primary);
+
+      margin-bottom: 10px;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+    }
+
+
+
+    .example-container {
+
+      display: grid;
+
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+
+      gap: 15px;
+
+      margin-top: 15px;
+
+    }
+
+
+
+    .example-box {
+
+      background: var(--pastel-bg);
+
+      padding: 15px;
+
+      border-radius: 10px;
+
+      border: 1px solid rgba(30,64,175,0.04);
+
+      animation: slideUp 0.8s ease forwards;
+
+    }
+
+
+
+    .motivate{
+
+      background:linear-gradient(180deg,#fff,#fffaf6);
+
+      border-radius:10px;
+
+      padding:10px;
+
+      border-left:6px solid var(--accent);
+
+      margin-top:12px;
+
+      display:flex;
+
+      align-items:center;
+
+      gap:12px;
+
+      animation: slideUp 0.8s ease forwards;
+
+    }
+
+    .motivate .emoji{font-size:24px}
+
+    .motivate .text{font-weight:700;color:var(--primary);font-size:0.95rem}
+
+
+
+    /* ===== Interactive Games ===== */
+
+    .game-card-grid {
+
+      display: grid;
+
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+
+      gap: 20px;
+
+      margin-top: 20px;
+
+    }
+
+    
+
+    .game-card-style{
+
+      display:flex;
+
+      gap:16px;
+
+      align-items:center;
+
+      background:var(--white);
+
+      padding:20px;
+
+      border-radius:16px;
+
+      box-shadow:0 8px 25px rgba(2,6,23,0.08);
+
+      cursor:pointer;
+
+      border:1px solid rgba(30,64,175,0.04);
+
+      transition:all 0.3s ease;
+
+      position:relative;
+
+      overflow:hidden;
+
+      animation: slideUp 0.8s ease forwards;
+
+    }
+
+    .game-card-style:hover{
+
+      transform:translateY(-8px);
+
+      box-shadow:0 15px 35px rgba(30,64,175,0.15)
+
+    }
+
+    .game-card-style::before{
+
+      content:"";
+
+      position:absolute;
+
+      top:0;
+
+      left:0;
+
+      width:100%;
+
+      height:5px;
+
+      background:linear-gradient(90deg,var(--primary),var(--accent))
+
+    }
+
+    .game-card-left{
+
+      min-width:110px;
+
+      display:flex;
+
+      flex-direction:column;
+
+      align-items:center;
+
+      gap:8px
+
+    }
+
+    .svg-icon{
+
+      width:100px;
+
+      height:100px;
+
+      border-radius:16px;
+
+      background:linear-gradient(180deg,#fff,#fffaf6);
+
+      display:flex;
+
+      align-items:center;
+
+      justify-content:center;
+
+      box-shadow:0 8px 20px rgba(30,64,175,0.08);
+
+      border:2px solid rgba(255,255,255,0.7);
+
+      overflow:hidden;
+
+      font-size: 48px;
+
+      color: var(--primary);
+
+    }
+
+    .game-card-title{
+
+      font-weight:800;
+
+      color:var(--primary);
+
+      font-size:1.2rem;
+
+      margin-bottom:6px
+
+    }
+
+    .game-card-desc{
+
+      color:var(--muted);
+
+      font-size:0.95rem;
+
+      line-height:1.4
+
+    }
+
+    .start-btn {
+
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+
+      color: white;
+
+      border: none;
+
+      padding: 10px 20px;
+
+      border-radius: 999px;
+
+      cursor: pointer;
+
+      font-weight: 700;
+
+      transition: all 0.3s ease;
+
+      box-shadow: 0 4px 12px rgba(30,64,175,0.2);
+
+    }
+
+    .start-btn:hover {
+
+      transform: scale(1.05);
+
+      box-shadow: 0 6px 16px rgba(30,64,175,0.3);
+
+    }
+
+
+
+    .game-play-area {
+
+      display: none;
+
+      margin-top: 20px;
+
+      padding: 20px;
+
+      border: 2px solid var(--accent);
+
+      border-radius: 12px;
+
+      background: #fffafc;
+
+      text-align: center;
+
+      animation: slideUp 0.8s ease forwards;
+
+    }
+
+    
+
+    .score-board {
+
+      font-weight: 700;
+
+      color: var(--primary);
+
+      background: #f0f9ff;
+
+      padding: 6px 10px;
+
+      border-radius: 6px;
+
+      display: inline-block;
+
+      margin-bottom: 10px;
+
+    }
+
+    
+
+    .game-message {
+
+      margin-top: 12px;
+
+      color: var(--primary);
+
+      font-weight: 600;
+
+    }
+
+    
+
+    .game-input-group {
+
+        display: flex;
+
+        justify-content: center;
+
+        align-items: center;
+
+        gap: 10px;
+
+        margin-bottom: 15px;
+
+        font-weight: 600;
+
+        color: var(--primary);
+
+    }
+
+    
+
+    .game-icon-visual {
+
+      font-size: 48px;
+
+      margin-bottom: 10px;
+
+    }
+
+    
+
+    /* Midpoint game specific styles - restoring original styling */
+
+    .midpoint-grid {
+
+      display: flex;
+
+      gap: 12px;
+
+      flex-wrap: wrap;
+
+      justify-content: center;
+
+      margin-top: 12px;
+
+    }
+
+    
+
+    .midpoint-source {
+
+      background: #fff0f6;
+
+      border-radius: 8px;
+
+      padding: 12px;
+
+      border: 2px dashed rgba(236,72,153,0.18);
+
+      cursor: grab;
+
+      min-width: 150px;
+
+      text-align: center;
+
+      margin-bottom: 10px;
+
+    }
+
+    
+
+    .midpoint-target {
+
+      background: #eef9ff;
+
+      border-radius: 8px;
+
+      padding: 12px;
+
+      border: 2px solid rgba(59,130,246,0.12);
+
+      min-width: 150px;
+
+      text-align: center;
+
+      margin-bottom: 10px;
+
+    }
+
+    
+
+    .midpoint-source:hover, .midpoint-target:hover {
+
+      transform: translateY(-2px);
+
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+
+    }
+
+    
+
+    /* Celebration Overlay */
+
+    .celebration {
+
+      position: fixed;
+
+      top: 0;
+
+      left: 0;
+
+      width: 100%;
+
+      height: 100%;
+
+      pointer-events: none;
+
+      z-index: 2000;
+
+      display: none;
+
+    }
+
+    
+
+    .confetti {
+
+      position: absolute;
+
+      width: 10px;
+
+      height: 10px;
+
+      background: #f00;
+
+      opacity: 0;
+
+    }
+
+    
+
+    .hurray-text {
+
+      position: absolute;
+
+      top: 40%;
+
+      left: 50%;
+
+      transform: translate(-50%, -50%);
+
+      font-size: 48px;
+
+      font-weight: bold;
+
+      color: #ff6b6b;
+
+      text-shadow: 2px 2px 0 #ffd166, 4px 4px 0 #06d6a0;
+
+      opacity: 0;
+
+    }
+
+
+
+    /* Party popper */
+
+    .party-popper {
+
+      position: absolute;
+
+      font-size: 30px;
+
+      opacity: 0;
+
+    }
+
+    
+
+    /* ===== Footer ===== */
+
+    .footer {
+
+      background: linear-gradient(to bottom, var(--primary-dark), #0f172a);
+
+      color: var(--white);
+
+      padding: 80px 0 30px;
+
+      position: relative;
+
+    }
+
+
+
+    .footer::before {
+
+      content: '';
+
+      position: absolute;
+
+      top: 0;
+
+      left: 0;
+
+      width: 100%;
+
+      height: 10px;
+
+      background: linear-gradient(90deg, var(--secondary), var(--primary));
+
+    }
+
+
+
+    .footer-content {
+
+      display: grid;
+
+      grid-template-columns: repeat(4, 1fr);
+
+      gap: 40px;
+
+      margin-bottom: 60px;
+
+    }
+
+
+
+    .footer-about {
+
+      grid-column: span 2;
+
+    }
+
+
+
+    .footer-logo {
+
+      font-size: 1.8rem;
+
+      font-weight: 700;
+
+      margin-bottom: 20px;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 10px;
+
+    }
+
+
+
+    .footer-logo-icon {
+
+      width: 40px;
+
+      height: 40px;
+
+      background: linear-gradient(135deg, var(--white), var(--gray));
+
+      color: var(--primary);
+
+      border-radius: 10px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      font-weight: 700;
+
+      font-size: 1.2rem;
+
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    }
+
+
+
+    .footer-about p {
+
+      opacity: 0.8;
+
+      margin-bottom: 25px;
+
+      line-height: 1.7;
+
+    }
+
+
+
+    .social-links {
+
+      display: flex;
+
+      gap: 15px;
+
+    }
+
+
+
+    .social-link {
+
+      width: 40px;
+
+      height: 40px;
+
+      border-radius: 50%;
+
+      background-color: rgba(255, 255, 255, 0.1);
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      transition: all 0.3s ease;
+
+    }
+
+
+
+    .social-link:hover {
+
+      background: linear-gradient(135deg, var(--secondary), var(--accent));
+
+      transform: translateY(-3px);
+
+      box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
+
+    }
+
+
+
+    .footer-links h3 {
+
+      font-size: 1.2rem;
+
+      margin-bottom: 25px;
+
+      position: relative;
+
+      padding-bottom: 10px;
+
+      color: var(--white);
+
+    }
+
+
+
+    .footer-links h3::after {
+
+      content: '';
+
+      position: absolute;
+
+      bottom: 0;
+
+      left: 0;
+
+      width: 40px;
+
+      height: 3px;
+
+      background: linear-gradient(to right, var(--secondary), var(--accent));
+
+    }
+
+
+
+    .footer-links ul {
+
+      list-style: none;
+
+    }
+
+
+
+    .footer-links li {
+
+      margin-bottom: 12px;
+
+    }
+
+
+
+    .footer-links a {
+
+      opacity: 0.8;
+
+      transition: all 0.3s ease;
+
+      position: relative;
+
+      padding-left: 15px;
+
+    }
+
+
+
+    .footer-links a::before {
+
+      content: '→';
+
+      position: absolute;
+
+      left: 0;
+
+      opacity: 0;
+
+      transition: all 0.3s ease;
+
+    }
+
+
+
+    .footer-links a:hover {
+
+      opacity: 1;
+
+      padding-left: 20px;
+
+    }
+
+
+
+    .footer-links a:hover::before {
+
+      opacity: 1;
+
+      left: -5px;
+
+    }
+
+
+
+    .footer-bottom {
+
+      text-align: center;
+
+      padding-top: 30px;
+
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+    }
+
+
+
+    .footer-bottom p {
+
+      opacity: 0.7;
+
+      margin-bottom: 20px;
+
+    }
+
+
+
+    .footer-tags {
+
+      display: flex;
+
+      justify-content: center;
+
+      gap: 15px;
+
+      flex-wrap: wrap;
+
+    }
+
+
+
+    .tag {
+
+      background-color: rgba(255, 255, 255, 0.1);
+
+      padding: 5px 15px;
+
+      border-radius: 50px;
+
+      font-size: 0.9rem;
+
+      transition: all 0.3s ease;
+
+    }
+
+
+
+    .tag:hover {
+
+      background: linear-gradient(to right, var(--secondary), var(--accent));
+
+      color: var(--text);
+
+      transform: translateY(-2px);
+
+    }
+
+    
+
+    /* ===== Floating Action Button ===== */
+
+    .fab {
+
+      position: fixed;
+
+      bottom: 30px;
+
+      right: 30px;
+
+      width: 60px;
+
+      height: 60px;
+
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+
+      color: var(--white);
+
+      border-radius: 50%;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      font-size: 1.5rem;
+
+      box-shadow: 0 6px 15px rgba(30, 64, 175, 0.3);
+
+      cursor: pointer;
+
+      z-index: 999;
+
+      transition: all 0.3s ease;
+
+      animation: pulse 2s infinite;
+
+    }
+
+    
+
+    .fab:hover {
+
+      transform: scale(1.1) rotate(90deg);
+
+      box-shadow: 0 8px 20px rgba(30, 64, 175, 0.4);
+
+    }
+
+
+
+    /* ===== Responsive Styles ===== */
+
+    @media (max-width: 992px) {
+
+      .nav-links {
+
+        gap: 20px;
+
+      }
+
+      
+
+      .footer-content {
+
+        grid-template-columns: repeat(2, 1fr);
+
+      }
+
+      
+
+      .footer-about {
+
+        grid-column: span 2;
+
+      }
+
+      
+
+      .scenario .card-mini {
+
+        width: 45%;
+
+      }
+
+    }
+
+
+
+    @media (max-width: 768px) {
+
+      .navbar {
+
+        padding: 15px 0;
+
+      }
+
+      
+
+      .nav-links {
+
+        display: none;
+
+      }
+
+      
+
+      .mobile-menu-btn {
+
+        display: block;
+
+      }
+
+      
+
+      .hero h1 {
+
+        font-size: 2.5rem;
+
+      }
+
+      
+
+      .hero-buttons {
+
+        flex-direction: column;
+
+        gap: 15px;
+
+      }
+
+      
+
+      .footer-content {
+
+        grid-template-columns: 1fr;
+
+      }
+
+      
+
+      .footer-about {
+
+        grid-column: span 1;
+
+      }
+
+      
+
+      .scenario .card-mini {
+
+        width: 100%;
+
+      }
+
+      
+
+      .header-sound-controls {
+
+        right: 60px;
+
+      }
+
+    }
+
+
+
+    @media (max-width: 576px) {
+
+      .section-title h2 {
+
+        font-size: 2rem;
+
+      }
+
+      
+
+      .hero {
+
+        padding: 150px 0 80px;
+
+      }
+
+      
+
+      .hero h1 {
+
+        font-size: 2rem;
+
+      }
+
+      
+
+      .hero p {
+
+        font-size: 1rem;
+
+      }
+
+      
+
+      .header-sound-controls {
+
+        right: 50px;
+
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <!-- Celebration Overlay -->
+
+  <div class="celebration" id="celebration"></div>
+
+
+
+  <!-- Header with updated navigation -->
+
+  <header>
+
+    <div class="container">
+
+      <nav class="navbar">
+
+        <a href="#" class="logo">
+
+          <div class="logo-icon">S</div>
+
+          <span class="logo-text">Sentellect</span>
+
+        </a>
+
+        
+
+        <ul class="nav-links">
+
+          <li><a href="#" class="active">Home</a></li>
+
+          <li><a href="#circles">Circles</a></li>
+
+          <li><a href="#tangents">Tangents & Normals</a></li>
+
+          <li><a href="#ellipses">Ellipses</a></li>
+
+          <li><a href="#applications">Applications</a></li>
+
+          <li><a href="#games">Games</a></li>
+
+        </ul>
+
+        
+
+        <!-- Sound controls in header - moved to top right -->
+
+        <div class="header-sound-controls">
+
+          <button class="sound-btn" id="toggleSound" title="Toggle sound effects">
+
+            <i class="fas fa-volume-up"></i>
+
+          </button>
+
+        </div>
+
+        
+
+        <button class="mobile-menu-btn">
+
+          <i class="fas fa-bars"></i>
+
+        </button>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+
+
+  <!-- HERO -->
+
+  <section class="hero" role="banner" aria-label="Conic Sections">
+
+    <div class="particles">
+
+      <div class="particle" style="top: 20%; left: 5%; width: 10px; height: 10px; animation-delay: 0s;"></div>
+
+      <div class="particle" style="top: 60%; left: 15%; width: 15px; height: 15px; animation-delay: 1s;"></div>
+
+      <div class="particle" style="top: 30%; right: 10%; width: 12px; height: 12px; animation-delay: 2s;"></div>
+
+      <div class="particle" style="bottom: 20%; left: 20%; width: 8px; height: 8px; animation-delay: 3s;"></div>
+
+      <div class="particle" style="bottom: 40%; right: 15%; width: 14px; height: 14px; animation-delay: 4s;"></div>
+
+    </div>
+
+    
+
+    <div class="floating-shape shape-1"></div>
+
+    <div class="floating-shape shape-2"></div>
+
+    <div class="floating-shape shape-3"></div>
+
+    
+
+    <div class="container">
+
+      <div class="hero-content">
+
+        <h1 class="animate">Conic Sections <span>High-Stress Version</span></h1>
+
+        <p class="animate delay-1">Master circles, tangents, normals, and ellipses with interactive examples, visual diagrams, and stress-relief games.</p>
+
+        <div class="hero-buttons">
+
+          <a href="#circles" class="btn btn-primary animate delay-2">Start Learning</a>
+
+          <a href="#games" class="btn btn-secondary animate delay-3">Open Games</a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- MAIN CONTENT -->
+
+  <div class="container" style="padding-bottom:60px;">
+
+
+
+    <!-- Welcome card -->
+
+    <div class="card animate">
+
+      <h2>Welcome to Conic Sections (High-Stress Version)</h2>
+
+      <p class="lead">This module contains comprehensive examples, interactive diagrams, and stress-relief games to help you master conic sections with confidence.</p>
+
+      
+
+      <!-- Welcome visual -->
+
+      <div class="concept-visual">
+
+        <div class="visual-box" style="background:linear-gradient(135deg, #e3f2fd, #f3e5f5); display:flex; align-items:center; justify-content:center;">
+
+          <div style="text-align:center">
+
+            <div style="font-size:40px; margin-bottom:10px">📐</div>
+
+            <div style="font-weight:bold; color:var(--primary)">Let's Explore Conic Sections!</div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- ================= CIRCLES ================= -->
+
+    <div id="circles" class="divider">1. Circles</div>
+
+    <section class="card animate delay-1">
+
+      <h2>Circle Equations and Properties</h2>
+
+      <p class="lead">A circle is the set of all points equidistant from a fixed point called the center. Understanding circle equations helps us solve geometric problems.</p>
+
+
+
+      <div class="definition">
+
+        <div class="definition-content">
+
+          <strong>Standard Forms of Circle Equations:</strong>
+
+          <br>• Center at origin: \(x^2 + y^2 = r^2\)
+
+          <br>• Center at (h,k): \((x - h)^2 + (y - k)^2 = r^2\)
+
+          <br>• General form: \(x^2 + y^2 + 2gx + 2fy + c = 0\)
+
+          <div style="margin-top:8px; display:flex; align-items:center; gap:8px;">
+
+            <span style="font-size:24px">🎯</span>
+
+            <span>Every point on a circle is equally distant from the center!</span>
+
+          </div>
+
+        </div>
+
+        <div class="definition-cartoon">
+
+          <!-- Circle cartoon -->
+
+          <svg viewBox="0 0 100 100" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+
+            <!-- Circle -->
+
+            <circle cx="50" cy="50" r="40" stroke="#3b82f6" stroke-width="2" fill="none" />
+
+            
+
+            <!-- Center -->
+
+            <circle cx="50" cy="50" r="4" fill="#ec4899" />
+
+            <text x="50" y="45" font-size="8" fill="#ec4899" text-anchor="middle">Center</text>
+
+            
+
+            <!-- Radius -->
+
+            <line x1="50" y1="50" x2="90" y2="50" stroke="#f59e0b" stroke-width="2" />
+
+            <text x="70" y="45" font-size="6" fill="#f59e0b" text-anchor="middle">Radius</text>
+
+            
+
+            <!-- Point on circle -->
+
+            <circle cx="90" cy="50" r="3" fill="#10b981" />
+
+            <text x="90" y="45" font-size="6" fill="#10b981" text-anchor="middle">Point</text>
+
+          </svg>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- Circle Visual -->
+
+      <div class="concept-visual">
+
+        <div class="coordinate-visual">
+
+          <div class="grid-lines"></div>
+
+          <div class="x-axis"></div>
+
+          <div class="y-axis"></div>
+
+          <!-- Circle -->
+
+          <div style="position:absolute; top:50%; left:50%; width:60%; height:60%; border:2px solid #3b82f6; border-radius:50%; transform:translate(-50%, -50%);"></div>
+
+          <!-- Center -->
+
+          <div class="point" style="background:#ec4899; top:50%; left:50%;"></div>
+
+          <div class="point-label" style="top:50%; left:50%; color:#ec4899; font-size:10px;">Center</div>
+
+          <!-- Point on circle -->
+
+          <div class="point" style="background:#10b981; top:50%; left:80%;"></div>
+
+          <div class="point-label" style="top:50%; left:80%; color:#10b981; font-size:10px;">Point</div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- Examples -->
+
+      <div class="example-container">
+
+        <div class="example-box">
+
+          <div class="big">Example: Find center and radius of \(x^2 + y^2 + 12x - 10y = 0\)</div>
+
+          <div class="controls">
+
+            <button class="step-btn" onclick="startSteps('circle1'); playSound('concept')">Show Steps</button>
+
+          </div>
+
+          <div class="step-block" id="circle1">
+
+            <div class="step-line" style="display:none"><b>Step 1:</b> Group x and y terms: \((x^2 + 12x) + (y^2 - 10y) = 0\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 2:</b> Complete the square for x: \(x^2 + 12x = (x + 6)^2 - 36\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 3:</b> Complete the square for y: \(y^2 - 10y = (y - 5)^2 - 25\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 4:</b> Substitute back: \((x + 6)^2 - 36 + (y - 5)^2 - 25 = 0\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 5:</b> Simplify: \((x + 6)^2 + (y - 5)^2 = 61\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 6:</b> Center = (-6, 5), Radius = √61</div>
+
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('circle1'); playSound('click')">Next Step</button></div>
+
+          </div>
+
+          <div class="graph-container">
+
+            <div class="graph" id="circle1-visual">
+
+              <!-- Graph will be drawn here by JavaScript -->
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="example-box">
+
+          <div class="big">Example: Find circle through points A(4,5), B(-4,-3), C(8,-3)</div>
+
+          <div class="controls">
+
+            <button class="step-btn" onclick="startSteps('circle2'); playSound('concept')">Show Steps</button>
+
+          </div>
+
+          <div class="step-block" id="circle2">
+
+            <div class="step-line" style="display:none"><b>Step 1:</b> General form: \(x^2 + y^2 + 2gx + 2fy + c = 0\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 2:</b> For A(4,5): \(16 + 25 + 8g + 10f + c = 0\) → \(8g + 10f + c = -41\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 3:</b> For B(-4,-3): \(16 + 9 - 8g - 6f + c = 0\) → \(-8g - 6f + c = -25\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 4:</b> For C(8,-3): \(64 + 9 + 16g - 6f + c = 0\) → \(16g - 6f + c = -73\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 5:</b> Solve system: g = -2, f = 1, c = -35</div>
+
+            <div class="step-line" style="display:none"><b>Step 6:</b> Equation: \(x^2 + y^2 - 4x + 2y - 35 = 0\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 7:</b> Standard form: \((x - 2)^2 + (y + 1)^2 = 40\)</div>
+
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('circle2'); playSound('click')">Next Step</button></div>
+
+          </div>
+
+          <div class="graph-container">
+
+            <div class="graph" id="circle2-visual">
+
+              <!-- Graph will be drawn here by JavaScript -->
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- Try yourself -->
+
+      <div class="try-yourself">
+
+        <div class="try-title">✨ Try It Yourself</div>
+
+        <p>Find center and radius of: \(x^2 + y^2 - 8x + 6y + 9 = 0\)</p>
+
+        <div class="row">
+
+          <input id="tcircle1" placeholder="Type as (h,k), r">
+
+          <button class="check" onclick="checkCircleAnswer('tcircle1','(4,-3), 4','tcircle1_res'); playSound('success')">Check</button>
+
+        </div>
+
+        <div id="tcircle1_res" class="result" style="display:none">
+
+          <p><b>Solution:</b> Complete the square: \((x-4)^2 + (y+3)^2 = 16\), Center = (4, -3), Radius = 4</p>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- Motivational message -->
+
+      <div class="motivate">
+
+        <div class="emoji">🌼✨</div>
+
+        <div class="text" style="color:#ec4899;">Great job! You're mastering circle equations like a pro! 🎯</div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ================= TANGENTS AND NORMALS ================= -->
+
+    <div id="tangents" class="divider">2. Tangents and Normals</div>
+
+    <section class="card animate delay-2">
+
+      <h2>Tangents and Normals to Circles</h2>
+
+      <p class="lead">A tangent touches a circle at exactly one point and is perpendicular to the radius at that point. The normal is perpendicular to the tangent and passes through the center.</p>
+
+
+
+      <div class="definition">
+
+        <div class="definition-content">
+
+          <strong>Key Formulas:</strong>
+
+          <br>• Tangent at (x₁,y₁) on \(x^2 + y^2 = r^2\): \(xx₁ + yy₁ = r^2\)
+
+          <br>• Tangent at (x₁,y₁) on general circle: \(xx₁ + yy₁ + g(x+x₁) + f(y+y₁) + c = 0\)
+
+          <br>• Normal passes through center and point of contact
+
+          <div style="margin-top:8px; display:flex; align-items:center; gap:8px;">
+
+            <span style="font-size:24px">📏</span>
+
+            <span>Tangent is perpendicular to radius at point of contact!</span>
+
+          </div>
+
+        </div>
+
+        <div class="definition-cartoon">
+
+          <!-- Tangent cartoon -->
+
+          <svg viewBox="0 0 100 100" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+
+            <!-- Circle -->
+
+            <circle cx="50" cy="50" r="40" stroke="#3b82f6" stroke-width="2" fill="none" />
+
+            
+
+            <!-- Center -->
+
+            <circle cx="50" cy="50" r="4" fill="#ec4899" />
+
+            
+
+            <!-- Point of contact -->
+
+            <circle cx="90" cy="50" r="4" fill="#10b981" />
+
+            
+
+            <!-- Radius -->
+
+            <line x1="50" y1="50" x2="90" y2="50" stroke="#f59e0b" stroke-width="2" />
+
+            
+
+            <!-- Tangent -->
+
+            <line x1="70" y1="30" x2="70" y2="70" stroke="#ec4899" stroke-width="2" />
+
+            
+
+            <!-- Labels -->
+
+            <text x="50" y="30" font-size="6" fill="#f59e0b" text-anchor="middle">Radius</text>
+
+            <text x="75" y="40" font-size="6" fill="#ec4899" text-anchor="middle">Tangent</text>
+
+            <text x="90" y="45" font-size="6" fill="#10b981" text-anchor="middle">Point of Contact</text>
+
+          </svg>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- Tangent Visual -->
+
+      <div class="concept-visual">
+
+        <div class="coordinate-visual">
+
+          <div class="grid-lines"></div>
+
+          <div class="x-axis"></div>
+
+          <div class="y-axis"></div>
+
+          <!-- Circle -->
+
+          <div style="position:absolute; top:50%; left:50%; width:60%; height:60%; border:2px solid #3b82f6; border-radius:50%; transform:translate(-50%, -50%);"></div>
+
+          <!-- Center -->
+
+          <div class="point" style="background:#ec4899; top:50%; left:50%;"></div>
+
+          <!-- Point of contact -->
+
+          <div class="point" style="background:#10b981; top:50%; left:80%;"></div>
+
+          <!-- Radius -->
+
+          <div class="line" style="background:#f59e0b; top:50%; left:50%; width:30%;"></div>
+
+          <!-- Tangent -->
+
+          <div class="line" style="background:#ec4899; top:50%; left:80%; width:20%; transform:rotate(90deg);"></div>
+
+          <div class="point-label" style="top:50%; left:80%; color:#10b981; font-size:10px;">Point of Contact</div>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="example-container">
+
+        <div class="example-box">
+
+          <div class="big">Example: Tangent and normal to \(x^2 + y^2 = 25\) at (4,3)</div>
+
+          <div class="controls">
+
+            <button class="step-btn" onclick="startSteps('tangent1'); playSound('concept')">Show Steps</button>
+
+          </div>
+
+          <div class="step-block" id="tangent1">
+
+            <div class="step-line" style="display:none"><b>Step 1:</b> Verify point lies on circle: \(4^2 + 3^2 = 16 + 9 = 25\) ✓</div>
+
+            <div class="step-line" style="display:none"><b>Step 2:</b> Equation of tangent: \(xx₁ + yy₁ = r^2\) → \(4x + 3y = 25\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 3:</b> Slope of tangent: From \(4x + 3y = 25\) → \(y = (-4/3)x + 25/3\), slope = -4/3</div>
+
+            <div class="step-line" style="display:none"><b>Step 4:</b> Slope of radius: From center (0,0) to (4,3) → slope = 3/4</div>
+
+            <div class="step-line" style="display:none"><b>Step 5:</b> Slope of normal = negative reciprocal of tangent slope = 3/4</div>
+
+            <div class="step-line" style="display:none"><b>Step 6:</b> Equation of normal: \(y - 3 = (3/4)(x - 4)\) → \(3x - 4y = 0\)</div>
+
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('tangent1'); playSound('click')">Next Step</button></div>
+
+          </div>
+
+          <div class="graph-container">
+
+            <div class="graph" id="tangent1-visual">
+
+              <!-- Graph will be drawn here by JavaScript -->
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="example-box">
+
+          <div class="big">Example: Show 3x - 2y = 0 is tangent to \(x^2 + y^2 + 6x - 4y = 0\)</div>
+
+          <div class="controls">
+
+            <button class="step-btn" onclick="startSteps('tangent2'); playSound('concept')">Show Steps</button>
+
+          </div>
+
+          <div class="step-block" id="tangent2">
+
+            <div class="step-line" style="display:none"><b>Step 1:</b> Find center and radius of circle</div>
+
+            <div class="step-line" style="display:none"><b>Step 2:</b> Complete square: \((x^2 + 6x) + (y^2 - 4y) = 0\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 3:</b> \((x + 3)^2 - 9 + (y - 2)^2 - 4 = 0\) → \((x + 3)^2 + (y - 2)^2 = 13\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 4:</b> Center = (-3, 2), Radius = √13</div>
+
+            <div class="step-line" style="display:none"><b>Step 5:</b> Find distance from center to line 3x - 2y = 0</div>
+
+            <div class="step-line" style="display:none"><b>Step 6:</b> Distance = \(|3(-3) - 2(2)| / √(3^2 + (-2)^2) = |-9 - 4| / √13 = 13/√13 = √13\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 7:</b> Since distance = radius, the line is tangent to the circle</div>
+
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('tangent2'); playSound('click')">Next Step</button></div>
+
+          </div>
+
+          <div class="graph-container">
+
+            <div class="graph" id="tangent2-visual">
+
+              <!-- Graph will be drawn here by JavaScript -->
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="motivate">
+
+        <div class="emoji">🌸💫</div>
+
+        <div class="text" style="color:#f59e0b;">Amazing! Your tangent-solving skills are out of this world! 🚀</div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ================= ELLIPSES ================= -->
+
+    <div id="ellipses" class="divider">3. Ellipses</div>
+
+    <section class="card animate delay-3">
+
+      <h2>Ellipse Equations and Properties</h2>
+
+      <p class="lead">An ellipse is the set of all points where the sum of distances to two fixed points (foci) is constant. Understanding ellipse equations helps us solve geometric problems.</p>
+
+
+
+      <div class="definition">
+
+        <div class="definition-content">
+
+          <strong>Standard Forms of Ellipse Equations:</strong>
+
+          <br>• Horizontal major axis: \(\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1\)
+
+          <br>• Vertical major axis: \(\frac{x^2}{b^2} + \frac{y^2}{a^2} = 1\)
+
+          <br>• Relationship: \(c^2 = a^2 - b^2\) where c is distance from center to focus
+
+          <div style="margin-top:8px; display:flex; align-items:center; gap:8px;">
+
+            <span style="font-size:24px">🎯</span>
+
+            <span>Sum of distances from any point on ellipse to foci = 2a!</span>
+
+          </div>
+
+        </div>
+
+        <div class="definition-cartoon">
+
+          <!-- Ellipse cartoon -->
+
+          <svg viewBox="0 0 100 100" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+
+            <!-- Ellipse -->
+
+            <ellipse cx="50" cy="50" rx="40" ry="30" stroke="#3b82f6" stroke-width="2" fill="none" />
+
+            
+
+            <!-- Center -->
+
+            <circle cx="50" cy="50" r="4" fill="#ec4899" />
+
+            
+
+            <!-- Foci -->
+
+            <circle cx="35" cy="50" r="3" fill="#f59e0b" />
+
+            <circle cx="65" cy="50" r="3" fill="#f59e0b" />
+
+            
+
+            <!-- Vertices -->
+
+            <circle cx="10" cy="50" r="3" fill="#10b981" />
+
+            <circle cx="90" cy="50" r="3" fill="#10b981" />
+
+            
+
+            <!-- Labels -->
+
+            <text x="50" y="30" font-size="6" fill="#ec4899" text-anchor="middle">Center</text>
+
+            <text x="35" y="45" font-size="6" fill="#f59e0b" text-anchor="middle">Focus</text>
+
+            <text x="65" y="45" font-size="6" fill="#f59e0b" text-anchor="middle">Focus</text>
+
+            <text x="10" y="45" font-size="6" fill="#10b981" text-anchor="middle">Vertex</text>
+
+            <text x="90" y="45" font-size="6" fill="#10b981" text-anchor="middle">Vertex</text>
+
+          </svg>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- Ellipse Visual -->
+
+      <div class="concept-visual">
+
+        <div class="coordinate-visual">
+
+          <div class="grid-lines"></div>
+
+          <div class="x-axis"></div>
+
+          <div class="y-axis"></div>
+
+          <!-- Ellipse -->
+
+          <div style="position:absolute; top:50%; left:50%; width:80%; height:60%; border:2px solid #3b82f6; border-radius:50%; transform:translate(-50%, -50%);"></div>
+
+          <!-- Center -->
+
+          <div class="point" style="background:#ec4899; top:50%; left:50%;"></div>
+
+          <!-- Foci -->
+
+          <div class="point" style="background:#f59e0b; top:50%; left:44%;"></div>
+
+          <div class="point" style="background:#f59e0b; top:50%; left:56%;"></div>
+
+          <!-- Vertices -->
+
+          <div class="point" style="background:#10b981; top:50%; left:30%;"></div>
+
+          <div class="point" style="background:#10b981; top:50%; left:70%;"></div>
+
+          <div class="point-label" style="top:50%; left:50%; color:#ec4899; font-size:10px;">Center</div>
+
+          <div class="point-label" style="top:50%; left:44%; color:#f59e0b; font-size:10px;">Focus</div>
+
+          <div class="point-label" style="top:50%; left:56%; color:#f59e0b; font-size:10px;">Focus</div>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="example-container">
+
+        <div class="example-box">
+
+          <div class="big">Example: Find center, foci, vertices of \(\frac{x^2}{16} + \frac{y^2}{9} = 1\)</div>
+
+          <div class="controls">
+
+            <button class="step-btn" onclick="startSteps('ellipse1'); playSound('concept')">Show Steps</button>
+
+          </div>
+
+          <div class="step-block" id="ellipse1">
+
+            <div class="step-line" style="display:none"><b>Step 1:</b> Compare with standard form \(\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 2:</b> \(a^2 = 16\) → \(a = 4\), \(b^2 = 9\) → \(b = 3\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 3:</b> Center = (0, 0)</div>
+
+            <div class="step-line" style="display:none"><b>Step 4:</b> \(c^2 = a^2 - b^2 = 16 - 9 = 7\) → \(c = \sqrt{7}\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 5:</b> Foci = (±√7, 0)</div>
+
+            <div class="step-line" style="display:none"><b>Step 6:</b> Vertices = (±4, 0)</div>
+
+            <div class="step-line" style="display:none"><b>Step 7:</b> Eccentricity \(e = \frac{c}{a} = \frac{\sqrt{7}}{4}\)</div>
+
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('ellipse1'); playSound('click')">Next Step</button></div>
+
+          </div>
+
+          <div class="graph-container">
+
+            <div class="graph" id="ellipse1-visual">
+
+              <!-- Graph will be drawn here by JavaScript -->
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="example-box">
+
+          <div class="big">Example: Write equation with foci (±3, 0) and vertices (±5, 0)</div>
+
+          <div class="controls">
+
+            <button class="step-btn" onclick="startSteps('ellipse2'); playSound('concept')">Show Steps</button>
+
+          </div>
+
+          <div class="step-block" id="ellipse2">
+
+            <div class="step-line" style="display:none"><b>Step 1:</b> Foci are horizontal, so major axis is horizontal</div>
+
+            <div class="step-line" style="display:none"><b>Step 2:</b> Center is midpoint between foci: (0, 0)</div>
+
+            <div class="step-line" style="display:none"><b>Step 3:</b> Distance from center to focus: c = 3</div>
+
+            <div class="step-line" style="display:none"><b>Step 4:</b> Distance from center to vertex: a = 5</div>
+
+            <div class="step-line" style="display:none"><b>Step 5:</b> Find b using \(c^2 = a^2 - b^2\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 6:</b> \(9 = 25 - b^2\) → \(b^2 = 16\) → \(b = 4\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 7:</b> Equation: \(\frac{x^2}{25} + \frac{y^2}{16} = 1\)</div>
+
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('ellipse2'); playSound('click')">Next Step</button></div>
+
+          </div>
+
+          <div class="graph-container">
+
+            <div class="graph" id="ellipse2-visual">
+
+              <!-- Graph will be drawn here by JavaScript -->
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="motivate">
+
+        <div class="emoji">🍫🌈</div>
+
+        <div class="text" style="color:#06D6A0;">Excellent! You're mastering ellipses like a math wizard! ✨</div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ================= APPLICATIONS ================= -->
+
+    <div id="applications" class="divider">4. Real-World Applications</div>
+
+    <section class="card animate">
+
+      <h2>Solving Practical Problems with Conic Sections</h2>
+
+      <p class="lead">Conic sections have numerous real-world applications in astronomy, engineering, architecture, and more. These problems involve applying circle and ellipse concepts to practical scenarios.</p>
+
+
+
+      <div class="definition">
+
+        <div class="definition-content">
+
+          <strong>Common Application Areas:</strong>
+
+          <br>• Planetary orbits (ellipses)
+
+          <br>• Satellite dishes (parabolas)
+
+          <br>• Architectural arches (ellipses and circles)
+
+          <br>• Telescope mirrors (parabolas)
+
+          <div style="margin-top:8px; display:flex; align-items:center; gap:8px;">
+
+            <span style="font-size:24px">🌍</span>
+
+            <span>Math helps solve real-world problems efficiently!</span>
+
+          </div>
+
+        </div>
+
+        <div class="definition-cartoon">
+
+          <!-- Applications cartoon -->
+
+          <svg viewBox="0 0 100 100" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+
+            <!-- Elliptical orbit -->
+
+            <ellipse cx="50" cy="50" rx="40" ry="30" stroke="#3b82f6" stroke-width="2" fill="none" />
+
+            
+
+            <!-- Sun at focus -->
+
+            <circle cx="35" cy="50" r="8" fill="#f59e0b" />
+
+            <text x="35" y="45" font-size="6" fill="#f59e0b" text-anchor="middle">Sun</text>
+
+            
+
+            <!-- Planet -->
+
+            <circle cx="90" cy="50" r="4" fill="#10b981" />
+
+            <text x="90" y="45" font-size="6" fill="#10b981" text-anchor="middle">Planet</text>
+
+            
+
+            <!-- Elliptical arch -->
+
+            <path d="M20,80 Q50,60 80,80" stroke="#ec4899" stroke-width="2" fill="none" />
+
+            <text x="50" y="75" font-size="6" fill="#ec4899" text-anchor="middle">Arch</text>
+
+          </svg>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- Applications Visual -->
+
+      <div class="concept-visual">
+
+        <div class="visual-box" style="background:linear-gradient(135deg, #e3f2fd, #f3e5f5); display:flex; align-items:center; justify-content:center;">
+
+          <div style="text-align:center">
+
+            <div style="font-size:40px; margin-bottom:10px">🛰️</div>
+
+            <div style="font-weight:bold; color:var(--primary)">Real-World Applications</div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="example-container">
+
+        <div class="example-box">
+
+          <div class="big">Application: Planetary Orbit</div>
+
+          <div class="controls">
+
+            <button class="step-btn" onclick="startSteps('app1'); playSound('concept')">Show Steps</button>
+
+          </div>
+
+          <div class="step-block" id="app1">
+
+            <div class="step-line" style="display:none"><b>Problem:</b> A planet orbits the sun in an elliptical path with the sun at one focus. Distance from sun ranges from 17 million miles to 183 million miles.</div>
+
+            <div class="step-line" style="display:none"><b>Step 1:</b> Minimum distance = a - c = 17</div>
+
+            <div class="step-line" style="display:none"><b>Step 2:</b> Maximum distance = a + c = 183</div>
+
+            <div class="step-line" style="display:none"><b>Step 3:</b> Add equations: 2a = 200 → a = 100</div>
+
+            <div class="step-line" style="display:none"><b>Step 4:</b> Subtract: 2c = 166 → c = 83</div>
+
+            <div class="step-line" style="display:none"><b>Step 5:</b> \(b^2 = a^2 - c^2 = 10000 - 6889 = 3111\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 6:</b> Equation: \(\frac{x^2}{10000} + \frac{y^2}{3111} = 1\)</div>
+
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('app1'); playSound('click')">Next Step</button></div>
+
+          </div>
+
+          <div class="graph-container">
+
+            <div class="graph" id="app1-visual">
+
+              <!-- Graph will be drawn here by JavaScript -->
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="example-box">
+
+          <div class="big">Application: Elliptical Arch</div>
+
+          <div class="controls">
+
+            <button class="step-btn" onclick="startSteps('app2'); playSound('concept')">Show Steps</button>
+
+          </div>
+
+          <div class="step-block" id="app2">
+
+            <div class="step-line" style="display:none"><b>Problem:</b> An elliptical arch is 90m wide at the base and 30m high at the center.</div>
+
+            <div class="step-line" style="display:none"><b>Step 1:</b> Place coordinate system with center at (0,0)</div>
+
+            <div class="step-line" style="display:none"><b>Step 2:</b> Width = 90m → semi-major axis a = 45</div>
+
+            <div class="step-line" style="display:none"><b>Step 3:</b> Height = 30m → semi-minor axis b = 30</div>
+
+            <div class="step-line" style="display:none"><b>Step 4:</b> Equation: \(\frac{x^2}{2025} + \frac{y^2}{900} = 1\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 5:</b> At what distance from center is the arch 20√2 m high?</div>
+
+            <div class="step-line" style="display:none"><b>Step 6:</b> Substitute y = 20√2 into equation</div>
+
+            <div class="step-line" style="display:none"><b>Step 7:</b> \(\frac{x^2}{2025} + \frac{(20√2)^2}{900} = 1\) → \(\frac{x^2}{2025} + \frac{800}{900} = 1\)</div>
+
+            <div class="step-line" style="display:none"><b>Step 8:</b> \(\frac{x^2}{2025} = 1 - \frac{8}{9} = \frac{1}{9}\) → \(x^2 = 225\) → \(x = ±15\)</div>
+
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('app2'); playSound('click')">Next Step</button></div>
+
+          </div>
+
+          <div class="graph-container">
+
+            <div class="graph" id="app2-visual">
+
+              <!-- Graph will be drawn here by JavaScript -->
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="motivate">
+
+        <div class="emoji">🧭💖</div>
+
+        <div class="text" style="color:#118AB2;">Incredible! You're applying math to solve real-world problems like a pro! 🔍</div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- GAMES landing -->
+
+    <div id="games" class="divider">Interactive Learning Games</div>
+
+    <section class="card">
+
+      <h2>Practice with Fun Games</h2>
+
+      <p class="lead">Reinforce your understanding of conic sections with these interactive games. Each game focuses on a different concept with increasing difficulty.</p>
+
+      
+
+      <div class="game-card-grid">
+
+        <div class="game-card-style" onclick="showGame('circle-game'); playSound('gameStart')">
+
+          <div class="game-card-left">
+
+            <div class="svg-icon" style="background: linear-gradient(135deg, #ff7eb3, #ff758c);">
+
+              <svg viewBox="0 0 100 100" width="100" height="100">
+
+                <!-- Circle game icon -->
+
+                <circle cx="50" cy="50" r="40" stroke="#3b82f6" stroke-width="3" fill="none" />
+
+                <circle cx="50" cy="50" r="4" fill="#ec4899" />
+
+                <line x1="50" y1="50" x2="90" y2="50" stroke="#f59e0b" stroke-width="2" />
+
+              </svg>
+
+            </div>
+
+            <div style="font-size:12px;color:var(--muted); margin-top:5px">Circle Finder</div>
+
+          </div>
+
+          <div>
+
+            <div class="game-card-title">Circle Finder</div>
+
+            <div class="game-card-desc">Practice finding centers, radii, and equations of circles.</div>
+
+            <div style="margin-top:12px"><button class="start-btn">Start Game</button></div>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="game-card-style" onclick="showGame('tangent-game'); playSound('gameStart')">
+
+          <div class="game-card-left">
+
+            <div class="svg-icon" style="background: linear-gradient(135deg, #65C7F7, #4ECDC4);">
+
+              <svg viewBox="0 0 100 100" width="100" height="100">
+
+                <!-- Tangent game icon -->
+
+                <circle cx="50" cy="50" r="40" stroke="#3b82f6" stroke-width="2" fill="none" />
+
+                <circle cx="50" cy="50" r="4" fill="#ec4899" />
+
+                <circle cx="90" cy="50" r="4" fill="#10b981" />
+
+                <line x1="50" y1="50" x2="90" y2="50" stroke="#f59e0b" stroke-width="2" />
+
+                <line x1="70" y1="30" x2="70" y2="70" stroke="#ec4899" stroke-width="2" />
+
+              </svg>
+
+            </div>
+
+            <div style="font-size:12px;color:var(--muted); margin-top:5px">Tangent Challenge</div>
+
+          </div>
+
+          <div>
+
+            <div class="game-card-title">Tangent Challenge</div>
+
+            <div class="game-card-desc">Find equations of tangents and normals to circles.</div>
+
+            <div style="margin-top:12px"><button class="start-btn">Start Game</button></div>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="game-card-style" onclick="showGame('ellipse-game'); playSound('gameStart')">
+
+          <div class="game-card-left">
+
+            <div class="svg-icon" style="background: linear-gradient(135deg, #FFD166, #EF476F);">
+
+              <svg viewBox="0 0 100 100" width="100" height="100">
+
+                <!-- Ellipse game icon -->
+
+                <ellipse cx="50" cy="50" rx="40" ry="30" stroke="#3b82f6" stroke-width="2" fill="none" />
+
+                <circle cx="50" cy="50" r="4" fill="#ec4899" />
+
+                <circle cx="35" cy="50" r="3" fill="#f59e0b" />
+
+                <circle cx="65" cy="50" r="3" fill="#f59e0b" />
+
+                <circle cx="10" cy="50" r="3" fill="#10b981" />
+
+                <circle cx="90" cy="50" r="3" fill="#10b981" />
+
+              </svg>
+
+            </div>
+
+            <div style="font-size:12px;color:var(--muted); margin-top:5px">Ellipse Explorer</div>
+
+          </div>
+
+          <div>
+
+            <div class="game-card-title">Ellipse Explorer</div>
+
+            <div class="game-card-desc">Identify ellipse elements and write equations.</div>
+
+            <div style="margin-top:12px"><button class="start-btn">Start Game</button></div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- Game areas -->
+
+      <div id="circle-game" class="game-play-area">
+
+        <div class="score-board" id="circle-score-display">Score: 0</div>
+
+        <div class="game-icon-visual">🔵</div>
+
+        <div class="game-prompt" id="circle-prompt">Find the center and radius of: \(x^2 + y^2 + 12x - 10y = 0\)</div>
+
+        <div class="game-input-group">
+
+          Center: <input type="text" id="circle-center-input" placeholder="(h,k)">
+
+          Radius: <input type="text" id="circle-radius-input" placeholder="r">
+
+        </div>
+
+        <button class="check" onclick="checkCircleGame(); playSound('success')">Submit</button>
+
+        <div class="game-message" id="circle-status">Enter center and radius.</div>
+
+        <button class="step-btn" style="margin-top: 15px;" onclick="initCircleGame(); playSound('click')">New Problem</button>
+
+      </div>
+
+
+
+      <div id="tangent-game" class="game-play-area">
+
+        <div class="score-board" id="tangent-score-display">Score: 0</div>
+
+        <div class="game-icon-visual">📏</div>
+
+        <div class="game-prompt" id="tangent-prompt">Find the tangent to \(x^2 + y^2 = 25\) at (4,3)</div>
+
+        <div class="game-input-group">
+
+          <input type="text" id="tangent-input" placeholder="Enter equation">
+
+        </div>
+
+        <button class="check" onclick="checkTangentGame(); playSound('success')">Submit</button>
+
+        <div class="game-message" id="tangent-status">Enter the equation of the tangent.</div>
+
+        <button class="step-btn" style="margin-top: 15px;" onclick="initTangentGame(); playSound('click')">New Problem</button>
+
+      </div>
+
+
+
+      <div id="ellipse-game" class="game-play-area">
+
+        <div class="score-board" id="ellipse-score-display">Score: 0</div>
+
+        <div class="game-icon-visual">🔘</div>
+
+        <div class="game-prompt" id="ellipse-prompt">Find center, foci, vertices of \(\frac{x^2}{16} + \frac{y^2}{9} = 1\)</div>
+
+        <div class="game-input-group">
+
+          Center: <input type="text" id="ellipse-center-input" placeholder="(h,k)">
+
+          Foci: <input type="text" id="ellipse-foci-input" placeholder="(±x,y)">
+
+          Vertices: <input type="text" id="ellipse-vertices-input" placeholder="(±x,y)">
+
+        </div>
+
+        <button class="check" onclick="checkEllipseGame(); playSound('success')">Submit</button>
+
+        <div class="game-message" id="ellipse-status">Enter center, foci, and vertices.</div>
+
+        <button class="step-btn" style="margin-top: 15px;" onclick="initEllipseGame(); playSound('click')">New Problem</button>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- Chapter complete -->
+
+    <div class="card" style="text-align:center;margin-top:18px">
+
+      <h2>🎉 Conic Sections — Completed!</h2>
+
+      <p class="lead">You've successfully worked through circles, tangents, normals, and ellipses. Replay games and review examples whenever you want. Keep up the great work!</p>
+
+      
+
+      <!-- Completion visual -->
+
+      <div class="concept-visual">
+
+        <div class="visual-box" style="background:linear-gradient(135deg, #e8f5e9, #f3e5f5); display:flex; align-items:center; justify-content:center;">
+
+          <div style="text-align:center">
+
+            <div style="font-size:40px; margin-bottom:10px">🎓</div>
+
+            <div style="font-weight:bold; color:var(--primary)">Conic Sections Master!</div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+<div style="margin: 50px 0; text-align: center; padding: 30px; background: #f0fdf4; border: 2px dashed #10b981; border-radius: 12px;">
+    <h3 style="color: #047857; margin-bottom: 10px;">Module Complete?</h3>
+    <p style="color: #065f46; margin-bottom: 20px;">Test your understanding of Conic Sections to unlock the next step.</p>
+    
+    <a href="{{ url_for('serve_quiz', chapter_num=6) }}" class="btn btn-primary" style="background-color: #10b981; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); padding: 15px 40px; font-size: 1.1rem;">
+        Take Chapter 6 Quiz <i class="fas fa-arrow-right"></i>
+    </a>
+</div>
+
+  <!-- Floating quick games button -->
+
+  <div class="fab">
+
+    <i class="fas fa-gamepad"></i>
+
+  </div>
+
+
+
+  <!-- Footer -->
+
+  <footer class="footer">
+
+    <div class="container">
+
+      <div class="footer-content">
+
+        <div class="footer-about">
+
+          <div class="footer-logo">
+
+            <div class="footer-logo-icon">S</div>
+
+            Sentellect
+
+          </div>
+
+          <p>Personalizing learning through emotions to improve educational experience for HSSC Mathematics.</p>
+
+          <div class="social-links">
+
+            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+
+            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+
+          </div>
+
+        </div>
+
+        
+
+        <div class="footer-links">
+
+          <h3>Platform</h3>
+
+          <ul>
+
+            <li><a href="#circles">Circles</a></li>
+
+            <li><a href="#tangents">Tangents & Normals</a></li>
+
+            <li><a href="#ellipses">Ellipses</a></li>
+
+            <li><a href="#applications">Applications</a></li>
+
+            <li><a href="#games">Games</a></li>
+
+          </ul>
+
+        </div>
+
+        
+
+        <div class="footer-links">
+
+          <h3>Resources</h3>
+
+          <ul>
+
+            <li><a href="#">Study Materials</a></li>
+
+            <li><a href="#">About Project</a></li>
+
+            <li><a href="#">Contact</a></li>
+
+            <li><a href="#">Support</a></li>
+
+          </ul>
+
+        </div>
+
+        
+
+        <div class="footer-links">
+
+          <h3>Account</h3>
+
+          <ul>
+
+            <li><a href="#">Student Login</a></li>
+
+            <li><a href="#">Create Account</a></li>
+
+            <li><a href="#">Help Center</a></li>
+
+          </ul>
+
+        </div>
+
+      </div>
+
+      
+
+      <div class="footer-bottom">
+
+        <p>© 2025 Sentellect. Final Year Project - Educational Technology.</p>
+
+        <div class="footer-tags">
+
+          <a href="#" class="tag">PTB HSSC Mathematics</a>
+
+          <a href="#" class="tag">Emotion-Aware Learning</a>
+
+          <a href="#" class="tag">Conic Sections</a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+
+
+  <!-- ================= JS: games + UI functions ================= -->
+
+  <script>
+
+    // Celebration system
+
+    function celebrate() {
+
+      if (!soundEnabled) return;
+
+      
+
+      const celebration = document.getElementById('celebration');
+
+      celebration.style.display = 'block';
+
+      
+
+      // Play celebration sound
+
+      playSound('celebration');
+
+      
+
+      // Create confetti
+
+      for (let i = 0; i < 150; i++) {
+
+        createConfetti();
+
+      }
+
+      
+
+      // Create party poppers
+
+      for (let i = 0; i < 20; i++) {
+
+        createPartyPopper();
+
+      }
+
+      
+
+      // Create hurray text
+
+      createHurrayText();
+
+      
+
+      // Hide celebration after 3 seconds
+
+      setTimeout(() => {
+
+        celebration.style.display = 'none';
+
+        celebration.innerHTML = '';
+
+      }, 3000);
+
+    }
+
+    
+
+    function createConfetti() {
+
+      const celebration = document.getElementById('celebration');
+
+      const confetti = document.createElement('div');
+
+      confetti.className = 'confetti';
+
+      
+
+      // Random position
+
+      const left = Math.random() * 100;
+
+      const colors = ['#ff6b6b', '#ffd166', '#06d6a0', '#118ab2', '#ef476f'];
+
+      const color = colors[Math.floor(Math.random() * colors.length)];
+
+      
+
+      confetti.style.left = `${left}%`;
+
+      confetti.style.backgroundColor = color;
+
+      
+
+      celebration.appendChild(confetti);
+
+      
+
+      // Animate confetti
+
+      const animation = confetti.animate([
+
+        { transform: 'translateY(-20px) rotate(0deg)', opacity: 1 },
+
+        { transform: `translateY(${window.innerHeight}px) rotate(720deg)`, opacity: 0 }
+
+      ], {
+
+        duration: 2000 + Math.random() * 1000,
+
+        easing: 'cubic-bezier(0.215, 0.61, 0.355, 1)'
+
+      });
+
+      
+
+      animation.onfinish = () => {
+
+        confetti.remove();
+
+      };
+
+    }
+
+    
+
+    function createPartyPopper() {
+
+      const celebration = document.getElementById('celebration');
+
+      const popper = document.createElement('div');
+
+      popper.className = 'party-popper';
+
+      popper.textContent = '🎉';
+
+      
+
+      // Random position
+
+      const left = Math.random() * 100;
+
+      const top = Math.random() * 100;
+
+      
+
+      popper.style.left = `${left}%`;
+
+      popper.style.top = `${top}%`;
+
+      
+
+      celebration.appendChild(popper);
+
+      
+
+      // Animate party popper
+
+      const animation = popper.animate([
+
+        { transform: 'scale(0) rotate(0deg)', opacity: 1 },
+
+        { transform: 'scale(1.5) rotate(360deg)', opacity: 0 }
+
+      ], {
+
+        duration: 1000 + Math.random() * 500,
+
+        easing: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+
+      });
+
+      
+
+      animation.onfinish = () => {
+
+        popper.remove();
+
+      };
+
+    }
+
+    
+
+    function createHurrayText() {
+
+      const celebration = document.getElementById('celebration');
+
+      const hurray = document.createElement('div');
+
+      hurray.className = 'hurray-text';
+
+      hurray.textContent = 'HURRAY!';
+
+      
+
+      celebration.appendChild(hurray);
+
+      
+
+      // Animate hurray text
+
+      const animation = hurray.animate([
+
+        { transform: 'translate(-50%, -50%) scale(0)', opacity: 0 },
+
+        { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
+
+        { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
+
+        { transform: 'translate(-50%, -50%) scale(1.2)', opacity: 0 }
+
+      ], {
+
+        duration: 3000,
+
+        easing: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+
+      });
+
+      
+
+      animation.onfinish = () => {
+
+        hurray.remove();
+
+      };
+
+    }
+
+
+
+    // Sound system
+
+    let soundEnabled = true;
+
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+    
+
+    // Sound functions
+
+    function playSound(type) {
+
+      if (!soundEnabled) return;
+
+      
+
+      const oscillator = audioContext.createOscillator();
+
+      const gainNode = audioContext.createGain();
+
+      
+
+      oscillator.connect(gainNode);
+
+      gainNode.connect(audioContext.destination);
+
+      
+
+      // Set sound parameters based on type
+
+      switch(type) {
+
+        case 'success':
+
+          oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
+
+          gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+
+          gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+
+          oscillator.start();
+
+          oscillator.stop(audioContext.currentTime + 0.5);
+
+          break;
+
+          
+
+        case 'error':
+
+          oscillator.frequency.setValueAtTime(220, audioContext.currentTime); // A3
+
+          gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+
+          gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+
+          oscillator.start();
+
+          oscillator.stop(audioContext.currentTime + 0.3);
+
+          break;
+
+          
+
+        case 'click':
+
+          oscillator.frequency.setValueAtTime(784, audioContext.currentTime); // G5
+
+          gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+
+          gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+
+          oscillator.start();
+
+          oscillator.stop(audioContext.currentTime + 0.1);
+
+          break;
+
+          
+
+        case 'gameStart':
+
+          // Play a little melody
+
+          playMelody([784, 659, 523, 659, 784], [0.15, 0.15, 0.15, 0.15, 0.3]);
+
+          break;
+
+          
+
+        case 'celebration':
+
+          // Play a celebratory melody
+
+          playMelody([523.25, 659.25, 783.99, 1046.50, 1318.51, 1567.98], [0.15, 0.15, 0.15, 0.15, 0.15, 0.5]);
+
+          break;
+
+          
+
+        case 'concept':
+
+          // Play a gentle sound for understanding concepts
+
+          playMelody([261.63, 329.63, 392.00], [0.3, 0.3, 0.5]);
+
+          break;
+
+      }
+
+    }
+
+    
+
+    function playMelody(frequencies, durations) {
+
+      let time = audioContext.currentTime;
+
+      
+
+      frequencies.forEach((freq, i) => {
+
+        const oscillator = audioContext.createOscillator();
+
+        const gainNode = audioContext.createGain();
+
+        
+
+        oscillator.connect(gainNode);
+
+        gainNode.connect(audioContext.destination);
+
+        
+
+        oscillator.frequency.setValueAtTime(freq, time);
+
+        gainNode.gain.setValueAtTime(0.2, time);
+
+        gainNode.gain.exponentialRampToValueAtTime(0.01, time + durations[i]);
+
+        
+
+        oscillator.start(time);
+
+        oscillator.stop(time + durations[i]);
+
+        
+
+        time += durations[i];
+
+      });
+
+    }
+
+    
+
+    // Toggle sound
+
+    document.getElementById('toggleSound').addEventListener('click', function() {
+
+      soundEnabled = !soundEnabled;
+
+      const icon = this.querySelector('i');
+
+      
+
+      if (soundEnabled) {
+
+        icon.className = 'fas fa-volume-up';
+
+        this.classList.remove('muted');
+
+        playSound('click');
+
+      } else {
+
+        icon.className = 'fas fa-volume-mute';
+
+        this.classList.add('muted');
+
+      }
+
+    });
+
+
+
+    /* -------- Helpers (step reveals & answer checking) -------- */
+
+    function startSteps(blockId){
+
+      const block = document.getElementById(blockId);
+
+      if(!block) return;
+
+      const lines = block.querySelectorAll('.step-line');
+
+      lines.forEach(l => l.style.display = 'none');
+
+      if(lines.length) lines[0].style.display = 'block';
+
+      playSound('concept');
+
+    }
+
+    
+
+    function nextStep(blockId){
+
+      const block = document.getElementById(blockId);
+
+      if(!block) return;
+
+      const lines = block.querySelectorAll('.step-line');
+
+      let shown = 0;
+
+      for(let i=0;i<lines.length;i++) if(getComputedStyle(lines[i]).display !== 'none') shown++;
+
+      if(shown < lines.length) {
+
+        lines[shown].style.display = 'block';
+
+        playSound('success');
+
+        // Celebrate on the last step
+
+        if (shown === lines.length - 1) {
+
+          setTimeout(celebrate, 500);
+
+        }
+
+      }
+
+    }
+
+
+
+    function checkCircleAnswer(answerId, correct, resultId){
+
+      const answerEl = document.getElementById(resultId);
+
+      const userAnswer = document.getElementById(answerId).value.trim().toLowerCase();
+
+      const correctAnswer = correct.toLowerCase();
+
+      
+
+      if (userAnswer === correctAnswer) {
+
+        answerEl.innerHTML = `<p><b>Correct!</b> ${correct}</p>`;
+
+        answerEl.className = "result good";
+
+        answerEl.style.display = 'block';
+
+        playSound('success');
+
+        celebrate();
+
+      } else {
+
+        answerEl.innerHTML = `<p><b>Not quite.</b> The correct answer is: ${correct}</p>`;
+
+        answerEl.className = "result warn";
+
+        answerEl.style.display = 'block';
+
+        playSound('error');
+
+      }
+
+    }
+
+
+
+    /* ---------- Game datasets ---------- */
+
+    const circleProblems = [
+
+      { 
+
+        equation: "x² + y² + 12x - 10y = 0", 
+
+        center: "(-6,5)", 
+
+        radius: "√61" 
+
+      },
+
+      { 
+
+        equation: "x² + y² - 8x + 6y + 9 = 0", 
+
+        center: "(4,-3)", 
+
+        radius: "4" 
+
+      },
+
+      { 
+
+        equation: "2x² + 2y² - 12x + 8y - 24 = 0", 
+
+        center: "(3,-2)", 
+
+        radius: "5" 
+
+      }
+
+    ];
+
+
+
+    const tangentProblems = [
+
+      { 
+
+        circle: "x² + y² = 25", 
+
+        point: "(4,3)", 
+
+        tangent: "4x + 3y = 25" 
+
+      },
+
+      { 
+
+        circle: "x² + y² = 10", 
+
+        point: "(3,1)", 
+
+        tangent: "3x + y = 10" 
+
+      },
+
+      { 
+
+        circle: "x² + y² = 13", 
+
+        point: "(2,3)", 
+
+        tangent: "2x + 3y = 13" 
+
+      }
+
+    ];
+
+
+
+    const ellipseProblems = [
+
+      {
+
+        equation: "x²/16 + y²/9 = 1",
+
+        center: "(0,0)",
+
+        foci: "(±√7,0)",
+
+        vertices: "(±4,0)"
+
+      },
+
+      {
+
+        equation: "x²/9 + y²/25 = 1",
+
+        center: "(0,0)",
+
+        foci: "(0,±4)",
+
+        vertices: "(0,±5)"
+
+      },
+
+      {
+
+        equation: "x²/25 + y²/16 = 1",
+
+        center: "(0,0)",
+
+        foci: "(±3,0)",
+
+        vertices: "(±5,0)"
+
+      }
+
+    ];
+
+
+
+    /* ---------------- Circle Game ---------------- */
+
+    let circleScore = 0;
+
+    let currentCircleProblem = null;
+
+
+
+    function initCircleGame() {
+
+      const problem = circleProblems[Math.floor(Math.random() * circleProblems.length)];
+
+      currentCircleProblem = problem;
+
+      
+
+      document.getElementById('circle-prompt').textContent = `Find the center and radius of: ${problem.equation}`;
+
+      document.getElementById('circle-center-input').value = '';
+
+      document.getElementById('circle-radius-input').value = '';
+
+      document.getElementById('circle-status').textContent = `Score: ${circleScore}`;
+
+      document.getElementById('circle-score-display').textContent = `Score: ${circleScore}`;
+
+      document.getElementById('circle-status').classList.remove('success', 'wrong');
+
+    }
+
+
+
+    function checkCircleGame() {
+
+      const userCenter = document.getElementById('circle-center-input').value.trim().toLowerCase();
+
+      const userRadius = document.getElementById('circle-radius-input').value.trim().toLowerCase();
+
+      const correctCenter = currentCircleProblem.center.toLowerCase();
+
+      const correctRadius = currentCircleProblem.radius.toLowerCase();
+
+      
+
+      if (userCenter === correctCenter && userRadius === correctRadius) {
+
+        circleScore++;
+
+        document.getElementById('circle-status').className = 'game-message success';
+
+        document.getElementById('circle-status').textContent = `Correct! Center: ${currentCircleProblem.center}, Radius: ${currentCircleProblem.radius}. Score: ${circleScore}.`;
+
+        document.getElementById('circle-score-display').textContent = `Score: ${circleScore}`;
+
+        playSound('success');
+
+        celebrate();
+
+        setTimeout(initCircleGame, 1500);
+
+      } else {
+
+        circleScore = Math.max(0, circleScore - 1);
+
+        document.getElementById('circle-status').className = 'game-message wrong';
+
+        document.getElementById('circle-status').textContent = `Incorrect. Correct answer: Center: ${currentCircleProblem.center}, Radius: ${currentCircleProblem.radius}. Score: ${circleScore}.`;
+
+        document.getElementById('circle-score-display').textContent = `Score: ${circleScore}`;
+
+        playSound('error');
+
+      }
+
+    }
+
+
+
+    /* ---------------- Tangent Game ---------------- */
+
+    let tangentScore = 0;
+
+    let currentTangentProblem = null;
+
+
+
+    function initTangentGame() {
+
+      const problem = tangentProblems[Math.floor(Math.random() * tangentProblems.length)];
+
+      currentTangentProblem = problem;
+
+      
+
+      document.getElementById('tangent-prompt').textContent = `Find the tangent to ${problem.circle} at ${problem.point}`;
+
+      document.getElementById('tangent-input').value = '';
+
+      document.getElementById('tangent-status').textContent = `Score: ${tangentScore}`;
+
+      document.getElementById('tangent-score-display').textContent = `Score: ${tangentScore}`;
+
+      document.getElementById('tangent-status').classList.remove('success', 'wrong');
+
+    }
+
+
+
+    function checkTangentGame() {
+
+      const userAnswer = document.getElementById('tangent-input').value.trim().toLowerCase();
+
+      const correctAnswer = currentTangentProblem.tangent.toLowerCase();
+
+      
+
+      if (userAnswer === correctAnswer) {
+
+        tangentScore++;
+
+        document.getElementById('tangent-status').className = 'game-message success';
+
+        document.getElementById('tangent-status').textContent = `Correct! Tangent: ${currentTangentProblem.tangent}. Score: ${tangentScore}.`;
+
+        document.getElementById('tangent-score-display').textContent = `Score: ${tangentScore}`;
+
+        playSound('success');
+
+        celebrate();
+
+        setTimeout(initTangentGame, 1500);
+
+      } else {
+
+        tangentScore = Math.max(0, tangentScore - 1);
+
+        document.getElementById('tangent-status').className = 'game-message wrong';
+
+        document.getElementById('tangent-status').textContent = `Incorrect. Correct answer: ${currentTangentProblem.tangent}. Score: ${tangentScore}.`;
+
+        document.getElementById('tangent-score-display').textContent = `Score: ${tangentScore}`;
+
+        playSound('error');
+
+      }
+
+    }
+
+
+
+    /* ---------------- Ellipse Game ---------------- */
+
+    let ellipseScore = 0;
+
+    let currentEllipseProblem = null;
+
+
+
+    function initEllipseGame() {
+
+      const problem = ellipseProblems[Math.floor(Math.random() * ellipseProblems.length)];
+
+      currentEllipseProblem = problem;
+
+      
+
+      document.getElementById('ellipse-prompt').textContent = `Find center, foci, vertices of ${problem.equation}`;
+
+      document.getElementById('ellipse-center-input').value = '';
+
+      document.getElementById('ellipse-foci-input').value = '';
+
+      document.getElementById('ellipse-vertices-input').value = '';
+
+      document.getElementById('ellipse-status').textContent = `Score: ${ellipseScore}`;
+
+      document.getElementById('ellipse-score-display').textContent = `Score: ${ellipseScore}`;
+
+      document.getElementById('ellipse-status').classList.remove('success', 'wrong');
+
+    }
+
+
+
+    function checkEllipseGame() {
+
+      const userCenter = document.getElementById('ellipse-center-input').value.trim().toLowerCase();
+
+      const userFoci = document.getElementById('ellipse-foci-input').value.trim().toLowerCase();
+
+      const userVertices = document.getElementById('ellipse-vertices-input').value.trim().toLowerCase();
+
+      const correctCenter = currentEllipseProblem.center.toLowerCase();
+
+      const correctFoci = currentEllipseProblem.foci.toLowerCase();
+
+      const correctVertices = currentEllipseProblem.vertices.toLowerCase();
+
+      
+
+      if (userCenter === correctCenter && userFoci === correctFoci && userVertices === correctVertices) {
+
+        ellipseScore++;
+
+        document.getElementById('ellipse-status').className = 'game-message success';
+
+        document.getElementById('ellipse-status').textContent = `Correct! Center: ${currentEllipseProblem.center}, Foci: ${currentEllipseProblem.foci}, Vertices: ${currentEllipseProblem.vertices}. Score: ${ellipseScore}.`;
+
+        document.getElementById('ellipse-score-display').textContent = `Score: ${ellipseScore}`;
+
+        playSound('success');
+
+        celebrate();
+
+        setTimeout(initEllipseGame, 1500);
+
+      } else {
+
+        ellipseScore = Math.max(0, ellipseScore - 1);
+
+        document.getElementById('ellipse-status').className = 'game-message wrong';
+
+        document.getElementById('ellipse-status').textContent = `Incorrect. Correct answer: Center: ${currentEllipseProblem.center}, Foci: ${currentEllipseProblem.foci}, Vertices: ${currentEllipseProblem.vertices}. Score: ${ellipseScore}.`;
+
+        document.getElementById('ellipse-score-display').textContent = `Score: ${ellipseScore}`;
+
+        playSound('error');
+
+      }
+
+    }
+
+
+
+    /* ---------------- Game Display Functions ---------------- */
+
+    function showGame(gameId) {
+
+      // Hide all game areas
+
+      document.querySelectorAll('.game-play-area').forEach(area => {
+
+        area.style.display = 'none';
+
+      });
+
+      
+
+      // Show the selected game
+
+      document.getElementById(gameId).style.display = 'block';
+
+      
+
+      // Initialize the game
+
+      switch(gameId) {
+
+        case 'circle-game':
+
+          initCircleGame();
+
+          break;
+
+        case 'tangent-game':
+
+          initTangentGame();
+
+          break;
+
+        case 'ellipse-game':
+
+          initEllipseGame();
+
+          break;
+
+      }
+
+    }
+
+
+
+    /* ---------------- Draw Diagrams ---------------- */
+
+    function drawCircleDiagram(containerId, centerX, centerY, radius) {
+
+      const container = document.getElementById(containerId);
+
+      if (!container) return;
+
+      
+
+      container.innerHTML = '';
+
+      
+
+      // Create canvas
+
+      const canvas = document.createElement('canvas');
+
+      canvas.width = container.clientWidth;
+
+      canvas.height = container.clientHeight;
+
+      container.appendChild(canvas);
+
+      
+
+      const ctx = canvas.getContext('2d');
+
+      
+
+      // Clear canvas
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      
+
+      // Draw grid
+
+      drawGrid(ctx, canvas.width, canvas.height);
+
+      
+
+      // Draw axes
+
+      drawAxes(ctx, canvas.width, canvas.height);
+
+      
+
+      // Draw circle
+
+      ctx.beginPath();
+
+      ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+
+      ctx.strokeStyle = '#3b82f6';
+
+      ctx.lineWidth = 2;
+
+      ctx.stroke();
+
+      
+
+      // Draw center
+
+      ctx.beginPath();
+
+      ctx.arc(centerX, centerY, 4, 0, 2 * Math.PI);
+
+      ctx.fillStyle = '#ec4899';
+
+      ctx.fill();
+
+      
+
+      // Draw radius
+
+      ctx.beginPath();
+
+      ctx.moveTo(centerX, centerY);
+
+      ctx.lineTo(centerX + radius, centerY);
+
+      ctx.strokeStyle = '#f59e0b';
+
+      ctx.lineWidth = 2;
+
+      ctx.stroke();
+
+      
+
+      // Draw point on circle
+
+      ctx.beginPath();
+
+      ctx.arc(centerX + radius, centerY, 4, 0, 2 * Math.PI);
+
+      ctx.fillStyle = '#10b981';
+
+      ctx.fill();
+
+    }
+
+    
+
+    function drawTangentDiagram(containerId, centerX, centerY, radius, pointX, pointY) {
+
+      const container = document.getElementById(containerId);
+
+      if (!container) return;
+
+      
+
+      container.innerHTML = '';
+
+      
+
+      // Create canvas
+
+      const canvas = document.createElement('canvas');
+
+      canvas.width = container.clientWidth;
+
+      canvas.height = container.clientHeight;
+
+      container.appendChild(canvas);
+
+      
+
+      const ctx = canvas.getContext('2d');
+
+      
+
+      // Clear canvas
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      
+
+      // Draw grid
+
+      drawGrid(ctx, canvas.width, canvas.height);
+
+      
+
+      // Draw axes
+
+      drawAxes(ctx, canvas.width, canvas.height);
+
+      
+
+      // Draw circle
+
+      ctx.beginPath();
+
+      ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+
+      ctx.strokeStyle = '#3b82f6';
+
+      ctx.lineWidth = 2;
+
+      ctx.stroke();
+
+      
+
+      // Draw center
+
+      ctx.beginPath();
+
+      ctx.arc(centerX, centerY, 4, 0, 2 * Math.PI);
+
+      ctx.fillStyle = '#ec4899';
+
+      ctx.fill();
+
+      
+
+      // Draw point of contact
+
+      ctx.beginPath();
+
+      ctx.arc(pointX, pointY, 4, 0, 2 * Math.PI);
+
+      ctx.fillStyle = '#10b981';
+
+      ctx.fill();
+
+      
+
+      // Draw radius
+
+      ctx.beginPath();
+
+      ctx.moveTo(centerX, centerY);
+
+      ctx.lineTo(pointX, pointY);
+
+      ctx.strokeStyle = '#f59e0b';
+
+      ctx.lineWidth = 2;
+
+      ctx.stroke();
+
+      
+
+      // Draw tangent
+
+      const slope = -(pointX - centerX) / (pointY - centerY);
+
+      const tangentLength = 50;
+
+      
+
+      ctx.beginPath();
+
+      ctx.moveTo(pointX - tangentLength, pointY - slope * tangentLength);
+
+      ctx.lineTo(pointX + tangentLength, pointY + slope * tangentLength);
+
+      ctx.strokeStyle = '#ec4899';
+
+      ctx.lineWidth = 2;
+
+      ctx.stroke();
+
+    }
+
+    
+
+    function drawEllipseDiagram(containerId, centerX, centerY, a, b) {
+
+      const container = document.getElementById(containerId);
+
+      if (!container) return;
+
+      
+
+      container.innerHTML = '';
+
+      
+
+      // Create canvas
+
+      const canvas = document.createElement('canvas');
+
+      canvas.width = container.clientWidth;
+
+      canvas.height = container.clientHeight;
+
+      container.appendChild(canvas);
+
+      
+
+      const ctx = canvas.getContext('2d');
+
+      
+
+      // Clear canvas
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      
+
+      // Draw grid
+
+      drawGrid(ctx, canvas.width, canvas.height);
+
+      
+
+      // Draw axes
+
+      drawAxes(ctx, canvas.width, canvas.height);
+
+      
+
+      // Draw ellipse
+
+      ctx.beginPath();
+
+      ctx.ellipse(centerX, centerY, a, b, 0, 0, 2 * Math.PI);
+
+      ctx.strokeStyle = '#3b82f6';
+
+      ctx.lineWidth = 2;
+
+      ctx.stroke();
+
+      
+
+      // Draw center
+
+      ctx.beginPath();
+
+      ctx.arc(centerX, centerY, 4, 0, 2 * Math.PI);
+
+      ctx.fillStyle = '#ec4899';
+
+      ctx.fill();
+
+      
+
+      // Draw foci
+
+      const c = Math.sqrt(a*a - b*b);
+
+      ctx.beginPath();
+
+      ctx.arc(centerX - c, centerY, 4, 0, 2 * Math.PI);
+
+      ctx.fillStyle = '#f59e0b';
+
+      ctx.fill();
+
+      
+
+      ctx.beginPath();
+
+      ctx.arc(centerX + c, centerY, 4, 0, 2 * Math.PI);
+
+      ctx.fillStyle = '#f59e0b';
+
+      ctx.fill();
+
+      
+
+      // Draw vertices
+
+      ctx.beginPath();
+
+      ctx.arc(centerX - a, centerY, 4, 0, 2 * Math.PI);
+
+      ctx.fillStyle = '#10b981';
+
+      ctx.fill();
+
+      
+
+      ctx.beginPath();
+
+      ctx.arc(centerX + a, centerY, 4, 0, 2 * Math.PI);
+
+      ctx.fillStyle = '#10b981';
+
+      ctx.fill();
+
+    }
+
+    
+
+    function drawGrid(ctx, width, height) {
+
+      const gridSize = 20;
+
+      ctx.strokeStyle = 'rgba(0, 0, 0, 0.1)';
+
+      ctx.lineWidth = 1;
+
+      
+
+      // Vertical lines
+
+      for (let x = 0; x <= width; x += gridSize) {
+
+        ctx.beginPath();
+
+        ctx.moveTo(x, 0);
+
+        ctx.lineTo(x, height);
+
+        ctx.stroke();
+
+      }
+
+      
+
+      // Horizontal lines
+
+      for (let y = 0; y <= height; y += gridSize) {
+
+        ctx.beginPath();
+
+        ctx.moveTo(0, y);
+
+        ctx.lineTo(width, y);
+
+        ctx.stroke();
+
+      }
+
+    }
+
+    
+
+    function drawAxes(ctx, width, height) {
+
+      ctx.strokeStyle = '#333';
+
+      ctx.lineWidth = 2;
+
+      
+
+      // X-axis
+
+      ctx.beginPath();
+
+      ctx.moveTo(0, height/2);
+
+      ctx.lineTo(width, height/2);
+
+      ctx.stroke();
+
+      
+
+      // Y-axis
+
+      ctx.beginPath();
+
+      ctx.moveTo(width/2, 0);
+
+      ctx.lineTo(width/2, height);
+
+      ctx.stroke();
+
+    }
+
+    
+
+    // Initialize diagrams when page loads
+
+    window.addEventListener('load', function() {
+
+      // Draw circle diagrams
+
+      drawCircleDiagram('circle1-visual', 150, 150, 80);
+
+      drawCircleDiagram('circle2-visual', 150, 150, 60);
+
+      
+
+      // Draw tangent diagrams
+
+      drawTangentDiagram('tangent1-visual', 150, 150, 80, 230, 150);
+
+      drawTangentDiagram('tangent2-visual', 150, 150, 60, 210, 150);
+
+      
+
+      // Draw ellipse diagrams
+
+      drawEllipseDiagram('ellipse1-visual', 150, 150, 100, 75);
+
+      drawEllipseDiagram('ellipse2-visual', 150, 150, 120, 80);
+
+      
+
+      // Draw application diagrams
+
+      drawEllipseDiagram('app1-visual', 150, 150, 100, 60);
+
+      drawEllipseDiagram('app2-visual', 150, 150, 90, 60);
+
+      
+
+      // Initialize games
+
+      initCircleGame();
+
+      initTangentGame();
+
+      initEllipseGame();
+
+    });
+
+
+
+    /* ---------------- Additional Helper Functions ---------------- */
+
+    function toggleSolution(solutionId) {
+
+      const solution = document.getElementById(solutionId);
+
+      if (solution) {
+
+        solution.classList.toggle('active');
+
+        solution.style.display = solution.style.display === 'none' ? 'block' : 'none';
+
+        playSound('click');
+
+      }
+
+    }
+
+
+
+    // Progress tracking
+
+    let progress = 0;
+
+    function updateProgress() {
+
+      progress = Math.min(progress + 10, 100);
+
+      document.querySelectorAll('.progress-bar').forEach(bar => {
+
+        bar.style.width = `${progress}%`;
+
+      });
+
+      
+
+      if (progress === 100) {
+
+        celebrate();
+
+      }
+
+    }
+
+
+
+    // Self-care reminder system
+
+    function showSelfCareReminder() {
+
+      const reminders = [
+
+        "Take a deep breath! You're doing great! 🌸",
+
+        "Remember to stretch and relax your shoulders! 💫",
+
+        "Hydrate yourself with some water! 💧",
+
+        "You're making amazing progress! Keep going! 🚀",
+
+        "Math is challenging, but you're rising to the occasion! 🌟"
+
+      ];
+
+      
+
+      const randomReminder = reminders[Math.floor(Math.random() * reminders.length)];
+
+      alert(randomReminder);
+
+      playSound('success');
+
+    }
+
+
+
+    // Set up self-care reminder every 5 minutes
+
+    setInterval(showSelfCareReminder, 300000);
+
+
+
+    // Initialize all games
+
+    window.onload = function() {
+
+      initCircleGame();
+
+      initTangentGame();
+
+      initEllipseGame();
+
+    };
+
+  </script>
+
+</body>
+
+</html>

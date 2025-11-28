@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chatbot - Sentellect</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+         :root {
+            --primary: #1e40af;
+            --bg: #f8fafc;
+            --white: #ffffff;
+            --text: #1e293b;
+            --success: #10b981;
+            --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            min-height: 100vh;
+            color: #333;
+        }
+        /* Header */
+        
+        header {
+            background: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--primary);
+            color: white;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .nav-btn {
+            padding: 8px 20px;
+            border-radius: 50px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: var(--text);
+            transition: 0.3s;
+            background: white;
+        }
+        
+        .nav-btn:hover {
+            background: #eff6ff;
+            color: var(--primary);
+        }
+        
+        .nav-btn.logout:hover {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        /* Chat Container */
+        
+        .chat-container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        
+        .chat-header {
+            text-align: center;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .chat-header h1 {
+            color: #0277bd;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .chat-header p {
+            color: #555;
+            font-size: 1.2em;
+        }
+        /* Messages Area */
+        
+        .messages-container {
+            height: 60vh;
+            overflow-y: auto;
+            padding: 20px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            scrollbar-width: thin;
+            scrollbar-color: #81d4fa #f1f1f1;
+        }
+        
+        .messages-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .messages-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        .messages-container::-webkit-scrollbar-thumb {
+            background: #81d4fa;
+            border-radius: 10px;
+        }
+        /* Message Styles */
+        
+        .message {
+            display: flex;
+            margin-bottom: 15px;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        .message.user {
+            justify-content: flex-end;
+        }
+        
+        .message.bot {
+            justify-content: flex-start;
+        }
+        
+        .message-content {
+            max-width: 70%;
+            padding: 15px;
+            border-radius: 20px;
+            font-size: 1em;
+            line-height: 1.4;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        
+        .message.user .message-content {
+            background: linear-gradient(135deg, #e1f5fe, #b3e5fc);
+            color: #01579b;
+            text-align: right;
+        }
+        
+        .message.bot .message-content {
+            background: linear-gradient(135deg, #81d4fa, #4fc3f7);
+            color: #fff;
+            text-align: left;
+        }
+        
+        .message.bot .message-content::before {
+            content: "🤖";
+            position: absolute;
+            left: -40px;
+            top: 10px;
+            font-size: 1.5em;
+        }
+        
+        .message.user .message-content::after {
+            content: "👤";
+            position: absolute;
+            right: -40px;
+            top: 10px;
+            font-size: 1.5em;
+        }
+        /* Input Area */
+        
+        .input-container {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 25px;
+            padding: 10px 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .input-container input {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 10px;
+            font-size: 1em;
+            background: transparent;
+            color: #333;
+        }
+        
+        .input-container button {
+            background: linear-gradient(135deg, #0277bd, #01579b);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 20px;
+            margin-left: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .input-container button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .input-container button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        /* Action Buttons */
+        
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .clear-btn {
+            background: #f44336;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.3s;
+        }
+        
+        .clear-btn:hover {
+            background: #d32f2f;
+        }
+        
+        .back-btn {
+            background: #666;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 1em;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        
+        .back-btn:hover {
+            background: #555;
+        }
+        /* Animations */
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        /* Loading Animation */
+        
+        .typing-indicator {
+            display: none;
+            padding: 15px;
+            background: linear-gradient(135deg, #81d4fa, #4fc3f7);
+            color: white;
+            border-radius: 20px;
+            margin-bottom: 15px;
+            text-align: left;
+            max-width: 70%;
+        }
+        
+        .typing-dots {
+            display: inline-block;
+        }
+        
+        .typing-dots span {
+            animation: typing 1.4s infinite;
+            display: inline-block;
+        }
+        
+        .typing-dots span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-dots span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typing {
+            0%,
+            60%,
+            100% {
+                opacity: 0.3;
+            }
+            30% {
+                opacity: 1;
+            }
+        }
+        /* Responsive */
+        
+        @media (max-width: 768px) {
+            .message-content {
+                max-width: 85%;
+            }
+            .chat-header h1 {
+                font-size: 2em;
+            }
+            .message.bot .message-content::before,
+            .message.user .message-content::after {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="navbar">
+            <a href="{{ url_for('dashboard') }}" class="logo">
+                <div class="logo-icon">S</div>
+                <span>Sentellect</span>
+            </a>
+            <div class="nav-buttons">
+                <a href="{{ url_for('dashboard') }}" class="nav-btn">
+                    <i class="fas fa-home"></i> Dashboard
+                </a>
+                <a href="{{ url_for('profile') }}" class="nav-btn">
+                    <i class="fas fa-user"></i> Profile
+                </a>
+                <a href="{{ url_for('logout') }}" class="nav-btn logout">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="chat-container">
+        <div class="chat-header">
+            <h1>🤖 Sentellect AI</h1>
+            <p>Experience a sleek, modern chat interface with AI-powered conversations</p>
+        </div>
+
+        <div class="messages-container" id="messagesContainer">
+            <div class="typing-indicator" id="typingIndicator">
+                <div class="typing-dots">
+                    🤖 AI is typing<span>.</span><span>.</span><span>.</span>
+                </div>
+            </div>
+            <!-- Messages will be inserted here by JavaScript -->
+        </div>
+
+        <div class="input-container">
+            <input type="text" id="userInput" placeholder="Type your message here..." autocomplete="off">
+            <button id="sendButton">Send</button>
+        </div>
+
+        <div class="action-buttons">
+            <button class="clear-btn" id="clearButton">Clear Chat</button>
+            <a href="{{ url_for('dashboard') }}" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const messagesContainer = document.getElementById('messagesContainer');
+        const userInput = document.getElementById('userInput');
+        const sendButton = document.getElementById('sendButton');
+        const clearButton = document.getElementById('clearButton');
+        const typingIndicator = document.getElementById('typingIndicator');
+
+        // Load messages from localStorage
+        let messages = JSON.parse(localStorage.getItem('chatMessages')) || [];
+
+        // Display existing messages
+        function displayMessages() {
+            messagesContainer.innerHTML = '';
+            messagesContainer.appendChild(typingIndicator);
+
+            messages.forEach(msg => {
+                addMessageToChat(msg.role, msg.content, false);
+            });
+
+            scrollToBottom();
+        }
+
+        // Add message to chat
+        function addMessageToChat(role, content, save = true) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${role}`;
+
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
+            contentDiv.innerHTML = content;
+
+            messageDiv.appendChild(contentDiv);
+            messagesContainer.insertBefore(messageDiv, typingIndicator);
+
+            if (save) {
+                messages.push({
+                    role,
+                    content
+                });
+                localStorage.setItem('chatMessages', JSON.stringify(messages));
+            }
+
+            scrollToBottom();
+        }
+
+        // Scroll to bottom of chat
+        function scrollToBottom() {
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Send message to backend
+        async function sendMessage() {
+            const message = userInput.value.trim();
+            if (!message) return;
+
+            // Add user message to chat
+            addMessageToChat('user', message);
+            userInput.value = '';
+            sendButton.disabled = true;
+
+            // Show typing indicator
+            typingIndicator.style.display = 'block';
+            scrollToBottom();
+
+            try {
+                const response = await fetch('/chatbot/send_message', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: message
+                    })
+                });
+
+                const data = await response.json();
+
+                // Hide typing indicator
+                typingIndicator.style.display = 'none';
+
+                if (response.ok) {
+                    addMessageToChat('bot', data.reply);
+                } else {
+                    addMessageToChat('bot', `Error: ${data.error}`);
+                }
+            } catch (error) {
+                typingIndicator.style.display = 'none';
+                addMessageToChat('bot', `Error: Failed to send message`);
+            } finally {
+                sendButton.disabled = false;
+                userInput.focus();
+            }
+        }
+
+        // Clear chat
+        function clearChat() {
+            messages = [];
+            localStorage.removeItem('chatMessages');
+            displayMessages();
+        }
+
+        // Event listeners
+        sendButton.addEventListener('click', sendMessage);
+
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        clearButton.addEventListener('click', clearChat);
+
+        // Initialize chat
+        displayMessages();
+        userInput.focus();
+    </script>
+</body>
+
+</html>

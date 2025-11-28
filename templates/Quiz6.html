@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 6 Quiz - Sentellect</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)'], ['\\[', '\\]']] },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'] }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+
+  <style>
+    :root {
+      --primary: #1e40af; --bg: #f8fafc; --white: #ffffff; 
+      --success: #10b981; --error: #ef4444; --text: #1e293b;
+    }
+    body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); color: var(--text); }
+    .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+    
+    /* Quiz Card */
+    .quiz-card { background: var(--white); padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+    
+    /* Question Styles */
+    .quiz-question { margin-bottom: 30px; padding: 20px; border-left: 4px solid var(--primary); background: #f1f5f9; border-radius: 8px; }
+    .quiz-options { display: grid; gap: 10px; margin-top: 15px; }
+    
+    /* Buttons */
+    .quiz-btn {
+      padding: 12px; text-align: left; background: white; border: 2px solid #cbd5e1;
+      border-radius: 8px; cursor: pointer; transition: all 0.2s; font-weight: 500; width: 100%;
+    }
+    .quiz-btn:hover { border-color: var(--primary); background: #eff6ff; }
+    
+    /* Correct/Incorrect States */
+    .quiz-btn.correct { background-color: #dcfce7 !important; border-color: var(--success) !important; color: #166534 !important; opacity: 1 !important; }
+    .quiz-btn.incorrect { background-color: #fee2e2 !important; border-color: var(--error) !important; color: #991b1b !important; opacity: 1 !important; }
+    .quiz-btn:disabled { cursor: not-allowed; opacity: 0.8; }
+
+    /* Feedback Text */
+    .quiz-feedback { margin-top: 10px; font-size: 0.95rem; padding: 10px; border-radius: 6px; display: none; }
+
+    /* Result Section (Hidden by default) */
+    #finish-area { display: none; text-align: center; padding: 30px; margin-top: 30px; border-radius: 12px; animation: fadeIn 0.5s; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    
+    .btn-action {
+      padding: 12px 25px; font-size: 1.1rem; font-weight: bold; color: white;
+      border: none; border-radius: 50px; cursor: pointer; transition: transform 0.2s; margin: 10px;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-action:hover { transform: translateY(-2px); }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="quiz-card">
+    <h1 style="color: var(--primary); text-align: center;">Chapter 6: Conic Sections</h1>
+    <p style="text-align: center; color: #64748b;">Answer at least 5 questions correctly to complete this module.</p>
+    <hr style="margin: 20px 0; border-color: #e2e8f0;">
+
+    <div class="interactive-quiz">
+      
+      <div class="quiz-question" id="q1">
+        <p><strong>1.</strong> What is the center and radius of \(x^2 + y^2 - 6x + 4y - 12 = 0\)?</p>
+        <div class="quiz-options">
+          <button class="quiz-btn" onclick="checkQuiz(this, true, 'q1', 'Correct! $g=-3, f=2, c=-12$. Center $(-g,-f)=(3,-2)$, Radius $\\sqrt{g^2+f^2-c}=\\sqrt{9+4+12}=5$.')">Center: (3, -2), Radius: 5</button>
+          <button class="quiz-btn" onclick="checkQuiz(this, false, 'q1', 'Check signs.')">Center: (-3, 2), Radius: 5</button>
+          <button class="quiz-btn" onclick="checkQuiz(this, false, 'q1', 'Radius squared is 25.')">Center: (3, -2), Radius: 25</button>
+          <button class="quiz-btn" onclick="checkQuiz(this, false, 'q1', 'No.')">Center: (-3, 2), Radius: 25</button>
+        </div>
+        <div class="quiz-feedback" id="q1-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q2">
+        <p><strong>2.</strong> Equation of tangent to \(x^2 + y^2 = 25\) at (3, 4)?</p>
+        <div class="quiz-options">
+          <button class="quiz-btn" onclick="checkQuiz(this, true, 'q2', 'Correct. Formula $xx_1 + yy_1 = r^2$.')">\(3x + 4y = 25\)</button>
+          <button class="quiz-btn" onclick="checkQuiz(this, false, 'q2', 'Coords swapped.')">\(4x + 3y = 25\)</button>
+          <button class="quiz-btn" onclick="checkQuiz(this, false, 'q2', 'Sign error.')">\(3x - 4y = 25\)</button>
+          <button class="quiz-btn" onclick="checkQuiz(this, false, 'q2', 'No.')">\(4x - 3y = 25\)</button>
+        </div>
+        <div class="quiz-feedback" id="q2-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q3">
+        <p><strong>3.</strong> For ellipse \(\frac{x^2}{16} + \frac{y^2}{9} = 1\), coordinates of foci?</p>
+        <div class="quiz-options">
+          <button class="quiz-btn" onclick="checkQuiz(this, false, 'q3', 'On y-axis.')">\((0, \pm\sqrt{7})\)</button>
+          <button class="quiz-btn" onclick="checkQuiz(this, true, 'q3', 'Correct. $c^2=a^2-b^2=16-9=7$. Foci $(\\pm c, 0)$.')">\((\pm\sqrt{7}, 0)\)</button>
+          <button class="quiz-btn" onclick="checkQuiz(this, false, 'q3', 'Wrong subtraction.')">\((0, \pm\sqrt{5})\)</button>
+          <button class="quiz-btn" onclick="checkQuiz(this, false, 'q3', 'Wrong subtraction.')">\((\pm\sqrt{5}, 0)\)</button>
+        </div>
+        <div class="quiz-feedback" id="q3-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q4">
+        <p><strong>4.</strong> The normal to a circle at any point:</p>
+        <div class="quiz-options">
+          <button class="quiz-btn" onclick="checkQuiz(this, false, 'q4', 'Tangent is perpendicular.')">Is parallel to the tangent</button>
+          <button class="quiz-btn" onclick="checkQuiz(this, true, 'q4', 'Correct. Normal is perpendicular to tangent.')">Is perpendicular to the tangent</button>
+          <button class="quiz-btn" onclick="checkQuiz(this, false, 'q4', 'No.')">Makes a 45° angle</button>
+          <button class="quiz-btn" onclick="checkQuiz(this, false, 'q4', 'Only sometimes.')">Is parallel to the x-axis</button>
+        </div>
+        <div class="quiz-feedback" id="q4-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q5">
+        <p><strong>5.</strong> Eccentricity of an ellipse is:</p>
+        <div class="quiz-options">
+          <button class="quiz-btn" onclick="checkQuiz(this, false, 'q5', 'No.')">\(e = \frac{a}{b}\)</button>
+          <button class="quiz-btn" onclick="checkQuiz(this, true, 'q5', 'Correct. Ratio of focal distance to major axis.')">\(e = \frac{c}{a}\)</button>
+          <button class="quiz-btn" onclick="checkQuiz(this, false, 'q5', 'No.')">\(e = \frac{b}{a}\)</button>
+          <button class="quiz-btn" onclick="checkQuiz(this, false, 'q5', 'Inverted.')">\(e = \frac{a}{c}\)</button>
+        </div>
+        <div class="quiz-feedback" id="q5-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q6">
+        <p><strong>6.</strong> Tangents from an external point to a circle?</p>
+        <div class="quiz-options">
+          <button class="quiz-btn" onclick="checkQuiz(this, false, 'q6', 'From point ON circle.')">One</button>
+          <button class="quiz-btn" onclick="checkQuiz(this, true, 'q6', 'Correct. Always two.')">Two</button>
+          <button class="quiz-btn" onclick="checkQuiz(this, false, 'q6', 'No.')">Infinite</button>
+          <button class="quiz-btn" onclick="checkQuiz(this, false, 'q6', 'From point INSIDE circle.')">None</button>
+        </div>
+        <div class="quiz-feedback" id="q6-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q7">
+        <p><strong>7.</strong> Latus rectum of \(\frac{x^2}{9} + \frac{y^2}{25} = 1\):</p>
+        <div class="quiz-options">
+          <button class="quiz-btn" onclick="checkQuiz(this, true, 'q7', 'Correct. $a=5, b=3$. $L = 2b^2/a = 2(9)/5 = 18/5$.')">\(\frac{18}{5}\)</button>
+          <button class="quiz-btn" onclick="checkQuiz(this, false, 'q7', 'Swapped a and b.')">\(\frac{10}{3}\)</button>
+          <button class="quiz-btn" onclick="checkQuiz(this, false, 'q7', 'Forgot 2.')">\(\frac{9}{5}\)</button>
+          <button class="quiz-btn" onclick="checkQuiz(this, false, 'q7', 'No.')">\(\frac{25}{3}\)</button>
+        </div>
+        <div class="quiz-feedback" id="q7-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q8">
+        <p><strong>8.</strong> \(x^2 + y^2 + 2gx + 2fy + c = 0\) is a real circle if:</p>
+        <div class="quiz-options">
+          <button class="quiz-btn" onclick="checkQuiz(this, true, 'q8', 'Correct. Radius squared must be positive.')">\(g^2 + f^2 - c > 0\)</button>
+          <button class="quiz-btn" onclick="checkQuiz(this, false, 'q8', 'Imaginary circle.')">\(g^2 + f^2 - c < 0\)</button>
+          <button class="quiz-btn" onclick="checkQuiz(this, false, 'q8', 'Point circle.')">\(g^2 + f^2 - c = 0\)</button>
+          <button class="quiz-btn" onclick="checkQuiz(this, false, 'q8', 'Sign error.')">\(g^2 + f^2 + c > 0\)</button>
+        </div>
+        <div class="quiz-feedback" id="q8-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q9">
+        <p><strong>9.</strong> Point (2, 3) relative to \(x^2 + y^2 = 25\):</p>
+        <div class="quiz-options">
+          <button class="quiz-btn" onclick="checkQuiz(this, true, 'q9', 'Correct. $2^2+3^2 = 4+9=13 < 25$.')">Inside</button>
+          <button class="quiz-btn" onclick="checkQuiz(this, false, 'q9', 'Would equal 25.')">On</button>
+          <button class="quiz-btn" onclick="checkQuiz(this, false, 'q9', 'Would be > 25.')">Outside</button>
+          <button class="quiz-btn" onclick="checkQuiz(this, false, 'q9', 'Calculable.')">Cannot determine</button>
+        </div>
+        <div class="quiz-feedback" id="q9-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q10">
+        <p><strong>10.</strong> NOT a conic section?</p>
+        <div class="quiz-options">
+          <button class="quiz-btn" onclick="checkQuiz(this, false, 'q10', 'Is a conic.')">Circle</button>
+          <button class="quiz-btn" onclick="checkQuiz(this, false, 'q10', 'Is a conic.')">Ellipse</button>
+          <button class="quiz-btn" onclick="checkQuiz(this, false, 'q10', 'Is a conic.')">Parabola</button>
+          <button class="quiz-btn" onclick="checkQuiz(this, true, 'q10', 'Correct. A triangle is a polygon.')">Triangle</button>
+        </div>
+        <div class="quiz-feedback" id="q10-feedback"></div>
+      </div>
+
+    </div> <div id="finish-area"></div>
+
+  </div>
+</div>
+
+<script>
+    // --- CONFIGURATION ---
+    const CHAPTER_ID = 6; // Defines this as Chapter 6
+    const PASS_THRESHOLD = 0.5; // 50% required to pass
+    // ---------------------
+
+    let correctAnswers = 0;
+    
+    // Auto-detect total questions
+    const allQuestions = document.querySelectorAll('.quiz-question');
+    const totalQuestions = allQuestions.length;
+    const questionsToPass = Math.ceil(totalQuestions * PASS_THRESHOLD);
+
+    console.log(`Quiz 6 Loaded: ${totalQuestions} questions. Pass needs ${questionsToPass}.`);
+
+    function checkQuiz(btn, isCorrect, qId, rationale) {
+        const parent = document.getElementById(qId);
+        const feedback = document.getElementById(qId + '-feedback');
+        
+        // 1. Prevent duplicate clicks
+        if (parent.getAttribute('data-answered') === 'true') return;
+        parent.setAttribute('data-answered', 'true');
+
+        // 2. Disable buttons
+        const buttons = parent.querySelectorAll('.quiz-btn');
+        buttons.forEach(b => {
+            b.disabled = true;
+            b.style.opacity = "0.6";
+            b.style.cursor = "not-allowed";
+        });
+
+        // 3. Show Feedback
+        feedback.style.display = "block"; 
+        
+        if (isCorrect) {
+            correctAnswers++;
+            btn.classList.add('correct');
+            btn.style.opacity = "1"; 
+            feedback.innerHTML = `<div style="background:#dcfce7; color:#166534; padding:10px; border-radius:6px;"><strong>Correct!</strong> ${rationale}</div>`;
+        } else {
+            btn.classList.add('incorrect');
+            btn.style.opacity = "1"; 
+            
+            // Highlight correct answer
+            buttons.forEach(b => {
+                if(b.getAttribute('onclick').includes('true')) {
+                    b.classList.add('correct');
+                    b.style.opacity = "1";
+                }
+            });
+            feedback.innerHTML = `<div style="background:#fee2e2; color:#991b1b; padding:10px; border-radius:6px;"><strong>Not quite.</strong> ${rationale}</div>`;
+        }
+
+        if (window.MathJax) window.MathJax.typesetPromise([feedback]);
+
+        checkCompletion();
+    }
+
+    function checkCompletion() {
+        const answeredCount = document.querySelectorAll('.quiz-question[data-answered="true"]').length;
+        
+        if (answeredCount === totalQuestions) {
+            showFinalResult();
+        }
+    }
+
+    function showFinalResult() {
+        const finishArea = document.getElementById('finish-area');
+        finishArea.style.display = 'block';
+
+        if (correctAnswers >= questionsToPass) {
+            // --- PASS UI ---
+            finishArea.style.backgroundColor = '#f0fdf4';
+            finishArea.style.border = '2px solid #10b981';
+            finishArea.innerHTML = `
+                <h2 style="color: #15803d; margin-bottom: 10px;">🎉 Module Complete!</h2>
+                <p style="font-size: 1.2rem; margin-bottom: 15px;">You scored <strong>${correctAnswers}/${totalQuestions}</strong>.</p>
+                <p style="color: #64748b;">You have mastered Conic Sections.</p>
+                <br>
+                <button id="saveBtn" onclick="saveProgress()" class="btn-action" style="background-color: #10b981; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);">
+                    Return to Dashboard
+                </button>
+            `;
+        } else {
+            // --- FAIL UI ---
+            finishArea.style.backgroundColor = '#fef2f2';
+            finishArea.style.border = '2px solid #ef4444';
+            finishArea.innerHTML = `
+                <h2 style="color: #b91c1c; margin-bottom: 10px;">Keep Practicing</h2>
+                <p style="font-size: 1.2rem; margin-bottom: 15px;">You scored <strong>${correctAnswers}/${totalQuestions}</strong>.</p>
+                <p style="color: #64748b;">You need ${questionsToPass} correct answers to pass.</p>
+                <br>
+                <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+                    <button onclick="location.reload()" class="btn-action" style="background-color: #ef4444; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);">
+                        <i class="fas fa-redo"></i> Retry Quiz
+                    </button>
+                    
+                    <button onclick="window.location.href='/dashboard'" class="btn-action" style="background-color: #64748b; box-shadow: 0 4px 12px rgba(100, 116, 139, 0.3);">
+                        <i class="fas fa-arrow-left"></i> Dashboard
+                    </button>
+                </div>
+            `;
+        }
+        
+        setTimeout(() => {
+            finishArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+    }
+
+    function saveProgress() {
+        const btn = document.getElementById('saveBtn');
+        btn.innerText = "Saving...";
+        btn.disabled = true;
+
+        fetch('/api/complete_chapter', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chapter: CHAPTER_ID })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.redirect) {
+                window.location.href = data.redirect;
+            } else {
+                window.location.href = "/dashboard";
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert("Connection error. Redirecting to dashboard...");
+            window.location.href = "/dashboard";
+        });
+    }
+</script>
+
+</body>
+</html>

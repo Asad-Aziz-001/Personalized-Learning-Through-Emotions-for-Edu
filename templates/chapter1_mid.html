@@ -1,0 +1,5176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sentellect</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Add this in the <head> section of your page -->
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(', '\\)']],
+    displayMath: [['\\[', '\\]']],
+    processEscapes: true,
+    processEnvironments: true
+  },
+  options: {
+    skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+  }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+  <style>
+    /* ===== Base Styles ===== */
+    :root {
+      --primary: #1e40af;
+      --primary-light: #3b82f6;
+      --primary-dark: #1e3a8a;
+      --secondary: #f59e0b;
+      --accent: #ec4899;
+      --text: #1e293b;
+      --text-light: #64748b;
+      --text-lighter: #94a3b8;
+      --bg: #f8fafc;
+      --white: #ffffff;
+      --gray: #e2e8f0;
+      --gray-light: #f1f5f9;
+      --success: #10b981;
+      --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      --hover-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    section {
+      padding: 60px 0;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .section-title h2 {
+      font-size: 2.2rem;
+      color: var(--primary);
+      margin-bottom: 15px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title h2::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: var(--secondary);
+      border-radius: 2px;
+    }
+
+    .section-title p {
+      color: var(--text-light);
+      font-size: 1.1rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 28px;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--white);
+      box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(30, 64, 175, 0.4);
+    }
+
+    .btn-secondary {
+      background-color: var(--white);
+      color: var(--primary);
+      border: 2px solid var(--primary);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--primary);
+      color: var(--white);
+      transform: translateY(-2px);
+    }
+
+    /* ===== Animations ===== */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .animate {
+      animation: fadeIn 0.8s ease forwards;
+    }
+
+    .delay-1 { animation-delay: 0.2s; }
+    .delay-2 { animation-delay: 0.4s; }
+    .delay-3 { animation-delay: 0.6s; }
+
+    /* ===== Header/Navbar ===== */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      background-color: var(--white);
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    header.scrolled {
+      padding: 10px 0;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: var(--white);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 18px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(30, 64, 175, 0.2);
+    }
+
+    .logo-text {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      transition: all 0.3s ease;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 30px;
+    }
+
+    .nav-links a {
+      font-weight: 500;
+      position: relative;
+      padding: 5px 0;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      transition: width 0.3s ease;
+      border-radius: 2px;
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      width: 100%;
+    }
+
+    .nav-links a.active {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .auth-buttons {
+      display: flex;
+      gap: 15px;
+    }
+
+    .login-btn {
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .login-btn:hover {
+      color: var(--primary);
+    }
+
+    .signup-btn {
+      padding: 8px 20px;
+      border-radius: 50px;
+      background: linear-gradient(to right, var(--primary), var(--primary-light));
+      color: var(--white);
+      font-weight: 500;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(30, 64, 175, 0.25);
+    }
+
+    .signup-btn:hover {
+      background: linear-gradient(to right, var(--primary-dark), var(--primary));
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(30, 64, 175, 0.35);
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--primary);
+      cursor: pointer;
+    }
+    
+    .continuous {
+  color: #27ae60;
+  font-weight: bold;
+  background: #d5f4e6;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.discontinuous {
+  color: #e74c3c;
+  font-weight: bold;
+  background: #fadbd8;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.eye-exercise, .posture-exercise {
+  margin: 15px 0;
+}
+
+.eye-instruction, .posture-step {
+  padding: 8px 12px;
+  margin: 5px 0;
+  background: rgba(255,255,255,0.8);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.eye-progress {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.eye-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #bdc3c7;
+  transition: all 0.5s ease;
+}
+
+.eye-dot.active {
+  background: #e74c3c;
+  transform: scale(1.3);
+}
+
+.posture-number {
+  background: #e74c3c;
+  color: white;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.posture-timer {
+  text-align: center;
+  font-style: italic;
+  margin: 10px 0;
+  padding: 10px;
+  background: rgba(255,255,255,0.7);
+  border-radius: 5px;
+}
+
+/* Keep existing mental health exercise styles */
+.mental-health-exercise {
+  background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+  padding: 20px;
+  border-radius: 10px;
+  margin: 30px 0;
+  border: 1px solid #e1bee7;
+}
+
+.mental-health-exercise h4 {
+  color: #7b1fa2;
+  margin-top: 0;
+  text-align: center;
+}
+
+.breathing-container {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.breath-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4CAF50, #81C784);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  color: white;
+  font-weight: bold;
+  transition: all 4s ease;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.breath-instructions {
+  margin-top: 15px;
+  font-style: italic;
+  color: #666;
+}
+
+.exercise-action {
+  background: linear-gradient(135deg, #7b1fa2, #e91e63);
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  display: inline-block;
+  margin-top: 10px;
+}
+
+.exercise-action:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+    /* ===== Hero Section ===== */
+.hero {
+      position: relative;
+      padding: 160px 0 70px;
+      background: linear-gradient(135deg, var(--primary), #004e92);
+      color: var(--white);
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3QgZmlsbD0idXJsKCNwYXR0ZXJuKSIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIvPjwvc3ZnPg==');
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-size: 2.8rem;
+      margin-bottom: 20px;
+      line-height: 1.2;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .hero h1 span {
+      color: var(--secondary);
+      position: relative;
+    }
+
+    .hero h1 span::after {
+      content: '';
+      position: absolute;
+      bottom: 5px;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background-color: rgba(255, 255, 255, 0.3);
+      z-index: -1;
+      border-radius: 4px;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 40px;
+      opacity: 0.9;
+    }
+
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .hero .btn-secondary {
+      background-color: transparent;
+      color: var(--white);
+      border-color: var(--white);
+    }
+
+    .hero .btn-secondary:hover {
+      background-color: var(--white);
+      color: var(--primary);
+    }
+
+    .floating-shape {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      z-index: 0;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .shape-1 {
+      width: 150px;
+      height: 150px;
+      top: 10%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .shape-2 {
+      width: 100px;
+      height: 100px;
+      bottom: 15%;
+      right: 10%;
+      animation-delay: 0.5s;
+    }
+
+    .shape-3 {
+      width: 80px;
+      height: 80px;
+      top: 30%;
+      right: 20%;
+      animation-delay: 1s;
+    }
+    
+    /* ===== Card Styles ===== */
+    .card {
+      background-color: var(--white);
+      border-radius: 16px;
+      padding: 25px;
+      margin: 20px 0;
+      box-shadow: var(--card-shadow);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--primary), var(--secondary));
+      transition: width 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--hover-shadow);
+    }
+    
+    .card:hover::before {
+      width: 8px;
+    }
+
+    h2 {
+      color: var(--primary);
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    h3 {
+      color: var(--primary);
+      font-size: 1.4rem;
+      margin: 20px 0 15px;
+      font-weight: 600;
+      position: relative;
+      padding-left: 15px;
+    }
+    
+    h3::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 6px;
+      height: 6px;
+      background: var(--secondary);
+      border-radius: 50%;
+    }
+
+    p {
+      color: var(--text-light);
+      margin-bottom: 15px;
+      line-height: 1.7;
+    }
+
+    /* ===== Game Link ===== */
+    .game-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 15px;
+      padding: 12px 25px;
+      background: linear-gradient(to right, var(--success), #0da271);
+      color: var(--white);
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
+    }
+
+    .game-link:hover {
+      background: linear-gradient(to right, #0da271, var(--success));
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(16, 185, 129, 0.4);
+    }
+
+    /* ===== Step Buttons ===== */
+    .step-buttons {
+      display: flex;
+      gap: 12px;
+      margin: 15px 0;
+      flex-wrap: wrap;
+    }
+
+    .step-btn {
+      padding: 10px 16px;
+      background: linear-gradient(to right, var(--primary), var(--primary-light));
+      color: var(--white);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      box-shadow: 0 4px 8px rgba(30, 64, 175, 0.2);
+    }
+
+    .step-btn:hover {
+      background: linear-gradient(to right, var(--primary-dark), var(--primary));
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(30, 64, 175, 0.3);
+    }
+
+    /* ===== Solution Display ===== */
+    .solution {
+      background: var(--gray-light);
+      border-left: 4px solid var(--secondary);
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 0 8px 8px 0;
+      transition: all 0.3s ease;
+    }
+
+    /* ===== Progress Bar ===== */
+    .progress-container {
+      width: 100%;
+      height: 8px;
+      background-color: var(--gray);
+      border-radius: 4px;
+      margin: 15px 0;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      border-radius: 4px;
+      width: 0%;
+      transition: width 1s ease;
+    }
+
+    /* ===== Graph Styles ===== */
+    .graph-container {
+      height: 300px;
+      margin: 15px 0;
+      background: var(--white);
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    /* ===== Resources Section ===== */
+    .resources {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    .resource-card {
+      flex: 1;
+      min-width: 200px;
+      background: var(--white);
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: var(--card-shadow);
+      text-align: center;
+      transition: transform 0.3s;
+    }
+
+    .resource-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .resource-card a {
+      display: block;
+      margin: 10px 0;
+      padding: 10px;
+      background: var(--primary);
+      color: var(--white);
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+
+    .resource-card a:hover {
+      background: var(--primary-dark);
+    }
+
+    /* ===== Self-Care Notes ===== */
+    .self-care {
+      background: linear-gradient(135deg, #e0f2fe, #f0f9ff);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px 0;
+      text-align: center;
+      border-left: 5px solid var(--accent);
+      animation: pulse 3s infinite;
+    }
+
+    .self-care h4 {
+      color: var(--accent);
+      margin-bottom: 10px;
+      font-size: 1.3rem;
+    }
+
+    .self-care p {
+      color: var(--text);
+      font-size: 1.1rem;
+      margin-bottom: 0;
+    }
+
+    /* ===== Game Area ===== */
+    .game-container {
+      background: #e6f2ff;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .game-area {
+      position: relative;
+      height: 250px;
+      border: 2px solid var(--primary);
+      border-radius: 10px;
+      margin: 15px 0;
+      overflow: hidden;
+      background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+    }
+
+    .bubble {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(106, 17, 203, 0.7);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      transition: transform 0.2s;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .bubble:hover {
+      transform: scale(1.1);
+    }
+
+    .game-score {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--primary);
+      margin: 10px 0;
+    }
+
+    /* ===== Completion Message ===== */
+    .completion {
+      text-align: center;
+      padding: 30px;
+      background: linear-gradient(135deg, #dbeafe, #e0f2fe);
+      border-radius: 16px;
+      margin: 30px 0;
+      animation: fadeIn 1s ease;
+    }
+
+    .completion h3 {
+      color: var(--primary);
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+    }
+
+    .completion p {
+      font-size: 1.1rem;
+      color: var(--text);
+    }
+        /* ===== Mental Health Exercise Styles ===== */
+    .mental-health-exercise {
+      background: linear-gradient(135deg, #e0f2fe, #f0f9ff);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px 0;
+      text-align: center;
+      border-left: 5px solid var(--accent);
+      animation: pulse 3s infinite;
+    }
+
+    .mental-health-exercise h4 {
+      color: var(--accent);
+      margin-bottom: 10px;
+      font-size: 1.3rem;
+    }
+
+    .mental-health-exercise p {
+      color: var(--text);
+      font-size: 1.1rem;
+      margin-bottom: 15px;
+    }
+
+    .exercise-action {
+      display: inline-block;
+      padding: 10px 20px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .exercise-action:hover {
+      background: #d81b60;
+      transform: translateY(-2px);
+    }
+
+    .breathing-animation {
+      width: 40px;
+      height: 40px;
+      background-color: #ff9800;
+      border-radius: 50%;
+      margin: 20px auto;
+      animation: breathe 4s infinite ease-in-out;
+    }
+
+    /* ===== Footer ===== */
+    .footer {
+      background: linear-gradient(to bottom, var(--primary-dark), #0f172a);
+      color: var(--white);
+      padding: 60px 0 20px;
+      position: relative;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 10px;
+      background: linear-gradient(90deg, var(--secondary), var(--primary));
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+
+    .footer-about {
+      grid-column: span 2;
+    }
+
+    .footer-logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .footer-logo-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--white), var(--gray));
+      color: var(--primary);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .footer-about p {
+      opacity: 0.8;
+      margin-bottom: 25px;
+      line-height: 1.7;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 15px;
+    }
+
+    .social-link {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+      background: linear-gradient(135deg, var(--secondary), var(--accent));
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
+    }
+
+    .footer-links h3 {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      position: relative;
+      padding-bottom: 10px;
+      color: var(--white);
+    }
+
+    .footer-links h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 3px;
+      background: linear-gradient(to right, var(--secondary), var(--accent));
+    }
+
+    .footer-links ul {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 12px;
+    }
+
+    .footer-links a {
+      opacity: 0.8;
+      transition: all 0.3s ease;
+      position: relative;
+      padding-left: 15px;
+    }
+
+    .footer-links a::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      opacity: 1;
+      padding-left: 20px;
+    }
+
+    .footer-links a:hover::before {
+      opacity: 1;
+      left: -5px;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-bottom p {
+      opacity: 0.7;
+      margin-bottom: 15px;
+    }
+
+    .footer-tags {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 5px 15px;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+    }
+
+    .tag:hover {
+      background: linear-gradient(to right, var(--secondary), var(--accent));
+      color: var(--text);
+      transform: translateY(-2px);
+    }
+    
+    /* ===== Floating Action Button ===== */
+    .fab {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: 0 6px 15px rgba(30, 64, 175, 0.3);
+      cursor: pointer;
+      z-index: 999;
+      transition: all 0.3s ease;
+      animation: pulse 2s infinite;
+    }
+    
+    .fab:hover {
+      transform: scale(1.1) rotate(90deg);
+      box-shadow: 0 8px 20px rgba(30, 64, 175, 0.4);
+    }
+
+    /* ===== Visual Elements ===== */
+    .math-emoji {
+      font-size: 1.8rem;
+      margin: 0 8px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .visual-element {
+      text-align: center;
+      margin: 15px 0;
+    }
+
+    .emoji-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin: 12px 0;
+    }
+
+    /* ===== Simplified Elements ===== */
+    .simple-step {
+      background: var(--gray-light);
+      padding: 12px;
+      border-radius: 8px;
+      margin: 10px 0;
+    }
+
+    .simple-step h4 {
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    .quick-tip {
+      background: linear-gradient(135deg, #fef3c7, #fef7cd);
+      border-left: 4px solid var(--secondary);
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 0 8px 8px 0;
+    }
+
+    /* ===== Responsive Styles ===== */
+    @media (max-width: 992px) {
+      .nav-links {
+        gap: 20px;
+      }
+      
+      .footer-content {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .footer-about {
+        grid-column: span 2;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 15px 0;
+      }
+      
+      .nav-links {
+        display: none;
+      }
+      
+      .mobile-menu-btn {
+        display: block;
+      }
+      
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+      
+      .hero-buttons {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .footer-content {
+        grid-template-columns: 1fr;
+      }
+      
+      .footer-about {
+        grid-column: span 1;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .section-title h2 {
+        font-size: 1.8rem;
+      }
+      
+      .hero {
+        padding: 140px 0 60px;
+      }
+      
+      .hero h1 {
+        font-size: 1.8rem;
+      }
+      
+      .hero p {
+        font-size: 1rem;
+      }
+    }
+
+     .btn {
+      display: inline-block;
+      margin: 12px;
+      padding: 12px 22px;
+      background: #6a5acd;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: 0.3s;
+      box-shadow: 0 3px 8px rgba(107, 90, 205, 0.3);
+    }
+
+    .btn:hover {
+      background: #5945c0;
+      transform: translateY(-2px);
+    }
+
+    iframe {
+      width: 100%;
+      height: 420px;
+      border: none;
+      border-radius: 10px;
+      margin-top: 20px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    section.questions {
+      margin-top: 35px;
+    }
+
+    section.questions h2 {
+      color: #6a5acd;
+      font-size: 24px;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #e0e0ff;
+    }
+    .graph-container {
+  margin: 15px 0;
+  text-align: center;
+}
+
+.continuous {
+  color: #27ae60;
+  font-weight: bold;
+  background: #d5f4e6;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.discontinuous {
+  color: #e74c3c;
+  font-weight: bold;
+  background: #fadbd8;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+/* Mental Health Exercise Styles */
+.visual-break, .posture-reset, .breathing-space, .sound-break {
+  text-align: center;
+  margin: 15px 0;
+}
+
+.focus-object {
+  font-size: 2em;
+  margin: 20px 0;
+  color: #3498db;
+  transition: all 2s ease;
+}
+
+.focus-controls, .space-controls {
+  margin: 15px 0;
+}
+
+.focus-controls button, .space-controls button {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  margin: 0 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.posture-action {
+  display: inline-block;
+  padding: 15px;
+  margin: 10px;
+  background: rgba(255,255,255,0.8);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 120px;
+}
+
+.posture-action:hover {
+  background: #3498db;
+  color: white;
+  transform: scale(1.05);
+}
+
+.posture-emoji {
+  font-size: 2em;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.posture-feedback {
+  margin-top: 15px;
+  padding: 10px;
+  background: rgba(255,255,255,0.7);
+  border-radius: 5px;
+  font-style: italic;
+}
+
+.breath-circle-space {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #9b59b6, #e74c3c);
+  margin: 0 auto;
+  transition: all 4s ease;
+}
+
+.space-instructions {
+  margin: 15px 0;
+  font-style: italic;
+}
+
+.sound-option {
+  display: inline-block;
+  padding: 15px;
+  margin: 10px;
+  background: rgba(255,255,255,0.8);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 100px;
+}
+
+.sound-option:hover {
+  background: #2ecc71;
+  color: white;
+  transform: scale(1.05);
+}
+
+.sound-emoji {
+  font-size: 2em;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.sound-timer {
+  margin-top: 15px;
+  padding: 10px;
+  background: rgba(255,255,255,0.7);
+  border-radius: 5px;
+  font-style: italic;
+}
+
+/* Existing mental health exercise styles */
+.mental-health-exercise {
+  background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+  padding: 20px;
+  border-radius: 10px;
+  margin: 30px 0;
+  border: 1px solid #e1bee7;
+}
+
+.mental-health-exercise h4 {
+  color: #7b1fa2;
+  margin-top: 0;
+  text-align: center;
+}
+
+.exercise-action {
+  background: linear-gradient(135deg, #7b1fa2, #e91e63);
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  display: inline-block;
+  margin-top: 10px;
+}
+    .question {
+      padding: 20px;
+      margin-bottom: 20px;
+      border: 2px solid #f0efff;
+      border-radius: 10px;
+      background: #faf9ff;
+      transition: all 0.3s ease;
+    }
+    
+    .question:hover {
+      border-color: #d0ccff;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+
+    .question h3 {
+      margin: 0 0 15px;
+      color: #5549c6;
+      font-size: 20px;
+    }
+    
+    .functions {
+      background-color: #e3f2fd;
+      padding: 20px;
+      border-radius: 10px;
+      margin: 25px 0;
+      text-align: center;
+    }
+    
+    .function-def {
+      font-family: 'Courier New', monospace;
+      font-size: 22px;
+      margin: 15px 0;
+      color: #0d47a1;
+      font-weight: bold;
+    }
+    
+    .step-container {
+      margin-bottom: 30px;
+      padding: 20px;
+      border-radius: 10px;
+      background-color: #f9f9f9;
+      border-left: 5px solid #6a5acd;
+    }
+    
+    .step {
+      margin-bottom: 20px;
+      padding: 15px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    
+    .step-number {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      background-color: #6a5acd;
+      color: white;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 30px;
+      margin-right: 10px;
+      font-weight: bold;
+    }
+    
+    .math-expression {
+      font-family: 'Courier New', monospace;
+      font-size: 18px;
+      padding: 12px;
+      background-color: #f5f5f5;
+      border-radius: 5px;
+      margin: 12px 0;
+      overflow-x: auto;
+    }
+    
+    .explanation {
+      padding: 12px;
+      background-color: #e8f5e9;
+      border-radius: 5px;
+      margin: 12px 0;
+      border-left: 3px solid #4caf50;
+    }
+    
+    .interactive-box {
+      background-color: #fff3e0;
+      padding: 18px;
+      border-radius: 8px;
+      margin: 18px 0;
+      border: 1px dashed #ff9800;
+    }
+    
+    .input-group {
+      display: flex;
+      margin: 15px 0;
+    }
+    
+    input {
+      flex: 1;
+      padding: 12px;
+      border: 1px solid #bbdefb;
+      border-radius: 5px 0 0 5px;
+      font-size: 16px;
+    }
+    
+    button {
+      background-color: #6a5acd;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 0 5px 5px 0;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    button:hover {
+      background-color: #5945c0;
+    }
+    
+    .result {
+      margin-top: 15px;
+      padding: 15px;
+      border-radius: 8px;
+      background-color: #e8f5e9;
+      border-left: 4px solid #4caf50;
+      display: none;
+    }
+    
+    .tip {
+      background-color: #e1f5fe;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 15px 0;
+      border-left: 3px solid #03a9f4;
+    }
+    
+    .relaxation {
+      text-align: center;
+      margin-top: 40px;
+      padding: 25px;
+      background: linear-gradient(135deg, #fff3e0 0%, #ffecb3 100%);
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    
+    .breathing-animation {
+      width: 40px;
+      height: 40px;
+      background-color: #ff9800;
+      border-radius: 50%;
+      margin: 20px auto;
+      animation: breathe 4s infinite ease-in-out;
+    }
+    
+    /* Difference Quotient Styles */
+    .difference-quotient-section {
+      margin-top: 50px;
+      padding-top: 30px;
+      border-top: 2px solid #e0e0ff;
+    }
+    
+    .function-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin: 30px 0;
+    }
+    
+    .function-card {
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: transform 0.3s;
+      cursor: pointer;
+    }
+    
+    .function-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+    
+    .function-card h4 {
+      color: #0d47a1;
+      margin-bottom: 15px;
+    }
+    
+    .function-expression {
+      font-family: 'Courier New', monospace;
+      font-size: 18px;
+      font-weight: bold;
+      color: #1565c0;
+      margin-bottom: 15px;
+    }
+    
+    .interactive-calculator {
+      background-color: #fff3e0;
+      padding: 25px;
+      border-radius: 12px;
+      margin: 30px 0;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    
+    .dq-input-group {
+      margin-bottom: 20px;
+    }
+    
+    .dq-input-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #555;
+    }
+    
+    .dq-input-group input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #bbdefb;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+    
+    .dq-btn {
+      background-color: #42a5f5;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 500;
+      transition: background-color 0.3s;
+      margin: 10px 5px;
+    }
+    
+    .dq-btn:hover {
+      background-color: #1e88e5;
+    }
+    
+    .challenge-container, .inverse-practice, .matching-game {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 10px 0;
+  border-left: 4px solid #9b59b6;
+}
+
+.challenge-question, .inverse-practice {
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.challenge-question input, .inverse-practice input {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  min-width: 150px;
+}
+
+.challenge-question button, .inverse-practice button, .matching-game button {
+  background: #9b59b6;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.challenge-feedback, .practice-feedback, .match-feedback {
+  margin-top: 5px;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.challenge-feedback.correct, .practice-feedback.correct, .match-feedback.correct {
+  background: #d5f4e6;
+  color: #27ae60;
+}
+
+.challenge-feedback.incorrect, .practice-feedback.incorrect, .match-feedback.incorrect {
+  background: #fadbd8;
+  color: #e74c3c;
+}
+
+.matching-game {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.match-item, .match-target {
+  padding: 10px;
+  border: 2px solid #3498db;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  background: #ecf0f1;
+  transition: all 0.3s ease;
+}
+
+.match-item.selected, .match-target.selected {
+  background: #3498db;
+  color: white;
+}
+
+.match-item.matched, .match-target.matched {
+  background: #27ae60;
+  color: white;
+  border-color: #27ae60;
+}
+
+.hint {
+  font-style: italic;
+  color: #7f8c8d;
+  margin-top: 10px;
+  font-size: 0.9em;
+}
+.calculation-steps {
+      background-color: #e1f5fe;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+      font-family: 'Courier New', monospace;
+      font-size: 16px;
+      line-height: 1.8;
+    }
+    
+    .dq-result {
+      background-color: #e8f5e9;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      color: #2e7d32;
+      border-left: 4px solid #4caf50;
+    }
+    
+    .mental-break {
+      background-color: #ffcc80;
+      padding: 15px;
+      border-radius: 50%;
+      width: 100px;
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 20px auto;
+      cursor: pointer;
+      transition: transform 0.3s;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .mental-break:hover {
+      transform: scale(1.1);
+    }
+    
+    .mental-break-text {
+      font-size: 14px;
+      font-weight: bold;
+      text-align: center;
+      color: #5d4037;
+    }
+
+    .problem {
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.problem:last-child {
+  border-bottom: none;
+}
+
+.problem h3 {
+  color: #333;
+  margin-top: 0;
+  border-left: 4px solid #6a11cb;
+  padding-left: 10px;
+}
+
+.sub-problem {
+  margin: 15px 0;
+  padding-left: 20px;
+}
+
+.solution-input {
+  margin: 15px 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.solution-input label {
+  font-weight: bold;
+  color: #555;
+}
+
+.solution-input input {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 120px;
+  transition: border-color 0.3s;
+}
+
+.solution-input input:focus {
+  border-color: #6a11cb;
+  outline: none;
+}
+.function-type {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.function-type.even {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: 2px solid #4caf50;
+}
+
+.function-type.odd {
+  background: #e3f2fd;
+  color: #1565c0;
+  border: 2px solid #2196f3;
+}
+
+.function-type.neither {
+  background: #fff3e0;
+  color: #ef6c00;
+  border: 2px solid #ff9800;
+}
+
+.interactive-quiz {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 20px;
+  border-radius: 10px;
+  margin: 30px 0;
+  border: 1px solid #d1d9e6;
+}
+
+.interactive-quiz h4 {
+  color: #2c3e50;
+  margin-top: 0;
+  text-align: center;
+}
+
+.quiz-question {
+  background: white;
+  padding: 15px;
+  margin: 15px 0;
+  border-radius: 8px;
+  border-left: 4px solid #3498db;
+}
+
+.quiz-options {
+  display: flex;
+  gap: 10px;
+  margin: 10px 0;
+  flex-wrap: wrap;
+}
+
+.quiz-btn {
+  padding: 8px 16px;
+  border: 2px solid #3498db;
+  background: white;
+  color: #3498db;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: bold;
+}
+
+.quiz-btn:hover {
+  background: #3498db;
+  color: white;
+}
+
+.quiz-btn.correct {
+  background: #27ae60;
+  border-color: #27ae60;
+  color: white;
+}
+
+.quiz-btn.incorrect {
+  background: #e74c3c;
+  border-color: #e74c3c;
+  color: white;
+}
+
+.quiz-feedback {
+  margin-top: 10px;
+  padding: 8px 12px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.quiz-feedback.correct {
+  background: #d5f4e6;
+  color: #27ae60;
+  border-left: 4px solid #27ae60;
+}
+
+.quiz-feedback.incorrect {
+  background: #fadbd8;
+  color: #e74c3c;
+  border-left: 4px solid #e74c3c;
+}
+
+.focus-container {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.focus-circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #9b59b6, #e74c3c);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  color: white;
+  font-weight: bold;
+  transition: all 1s ease;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  animation: pulse 2s infinite;
+}
+
+.mental-health-exercise {
+  background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+  padding: 20px;
+  border-radius: 10px;
+  margin: 30px 0;
+  border: 1px solid #e1bee7;
+}
+
+.mental-health-exercise h4 {
+  color: #7b1fa2;
+  margin-top: 0;
+  text-align: center;
+}
+
+.breathing-container, .relaxation-container, .mindfulness-container, .bodyscan-container {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.breath-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4CAF50, #81C784);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  color: white;
+  font-weight: bold;
+  transition: all 4s ease;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.breath-instructions {
+  margin-top: 15px;
+  font-style: italic;
+  color: #666;
+}
+
+.relaxation-step {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+  padding: 10px;
+  background: rgba(255,255,255,0.7);
+  border-radius: 5px;
+}
+
+.relax-number {
+  background: #7b1fa2;
+  color: white;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 10px;
+  background: #e0e0e0;
+  border-radius: 5px;
+  margin-top: 15px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4CAF50, #81C784);
+  width: 0%;
+  transition: width 0.5s ease;
+}
+
+.mindfulness-prompt {
+  font-size: 1.1em;
+  margin-bottom: 15px;
+  padding: 10px;
+  background: rgba(255,255,255,0.8);
+  border-radius: 5px;
+  font-style: italic;
+}
+
+.senses-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sense-item {
+  padding: 10px;
+  background: rgba(255,255,255,0.7);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.sense-item.completed {
+  background: #c8e6c9;
+  text-decoration: line-through;
+  color: #2e7d32;
+}
+
+.bodyscan-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.bodyscan-area {
+  padding: 15px 10px;
+  background: rgba(255,255,255,0.7);
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.bodyscan-area.scanned {
+  background: #c8e6c9;
+  border-color: #4CAF50;
+  transform: scale(1.05);
+}
+
+.scan-instructions {
+  margin-top: 10px;
+  font-style: italic;
+  color: #666;
+}
+
+.exercise-action {
+  background: linear-gradient(135deg, #7b1fa2, #e91e63);
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  display: inline-block;
+  margin-top: 10px;
+}
+
+.exercise-action:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.focus-instructions {
+  margin-top: 15px;
+  font-style: italic;
+  color: #666;
+}
+.check-btn {
+  background: #6a11cb;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.check-btn:hover {
+  background: #5a0db3;
+}
+
+.result {
+  margin-top: 10px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-weight: bold;
+  width: 100%;
+}
+
+.result.correct {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border-left: 4px solid #4caf50;
+}
+
+.result.incorrect {
+  background: #ffebee;
+  color: #c62828;
+  border-left: 4px solid #f44336;
+}
+
+/* Animation classes */
+.animate {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.animate.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.delay-1 {
+  transition-delay: 0.1s;
+}
+
+/* MathJax styling */
+.MathJax {
+  font-size: 1.1em;
+}
+    
+    @keyframes breathe {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.5); }
+    }
+    
+    @media (max-width: 768px) {
+      .content {
+        padding: 20px;
+        margin: 15px;
+      }
+      
+      .function-def {
+        font-size: 18px;
+      }
+      
+      input, button {
+        padding: 10px;
+      }
+      
+      .math-expression {
+        font-size: 16px;
+      }
+      
+      iframe {
+        height: 250px;
+      }
+      
+      .function-list {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* =========================================
+   ADAPTIVE UI ELEMENTS
+   ========================================= */
+/* Mood Bar */
+.sam-bar {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    background: white;
+    padding: 10px 15px;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    z-index: 990;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    border: 2px solid #e2e8f0;
+}
+
+.sam-btn {
+    font-size: 1.5rem;
+    cursor: pointer;
+    background: none;
+    border: none;
+    opacity: 0.6;
+    transition: transform 0.2s;
+}
+
+.sam-btn:hover, .sam-btn.active {
+    transform: scale(1.3);
+    opacity: 1;
+}
+
+/* Adaptive Modal */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(3px);
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    max-width: 500px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+    border-top: 6px solid var(--primary);
+    animation: fadeIn 0.4s ease;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 25px;
+}
+  </style>
+</head>
+<body>
+  <div class="sam-bar">
+    <span style="font-size:0.8rem; font-weight:bold; color:#64748b; margin-right:5px;">Mood:</span>
+    <button class="sam-btn" onclick="updateMood('stressed')" title="Overwhelmed">😫</button>
+    <button class="sam-btn" onclick="updateMood('neutral')" title="Okay">😐</button>
+    <button class="sam-btn" onclick="updateMood('confident')" title="Ready for Challenge">🤩</button>
+</div>
+
+<div id="adaptiveModal" class="modal-overlay">
+    <div class="modal-content">
+        <h3 id="modalTitle" style="color: var(--primary); margin-bottom: 15px;">Check In</h3>
+        <p id="modalMessage">We noticed a change in your pace.</p>
+        <p style="font-size:0.8rem; color:#999; margin-top:5px;">Trigger: <span id="triggerReason">...</span></p>
+        
+        <div class="modal-buttons">
+            <button class="btn btn-secondary" onclick="document.getElementById('adaptiveModal').style.display='none'">Stay Here</button>
+            <a href="#" class="btn btn-primary" id="switchBtn">Switch Mode</a>
+        </div>
+    </div>
+</div>
+  <!-- Navigation Bar -->
+  <header id="header">
+    <div class="container">
+      <nav class="navbar">
+        <a href="#" class="logo">
+          <div class="logo-icon">S</div>
+          <span class="logo-text">Sentellect</span>
+        </a>
+        
+        <ul class="nav-links">
+          <li><a href="#" class="active">Home</a></li>
+          <li><a href="#solutions">Solutions</a></li>
+          <li><a href="#exercises">Exercises</a></li>
+        </ul>
+    
+        
+        <button class="mobile-menu-btn">
+          <i class="fas fa-bars"></i>
+        </button>
+      </nav>
+    </div>
+  </header>
+  <!-- Hero Section -->
+ <section class="hero">
+    <div class="floating-shape shape-1"></div>
+    <div class="floating-shape shape-2"></div>
+    <div class="floating-shape shape-3"></div>
+    
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="animate">Math Solutions with <span>Mental Wellness</span></h1>
+        <p class="animate delay-1">Learn mathematics while taking care of your mental health</p>
+        <div class="hero-buttons">
+          <a href="#solutions" class="btn btn-primary animate delay-2">View Solutions</a>
+          <a href="#exercises" class="btn btn-secondary animate delay-3">Mental Exercises</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Main Content -->
+  <div class="container">
+    <!-- Game Link -->
+       <div class="container">
+    <!-- Visual Element -->
+    <div class="visual-element animate delay-1">
+      <div class="emoji-row">
+        <span class="math-emoji">🧠</span>
+        <span class="math-emoji">📚</span>
+        <span class="math-emoji">😌</span>
+      </div>
+    </div>
+    <div class="card animate">
+      <h2>If you'd like to watch a video explanation before solving, here's a suggestion:</h2>
+    <a href="https://www.youtube.com/watch?v=VX-Z88myrk0" target="_blank" class="btn">
+        ▶ Watch on YouTube
+      </a>
+      <iframe src="https://www.youtube.com/embed/VX-Z88myrk0" allowfullscreen></iframe>
+    </div>
+      
+
+
+    <!-- Basics Section -->
+    <section id="solutions" class="section">
+      <div class="card animate delay-1">
+        <h2>Function Evaluation Practice</h2>
+        <p class="function-def">f(x) = e<sup>-x</sup></p>
+        <p class="function-def">g(x) = √(x + 4)</p>
+     
+      
+      <div class="tip">
+        <strong>Tip:</strong> Remember that function evaluation is just substitution. Wherever you see the variable (x), replace it with the given value or expression.
+      </div>
+      
+      <!-- Problem 1 -->
+      <div class="question">
+        <h3>Question 1: Find f(-2)</h3>
+        
+        <div class="step-container">
+          <div class="step">
+            <span class="step-number">1</span>
+            <span>Start with the function definition</span>
+            <div class="math-expression">f(x) = e<sup>-x</sup></div>
+          </div>
+          
+          <div class="step">
+            <span class="step-number">2</span>
+            <span>Substitute x with -2</span>
+            <div class="math-expression">f(-2) = e<sup>-(-2)</sup></div>
+            <div class="explanation">
+              We replace every occurrence of x in the function with -2.
+            </div>
+          </div>
+          
+          <div class="step">
+            <span class="step-number">3</span>
+            <span>Simplify the exponent</span>
+            <div class="math-expression">f(-2) = e<sup>2</sup></div>
+            <div class="explanation">
+              The negative signs cancel out: -(-2) = 2
+            </div>
+          </div>
+          
+          <div class="interactive-box">
+            <h3>Your Turn:</h3>
+            <p>Try calculating e<sup>2</sup> using a calculator (approximately 7.389)</p>
+            <div class="input-group">
+              <input type="text" id="input1" placeholder="Enter your calculated value">
+              <button onclick="checkAnswer(1)">Check</button>
+            </div>
+            <div class="result" id="result1">
+              <strong>Final Answer:</strong> f(-2) = e<sup>2</sup> ≈ 7.389
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Problem 2 -->
+      <div class="question">
+        <h3>Question 2: Find g(0)</h3>
+        
+        <div class="step-container">
+          <div class="step">
+            <span class="step-number">1</span>
+            <span>Start with the function definition</span>
+            <div class="math-expression">g(x) = √(x + 4)</div>
+          </div>
+          
+          <div class="step">
+            <span class="step-number">2</span>
+            <span>Substitute x with 0</span>
+            <div class="math-expression">g(0) = √(0 + 4)</div>
+            <div class="explanation">
+              We replace every occurrence of x in the function with 0.
+            </div>
+          </div>
+          
+          <div class="step">
+            <span class="step-number">3</span>
+            <span>Simplify inside the square root</span>
+            <div class="math-expression">g(0) = √4</div>
+          </div>
+          
+          <div class="step">
+            <span class="step-number">4</span>
+            <span>Calculate the square root</span>
+            <div class="math-expression">g(0) = 2</div>
+            <div class="explanation">
+              The square root of 4 is 2 because 2 × 2 = 4.
+            </div>
+          </div>
+          
+          <div class="interactive-box">
+            <h3>Your Turn:</h3>
+            <p>Try solving this similar problem: g(5) = √(5 + 4) = ?</p>
+            <div class="input-group">
+              <input type="text" id="input2" placeholder="Enter your answer">
+              <button onclick="checkAnswer(2)">Check</button>
+            </div>
+            <div class="result" id="result2">
+              <strong>Answer:</strong> g(5) = √9 = 3
+            </div>
+          </div>
+        </div>
+    
+            <div class="question">
+        <h3>Question 3: Find f(x + 1)</h3>
+        
+        <div class="step-container">
+          <div class="step">
+            <span class="step-number">1</span>
+            <span>Start with the function definition</span>
+            <div class="math-expression">f(x) = e<sup>-x</sup></div>
+          </div>
+          
+          <div class="step">
+            <span class="step-number">2</span>
+            <span>Substitute x with (x + 1)</span>
+            <div class="math-expression">f(x + 1) = e<sup>-(x + 1)</sup></div>
+            <div class="explanation">
+              We replace every occurrence of x in the function with (x + 1).
+            </div>
+          </div>
+          
+          <div class="step">
+            <span class="step-number">3</span>
+            <span>Simplify the expression</span>
+            <div class="math-expression">f(x + 1) = e<sup>-x - 1</sup></div>
+            <div class="explanation">
+              The negative sign distributes to both terms: -(x + 1) = -x - 1
+            </div>
+          </div>
+          
+          <div class="interactive-box">
+            <h3>Your Turn:</h3>
+            <p>Try solving this similar problem: f(2x) = e<sup>-(2x)</sup> = ?</p>
+            <div class="input-group">
+              <input type="text" id="input3" placeholder="Enter your answer">
+              <button onclick="checkAnswer(3)">Check</button>
+            </div>
+            <div class="result" id="result3">
+              <strong>Answer:</strong> f(2x) = e<sup>-2x</sup>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Problem 4 -->
+      <div class="question">
+        <h3>Question 4: Find g(x + 4)</h3>
+        
+        <div class="step-container">
+          <div class="step">
+            <span class="step-number">1</span>
+            <span>Start with the function definition</span>
+            <div class="math-expression">g(x) = √(x + 4)</div>
+          </div>
+          
+          <div class="step">
+            <span class="step-number">2</span>
+            <span>Substitute x with (x + 4)</span>
+            <div class="math-expression">g(x + 4) = √((x + 4) + 4)</div>
+            <div class="explanation">
+              We replace every occurrence of x in the function with (x + 4).
+            </div>
+          </div>
+          
+          <div class="step">
+            <span class="step-number">3</span>
+            <span>Simplify inside the square root</span>
+            <div class="math-expression">g(x + 4) = √(x + 8)</div>
+            <div class="explanation">
+              Combine like terms: (x + 4) + 4 = x + 8
+            </div>
+          </div>
+          
+          <div class="interactive-box">
+            <h3>Your Turn:</h3>
+            <p>Try solving this similar problem: g(2y) = √(2y + 4)</p>
+            <div class="input-group">
+              <input type="text" id="input4" placeholder="Enter your answer">
+              <button onclick="checkAnswer(4)">Check</button>
+            </div>
+            <div class="result" id="result4">
+              <strong>Answer:</strong> g(2y) = √(2y + 4)
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="tip">
+        <strong>Remember:</strong> When working with functions, always:
+        <ul>
+          <li>Start with the original function definition</li>
+          <li>Replace the variable with the given value or expression</li>
+          <li>Simplify step by step</li>
+          <li>Double-check your work</li>
+        </ul>
+      </div>
+      
+      <div class="relaxation">
+        <h3>Feeling Overwhelmed? Take a Break</h3>
+        <p>Follow the circle as it expands and contracts</p>
+        <div class="breathing-animation"></div>
+        <p>Breathe in as it expands (4 seconds), breathe out as it contracts (4 seconds)</p>
+        <p>Remember: Math is a skill that improves with practice. You're doing great!</p>
+      </div>  
+    </section>
+
+<section class="card animate delay-1">
+      <h2>Difference Quotient Practice</h2>
+      
+      <div class="formula">
+        Find \(\frac{f(a + h) - f(a)}{h}\) and simplify
+      </div>
+      
+      <p>The difference quotient measures the average rate of change of a function over an interval. It's the foundation of derivatives in calculus.</p>
+      
+      <h3>Select a Function to Explore:</h3>
+      
+      <div class="function-list">
+        <div class="function-card" onclick="selectFunction('linear')">
+          <h4>Linear Function</h4>
+          <div class="function-expression">f(x) = 6x - 9</div>
+          <p>Click to explore</p>
+        </div>
+        
+        <div class="function-card" onclick="selectFunction('sine')">
+          <h4>Sine Function</h4>
+          <div class="function-expression">f(x) = sin(x)</div>
+          <p>Click to explore</p>
+        </div>
+        
+        <div class="function-card" onclick="selectFunction('cubic')">
+          <h4>Cubic Function</h4>
+          <div class="function-expression">f(x) = x³ + 2x² - 1</div>
+          <p>Click to explore</p>
+        </div>
+        
+        <div class="function-card" onclick="selectFunction('cosine')">
+          <h4>Cosine Function</h4>
+          <div class="function-expression">f(x) = cos(x)</div>
+          <p>Click to explore</p>
+        </div>
+      </div>
+      
+      <div class="interactive-calculator" id="calculator">
+        <h3>Interactive Calculator</h3>
+        <p>Select a function above to begin calculating its difference quotient.</p>
+        
+        <div class="dq-input-group">
+          <label for="a-value">Enter value for a:</label>
+          <input type="number" id="dq-a-value" placeholder="Enter a number" step="0.1">
+        </div>
+        
+        <div class="dq-input-group">
+          <label for="h-value">Enter value for h:</label>
+          <input type="number" id="dq-h-value" placeholder="Enter a number" step="0.1">
+        </div>
+        
+        <button class="dq-btn" onclick="calculateDQ()">Calculate Difference Quotient</button>
+        
+        <div class="calculation-steps" id="dq-steps">
+          Steps will appear here after calculation...
+        </div>
+        
+        <div class="dq-result" id="dq-result">
+          Result will appear here...
+        </div>
+      </div>
+      
+      <div class="relaxation">
+        <h3>Need a Mental Break?</h3>
+        <p>Take a moment to relax and reset your focus</p>
+        
+        <div class="mental-break" onclick="mentalBreak()">
+          <div class="mental-break-text">
+            Click for Positive Affirmation
+          </div>
+        </div>
+        
+        <p id="affirmation">You're doing great! Math skills grow with practice.</p>
+      </div>
+    </section>
+
+    <div class="card animate delay-1">
+        <h2>Question 3: Express the following</h2>
+        
+        <!-- Part (a) -->
+        <div class="question">
+          <h3>(a) The perimeter P of a square as a function of its area A</h3>
+          
+          <div class="step-container">
+            <div class="step">
+              <span class="step-number">1</span>
+              <span>Let side of square = s</span>
+            </div>
+            
+            <div class="step">
+              <span class="step-number">2</span>
+              <span>Area A = s²</span>
+              <div class="math-expression">A = s²</div>
+            </div>
+            
+            <div class="step">
+              <span class="step-number">3</span>
+              <span>Express s in terms of A</span>
+              <div class="math-expression">s = √A</div>
+            </div>
+            
+            <div class="step">
+              <span class="step-number">4</span>
+              <span>Perimeter P = 4s</span>
+              <div class="math-expression">P = 4s</div>
+            </div>
+            
+            <div class="step">
+              <span class="step-number">5</span>
+              <span>Substitute s = √A</span>
+              <div class="math-expression">P = 4√A</div>
+            </div>
+            
+            <div class="explanation">
+              <strong>Final Answer:</strong> P = 4√A
+            </div>
+          </div>
+        </div>
+        
+        <!-- Mental Health Exercise after Part (a) -->
+        <div class="mental-health-exercise">
+          <h4>Mindful Breathing Break</h4>
+          <p>Take a moment to focus on your breathing</p>
+          <div class="breathing-animation"></div>
+          <p>Breathe in for 4 seconds, hold for 4 seconds, breathe out for 6 seconds</p>
+          <div class="exercise-action" onclick="startBreathingExercise()">Start Breathing Exercise</div>
+        </div>
+        
+        <!-- Part (b) -->
+        <div class="question">
+          <h3>(b) The area A of a circle as a function of its circumference C</h3>
+          
+          <div class="step-container">
+            <div class="step">
+              <span class="step-number">1</span>
+              <span>Let radius = r</span>
+            </div>
+            
+            <div class="step">
+              <span class="step-number">2</span>
+              <span>Circumference C = 2πr</span>
+              <div class="math-expression">C = 2πr</div>
+            </div>
+            
+            <div class="step">
+              <span class="step-number">3</span>
+              <span>Express r in terms of C</span>
+              <div class="math-expression">r = C/(2π)</div>
+            </div>
+            
+            <div class="step">
+              <span class="step-number">4</span>
+              <span>Area A = πr²</span>
+              <div class="math-expression">A = πr²</div>
+            </div>
+            
+            <div class="step">
+              <span class="step-number">5</span>
+              <span>Substitute r = C/(2π)</span>
+              <div class="math-expression">A = π[C/(2π)]² = π[C²/(4π²)] = C²/(4π)</div>
+            </div>
+            
+            <div class="explanation">
+              <strong>Final Answer:</strong> A = C²/(4π)
+            </div>
+          </div>
+        </div>
+        
+        <!-- Mental Health Exercise after Part (b) -->
+        <div class="mental-health-exercise">
+          <h4>Positive Affirmation</h4>
+          <p>Repeat to yourself: "I am capable of solving complex problems"</p>
+          <p>Take three deep breaths and visualize success</p>
+          <div class="exercise-action" onclick="showAffirmation()">Show Another Affirmation</div>
+        </div>
+        
+        <!-- Part (c) -->
+        <div class="question">
+          <h3>(c) The volume V of a cube as a function of the area A of its base</h3>
+          
+          <div class="step-container">
+            <div class="step">
+              <span class="step-number">1</span>
+              <span>Let side of cube = s</span>
+            </div>
+            
+            <div class="step">
+              <span class="step-number">2</span>
+              <span>Area of base A = s²</span>
+              <div class="math-expression">A = s²</div>
+            </div>
+            
+            <div class="step">
+              <span class="step-number">3</span>
+              <span>Express s in terms of A</span>
+              <div class="math-expression">s = √A</div>
+            </div>
+            
+            <div class="step">
+              <span class="step-number">4</span>
+              <span>Volume V = s³</span>
+              <div class="math-expression">V = s³</div>
+            </div>
+            
+            <div class="step">
+              <span class="step-number">5</span>
+              <span>Substitute s = √A</span>
+              <div class="math-expression">V = (√A)³ = A^(3/2)</div>
+            </div>
+            
+            <div class="explanation">
+              <strong>Final Answer:</strong> V = A^(3/2)
+            </div>
+          </div>
+        </div>
+        
+        <!-- Mental Health Exercise after Part (c) -->
+        <div class="mental-health-exercise">
+          <h4>Progressive Muscle Relaxation</h4>
+          <p>Take a moment to tense and then relax different muscle groups</p>
+          <p>Start with your feet and work your way up to your face</p>
+          <div class="exercise-action" onclick="startRelaxation()">Start Relaxation Exercise</div>
+        </div>
+      </div>
+      
+      <!-- Question 4 -->
+      <div class="card animate delay-2">
+        <h2>Question 4: Find the domain and range of the function g</h2>
+        
+        <!-- Part (i) -->
+        <div class="question">
+          <h3>(i) g(x) = 2x - 5</h3>
+          
+          <div class="step-container">
+            <div class="step">
+              <span class="step-number">1</span>
+              <span>This is a linear function</span>
+            </div>
+            
+            <div class="step">
+              <span class="step-number">2</span>
+              <span>Domain: All real numbers</span>
+              <div class="math-expression">Domain: (-∞, ∞)</div>
+            </div>
+            
+            <div class="step">
+              <span class="step-number">3</span>
+              <span>Range: All real numbers</span>
+              <div class="math-expression">Range: (-∞, ∞)</div>
+            </div>
+            
+            <div class="explanation">
+              <strong>Final Answer:</strong> Domain: (-∞, ∞), Range: (-∞, ∞)
+            </div>
+          </div>
+        </div>
+        
+        <!-- Mental Health Exercise after Part (i) -->
+        <div class="mental-health-exercise">
+          <h4>Visualization Break</h4>
+          <p>Close your eyes and imagine your favorite peaceful place</p>
+          <p>Stay in this visualization for 30 seconds</p>
+          <div class="exercise-action" onclick="startVisualization()">Start Visualization</div>
+        </div>
+        
+        <!-- Part (ii) -->
+        <div class="question">
+          <h3>(ii) g(x) = √(x² - 4)</h3>
+          
+          <div class="step-container">
+            <div class="step">
+              <span class="step-number">1</span>
+              <span>For square root, expression inside must be ≥ 0</span>
+            </div>
+            
+            <div class="step">
+              <span class="step-number">2</span>
+              <span>Set up inequality: x² - 4 ≥ 0</span>
+              <div class="math-expression">x² - 4 ≥ 0</div>
+            </div>
+            
+            <div class="step">
+              <span class="step-number">3</span>
+              <span>Solve inequality: x² ≥ 4</span>
+              <div class="math-expression">x ≤ -2 or x ≥ 2</div>
+            </div>
+            
+            <div class="step">
+              <span class="step-number">4</span>
+              <span>Domain: (-∞, -2] ∪ [2, ∞)</span>
+            </div>
+            
+            <div class="step">
+              <span class="step-number">5</span>
+              <span>Range: Since square root gives non-negative values</span>
+              <div class="math-expression">Range: [0, ∞)</div>
+            </div>
+            
+            <div class="explanation">
+              <strong>Final Answer:</strong> Domain: (-∞, -2] ∪ [2, ∞), Range: [0, ∞)
+            </div>
+          </div>
+        </div>
+        <div class="card animate delay-1">
+  <div class="card-header">
+    <h2>Math Problems</h2>
+  </div>
+  <div class="card-body">
+    <div class="question">
+      <h3>Problem 5</h3>
+      <p>Given \( f(x) = x^3 - ax^2 + bx + 1 \)</p>
+      <p>if \( f(2) = -3 \) and \( f(-1) = 0 \). Find the values of \( a \) and \( b \).</p>
+      
+      <div class="step-container">
+        <div class="step">
+          <span class="step-number">1</span>
+          <span>Set up equations using given values</span>
+          <div class="math-expression">f(2) = 8 - 4a + 2b + 1 = -3</div>
+          <div class="math-expression">f(-1) = -1 - a - b + 1 = 0</div>
+        </div>
+        
+        <div class="step">
+          <span class="step-number">2</span>
+          <span>Simplify equations</span>
+          <div class="math-expression">-4a + 2b + 9 = -3 → -4a + 2b = -12</div>
+          <div class="math-expression">-a - b = 0 → a = -b</div>
+        </div>
+        
+        <div class="step">
+          <span class="step-number">3</span>
+          <span>Substitute a = -b into first equation</span>
+          <div class="math-expression">-4(-b) + 2b = -12 → 4b + 2b = -12 → 6b = -12</div>
+        </div>
+        
+        <div class="step">
+          <span class="step-number">4</span>
+          <span>Solve for b and a</span>
+          <div class="math-expression">b = -2, a = 2</div>
+        </div>
+        
+        <div class="explanation">
+          <strong>Final Answer:</strong> a = 2, b = -2
+        </div>
+      </div>
+    </div>
+    
+    <div class="question">
+      <h3>Problem 6</h3>
+      <p>A stone falls from a height of 60m on the ground, the height h  after x seconds is approximately given by h(x) = 40 - 10x^2 </p>
+      <p>(i) What is the height of the stone when:</p>
+      
+      <div class="step-container">
+        <div class="step">
+          <span class="step-number">(a)</span>
+          <span>When x= 1 sec?</span>
+          <div class="math-expression">h(1) = 40 - 10(1)² = 40 - 10 = 30</div>
+          <div class="explanation">
+            <strong>Answer:</strong> 30m
+          </div>
+        </div>
+        
+        <div class="step">
+          <span class="step-number">(b)</span>
+          <span>When x= 1.5 sec?</span>
+          <div class="math-expression">h(1.5) = 40 - 10(1.5)² = 40 - 22.5 = 17.5</div>
+          <div class="explanation">
+            <strong>Answer:</strong> 17.5m
+          </div>
+        </div>
+        
+        <div class="step">
+          <span class="step-number">(c)</span>
+          <span>When x= 1.7 sec?</span>
+          <div class="math-expression">h(1.7) = 40 - 10(1.7)² = 40 - 28.9 = 11.1</div>
+          <div class="explanation">
+            <strong>Answer:</strong> 11.1m
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Mental Health Exercise -->
+    <div class="mental-health-exercise">
+      <h4>Progressive Muscle Relaxation</h4>
+      <p>Take a moment to tense and then relax different muscle groups</p>
+      <p>Start with your feet and work your way up to your face</p>
+      <div class="exercise-action" onclick="startRelaxation()">Start Relaxation Exercise</div>
+    </div>
+  </div>
+</div>
+  <div class="card animate delay-1">
+  <div class="card-header">
+    <h2>Math Problems - Parametric Equations & Hyperbolic Identities</h2>
+  </div>
+  <div class="card-body">
+    <div class="question">
+      <h3>Problem 7: Parametric Equations</h3>
+      
+      <div class="step-container">
+        <div class="step">
+          <span class="step-number">(i)</span>
+          <span>Show that \( x = at^2, y = 2at \) represent \( y^2 = 4ax \)</span>
+          <div class="math-expression">Given: x = at², y = 2at</div>
+          <div class="math-expression">From y = 2at => t = y/(2a)</div>
+          <div class="math-expression">Substitute into x = at²:</div>
+          <div class="math-expression">x = a[y/(2a)]² = a(y²/(4a²)) = y²/(4a)</div>
+          <div class="math-expression">Therefore: y² = 4ax</div>
+          <div class="explanation">
+            <strong>Proved:</strong> The parametric equations represent a parabola
+          </div>
+        </div>
+        
+        <div class="step">
+          <span class="step-number">(ii)</span>
+          <span>Show that \( x = a\cos\theta, y = b\sin\theta \) represent \( \frac{x^2}{a^2} + \frac{y^2}{b^2} = 1 \)</span>
+          <div class="math-expression">Given: x = a cosθ, y = b sinθ</div>
+          <div class="math-expression">x/a = cosθ, y/b = sinθ</div>
+          <div class="math-expression">Using identity: cos²θ + sin²θ = 1</div>
+          <div class="math-expression">(x/a)² + (y/b)² = 1</div>
+          <div class="math-expression">Therefore: x²/a² + y²/b² = 1</div>
+          <div class="explanation">
+            <strong>Proved:</strong> The parametric equations represent an ellipse
+          </div>
+        </div>
+        
+        <div class="step">
+          <span class="step-number">(iii)</span>
+          <span>Show that \( x = a\sec\theta, y = b\tan\theta \) represent \( \frac{x^2}{a^2} - \frac{y^2}{b^2} = 1 \)</span>
+          <div class="math-expression">Given: x = a secθ, y = b tanθ</div>
+          <div class="math-expression">x/a = secθ, y/b = tanθ</div>
+          <div class="math-expression">Using identity: sec²θ - tan²θ = 1</div>
+          <div class="math-expression">(x/a)² - (y/b)² = 1</div>
+          <div class="math-expression">Therefore: x²/a² - y²/b² = 1</div>
+          <div class="explanation">
+            <strong>Proved:</strong> The parametric equations represent a hyperbola
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="question">
+      <h3>Problem 8: Hyperbolic Identities</h3>
+      
+      <div class="step-container">
+        <div class="step">
+          <span class="step-number">(i)</span>
+          <span>Prove \( \sinh 2x = 2\sinh x \cosh x \)</span>
+          <div class="math-expression">Using definition: sinh x = (eˣ - e⁻ˣ)/2, cosh x = (eˣ + e⁻ˣ)/2</div>
+          <div class="math-expression">Right side: 2sinh x cosh x = 2[(eˣ - e⁻ˣ)/2][(eˣ + e⁻ˣ)/2]</div>
+          <div class="math-expression">= 2[(e²ˣ - e⁻²ˣ)/4] = (e²ˣ - e⁻²ˣ)/2</div>
+          <div class="math-expression">Left side: sinh 2x = (e²ˣ - e⁻²ˣ)/2</div>
+          <div class="math-expression">Therefore: sinh 2x = 2sinh x cosh x</div>
+          <div class="explanation">
+            <strong>Proved:</strong> Identity verified
+          </div>
+        </div>
+        
+        <div class="step">
+          <span class="step-number">(ii)</span>
+          <span>Prove \( \text{sech}^2 x = 1 - \tanh^2 x \)</span>
+          <div class="math-expression">We know: tanh x = sinh x / cosh x</div>
+          <div class="math-expression">Right side: 1 - tanh² x = 1 - (sinh² x / cosh² x)</div>
+          <div class="math-expression">= (cosh² x - sinh² x) / cosh² x</div>
+          <div class="math-expression">Using identity: cosh² x - sinh² x = 1</div>
+          <div class="math-expression">= 1 / cosh² x = sech² x</div>
+          <div class="math-expression">Therefore: sech² x = 1 - tanh² x</div>
+          <div class="explanation">
+            <strong>Proved:</strong> Identity verified
+          </div>
+        </div>
+        
+        <div class="step">
+          <span class="step-number">(iii)</span>
+          <span>Prove \( \text{csch}^2 x = \coth^2 x - 1 \)</span>
+          <div class="math-expression">We know: coth x = cosh x / sinh x</div>
+          <div class="math-expression">Right side: coth² x - 1 = (cosh² x / sinh² x) - 1</div>
+          <div class="math-expression">= (cosh² x - sinh² x) / sinh² x</div>
+          <div class="math-expression">Using identity: cosh² x - sinh² x = 1</div>
+          <div class="math-expression">= 1 / sinh² x = csch² x</div>
+          <div class="math-expression">Therefore: csch² x = coth² x - 1</div>
+          <div class="explanation">
+            <strong>Proved:</strong> Identity verified
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Mental Health Exercise -->
+    <div class="mental-health-exercise">
+      <h4>Deep Breathing Exercise</h4>
+      <p>Mathematical proofs require intense focus. Let's reset with a breathing exercise:</p>
+      <div class="breathing-container">
+        <div class="breath-circle" id="breathCircle">Ready</div>
+        <div class="breath-instructions" id="breathInstructions">Click Start to begin the 4-7-8 breathing technique</div>
+      </div>
+      <div class="exercise-action" onclick="startBreathingExercise()">Start Breathing Exercise</div>
+    </div>
+  </div>
+</div>
+<div class="card animate delay-1">
+  <div class="card-header">
+    <h2>Even and Odd Functions</h2>
+  </div>
+  <div class="card-body">
+    <div class="question">
+      <h3>Problem 9: Determine whether the given function is even or odd</h3>
+      
+      <div class="step-container">
+        <div class="step">
+          <span class="step-number">(i)</span>
+          <span>\( f(x) = x^3 + x \)</span>
+          <div class="math-expression">Check f(-x) = (-x)³ + (-x) = -x³ - x = -(x³ + x)</div>
+          <div class="math-expression">f(-x) = -f(x)</div>
+          <div class="explanation">
+            <strong>Result:</strong> <span class="function-type odd">ODD FUNCTION</span>
+          </div>
+        </div>
+        
+        <div class="step">
+          <span class="step-number">(ii)</span>
+          <span>\( f(x) = (x + 2)^2 \)</span>
+          <div class="math-expression">Check f(-x) = (-x + 2)² = (2 - x)² = x² - 4x + 4</div>
+          <div class="math-expression">f(-x) ≠ f(x) and f(-x) ≠ -f(x)</div>
+          <div class="explanation">
+            <strong>Result:</strong> <span class="function-type neither">NEITHER EVEN NOR ODD</span>
+          </div>
+        </div>
+        
+        <div class="step">
+          <span class="step-number">(iii)</span>
+          <span>\( f(x) = x\sqrt{x^2 + 5} \)</span>
+          <div class="math-expression">Check f(-x) = (-x)\sqrt{(-x)² + 5} = -x\sqrt{x² + 5}</div>
+          <div class="math-expression">f(-x) = -f(x)</div>
+          <div class="explanation">
+            <strong>Result:</strong> <span class="function-type odd">ODD FUNCTION</span>
+          </div>
+        </div>
+        
+        <div class="step">
+          <span class="step-number">(iv)</span>
+          <span>\( f(x) = \frac{x - 1}{x + 1}, \, x \neq -1 \)</span>
+          <div class="math-expression">Check f(-x) = \frac{-x - 1}{-x + 1} = \frac{-(x + 1)}{-(x - 1)} = \frac{x + 1}{x - 1}</div>
+          <div class="math-expression">f(-x) ≠ f(x) and f(-x) ≠ -f(x)</div>
+          <div class="explanation">
+            <strong>Result:</strong> <span class="function-type neither">NEITHER EVEN NOR ODD</span>
+          </div>
+        </div>
+        
+        <div class="step">
+          <span class="step-number">(v)</span>
+          <span>\( f(x) = x^2 + 6 \)</span>
+          <div class="math-expression">Check f(-x) = (-x)² + 6 = x² + 6</div>
+          <div class="math-expression">f(-x) = f(x)</div>
+          <div class="explanation">
+            <strong>Result:</strong> <span class="function-type even">EVEN FUNCTION</span>
+          </div>
+        </div>
+        
+        <div class="step">
+          <span class="step-number">(vi)</span>
+          <span>\( f(x) = \frac{x^3 - x}{x^2 + 1} \)</span>
+          <div class="math-expression">Check f(-x) = \frac{(-x)³ - (-x)}{(-x)² + 1} = \frac{-x³ + x}{x² + 1} = -\frac{x³ - x}{x² + 1}</div>
+          <div class="math-expression">f(-x) = -f(x)</div>
+          <div class="explanation">
+            <strong>Result:</strong> <span class="function-type odd">ODD FUNCTION</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+   
+    <div class="mental-health-exercise">
+      <h4>Quick Focus Reset</h4>
+      <p>Mathematical thinking can be intense. Take a 30-second break:</p>
+      <div class="focus-container">
+        <div class="focus-circle" id="focusCircle">Ready</div>
+        <div class="focus-instructions" id="focusInstructions">Click Start to begin focus exercise</div>
+      </div>
+      <div class="exercise-action" onclick="startFocusExercise()">Start Focus Exercise</div>
+    </div>
+  </div>
+</div>
+
+<div class="card animate delay-1">
+  <div class="card-header">
+    <h2>Functions & Inverses</h2>
+  </div>
+  <div class="card-body">
+    <!-- Question 1 -->
+    <div class="question">
+      <h3>Function Operations</h3>
+      
+      <div class="step-container">
+        <!-- Part (i) -->
+        <div class="step">
+          <span class="step-number">(i)</span>
+          <span>\( f(x) = 2x + 1 \), \( g(x) = \frac{3}{x - 1} \), \( x \neq 1 \)</span>
+          <div class="math-expression">(a) \( f \circ g(x) = f(g(x)) = 2(\frac{3}{x-1}) + 1 = \frac{6}{x-1} + 1 \)</div>
+          <div class="math-expression">(b) \( g \circ f(x) = g(f(x)) = \frac{3}{(2x+1)-1} = \frac{3}{2x} \), \( x \neq 0 \)</div>
+          <div class="math-expression">(c) \( f \circ f(x) = f(f(x)) = 2(2x+1) + 1 = 4x + 3 \)</div>
+          <div class="math-expression">(d) \( g \circ g(x) = g(g(x)) = \frac{3}{\frac{3}{x-1} - 1} = \frac{3(x-1)}{4 - x} \), \( x \neq 4 \)</div>
+        </div>
+        
+        <!-- Part (ii) -->
+        <div class="step">
+          <span class="step-number">(ii)</span>
+          <span>\( f(x) = \sqrt{x+1} \), \( g(x) = \frac{1}{x^2} \), \( x \neq 0 \)</span>
+          <div class="math-expression">(a) \( f \circ g(x) = \sqrt{\frac{1}{x^2} + 1} = \sqrt{\frac{1 + x^2}{x^2}} \)</div>
+          <div class="math-expression">(b) \( g \circ f(x) = \frac{1}{(\sqrt{x+1})^2} = \frac{1}{x+1} \), \( x \neq -1 \)</div>
+          <div class="math-expression">(c) \( f \circ f(x) = \sqrt{\sqrt{x+1} + 1} \)</div>
+          <div class="math-expression">(d) \( g \circ g(x) = \frac{1}{(\frac{1}{x^2})^2} = x^4 \), \( x \neq 0 \)</div>
+        </div>
+        
+        <!-- Part (iii) -->
+        <div class="step">
+          <span class="step-number">(iii)</span>
+          <span>\( f(x) = \frac{1}{\sqrt{x-1}} \), \( x \neq 1 \), \( g(x) = (x^2 + 1)^2 \)</span>
+          <div class="math-expression">(a) \( f \circ g(x) = \frac{1}{\sqrt{(x^2+1)^2 - 1}} = \frac{1}{\sqrt{x^4 + 2x^2}} \)</div>
+          <div class="math-expression">(b) \( g \circ f(x) = \left((\frac{1}{\sqrt{x-1}})^2 + 1\right)^2 = \left(\frac{1}{x-1} + 1\right)^2 \)</div>
+          <div class="math-expression">(c) \( f \circ f(x) = \frac{1}{\sqrt{\frac{1}{\sqrt{x-1}} - 1}} \)</div>
+          <div class="math-expression">(d) \( g \circ g(x) = ((x^2+1)^4 + 1)^2 \)</div>
+        </div>
+        
+        <!-- Part (iv) -->
+        <div class="step">
+          <span class="step-number">(iv)</span>
+          <span>\( f(x) = 3x^4 - 2x^2 \), \( g(x) = \frac{2}{\sqrt{x}} \), \( x \neq 0 \)</span>
+          <div class="math-expression">(a) \( f \circ g(x) = 3(\frac{2}{\sqrt{x}})^4 - 2(\frac{2}{\sqrt{x}})^2 = \frac{48}{x^2} - \frac{8}{x} \)</div>
+          <div class="math-expression">(b) \( g \circ f(x) = \frac{2}{\sqrt{3x^4 - 2x^2}} \), \( 3x^4 - 2x^2 > 0 \)</div>
+          <div class="math-expression">(c) \( f \circ f(x) = 3(3x^4 - 2x^2)^4 - 2(3x^4 - 2x^2)^2 \)</div>
+          <div class="math-expression">(d) \( g \circ g(x) = \frac{2}{\sqrt{\frac{2}{\sqrt{x}}}} = \sqrt{2} \cdot x^{1/4} \)</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Mental Health Exercise 1 -->
+    <div class="mental-health-exercise">
+      <h4>Function Composition Challenge</h4>
+      <p>Test your understanding of function composition:</p>
+      <div class="challenge-container">
+        <p>If \( f(x) = x^2 \) and \( g(x) = x + 1 \), find:</p>
+        <div class="challenge-question">
+          <input type="text" id="comp1" placeholder="f∘g(x) = ?">
+          <button onclick="checkComposition('comp1', 'x^2+2x+1')">Check</button>
+          <span class="challenge-feedback" id="feedback1"></span>
+        </div>
+        <div class="challenge-question">
+          <input type="text" id="comp2" placeholder="g∘f(x) = ?">
+          <button onclick="checkComposition('comp2', 'x^2+1')">Check</button>
+          <span class="challenge-feedback" id="feedback2"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Question 2 -->
+    <div class="question">
+      <h3>Inverse Functions</h3>
+      
+      <div class="step-container">
+        <!-- Part (i) -->
+        <div class="step">
+          <span class="step-number">(i)</span>
+          <span>\( f(x) = -2x + 8 \)</span>
+          <div class="math-expression">Let y = -2x + 8 => -2x = y - 8 => x = (8 - y)/2</div>
+          <div class="math-expression">(a) \( f^{-1}(x) = \frac{8 - x}{2} \)</div>
+          <div class="math-expression">(b) \( f^{-1}(-1) = \frac{8 - (-1)}{2} = \frac{9}{2} = 4.5 \)</div>
+          <div class="math-expression">Verification: \( f(f^{-1}(x)) = -2(\frac{8-x}{2}) + 8 = x \)</div>
+          <div class="math-expression">\( f^{-1}(f(x)) = \frac{8 - (-2x+8)}{2} = x \)</div>
+        </div>
+        
+        <!-- Part (ii) -->
+        <div class="step">
+          <span class="step-number">(ii)</span>
+          <span>\( f(x) = 3x^3 + 7 \)</span>
+          <div class="math-expression">Let y = 3x³ + 7 => 3x³ = y - 7 => x³ = (y - 7)/3</div>
+          <div class="math-expression">(a) \( f^{-1}(x) = \sqrt[3]{\frac{x - 7}{3}} \)</div>
+          <div class="math-expression">(b) \( f^{-1}(-1) = \sqrt[3]{\frac{-1 - 7}{3}} = \sqrt[3]{-\frac{8}{3}} \)</div>
+        </div>
+        
+        <!-- Part (iii) -->
+        <div class="step">
+          <span class="step-number">(iii)</span>
+          <span>\( f(x) = (-x + 9)^3 \)</span>
+          <div class="math-expression">Let y = (-x + 9)³ => -x + 9 = ∛y => x = 9 - ∛y</div>
+          <div class="math-expression">(a) \( f^{-1}(x) = 9 - \sqrt[3]{x} \)</div>
+          <div class="math-expression">(b) \( f^{-1}(-1) = 9 - \sqrt[3]{-1} = 9 - (-1) = 10 \)</div>
+        </div>
+        
+        <!-- Part (iv) -->
+        <div class="step">
+          <span class="step-number">(iv)</span>
+          <span>\( f(x) = \frac{2x + 1}{x - 1} \), \( x > 1 \)</span>
+          <div class="math-expression">Let y = (2x + 1)/(x - 1) => y(x - 1) = 2x + 1</div>
+          <div class="math-expression">=> yx - y = 2x + 1 => yx - 2x = y + 1</div>
+          <div class="math-expression">=> x(y - 2) = y + 1 => x = (y + 1)/(y - 2)</div>
+          <div class="math-expression">(a) \( f^{-1}(x) = \frac{x + 1}{x - 2} \), \( x \neq 2 \)</div>
+          <div class="math-expression">(b) \( f^{-1}(-1) = \frac{-1 + 1}{-1 - 2} = 0 \)</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Mental Health Exercise 2 -->
+    <div class="mental-health-exercise">
+      <h4>Inverse Function Practice</h4>
+      <p>Find the inverse of \( h(x) = 4x - 3 \):</p>
+      <div class="inverse-practice">
+        <input type="text" id="inverseInput" placeholder="Enter h⁻¹(x)">
+        <button onclick="checkInverse()">Verify</button>
+        <div class="practice-feedback" id="inverseFeedback"></div>
+      </div>
+      <p class="hint">Hint: Switch x and y, then solve for y</p>
+    </div>
+
+    <!-- Question 3 -->
+    <div class="question">
+      <h3> Domain & Range of Inverses</h3>
+      
+      <div class="step-container">
+        <!-- Part (i) -->
+        <div class="step">
+          <span class="step-number">(i)</span>
+          <span>\( f(x) = \sqrt{x + 2} \)</span>
+          <div class="math-expression">Domain of f: x ≥ -2, Range of f: y ≥ 0</div>
+          <div class="math-expression">Domain of f⁻¹: x ≥ 0, Range of f⁻¹: y ≥ -2</div>
+        </div>
+        
+        <!-- Part (ii) -->
+        <div class="step">
+          <span class="step-number">(ii)</span>
+          <span>\( f(x) = \frac{x - 1}{x - 4} \), \( x \neq 4 \)</span>
+          <div class="math-expression">Domain of f: x ≠ 4, Range of f: y ≠ 1</div>
+          <div class="math-expression">Domain of f⁻¹: x ≠ 1, Range of f⁻¹: y ≠ 4</div>
+        </div>
+        
+        <!-- Part (iii) -->
+        <div class="step">
+          <span class="step-number">(iii)</span>
+          <span>\( f(x) = \frac{1}{x + 3} \), \( x \neq -3 \)</span>
+          <div class="math-expression">Domain of f: x ≠ -3, Range of f: y ≠ 0</div>
+          <div class="math-expression">Domain of f⁻¹: x ≠ 0, Range of f⁻¹: y ≠ -3</div>
+        </div>
+        
+        <!-- Part (iv) -->
+        <div class="step">
+          <span class="step-number">(iv)</span>
+          <span>\( f(x) = (x - 5)^2 \), \( x \geq 5 \)</span>
+          <div class="math-expression">Domain of f: x ≥ 5, Range of f: y ≥ 0</div>
+          <div class="math-expression">Domain of f⁻¹: x ≥ 0, Range of f⁻¹: y ≥ 5</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Mental Health Exercise 3 -->
+    <div class="mental-health-exercise">
+      <h4>Domain & Range Matching Game</h4>
+      <p>Match functions with their inverse domains:</p>
+      <div class="matching-game">
+        <div class="match-item" data-match="B">\( f(x) = \sqrt{x} \)</div>
+        <div class="match-item" data-match="A">\( f(x) = \frac{1}{x} \)</div>
+        <div class="match-item" data-match="C">\( f(x) = x^2, x ≥ 0 \)</div>
+        
+        <div class="match-target" data-target="A">Domain: x ≠ 0</div>
+        <div class="match-target" data-target="B">Domain: x ≥ 0</div>
+        <div class="match-target" data-target="C">Domain: x ≥ 0</div>
+        
+        <button onclick="checkMatches()">Check Matches</button>
+        <div class="match-feedback"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card animate delay-1">
+  <div class="card-header">
+    <h2>Limits & Continuity</h2>
+  </div>
+  <div class="card-body">
+    <!-- Problem 1 -->
+    <div class="question">
+      <h3>Evaluate limits using limit theorems</h3>
+      
+      <div class="step-container">
+        <!-- Parts (i) through (vi) solutions remain the same -->
+        <div class="step">
+          <span class="step-number">(i)</span>
+          <span>\(\lim_{x\to 3} (2x+4)\)</span>
+          <div class="math-expression">Using direct substitution: 2(3) + 4 = 6 + 4 = 10</div>
+          <div class="explanation">
+            <strong>Answer:</strong> 10
+          </div>
+        </div>
+        
+        <div class="step">
+          <span class="step-number">(ii)</span>
+          <span>\(\lim_{x\to 1} (3x^{2}-2x+4)\)</span>
+          <div class="math-expression">Using direct substitution: 3(1)² - 2(1) + 4 = 3 - 2 + 4 = 5</div>
+          <div class="explanation">
+            <strong>Answer:</strong> 5
+          </div>
+        </div>
+        
+        <!-- ... remaining solutions ... -->
+      </div>
+    </div>
+    
+    <!-- Mental Health Exercise 1 -->
+    <div class="mental-health-exercise">
+      <h4>🌿 Breathing Break: Box Breathing</h4>
+      <p>Mathematical thinking can be intense. Let's reset with a calming breathing exercise:</p>
+      <div class="breathing-container">
+        <div class="breath-circle" id="breathCircle1">Ready</div>
+        <div class="breath-instructions" id="breathInstructions1">Click Start to begin box breathing (4-4-4-4)</div>
+      </div>
+      <div class="exercise-action" onclick="startBoxBreathing(1)">Start Breathing Exercise</div>
+    </div>
+
+    <!-- Problem 2 -->
+    <div class="question">
+      <h3>Evaluate limits using algebraic techniques</h3>
+      
+      <div class="step-container">
+        <!-- Parts (i) through (ix) solutions remain the same -->
+        <div class="step">
+          <span class="step-number">(i)</span>
+          <span>\(\lim_{x\to-1} \frac{x^{3}-x}{x+1}\)</span>
+          <div class="math-expression">Factor numerator: \(\frac{x(x^2-1)}{x+1} = \frac{x(x-1)(x+1)}{x+1} = x(x-1)\)</div>
+          <div class="math-expression">Now substitute x = -1: (-1)(-2) = 2</div>
+          <div class="explanation">
+            <strong>Answer:</strong> 2
+          </div>
+        </div>
+        
+        <!-- ... remaining solutions ... -->
+      </div>
+    </div>
+    
+    <!-- Mental Health Exercise 2 -->
+    <div class="mental-health-exercise">
+      <h4>💆‍♂️ Progressive Muscle Relaxation</h4>
+      <p>Release tension from focused studying:</p>
+      <div class="relaxation-container">
+        <div class="relaxation-step">
+          <span class="relax-number">1</span>
+          <span>Clench your fists tightly for 5 seconds</span>
+        </div>
+        <div class="relaxation-step">
+          <span class="relax-number">2</span>
+          <span>Release and feel the relaxation for 10 seconds</span>
+        </div>
+        <div class="relaxation-step">
+          <span class="relax-number">3</span>
+          <span>Shrug shoulders up toward ears, hold, then release</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="relaxProgress"></div>
+        </div>
+      </div>
+      <div class="exercise-action" onclick="startMuscleRelaxation()">Start Relaxation Exercise</div>
+    </div>
+
+    <!-- Problem 3 -->
+    <div class="question">
+      <h3>Trigonometric limits</h3>
+      
+      <div class="step-container">
+        <!-- Parts (i) through (xii) solutions remain the same -->
+        <div class="step">
+          <span class="step-number">(i)</span>
+          <span>\(\lim_{x\to 0} \frac{\sin 7x}{x}\)</span>
+          <div class="math-expression">Using \(\lim_{\theta\to 0} \frac{\sin\theta}{\theta} = 1\), multiply by 7/7:</div>
+          <div class="math-expression">\(7 \cdot \lim_{x\to 0} \frac{\sin 7x}{7x} = 7 \cdot 1 = 7\)</div>
+          <div class="explanation">
+            <strong>Answer:</strong> 7
+          </div>
+        </div>
+        
+        <!-- ... remaining solutions ... -->
+      </div>
+    </div>
+    
+    <!-- Mental Health Exercise 3 -->
+    <div class="mental-health-exercise">
+      <h4>🌅 Mindful Minute</h4>
+      <p>Take a moment to ground yourself in the present:</p>
+      <div class="mindfulness-container">
+        <div class="mindfulness-prompt" id="mindfulnessPrompt">Notice 5 things you can see around you...</div>
+        <div class="senses-list">
+          <div class="sense-item" onclick="markSenseComplete(this)">👀 5 things you see</div>
+          <div class="sense-item" onclick="markSenseComplete(this)">👂 4 things you hear</div>
+          <div class="sense-item" onclick="markSenseComplete(this)">✋ 3 things you feel</div>
+          <div class="sense-item" onclick="markSenseComplete(this)">👃 2 things you smell</div>
+          <div class="sense-item" onclick="markSenseComplete(this)">👅 1 thing you taste</div>
+        </div>
+      </div>
+      <div class="exercise-action" onclick="resetMindfulness()">Start Mindfulness Exercise</div>
+    </div>
+
+    <!-- Problem 4 -->
+    <div class="question">
+      <h3>Limits in terms of e</h3>
+      
+      <div class="step-container">
+        <!-- Parts (i) through (vi) solutions remain the same -->
+        <div class="step">
+          <span class="step-number">(i)</span>
+          <span>\(\lim_{n\to+\infty}\left(1+\frac{1}{n}\right)^{2n}\)</span>
+          <div class="math-expression">Using \(\lim_{n\to\infty}\left(1+\frac{1}{n}\right)^{n} = e\)</div>
+          <div class="math-expression">\(\left(1+\frac{1}{n}\right)^{2n} = \left[\left(1+\frac{1}{n}\right)^{n}\right]^2 \to e^2\)</div>
+          <div class="explanation">
+            <strong>Answer:</strong> \(e^2\)
+          </div>
+        </div>
+        
+        <!-- ... remaining solutions ... -->
+      </div>
+    </div>
+    
+    <!-- Mental Health Exercise 4 -->
+    <div class="mental-health-exercise">
+      <h4>🧘‍♀️ Quick Body Scan</h4>
+      <p>Release physical tension from sitting and studying:</p>
+      <div class="bodyscan-container">
+        <div class="bodyscan-area" data-area="head">🧠 Head & Face</div>
+        <div class="bodyscan-area" data-area="shoulders">💪 Shoulders & Neck</div>
+        <div class="bodyscan-area" data-area="arms">🖐️ Arms & Hands</div>
+        <div class="bodyscan-area" data-area="chest">❤️ Chest & Back</div>
+        <div class="bodyscan-area" data-area="legs">🦵 Legs & Feet</div>
+      </div>
+      <div class="scan-instructions" id="scanInstructions">Click each area to focus tension release</div>
+      <div class="exercise-action" onclick="resetBodyScan()">Start Body Scan</div>
+    </div>
+  </div>
+</div>
+<div class="card animate delay-1">
+  <div class="card-header">
+    <h2>Limits & Continuity Problems</h2>
+  </div>
+  <div class="card-body">
+    <!-- Problem 1: One-Sided Limits -->
+    <div class="question">
+      <h3>One-Sided Limits</h3>
+      <p>Determine the left hand limit and the right hand limit and then, find the limit of the following functions when \( x \to c \)</p>
+      
+      <div class="step-container">
+        <!-- Part (i) -->
+        <div class="step">
+          <span class="step-number">(i)</span>
+          <span>\( f(x) = 2x^2 + x - 5, \, c = 1 \)</span>
+          <div class="math-expression">Left-hand limit: \(\lim_{x \to 1^-} (2x^2 + x - 5) = 2(1)^2 + 1 - 5 = -2\)</div>
+          <div class="math-expression">Right-hand limit: \(\lim_{x \to 1^+} (2x^2 + x - 5) = 2(1)^2 + 1 - 5 = -2\)</div>
+          <div class="math-expression">Since LHL = RHL, \(\lim_{x \to 1} f(x) = -2\)</div>
+          <div class="explanation">
+            <strong>Answer:</strong> Limit exists and equals -2
+          </div>
+        </div>
+        
+        <!-- Part (ii) -->
+        <div class="step">
+          <span class="step-number">(ii)</span>
+          <span>\( f(x) = \frac{x^2 - 9}{x - 3}, \, c = -3 \)</span>
+          <div class="math-expression">Simplify: \(\frac{x^2 - 9}{x - 3} = \frac{(x-3)(x+3)}{x-3} = x + 3\) (for \(x \neq 3\))</div>
+          <div class="math-expression">Left-hand limit: \(\lim_{x \to -3^-} (x + 3) = -3 + 3 = 0\)</div>
+          <div class="math-expression">Right-hand limit: \(\lim_{x \to -3^+} (x + 3) = -3 + 3 = 0\)</div>
+          <div class="math-expression">Since LHL = RHL, \(\lim_{x \to -3} f(x) = 0\)</div>
+          <div class="explanation">
+            <strong>Answer:</strong> Limit exists and equals 0
+          </div>
+        </div>
+        
+        <!-- Part (iii) -->
+        <div class="step">
+          <span class="step-number">(iii)</span>
+          <span>\( f(x) = |x - 5|, \, c = 5 \)</span>
+          <div class="math-expression">Left-hand limit: \(\lim_{x \to 5^-} |x - 5| = \lim_{x \to 5^-} (5 - x) = 0\)</div>
+          <div class="math-expression">Right-hand limit: \(\lim_{x \to 5^+} |x - 5| = \lim_{x \to 5^+} (x - 5) = 0\)</div>
+          <div class="math-expression">Since LHL = RHL, \(\lim_{x \to 5} f(x) = 0\)</div>
+          <div class="explanation">
+            <strong>Answer:</strong> Limit exists and equals 0
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Mental Health Exercise 1 -->
+    <div class="mental-health-exercise">
+      <h4>🌬️ Deep Breathing Break</h4>
+      <p>Take a moment to reset with calming breaths:</p>
+      <div class="breathing-container">
+        <div class="breath-circle" id="limitBreathCircle">Ready</div>
+        <div class="breath-instructions" id="limitBreathInstructions">Click Start for 4-7-8 breathing technique</div>
+      </div>
+      <div class="exercise-action" onclick="startLimitBreathing()">Start Breathing Exercise</div>
+    </div>
+
+    <!-- Problem 2: Continuity Discussion -->
+    <div class="question">
+      <h3>Discuss Continuity</h3>
+      
+      <div class="step-container">
+        <!-- Part (i) -->
+        <div class="step">
+          <span class="step-number">(i)</span>
+          <span>\[f(x) =
+\begin{cases} 
+2x + 5 & \text{if } x \leq 2 \\
+4x + 1 & \text{if } x = 2
+\end{cases}, \, c = 2\]</span>
+          <div class="math-expression">Left-hand limit: \(\lim_{x \to 2^-} (2x + 5) = 2(2) + 5 = 9\)</div>
+          <div class="math-expression">Right-hand limit: \(\lim_{x \to 2^+} f(x)\) is not defined (no definition for x > 2)</div>
+          <div class="math-expression">Function value: \(f(2) = 4(2) + 1 = 9\)</div>
+          <div class="explanation">
+            <strong>Result:</strong> Function is <span class="discontinuous">discontinuous</span> at x = 2 (no right-hand limit)
+          </div>
+        </div>
+        
+        <!-- Part (ii) -->
+        <div class="step">
+          <span class="step-number">(ii)</span>
+          <span>\[f(x) =
+\begin{cases} 
+3x - 1 & \text{if } x < 1 \\
+4 & \text{if } x = 1, \, c = 1 \\
+2x & \text{if } x > 1
+\end{cases}\]</span>
+          <div class="math-expression">Left-hand limit: \(\lim_{x \to 1^-} (3x - 1) = 3(1) - 1 = 2\)</div>
+          <div class="math-expression">Right-hand limit: \(\lim_{x \to 1^+} (2x) = 2(1) = 2\)</div>
+          <div class="math-expression">Function value: \(f(1) = 4\)</div>
+          <div class="math-expression">LHL = RHL = 2 ≠ f(1) = 4</div>
+          <div class="explanation">
+            <strong>Result:</strong> Function is <span class="discontinuous">discontinuous</span> at x = 1 (removable discontinuity)
+          </div>
+        </div>
+        
+        <!-- Part (iii) -->
+        <div class="step">
+          <span class="step-number">(iii)</span>
+          <span>\[f(x) =
+\begin{cases} 
+3x & \text{if } x \leq -2 \\
+x^2 - 1 & \text{if } -2 < x < 2 \\
+3 & \text{if } x \geq 2
+\end{cases}\]</span>
+          <div class="math-expression"><strong>At x = -2:</strong></div>
+          <div class="math-expression">Left-hand limit: \(\lim_{x \to -2^-} (3x) = 3(-2) = -6\)</div>
+          <div class="math-expression">Right-hand limit: \(\lim_{x \to -2^+} (x^2 - 1) = (-2)^2 - 1 = 3\)</div>
+          <div class="math-expression">LHL ≠ RHL, so <span class="discontinuous">discontinuous</span> at x = -2</div>
+          <div class="math-expression"><strong>At x = 2:</strong></div>
+          <div class="math-expression">Left-hand limit: \(\lim_{x \to 2^-} (x^2 - 1) = (2)^2 - 1 = 3\)</div>
+          <div class="math-expression">Right-hand limit: \(\lim_{x \to 2^+} (3) = 3\)</div>
+          <div class="math-expression">Function value: \(f(2) = 3\)</div>
+          <div class="math-expression">LHL = RHL = f(2), so <span class="continuous">continuous</span> at x = 2</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Mental Health Exercise 2 -->
+    <div class="mental-health-exercise">
+      <h4>👁️ Eye Relaxation Exercise</h4>
+      <p>Give your eyes a break from reading:</p>
+      <div class="eye-exercise">
+        <div class="eye-instruction">1. Look at your thumb arm's length away</div>
+        <div class="eye-instruction">2. Look at something distant outside</div>
+        <div class="eye-instruction">3. Repeat 5 times slowly</div>
+        <div class="eye-progress">
+          <div class="eye-dot active"></div>
+          <div class="eye-dot"></div>
+          <div class="eye-dot"></div>
+          <div class="eye-dot"></div>
+          <div class="eye-dot"></div>
+        </div>
+      </div>
+      <div class="exercise-action" onclick="startEyeExercise()">Start Eye Exercise</div>
+    </div>
+
+    <!-- Problem 3: Finding Constants -->
+    <div class="question">
+      <h3>Find Constants for Continuity</h3>
+      
+      <div class="step-container">
+        <!-- Part (i) -->
+        <div class="step">
+          <span class="step-number">(i)</span>
+          <span>Find "c" so that \( \lim_{x \to -1} f(x) \) exists for:</span>
+          <div class="math-expression">\[f(x) =
+\begin{cases} 
+x + 2, & x \leq -1 \\
+c + 2, & x > -1
+\end{cases}\]</div>
+          <div class="math-expression">Left-hand limit: \(\lim_{x \to -1^-} (x + 2) = -1 + 2 = 1\)</div>
+          <div class="math-expression">Right-hand limit: \(\lim_{x \to -1^+} (c + 2) = c + 2\)</div>
+          <div class="math-expression">For limit to exist: LHL = RHL ⇒ 1 = c + 2 ⇒ c = -1</div>
+          <div class="explanation">
+            <strong>Answer:</strong> c = -1
+          </div>
+        </div>
+        
+        <!-- Part (ii) -->
+        <div class="step">
+          <span class="step-number">(ii)</span>
+          <span>Find m and n for continuity at x = 3:</span>
+          <div class="math-expression">\[f(x) =
+\begin{cases} 
+mx & \text{if } x < 3 \\
+n & \text{if } x = 3 \\
+-2x + 9 & \text{if } x > 3
+\end{cases}\]</div>
+          <div class="math-expression">Left-hand limit: \(\lim_{x \to 3^-} (mx) = 3m\)</div>
+          <div class="math-expression">Right-hand limit: \(\lim_{x \to 3^+} (-2x + 9) = -2(3) + 9 = 3\)</div>
+          <div class="math-expression">For continuity: LHL = RHL = f(3)</div>
+          <div class="math-expression">So: 3m = 3 and n = 3 ⇒ m = 1, n = 3</div>
+          <div class="explanation">
+            <strong>Answer:</strong> m = 1, n = 3
+          </div>
+        </div>
+        
+        <!-- Part (iii) -->
+        <div class="step">
+          <span class="step-number">(iii)</span>
+          <span>Find m for continuity at x = 3:</span>
+          <div class="math-expression">\[f(x) =
+\begin{cases} 
+mx & \text{if } x < 3 \\
+x^2 & \text{if } x \geq 3
+\end{cases}\]</div>
+          <div class="math-expression">Left-hand limit: \(\lim_{x \to 3^-} (mx) = 3m\)</div>
+          <div class="math-expression">Right-hand limit: \(\lim_{x \to 3^+} (x^2) = 9\)</div>
+          <div class="math-expression">Function value: \(f(3) = 9\)</div>
+          <div class="math-expression">For continuity: 3m = 9 ⇒ m = 3</div>
+          <div class="explanation">
+            <strong>Answer:</strong> m = 3
+          </div>
+        </div>
+        
+        <!-- Part (iv) -->
+        <div class="step">
+          <span class="step-number">(iv)</span>
+          <span>Find k for continuity at x = 2:</span>
+          <div class="math-expression">\[f(x) =
+\begin{cases} 
+\sqrt{2x + 5} - \sqrt{x + 7}, & x \neq 2 \\
+k & \text{if } x = 2
+\end{cases}\]</div>
+          <div class="math-expression">Limit as x → 2: \(\lim_{x \to 2} \frac{\sqrt{2x + 5} - \sqrt{x + 7}}{x - 2} \cdot \frac{\sqrt{2x + 5} + \sqrt{x + 7}}{\sqrt{2x + 5} + \sqrt{x + 7}}\)</div>
+          <div class="math-expression">= \(\lim_{x \to 2} \frac{(2x + 5) - (x + 7)}{(x - 2)(\sqrt{2x + 5} + \sqrt{x + 7})} = \lim_{x \to 2} \frac{x - 2}{(x - 2)(\sqrt{2x + 5} + \sqrt{x + 7})}\)</div>
+          <div class="math-expression">= \(\lim_{x \to 2} \frac{1}{\sqrt{2x + 5} + \sqrt{x + 7}} = \frac{1}{\sqrt{9} + \sqrt{9}} = \frac{1}{6}\)</div>
+          <div class="math-expression">For continuity: k = \(\frac{1}{6}\)</div>
+          <div class="explanation">
+            <strong>Answer:</strong> k = \(\frac{1}{6}\)
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Mental Health Exercise 3 -->
+    <div class="mental-health-exercise">
+      <h4>💪 Shoulder & Neck Release</h4>
+      <p>Release tension from studying posture:</p>
+      <div class="posture-exercise">
+        <div class="posture-step">
+          <span class="posture-number">1</span>
+          <span>Slowly roll shoulders forward 5 times</span>
+        </div>
+        <div class="posture-step">
+          <span class="posture-number">2</span>
+          <span>Slowly roll shoulders backward 5 times</span>
+        </div>
+        <div class="posture-step">
+          <span class="posture-number">3</span>
+          <span>Gently tilt head side to side</span>
+        </div>
+        <div class="posture-timer" id="postureTimer">Ready when you are!</div>
+      </div>
+      <div class="exercise-action" onclick="startPostureExercise()">Start Posture Exercise</div>
+    </div>
+  </div>
+</div>
+<div class="card animate delay-1">
+  <div class="card-header">
+    <h2>Graphing & Visual Mathematics</h2>
+  </div>
+  <div class="card-body">
+    <!-- Problem 1: Basic Graphs -->
+    <div class="question">
+      <h3>Problem 1: Draw the graphs of the following equations</h3>
+      
+      <div class="step-container">
+        <!-- Part (i) -->
+        <div class="step">
+          <span class="step-number">(i)</span>
+          <span>\( x^2 + y^2 = 9 \)</span>
+          <div class="math-expression">This is a circle with center at (0,0) and radius 3</div>
+          <div class="graph-container">
+            <div class="graph-circle" style="width: 200px; height: 200px; border: 2px solid #e74c3c; border-radius: 50%; position: relative; margin: 0 auto;">
+              <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 4px; height: 4px; background: #000; border-radius: 50%;"></div>
+              <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                <div>Center: (0,0)</div>
+                <div>Radius: 3</div>
+              </div>
+            </div>
+          </div>
+          <div class="explanation">
+            <strong>Graph:</strong> Circle centered at origin with radius 3
+          </div>
+        </div>
+        
+        <!-- Part (ii) -->
+        <div class="step">
+          <span class="step-number">(ii)</span>
+          <span>\( \frac{x^2}{16} + \frac{y^2}{4} = 1 \)</span>
+          <div class="math-expression">This is an ellipse with horizontal major axis</div>
+          <div class="math-expression">Center: (0,0), Horizontal radius: 4, Vertical radius: 2</div>
+          <div class="graph-container">
+            <div class="graph-ellipse" style="width: 200px; height: 100px; border: 2px solid #3498db; border-radius: 100px/50px; position: relative; margin: 0 auto;">
+              <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                <div>a = 4, b = 2</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Part (iii) -->
+        <div class="step">
+          <span class="step-number">(iii)</span>
+          <span>\( y = e^{2x} \)</span>
+          <div class="math-expression">Exponential growth function</div>
+          <div class="math-expression">Key points: (0,1), (1,e²≈7.4), (-1,e⁻²≈0.14)</div>
+          <div class="graph-container">
+            <div class="graph-exponential" style="width: 200px; height: 150px; position: relative; margin: 0 auto; border-left: 1px solid #ccc; border-bottom: 1px solid #ccc;">
+              <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, transparent 0%, rgba(52,152,219,0.3) 100%); border-radius: 0 0 5px 0;"></div>
+              <div style="position: absolute; bottom: 25%; left: 10%; background: #3498db; width: 3px; height: 3px; border-radius: 50%;"></div>
+              <div style="position: absolute; bottom: 50%; left: 30%; background: #3498db; width: 3px; height: 3px; border-radius: 50%;"></div>
+              <div style="position: absolute; bottom: 75%; left: 50%; background: #3498db; width: 3px; height: 3px; border-radius: 50%;"></div>
+              <div style="position: absolute; bottom: 90%; left: 70%; background: #3498db; width: 3px; height: 3px; border-radius: 50%;"></div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Part (iv) -->
+        <div class="step">
+          <span class="step-number">(iv)</span>
+          <span>\( y = 3^x \)</span>
+          <div class="math-expression">Exponential growth function with base 3</div>
+          <div class="math-expression">Key points: (0,1), (1,3), (2,9), (-1,1/3)</div>
+          <div class="graph-container">
+            <div class="graph-exponential" style="width: 200px; height: 150px; position: relative; margin: 0 auto; border-left: 1px solid #ccc; border-bottom: 1px solid #ccc;">
+              <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, transparent 0%, rgba(231,76,60,0.3) 100%); border-radius: 0 0 5px 0;"></div>
+              <div style="position: absolute; bottom: 10%; left: 10%; background: #e74c3c; width: 3px; height: 3px; border-radius: 50%;"></div>
+              <div style="position: absolute; bottom: 30%; left: 30%; background: #e74c3c; width: 3px; height: 3px; border-radius: 50%;"></div>
+              <div style="position: absolute; bottom: 60%; left: 50%; background: #e74c3c; width: 3px; height: 3px; border-radius: 50%;"></div>
+              <div style="position: absolute; bottom: 90%; left: 70%; background: #e74c3c; width: 3px; height: 3px; border-radius: 50%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Mental Health Exercise 1 -->
+    <div class="mental-health-exercise">
+      <h4>👀 Visual Rest Break</h4>
+      <p>Give your eyes a break from focusing:</p>
+      <div class="visual-break">
+        <div class="focus-object" id="focusObject">●</div>
+        <div class="focus-instructions">Follow the dot with your eyes</div>
+        <div class="focus-controls">
+          <button onclick="startFocusExercise()">Start Eye Movement</button>
+          <button onclick="stopFocusExercise()">Stop</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Problem 2: Parametric Equations -->
+    <div class="question">
+      <h3>Problem 2: Graph parametric equations</h3>
+      
+      <div class="step-container">
+        <!-- Part (i) -->
+        <div class="step">
+          <span class="step-number">(i)</span>
+          <span>\( x = t, y = t^2, -3 \leq t \leq 3 \)</span>
+          <div class="math-expression">This is a parabola opening upward: \( y = x^2 \)</div>
+          <div class="math-expression">Eliminating parameter: \( y = t^2 = x^2 \)</div>
+          <div class="graph-container">
+            <div class="graph-parabola" style="width: 200px; height: 150px; position: relative; margin: 0 auto; border-left: 1px solid #ccc; border-bottom: 1px solid #ccc;">
+              <div style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 80%; height: 80%; background: conic-gradient(from 0deg at 50% 100%, transparent 0%, rgba(46,204,113,0.3) 100%);"></div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Part (ii) -->
+        <div class="step">
+          <span class="step-number">(ii)</span>
+          <span>\( x = t-1, y = 2t-1, -1 < t < 5 \)</span>
+          <div class="math-expression">Eliminating parameter: From x = t-1, we get t = x+1</div>
+          <div class="math-expression">Substitute: y = 2(x+1)-1 = 2x + 1</div>
+          <div class="math-expression">This is a straight line with slope 2 and y-intercept 1</div>
+          <div class="graph-container">
+            <div class="graph-line" style="width: 200px; height: 150px; position: relative; margin: 0 auto; border-left: 1px solid #ccc; border-bottom: 1px solid #ccc;">
+              <div style="position: absolute; bottom: 20%; left: 0; width: 100%; height: 2px; background: #9b59b6; transform: rotate(20deg); transform-origin: left bottom;"></div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Part (iii) -->
+        <div class="step">
+          <span class="step-number">(iii)</span>
+          <span>\( x = \sec \theta, y = \tan \theta \)</span>
+          <div class="math-expression">Using identity: \( \sec^2 \theta - \tan^2 \theta = 1 \)</div>
+          <div class="math-expression">So: \( x^2 - y^2 = 1 \)</div>
+          <div class="math-expression">This is a hyperbola opening left and right</div>
+          <div class="graph-container">
+            <div class="graph-hyperbola" style="width: 200px; height: 150px; position: relative; margin: 0 auto; border-left: 1px solid #ccc; border-bottom: 1px solid #ccc;">
+              <div style="position: absolute; bottom: 50%; left: 50%; transform: translate(-50%, -50%); width: 80%; height: 60%; background: conic-gradient(from 90deg at 50% 50%, transparent 0%, rgba(243,156,18,0.3) 100%);"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Mental Health Exercise 2 -->
+    <div class="mental-health-exercise">
+      <h4>🔄 Posture Reset</h4>
+      <p>Counteract sitting posture from studying:</p>
+      <div class="posture-reset">
+        <div class="posture-action" onclick="doPostureAction(1)">
+          <span class="posture-emoji">💺</span>
+          <span>Sit up straight</span>
+        </div>
+        <div class="posture-action" onclick="doPostureAction(2)">
+          <span class="posture-emoji">↔️</span>
+          <span>Roll shoulders back</span>
+        </div>
+        <div class="posture-action" onclick="doPostureAction(3)">
+          <span class="posture-emoji">📏</span>
+          <span>Align head over spine</span>
+        </div>
+        <div class="posture-feedback" id="postureFeedback">Take a moment to reset your posture</div>
+      </div>
+    </div>
+
+    <!-- Problem 3: Continuity from Graphs -->
+    <div class="question">
+      <h3>Problem 3: Graph and analyze continuity</h3>
+      
+      <div class="step-container">
+        <!-- Part (i) -->
+        <div class="step">
+          <span class="step-number">(i)</span>
+          <span>\( y = 
+\begin{cases} 
+x - 1 & \text{if } x < 3 \\ 
+2x + 1 & \text{if } x \geq 3 
+\end{cases} \)</span>
+          <div class="math-expression">At x = 3: Left limit = 3-1 = 2, Right limit = 2(3)+1 = 7</div>
+          <div class="math-expression">Since left limit ≠ right limit, function is <span class="discontinuous">discontinuous</span> at x = 3</div>
+          <div class="graph-container">
+            <div class="graph-piecewise" style="width: 200px; height: 150px; position: relative; margin: 0 auto; border-left: 1px solid #ccc; border-bottom: 1px solid #ccc;">
+              <!-- First segment -->
+              <div style="position: absolute; bottom: 40%; left: 10%; width: 40%; height: 2px; background: #e74c3c; transform: rotate(10deg);"></div>
+              <!-- Second segment -->
+              <div style="position: absolute; bottom: 70%; left: 50%; width: 40%; height: 2px; background: #e74c3c; transform: rotate(30deg);"></div>
+              <!-- Jump discontinuity -->
+              <div style="position: absolute; bottom: 40%; left: 50%; width: 2px; height: 30%; background: #000; border-left: 2px dashed #000;"></div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Part (ii) -->
+        <div class="step">
+          <span class="step-number">(ii)</span>
+          <span>\( y = \frac{x^2 - 4}{x - 2} \), \( x \neq 2 \)</span>
+          <div class="math-expression">Simplify: \( \frac{(x-2)(x+2)}{x-2} = x + 2 \) for x ≠ 2</div>
+          <div class="math-expression">This is a straight line with a <span class="discontinuous">hole</span> at (2,4)</div>
+          <div class="math-expression">Function is <span class="continuous">continuous</span> everywhere except at x = 2</div>
+        </div>
+        
+        <!-- Part (iii) -->
+        <div class="step">
+          <span class="step-number">(iii)</span>
+          <span>\( y = 
+\begin{cases} 
+x + 3 & \text{if } x \neq 3 \\ 
+2 & \text{if } x = 3 
+\end{cases} \)</span>
+          <div class="math-expression">Limit as x → 3 is 3+3 = 6, but f(3) = 2</div>
+          <div class="math-expression">Since limit ≠ function value, <span class="discontinuous">discontinuous</span> at x = 3 (removable)</div>
+        </div>
+        
+        <!-- Part (iv) -->
+        <div class="step">
+          <span class="step-number">(iv)</span>
+          <span>\( y = \frac{x^2 - 16}{x - 4} \), \( x \neq 4 \)</span>
+          <div class="math-expression">Simplify: \( \frac{(x-4)(x+4)}{x-4} = x + 4 \) for x ≠ 4</div>
+          <div class="math-expression">Straight line with <span class="discontinuous">hole</span> at (4,8)</div>
+          <div class="math-expression"><span class="continuous">Continuous</span> everywhere except at x = 4</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Mental Health Exercise 3 -->
+    <div class="mental-health-exercise">
+      <h4>🌬️ Breathing Space</h4>
+      <p>Create mental space with mindful breathing:</p>
+      <div class="breathing-space">
+        <div class="breath-visual">
+          <div class="breath-circle-space" id="breathCircleSpace"></div>
+        </div>
+        <div class="space-instructions" id="spaceInstructions">Click below to begin mindful breathing</div>
+        <div class="space-controls">
+          <button onclick="startMindfulBreathing()">Begin Mindful Breathing</button>
+          <button onclick="resetMindfulBreathing()">Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Problem 4: Graphical Solutions -->
+    <div class="question">
+      <h3>Problem 4: Find graphical solutions</h3>
+      
+      <div class="step-container">
+        <!-- Part (i) -->
+        <div class="step">
+          <span class="step-number">(i)</span>
+          <span>\( x = \sin 2x \)</span>
+          <div class="math-expression">Graph y = x and y = sin(2x), find intersections</div>
+          <div class="math-expression">One obvious solution: x = 0</div>
+          <div class="math-expression">Other solutions occur where straight line intersects sine wave</div>
+          <div class="explanation">
+            <strong>Solutions:</strong> x = 0, and intersections in each period
+          </div>
+        </div>
+        
+        <!-- Part (ii) -->
+        <div class="step">
+          <span class="step-number">(ii)</span>
+          <span>\( \frac{x}{2} = \cos x \)</span>
+          <div class="math-expression">Graph y = x/2 and y = cos x, find intersections</div>
+          <div class="math-expression">Solutions occur where straight line intersects cosine wave</div>
+          <div class="math-expression">One solution near x ≈ 1.03 (by approximation)</div>
+        </div>
+        
+        <!-- Part (iii) -->
+        <div class="step">
+          <span class="step-number">(iii)</span>
+          <span>\( 2x = \tan x \)</span>
+          <div class="math-expression">Graph y = 2x and y = tan x, find intersections</div>
+          <div class="math-expression">One obvious solution: x = 0</div>
+          <div class="math-expression">Other solutions occur in each period of tangent function</div>
+          <div class="explanation">
+            <strong>Note:</strong> Infinite solutions due to periodicity of tangent
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Mental Health Exercise 4 -->
+    <div class="mental-health-exercise">
+      <h4>🎵 Sound Break</h4>
+      <p>Take an auditory break from visual work:</p>
+      <div class="sound-break">
+        <div class="sound-option" onclick="playCalmingSound(1)">
+          <span class="sound-emoji">🌊</span>
+          <span>Ocean Waves</span>
+        </div>
+        <div class="sound-option" onclick="playCalmingSound(2)">
+          <span class="sound-emoji">🍃</span>
+          <span>Forest Sounds</span>
+        </div>
+        <div class="sound-option" onclick="playCalmingSound(3)">
+          <span class="sound-emoji">⏸️</span>
+          <span>Silence (1 min)</span>
+        </div>
+        <div class="sound-timer" id="soundTimer">Ready for a break</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+ <!-- Continue with other parts of Question 4 and other questions following the same pattern -->
+        
+      </div>
+       <section id="exercises" class="section">
+      <div class="section-title">
+        <h2>Mental Health Exercises</h2>
+        <p>Take care of your mind while learning mathematics</p>
+      </div>
+      
+      <div class="card animate">
+        <h3>Quick Mental Breaks</h3>
+        <p>When you feel overwhelmed while studying, try these quick exercises:</p>
+        
+        <div class="mental-health-exercise">
+          <h4>Box Breathing</h4>
+          <p>Breathe in for 4 seconds, hold for 4 seconds, breathe out for 4 seconds, hold for 4 seconds</p>
+          <div class="breathing-animation"></div>
+          <div class="exercise-action" onclick="startBoxBreathing()">Start Box Breathing</div>
+        </div>
+        
+        <div class="mental-health-exercise">
+          <h4>5-4-3-2-1 Grounding</h4>
+          <p>Name 5 things you can see, 4 things you can touch, 3 things you can hear, 2 things you can smell, 1 thing you can taste</p>
+          <div class="exercise-action" onclick="startGrounding()">Start Grounding Exercise</div>
+        </div>
+        
+        <div class="mental-health-exercise">
+          <h4>Positive Self-Talk</h4>
+          <p>Repeat these affirmations: "I am capable of learning math", "Mistakes help me grow", "I am getting better every day"</p>
+          <div class="exercise-action" onclick="showPositiveTalk()">Show More Affirmations</div>
+        </div>
+      </div>
+      
+ 
+</div>
+<div style="text-align: center; margin: 40px 0; padding-top: 20px; border-top: 1px solid #eee;">
+    <h3>Ready to test your knowledge?</h3>
+    <a href="{{ url_for('serve_quiz', chapter_num=1) }}" 
+       style="display: inline-block; padding: 15px 30px; background: #10b981; color: white; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); transition: transform 0.3s;">
+       Take Quiz 1 <i class="fas fa-arrow-right"></i>
+    </a>
+</div>
+
+    </section>
+  </div>
+
+  <!-- Floating Action Button -->
+  <div class="fab">
+    <i class="fas fa-heart"></i>
+  </div>
+
+  
+      </div>
+      
+      <div class="footer-bottom">
+        <p>© 2024 Sentellect. Final Year Project - Educational Technology.</p>
+        <div class="footer-tags">
+          <a href="#" class="tag">Mathematics</a>
+          <a href="#" class="tag">Mental Wellness</a>
+          <a href="#" class="tag">Education</a>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+
+    <!-- Completion Message -->
+    <div class="completion animate">
+      <h3>🎉 Great Job! 🎉</h3>
+      <p>You've learned about Functions! Remember that understanding takes time and practice.</p>
+      <p>🌟 <strong>Be proud of what you've accomplished today!</strong> 🌟</p>
+      <div class="emoji-row">
+        <span class="math-emoji">🥳</span>
+        <span class="math-emoji">👏</span>
+        <span class="math-emoji">💫</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Action Button -->
+  <div class="fab">
+    <i class="fas fa-book-open"></i>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-about">
+          <div class="footer-logo">
+            <div class="footer-logo-icon">S</div>
+            Sentellect
+          </div>
+          <p>Personalizing learning through emotions to improve educational experience for HSSC Mathematics.</p>
+          <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+        
+        <div class="footer-links">
+          <h3>Platform</h3>
+          <ul>
+            <li><a href="#basics">Basics</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#practice">Practice</a></li>
+            <li><a href="#game">Game</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-links">
+          <h3>Resources</h3>
+          <ul>
+            <li><a href="#resources">Study Materials</a></li>
+            <li><a href="#">Support</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-links">
+          <h3>Account</h3>
+          <ul>
+            <li><a href="#">Student Login</a></li>
+            <li><a href="#">Create Account</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>© 2024 Sentellect. Final Year Project - Educational Technology.</p>
+        <div class="footer-tags">
+          <a href="#" class="tag">Linear Inequalities</a>
+          <a href="#" class="tag">Stress-Free Learning</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+<div id="timeModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; justify-content:center; align-items:center; backdrop-filter: blur(2px);">
+    <div style="background:white; padding:30px; border-radius:20px; max-width:450px; text-align:center; border-top: 6px solid #10b981; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+        <h3 style="color:#1e40af; margin-bottom:15px;">⏳ Just Checking In</h3>
+        <p style="font-size:1.1rem; color:#555; margin-bottom:20px;">
+            You've been working on this section for 10 minutes. <br><br>
+            Sometimes staying on one screen too long can be tiring. Would you like to switch to the <b>Standard Mode</b> for a fresh perspective?
+        </p>
+        
+        <div style="display:flex; gap:15px; justify-content:center; margin-top:20px;">
+            <button onclick="resetPageTimer()" style="padding:10px 20px; border:1px solid #ccc; background:white; border-radius:50px; cursor:pointer; font-weight:600; color:#666;">No, I'm good</button>
+            <a href="{{ url_for('serve_chapter', chapter_num=1) }}?mode=mid" style="padding:10px 25px; background:#3b82f6; color:white; border-radius:50px; text-decoration:none; font-weight:600; box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);">
+                Yes, Switch Mode
+            </a>
+        </div>
+    </div>
+</div>
+<div id="scrollModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; justify-content:center; align-items:center; backdrop-filter: blur(2px);">
+    <div style="background:white; padding:30px; border-radius:20px; max-width:450px; text-align:center; border-top: 6px solid #f59e0b; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+        <h3 style="color:#d97706; margin-bottom:15px;">🏎️ Woah, slowing down?</h3>
+        <p style="font-size:1.1rem; color:#555; margin-bottom:20px;">
+            We noticed you are scrolling quite fast. <br><br>
+            If you are looking for a more structured flow without the relaxation elements, the <b>Standard Mode</b> might be a better fit.
+        </p>
+        
+        <div style="display:flex; gap:15px; justify-content:center; margin-top:20px;">
+            <button onclick="closeScrollModal()" style="padding:10px 20px; border:1px solid #ccc; background:white; border-radius:50px; cursor:pointer; font-weight:600; color:#666;">I'm just skimming</button>
+            <a href="{{ url_for('serve_chapter', chapter_num=1) }}?mode=low" style="padding:10px 25px; background:#3b82f6; color:white; border-radius:50px; text-decoration:none; font-weight:600; box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);">
+                Switch to challenge 
+            </a>
+        </div>
+    </div>
+</div>
+  <script>
+    // Initialize main chart
+/* ======================================================
+   1. SENTELLECT ADAPTIVE ENGINE (MID-LEVEL LOGIC)
+   ====================================================== */
+
+// STATE TRACKING
+const studentState = {
+    rageClicks: 0,
+    backspaceCount: 0,
+    wrongAttempts: {},
+    currentMood: 'neutral',
+    clickTimer: null
+};
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Backspace' || e.key === 'Delete') {
+        studentState.backspaceCount++;
+        
+        // Check threshold (e.g., >15 deletes in a session)
+        if (studentState.backspaceCount > 3) {
+            console.log("⚠️ High Hesitation Detected");
+            checkAdaptationTrigger("hesitation");
+            studentState.backspaceCount = 0; // Reset after trigger
+        }
+    }
+});
+
+// RAGE CLICK DETECTOR
+document.addEventListener('click', (e) => {
+    studentState.rageClicks++;
+    if (!studentState.clickTimer) {
+        studentState.clickTimer = setTimeout(() => {
+            if (studentState.rageClicks > 5) {
+                console.log("⚠️ Rage Click Detected");
+                checkAdaptationTrigger("frustration");
+            }
+            studentState.rageClicks = 0;
+            studentState.clickTimer = null;
+        }, 1000);
+    }
+});
+
+// MOOD TRACKER
+function updateMood(mood) {
+    studentState.currentMood = mood;
+    document.querySelectorAll('.sam-btn').forEach(btn => btn.classList.remove('active'));
+    if(event && event.target) event.target.classList.add('active');
+
+    if (mood === 'stressed') checkAdaptationTrigger("self_report_stress");
+    else if (mood === 'confident') checkAdaptationTrigger("self_report_confidence");
+}
+
+// ACCURACY TRACKER
+function trackAccuracy(questionId, isCorrect) {
+    if (!studentState.wrongAttempts[questionId]) studentState.wrongAttempts[questionId] = 0;
+
+    if (isCorrect) {
+        studentState.wrongAttempts[questionId] = 0;
+    } else {
+        studentState.wrongAttempts[questionId]++;
+        // In Mid Mode, 2 wrong attempts triggers a check
+        if (studentState.wrongAttempts[questionId] >= 2) { 
+            checkAdaptationTrigger("accuracy_fail");
+        }
+    }
+}
+/* ==========================================
+   SCROLL SPEED DETECTOR (Anxiety Check)
+   ========================================== */
+
+let lastScrollTop = 0;
+let fastScrollCount = 0;
+let scrollAlertShown = false; // To prevent spamming the popup
+
+// Check scroll speed every 200ms
+setInterval(() => {
+    if (scrollAlertShown) return; // Stop checking if we already showed the modal
+
+    // Get current scroll position
+    const st = window.pageYOffset || document.documentElement.scrollTop;
+    
+    // Calculate distance moved in last 200ms
+    const distance = Math.abs(st - lastScrollTop);
+    
+    // Threshold: If moved more than 300px in 0.2 seconds (Very Fast)
+    if (distance > 300) {
+        fastScrollCount++;
+        console.log("⚠️ Fast Scroll Detected:", fastScrollCount);
+    } else {
+        // Decay counter (if they slow down, forgive them)
+        if (fastScrollCount > 0) fastScrollCount--;
+    }
+
+    // Trigger: If they speed-scroll 4 times consecutively
+    if (fastScrollCount >= 4) {
+        showScrollModal();
+        fastScrollCount = 0; // Reset
+    }
+
+    lastScrollTop = st;
+}, 200); 
+
+function showScrollModal() {
+    const modal = document.getElementById('scrollModal');
+    if (modal) {
+        modal.style.display = 'flex';
+        scrollAlertShown = true; // Ensure it only pops up once per session
+        
+        // Optional: Log to backend
+        // fetch('/api/log_behavior', { 
+        //     method: 'POST', 
+        //     headers: {'Content-Type': 'application/json'}, 
+        //     body: JSON.stringify({ reason: 'rapid_scrolling', context: 'low_stress' }) 
+        // });
+    }
+}
+
+function closeScrollModal() {
+    document.getElementById('scrollModal').style.display = 'none';
+    // We leave scrollAlertShown = true so we don't bother them again
+}
+
+// THE ADAPTIVE BRAIN (Logic for Mid Level)
+// THE ADAPTIVE BRAIN (Logic for Mid/Standard Level)
+// THE ADAPTIVE BRAIN (Logic: Stressed -> High, Confident -> Low)
+function checkAdaptationTrigger(reason) {
+    
+    // 1. Log to Backend
+    fetch('/api/log_behavior', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            reason: reason,
+            rageClicks: studentState.rageClicks,
+            mood: studentState.currentMood
+        })
+    }).catch(err => console.error("Log error:", err));
+
+    // 2. UI Elements
+    const modal = document.getElementById('adaptiveModal');
+    const title = document.getElementById('modalTitle');
+    const msg = document.getElementById('modalMessage');
+    const reasonSpan = document.getElementById('triggerReason');
+    const switchBtn = document.getElementById('switchBtn');
+
+    if(!modal) return; 
+
+    modal.style.display = 'flex';
+    if(reasonSpan) reasonSpan.textContent = reason;
+
+    // === ADAPTIVE LOGIC ===
+    
+    // SCENARIO A: STRESSED (Struggling/Frustrated) -> Switch to HIGH TEMPLATE
+    if (reason === "frustration" || reason === "accuracy_fail" || reason === "self_report_stress") {
+        if(title) title.innerText = "Let's Change Pace";
+        if(msg) msg.innerHTML = "I noticed you are feeling a bit stressed or stuck. Let's switch to the <b>High Stress Template</b>.";
+        
+        if(switchBtn) {
+            switchBtn.innerText = "Switch to High Mode";
+            switchBtn.href = "/chapter/1?mode=high"; // <--- TARGET: HIGH
+            switchBtn.className = "btn btn-primary"; 
+            switchBtn.style.background = "#e74c3c"; // Red
+            switchBtn.style.display = "inline-block";
+        }
+    } 
+    
+    // SCENARIO B: CONFIDENT (Bored/Easy) -> Switch to LOW TEMPLATE
+    else if (reason === "self_report_confidence") {
+        if(title) title.innerText = "Too Intense?";
+        if(msg) msg.innerHTML = "You seem confident! Let's switch to the <b>Low Stress Template</b>.";
+        
+        if(switchBtn) {
+            switchBtn.innerText = "Switch to Low Mode";
+            switchBtn.href = "/chapter/1?mode=low"; // <--- TARGET: LOW
+            switchBtn.className = "btn btn-primary";
+            switchBtn.style.background = "#10b981"; // Green
+            switchBtn.style.display = "inline-block";
+        }
+    }
+    
+    // SCENARIO C: Hesitation
+    else if (reason === "hesitation") {
+        if(title) title.innerText = "Take Your Time";
+        if(msg) msg.innerText = "Accuracy is more important than speed. You are doing fine.";
+        if(switchBtn) switchBtn.style.display = 'none'; 
+    }
+}
+/* ==========================================
+   BACKGROUND TIMER (10-Minute Check)
+   ========================================== */
+
+let pageTimer;
+const TIME_LIMIT = 600000; // 10 minutes in milliseconds (10 * 60 * 1000)
+
+// 1. Start the timer when the page loads
+window.onload = function() {
+    startPageTimer();
+    // ... (keep your existing window.onload logic if any) ...
+};
+
+function startPageTimer() {
+    // Clear any existing timer just in case
+    if (pageTimer) clearTimeout(pageTimer);
+    
+    // Set the timer for 10 minutes
+    pageTimer = setTimeout(() => {
+        showTimeModal();
+    }, TIME_LIMIT);
+    
+    console.log("🕒 Background timer started: 10 minutes");
+}
+
+// 2. Function to show the modal
+function showTimeModal() {
+    const modal = document.getElementById('timeModal');
+    if (modal) {
+        modal.style.display = 'flex';
+        
+        // Optional: Log this event to your backend for FYP data
+        // fetch('/api/log_behavior', { 
+        //     method: 'POST', 
+        //     headers: {'Content-Type': 'application/json'},
+        //     body: JSON.stringify({ reason: 'time_stuck_10min', context: 'low_stress' })
+        // });
+    }
+}
+
+// 3. Function to reset the timer (if they choose to stay)
+function resetPageTimer() {
+    const modal = document.getElementById('timeModal');
+    if (modal) modal.style.display = 'none';
+    startPageTimer(); // Restart for another 10 minutes
+}
+/* ======================================================
+   2. EXISTING EXERCISES & UTILITIES
+   ====================================================== */
+
+// Progressive Muscle Relaxation function
+function startRelaxation() {
+  const exerciseAction = document.querySelector('.exercise-action');
+  if(exerciseAction) {
+      exerciseAction.textContent = "Relaxation in progress...";
+      exerciseAction.style.backgroundColor = "#4CAF50";
+      
+      setTimeout(() => {
+        alert("Relaxation exercise completed! Take a deep breath and continue with your studies.");
+        exerciseAction.textContent = "Start Relaxation Exercise";
+        exerciseAction.style.backgroundColor = "";
+      }, 3000);
+  }
+}
+
+// Animation trigger
+document.addEventListener('DOMContentLoaded', function() {
+  const animatedElements = document.querySelectorAll('.animate');
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('active');
+      }
+    });
+  }, { threshold: 0.1 });
+  
+  animatedElements.forEach(element => {
+    observer.observe(element);
+  });
+  
+  // Re-render MathJax after animations
+  if (typeof MathJax !== 'undefined' && MathJax.typeset) {
+    MathJax.typeset();
+  }
+});
+
+/* ======================================================
+   3. MATH CHECKING FUNCTIONS (Integrated with Tracking)
+   ====================================================== */
+
+// Function evaluation code
+function checkAnswer(problemNum) {
+  // Handle both input-based checks and quiz buttons if necessary
+  // This specifically handles the input fields from your code
+  const answers = {
+    1: "7.389",
+    2: "3",
+    3: "e^{-2x}",
+    4: "√(2y+4)"
+  };
+  
+  const userInput = document.getElementById(`input${problemNum}`).value.trim().toLowerCase();
+  const resultDiv = document.getElementById(`result${problemNum}`);
+  
+  // Show the result
+  resultDiv.style.display = 'block';
+  
+  // Provide feedback
+  if (userInput === answers[problemNum].toLowerCase()) {
+    resultDiv.style.borderLeft = '4px solid #4caf50';
+    resultDiv.querySelector('strong').innerHTML = 'Correct! ';
+    trackAccuracy('func_q'+problemNum, true); // <--- TRACKING ADDED
+  } else if (userInput !== '') {
+    resultDiv.style.borderLeft = '4px solid #ff9800';
+    resultDiv.querySelector('strong').innerHTML = 'Almost! ';
+    trackAccuracy('func_q'+problemNum, false); // <--- TRACKING ADDED
+  }
+}
+
+// Difference quotient code
+let selectedFunction = null;
+
+// Function definitions
+const functions = {
+  linear: {
+    name: '6x - 9',
+    calculate: function(a, h) {
+      const f_a = 6*a - 9;
+      const f_a_plus_h = 6*(a+h) - 9;
+      const difference = f_a_plus_h - f_a;
+      const quotient = difference / h;
+      
+      return {
+        steps: [
+          `f(a) = 6(${a}) - 9 = ${f_a}`,
+          `f(a + h) = 6(${a} + ${h}) - 9 = 6(${a+h}) - 9 = ${f_a_plus_h}`,
+          `f(a + h) - f(a) = ${f_a_plus_h} - ${f_a} = ${difference}`,
+          `[f(a + h) - f(a)] / h = ${difference} / ${h} = ${quotient}`
+        ],
+        result: quotient
+      };
+    }
+  },
+  sine: {
+    name: 'sin(x)',
+    calculate: function(a, h) {
+      const f_a = Math.sin(a);
+      const f_a_plus_h = Math.sin(a+h);
+      const difference = f_a_plus_h - f_a;
+      const quotient = difference / h;
+      
+      return {
+        steps: [
+          `f(a) = sin(${a}) = ${f_a.toFixed(4)}`,
+          `f(a + h) = sin(${a} + ${h}) = sin(${a+h}) = ${f_a_plus_h.toFixed(4)}`,
+          `f(a + h) - f(a) = ${f_a_plus_h.toFixed(4)} - ${f_a.toFixed(4)} = ${difference.toFixed(4)}`,
+          `[f(a + h) - f(a)] / h = ${difference.toFixed(4)} / ${h} = ${quotient.toFixed(4)}`
+        ],
+        result: quotient
+      };
+    }
+  },
+  cubic: {
+    name: 'x³ + 2x² - 1',
+    calculate: function(a, h) {
+      const f_a = Math.pow(a, 3) + 2*Math.pow(a, 2) - 1;
+      const f_a_plus_h = Math.pow(a+h, 3) + 2*Math.pow(a+h, 2) - 1;
+      const difference = f_a_plus_h - f_a;
+      const quotient = difference / h;
+      
+      return {
+        steps: [
+          `f(a) = (${a})³ + 2(${a})² - 1 = ${f_a}`,
+          `f(a + h) = (${a+h})³ + 2(${a+h})² - 1 = ${f_a_plus_h}`,
+          `f(a + h) - f(a) = ${f_a_plus_h} - ${f_a} = ${difference}`,
+          `[f(a + h) - f(a)] / h = ${difference} / ${h} = ${quotient}`
+        ],
+        result: quotient
+      };
+    }
+  },
+  cosine: {
+    name: 'cos(x)',
+    calculate: function(a, h) {
+      const f_a = Math.cos(a);
+      const f_a_plus_h = Math.cos(a+h);
+      const difference = f_a_plus_h - f_a;
+      const quotient = difference / h;
+      
+      return {
+        steps: [
+          `f(a) = cos(${a}) = ${f_a.toFixed(4)}`,
+          `f(a + h) = cos(${a} + ${h}) = cos(${a+h}) = ${f_a_plus_h.toFixed(4)}`,
+          `f(a + h) - f(a) = ${f_a_plus_h.toFixed(4)} - ${f_a.toFixed(4)} = ${difference.toFixed(4)}`,
+          `[f(a + h) - f(a)] / h = ${difference.toFixed(4)} / ${h} = ${quotient.toFixed(4)}`
+        ],
+        result: quotient
+      };
+    }
+  }
+};
+
+// Select a function
+function selectFunction(funcType) {
+  selectedFunction = funcType;
+  document.getElementById('calculator').style.opacity = 1;
+  
+  // Update UI to show selected function
+  document.querySelectorAll('.function-card').forEach(card => {
+    card.style.border = 'none';
+  });
+  event.currentTarget.style.border = '3px solid #42a5f5';
+  
+  document.getElementById('dq-steps').innerHTML = `Selected function: <strong>${functions[funcType].name}</strong>. Enter values for a and h above and click calculate.`;
+  document.getElementById('dq-result').innerHTML = 'Result will appear here after calculation.';
+}
+
+// Calculate the difference quotient
+function calculateDQ() {
+  if (!selectedFunction) {
+    alert('Please select a function first!');
+    return;
+  }
+  
+  const a = parseFloat(document.getElementById('dq-a-value').value);
+  const h = parseFloat(document.getElementById('dq-h-value').value);
+  
+  if (isNaN(a) || isNaN(h)) {
+    alert('Please enter valid numbers for a and h!');
+    return;
+  }
+  
+  if (h === 0) {
+    alert('h cannot be zero!');
+    return;
+  }
+  
+  const calculation = functions[selectedFunction].calculate(a, h);
+  
+  // Display steps
+  let stepsHTML = '<h4>Calculation Steps:</h4>';
+  calculation.steps.forEach(step => {
+    stepsHTML += `<div>${step}</div>`;
+  });
+  document.getElementById('dq-steps').innerHTML = stepsHTML;
+  
+  // Display result
+  document.getElementById('dq-result').innerHTML = `The difference quotient is: <strong>${calculation.result}</strong>`;
+}
+
+// Mental break function
+function mentalBreak() {
+  const affirmations = [
+    "You're capable of understanding complex concepts!",
+    "Every mathematician was once a beginner.",
+    "Mistakes are just opportunities to learn.",
+    "Your brain grows stronger with each problem you solve.",
+    "You're developing valuable problem-solving skills.",
+    "Math is a language, and you're becoming fluent!",
+    "Challenges help you grow - you've got this!",
+    "Your persistence will lead to mastery.",
+    "You're building logical thinking skills that will help in many areas of life.",
+    "Take a deep breath - you're doing great!"
+  ];
+  
+  const randomAffirmation = affirmations[Math.floor(Math.random() * affirmations.length)];
+  document.getElementById('affirmation').textContent = randomAffirmation;
+  
+  // Add a little animation
+  const breakButton = document.querySelector('.mental-break');
+  breakButton.style.transform = 'scale(1.1)';
+  setTimeout(() => {
+    breakButton.style.transform = 'scale(1)';
+  }, 300);
+}
+
+// Header scroll effect
+window.addEventListener('scroll', function() {
+  const header = document.getElementById('header');
+  if (window.scrollY > 50) {
+    header.classList.add('scrolled');
+  } else {
+    header.classList.remove('scrolled');
+  }
+});
+
+/* ======================================================
+   4. MENTAL HEALTH EXERCISES
+   ====================================================== */
+
+function startBreathingExercise() {
+  alert("Focus on your breathing. Inhale for 4 seconds, hold for 4 seconds, exhale for 6 seconds. Repeat 5 times.");
+}
+
+function showAffirmation() {
+  const affirmations = [
+    "I am capable of understanding complex concepts",
+    "My brain grows stronger with each problem I solve",
+    "I approach challenges with curiosity and patience",
+    "Every mathematician was once a beginner",
+    "I am proud of my progress no matter how small"
+  ];
+  const randomAffirmation = affirmations[Math.floor(Math.random() * affirmations.length)];
+  alert("Repeat to yourself: '" + randomAffirmation + "'");
+}
+
+function startVisualization() {
+  alert("Close your eyes and visualize your favorite peaceful place. Imagine the sights, sounds, and feelings. Stay here for 30 seconds.");
+}
+
+function startBoxBreathing(exerciseNum) {
+  // Handle both simple alert and complex animation versions
+  if(typeof exerciseNum === 'undefined') {
+      alert("Box Breathing: Inhale for 4 seconds, hold for 4 seconds, exhale for 4 seconds, hold for 4 seconds. Repeat 5 times.");
+      return;
+  }
+  
+  const breathCircle = document.getElementById('breathCircle' + exerciseNum);
+  const breathInstructions = document.getElementById('breathInstructions' + exerciseNum);
+  const exerciseAction = document.querySelectorAll('.exercise-action')[exerciseNum - 1];
+  
+  exerciseAction.textContent = "Breathing in progress...";
+  exerciseAction.style.pointerEvents = "none";
+  
+  let cycle = 0;
+  const totalCycles = 4;
+  
+  function breathingCycle() {
+    if (cycle >= totalCycles) {
+      breathCircle.textContent = "Complete!";
+      breathCircle.style.transform = "scale(1)";
+      breathCircle.style.background = "linear-gradient(135deg, #4CAF50, #81C784)";
+      breathInstructions.textContent = "Box breathing completed! Feel more centered?";
+      exerciseAction.textContent = "Start Breathing Exercise";
+      exerciseAction.style.pointerEvents = "auto";
+      return;
+    }
+    
+    cycle++;
+    
+    // Breathe in (4 seconds)
+    breathCircle.textContent = "Breathe In";
+    breathCircle.style.transform = "scale(1.3)";
+    breathCircle.style.background = "linear-gradient(135deg, #4CAF50, #81C784)";
+    breathInstructions.textContent = "Breathe in slowly (4 seconds)";
+    
+    setTimeout(() => {
+      // Hold (4 seconds)
+      breathCircle.textContent = "Hold";
+      breathCircle.style.background = "linear-gradient(135deg, #FF9800, #FFB74D)";
+      breathInstructions.textContent = "Hold your breath (4 seconds)";
+      
+      setTimeout(() => {
+        // Breathe out (4 seconds)
+        breathCircle.textContent = "Breathe Out";
+        breathCircle.style.transform = "scale(1)";
+        breathCircle.style.background = "linear-gradient(135deg, #2196F3, #64B5F6)";
+        breathInstructions.textContent = "Breathe out slowly (4 seconds)";
+        
+        setTimeout(() => {
+          // Hold empty (4 seconds)
+          breathCircle.textContent = "Hold";
+          breathCircle.style.background = "linear-gradient(135deg, #9C27B0, #E91E63)";
+          breathInstructions.textContent = "Hold empty (4 seconds)";
+          
+          setTimeout(() => {
+            breathingCycle();
+          }, 4000);
+        }, 4000);
+      }, 4000);
+    }, 4000);
+  }
+  breathingCycle();
+}
+
+function startGrounding() {
+  alert("5-4-3-2-1 Grounding: Look around and name 5 things you can see, 4 things you can touch, 3 things you can hear, 2 things you can smell, 1 thing you can taste.");
+}
+
+function showPositiveTalk() {
+  const positiveStatements = [
+    "I am capable of learning math",
+    "Mistakes help me grow and learn",
+    "I am getting better every day",
+    "I can solve challenging problems",
+    "My effort is making me smarter"
+  ];
+  const randomStatement = positiveStatements[Math.floor(Math.random() * positiveStatements.length)];
+  alert("Repeat to yourself: '" + randomStatement + "'");
+}
+
+// Mobile menu functionality
+document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+  document.querySelector('.nav-links').classList.toggle('active');
+});
+
+/* ======================================================
+   5. ADDITIONAL MATH CHECKS (Problem 5, Heights, etc.)
+   ====================================================== */
+
+function checkProblem5() {
+  const aValue = parseFloat(document.getElementById('a-value').value);
+  const bValue = parseFloat(document.getElementById('b-value').value);
+  const resultElement = document.getElementById('problem5-result');
+  
+  // Correct values: a = 4, b = -5
+  if (aValue === 4 && bValue === -5) {
+    resultElement.textContent = "Correct! Well done.";
+    resultElement.className = "result correct";
+    trackAccuracy('prob5', true); // <--- TRACKING ADDED
+  } else {
+    resultElement.textContent = "Incorrect. Try again!";
+    resultElement.className = "result incorrect";
+    trackAccuracy('prob5', false); // <--- TRACKING ADDED
+  }
+}
+
+function checkHeight1() {
+  const height = parseFloat(document.getElementById('height1').value);
+  const resultElement = document.getElementById('height1-result');
+  
+  // h(1) = 40 - 10*(1)^2 = 30
+  if (height === 30) {
+    resultElement.textContent = "Correct! The height is 30m.";
+    resultElement.className = "result correct";
+    trackAccuracy('height1', true); // <--- TRACKING ADDED
+  } else {
+    resultElement.textContent = "Incorrect. Try again!";
+    resultElement.className = "result incorrect";
+    trackAccuracy('height1', false); // <--- TRACKING ADDED
+  }
+}
+
+function checkHeight2() {
+  const height = parseFloat(document.getElementById('height2').value);
+  const resultElement = document.getElementById('height2-result');
+  
+  // h(1.5) = 40 - 10*(1.5)^2 = 17.5
+  if (height === 17.5) {
+    resultElement.textContent = "Correct! The height is 17.5m.";
+    resultElement.className = "result correct";
+    trackAccuracy('height2', true); // <--- TRACKING ADDED
+  } else {
+    resultElement.textContent = "Incorrect. Try again!";
+    resultElement.className = "result incorrect";
+    trackAccuracy('height2', false); // <--- TRACKING ADDED
+  }
+}
+
+function checkHeight3() {
+  const height = parseFloat(document.getElementById('height3').value);
+  const resultElement = document.getElementById('height3-result');
+  
+  // h(1.7) = 40 - 10*(1.7)^2 = 11.1
+  if (Math.abs(height - 11.1) < 0.1) {
+    resultElement.textContent = "Correct! The height is approximately 11.1m.";
+    resultElement.className = "result correct";
+    trackAccuracy('height3', true); // <--- TRACKING ADDED
+  } else {
+    resultElement.textContent = "Incorrect. Try again!";
+    resultElement.className = "result incorrect";
+    trackAccuracy('height3', false); // <--- TRACKING ADDED
+  }
+}
+
+// Function composition challenge
+function checkComposition(inputId, correctAnswer) {
+  const input = document.getElementById(inputId);
+  const feedback = document.getElementById('feedback' + inputId.slice(-1));
+  const userAnswer = input.value.trim().toLowerCase();
+  
+  if (userAnswer === correctAnswer.toLowerCase()) {
+    feedback.textContent = "✓ Correct!";
+    feedback.className = "challenge-feedback correct";
+    trackAccuracy(inputId, true); // <--- TRACKING ADDED
+  } else {
+    feedback.textContent = "✗ Try again!";
+    feedback.className = "challenge-feedback incorrect";
+    trackAccuracy(inputId, false); // <--- TRACKING ADDED
+  }
+}
+
+// Inverse function practice
+function checkInverse() {
+  const input = document.getElementById('inverseInput');
+  const feedback = document.getElementById('inverseFeedback');
+  const userAnswer = input.value.trim().toLowerCase();
+  
+  // Accept multiple correct formats
+  const correctAnswers = ['(x+3)/4', 'x/4 + 3/4', '0.25x + 0.75'];
+  
+  if (correctAnswers.includes(userAnswer)) {
+    feedback.textContent = "✓ Perfect! h⁻¹(x) = (x + 3)/4";
+    feedback.className = "practice-feedback correct";
+    trackAccuracy('inverse_q', true); // <--- TRACKING ADDED
+  } else {
+    feedback.textContent = "✗ Hint: Solve x = 4y - 3 for y";
+    feedback.className = "practice-feedback incorrect";
+    trackAccuracy('inverse_q', false); // <--- TRACKING ADDED
+  }
+}
+
+// Matching game
+let selectedItem = null;
+let selectedTarget = null;
+
+document.querySelectorAll('.match-item, .match-target').forEach(element => {
+  element.addEventListener('click', function() {
+    if (this.classList.contains('match-item')) {
+      document.querySelectorAll('.match-item').forEach(item => item.classList.remove('selected'));
+      this.classList.add('selected');
+      selectedItem = this;
+    } else {
+      document.querySelectorAll('.match-target').forEach(target => target.classList.remove('selected'));
+      this.classList.add('selected');
+      selectedTarget = this;
+    }
+    
+    if (selectedItem && selectedTarget) {
+      checkMatch(selectedItem, selectedTarget);
+    }
+  });
+});
+
+function checkMatch(item, target) {
+  if (item.dataset.match === target.dataset.target) {
+    item.classList.add('matched');
+    target.classList.add('matched');
+    item.classList.remove('selected');
+    target.classList.remove('selected');
+    trackAccuracy('match_game', true); // <--- TRACKING ADDED
+  } else {
+    item.classList.remove('selected');
+    target.classList.remove('selected');
+    // Matching games usually don't punish immediately, but we can track it
+    trackAccuracy('match_game', false); // <--- TRACKING ADDED
+  }
+}
+
+function checkMatches() {
+  const feedback = document.querySelector('.match-feedback');
+  const matchedItems = document.querySelectorAll('.match-item.matched');
+  
+  if (matchedItems.length === 3) {
+    feedback.textContent = "🎉 Excellent! All matches are correct!";
+    feedback.className = "match-feedback correct";
+  } else {
+    feedback.textContent = "Keep trying! Drag items to their correct matches.";
+    feedback.className = "match-feedback incorrect";
+  }
+}
+
+// Progressive Muscle Relaxation (Duplicate Logic - Combined)
+function startMuscleRelaxation() {
+  const progressFill = document.getElementById('relaxProgress');
+  // Be specific about which button to grab
+  const exerciseAction = document.querySelectorAll('.exercise-action')[1];
+  if(!exerciseAction) return;
+
+  exerciseAction.textContent = "Relaxation in progress...";
+  exerciseAction.style.pointerEvents = "none";
+  
+  let progress = 0;
+  const totalSteps = 3;
+  
+  const relaxationInterval = setInterval(() => {
+    progress += (100 / totalSteps);
+    progressFill.style.width = progress + '%';
+    
+    if (progress >= 100) {
+      clearInterval(relaxationInterval);
+      setTimeout(() => {
+        exerciseAction.textContent = "Start Relaxation Exercise";
+        exerciseAction.style.pointerEvents = "auto";
+        progressFill.style.width = '0%';
+      }, 2000);
+    }
+  }, 5000); // Each step takes 5 seconds
+}
+
+// Mindfulness Exercise
+function markSenseComplete(element) {
+  element.classList.add('completed');
+  
+  const allSenses = document.querySelectorAll('.sense-item');
+  const completedSenses = document.querySelectorAll('.sense-item.completed');
+  
+  if (allSenses.length === completedSenses.length) {
+    document.getElementById('mindfulnessPrompt').textContent = "Excellent! You're fully present and grounded.";
+  }
+}
+
+function resetMindfulness() {
+  document.querySelectorAll('.sense-item').forEach(item => {
+    item.classList.remove('completed');
+  });
+  document.getElementById('mindfulnessPrompt').textContent = "Notice 5 things you can see around you...";
+}
+
+// Body Scan Exercise
+document.querySelectorAll('.bodyscan-area').forEach(area => {
+  area.addEventListener('click', function() {
+    this.classList.add('scanned');
+    const allAreas = document.querySelectorAll('.bodyscan-area');
+    const scannedAreas = document.querySelectorAll('.bodyscan-area.scanned');
+    if (allAreas.length === scannedAreas.length) {
+      document.getElementById('scanInstructions').textContent = "Perfect! Your body feels relaxed and tension-free.";
+    }
+  });
+});
+
+function resetBodyScan() {
+  document.querySelectorAll('.bodyscan-area').forEach(area => {
+    area.classList.remove('scanned');
+  });
+  document.getElementById('scanInstructions').textContent = "Click each area to focus tension release";
+}
+
+// Breathing Exercise for Limits
+function startLimitBreathing() {
+  const breathCircle = document.getElementById('limitBreathCircle');
+  const breathInstructions = document.getElementById('limitBreathInstructions');
+  const exerciseAction = document.querySelectorAll('.exercise-action')[0]; // careful with indices
+  
+  if(!breathCircle) return;
+
+  exerciseAction.textContent = "Breathing in progress...";
+  exerciseAction.style.pointerEvents = "none";
+  
+  let cycle = 0;
+  const totalCycles = 3;
+  
+  function breathingCycle() {
+    if (cycle >= totalCycles) {
+      breathCircle.textContent = "Complete!";
+      breathCircle.style.transform = "scale(1)";
+      breathInstructions.textContent = "4-7-8 breathing completed! Feel more relaxed?";
+      exerciseAction.textContent = "Start Breathing Exercise";
+      exerciseAction.style.pointerEvents = "auto";
+      return;
+    }
+    
+    cycle++;
+    
+    // Breathe in (4 seconds)
+    breathCircle.textContent = "Breathe In";
+    breathCircle.style.transform = "scale(1.4)";
+    breathCircle.style.background = "linear-gradient(135deg, #4CAF50, #81C784)";
+    breathInstructions.textContent = "Breathe in slowly through nose (4 seconds)";
+    
+    setTimeout(() => {
+      // Hold (7 seconds)
+      breathCircle.textContent = "Hold";
+      breathCircle.style.background = "linear-gradient(135deg, #FF9800, #FFB74D)";
+      breathInstructions.textContent = "Hold your breath (7 seconds)";
+      
+      setTimeout(() => {
+        // Breathe out (8 seconds)
+        breathCircle.textContent = "Breathe Out";
+        breathCircle.style.transform = "scale(1)";
+        breathCircle.style.background = "linear-gradient(135deg, #2196F3, #64B5F6)";
+        breathInstructions.textContent = "Breathe out slowly through mouth (8 seconds)";
+        
+        setTimeout(() => {
+          breathingCycle();
+        }, 8000);
+      }, 7000);
+    }, 4000);
+  }
+  breathingCycle();
+}
+
+// Eye Exercise
+function startEyeExercise() {
+  const eyeDots = document.querySelectorAll('.eye-dot');
+  const exerciseAction = document.querySelectorAll('.exercise-action')[1];
+  
+  exerciseAction.textContent = "Eye exercise in progress...";
+  exerciseAction.style.pointerEvents = "none";
+  
+  let currentDot = 0;
+  const eyeInterval = setInterval(() => {
+    eyeDots.forEach(dot => dot.classList.remove('active'));
+    eyeDots[currentDot].classList.add('active');
+    currentDot++;
+    
+    if (currentDot >= eyeDots.length) {
+      clearInterval(eyeInterval);
+      setTimeout(() => {
+        eyeDots.forEach(dot => dot.classList.remove('active'));
+        exerciseAction.textContent = "Start Eye Exercise";
+        exerciseAction.style.pointerEvents = "auto";
+      }, 2000);
+    }
+  }, 2000);
+}
+
+// Posture Exercise
+function startPostureExercise() {
+  const postureTimer = document.getElementById('postureTimer');
+  const exerciseAction = document.querySelectorAll('.exercise-action')[2];
+  
+  exerciseAction.textContent = "Posture exercise in progress...";
+  exerciseAction.style.pointerEvents = "none";
+  
+  let seconds = 0;
+  const totalSeconds = 30;
+  
+  const postureInterval = setInterval(() => {
+    seconds++;
+    const remaining = totalSeconds - seconds;
+    
+    if (seconds <= 10) {
+      postureTimer.textContent = `Roll shoulders forward: ${remaining}s remaining`;
+    } else if (seconds <= 20) {
+      postureTimer.textContent = `Roll shoulders backward: ${remaining - 10}s remaining`;
+    } else {
+      postureTimer.textContent = `Head tilts: ${remaining - 20}s remaining`;
+    }
+    
+    if (seconds >= totalSeconds) {
+      clearInterval(postureInterval);
+      postureTimer.textContent = "Posture exercise complete!";
+      exerciseAction.textContent = "Start Posture Exercise";
+      exerciseAction.style.pointerEvents = "auto";
+    }
+  }, 1000);
+}
+
+// Visual Break Exercise
+let focusInterval;
+function startFocusExercise() {
+  const focusObject = document.getElementById('focusObject');
+  let position = 0;
+  let direction = 1;
+  
+  focusInterval = setInterval(() => {
+    position += direction * 10;
+    if (position > 100 || position < -100) direction *= -1;
+    focusObject.style.transform = `translateX(${position}px) rotate(${position}deg)`;
+  }, 100);
+}
+
+function stopFocusExercise() {
+  clearInterval(focusInterval);
+  document.getElementById('focusObject').style.transform = 'translateX(0) rotate(0)';
+}
+
+// Posture Reset Action
+function doPostureAction(actionNum) {
+  const feedback = document.getElementById('postureFeedback');
+  const messages = [
+    "Great! Feel your spine lengthen.",
+    "Shoulders relaxed and back - perfect!",
+    "Head balanced nicely over your spine."
+  ];
+  
+  feedback.textContent = messages[actionNum - 1];
+  feedback.style.background = '#d5f4e6';
+  feedback.style.color = '#27ae60';
+  setTimeout(() => {
+    feedback.style.background = 'rgba(255,255,255,0.7)';
+    feedback.style.color = 'inherit';
+  }, 3000);
+}
+
+// Mindful Breathing
+function startMindfulBreathing() {
+  const breathCircle = document.getElementById('breathCircleSpace');
+  const instructions = document.getElementById('spaceInstructions');
+  
+  instructions.textContent = "Breathe in... (4 seconds)";
+  breathCircle.style.transform = "scale(1.5)";
+  breathCircle.style.background = "linear-gradient(135deg, #4CAF50, #81C784)";
+  
+  setTimeout(() => {
+    instructions.textContent = "Hold... (4 seconds)";
+    breathCircle.style.background = "linear-gradient(135deg, #FF9800, #FFB74D)";
+    
+    setTimeout(() => {
+      instructions.textContent = "Breathe out... (6 seconds)";
+      breathCircle.style.transform = "scale(1)";
+      breathCircle.style.background = "linear-gradient(135deg, #2196F3, #64B5F6)";
+      
+      setTimeout(() => {
+        instructions.textContent = "Notice how you feel...";
+        setTimeout(() => {
+          instructions.textContent = "Click below to begin mindful breathing";
+          breathCircle.style.background = "linear-gradient(135deg, #9b59b6, #e74c3c)";
+        }, 2000);
+      }, 6000);
+    }, 4000);
+  }, 4000);
+}
+
+function resetMindfulBreathing() {
+  const breathCircle = document.getElementById('breathCircleSpace');
+  const instructions = document.getElementById('spaceInstructions');
+  breathCircle.style.transform = "scale(1)";
+  breathCircle.style.background = "linear-gradient(135deg, #9b59b6, #e74c3c)";
+  instructions.textContent = "Click below to begin mindful breathing";
+}
+
+// Sound Break
+function playCalmingSound(option) {
+  const timer = document.getElementById('soundTimer');
+  const messages = [
+    "Listening to ocean waves for 60 seconds...",
+    "Forest sounds playing for 60 seconds...",
+    "One minute of silence begins now..."
+  ];
+  timer.textContent = messages[option - 1];
+  timer.style.background = '#e3f2fd';
+  
+  let seconds = 60;
+  const countdown = setInterval(() => {
+    seconds--;
+    timer.textContent = messages[option - 1].split('...')[0] + `... ${seconds}s`;
+    if (seconds <= 0) {
+      clearInterval(countdown);
+      timer.textContent = "Sound break complete! Ready to continue.";
+      setTimeout(() => {
+        timer.textContent = "Ready for a break";
+        timer.style.background = 'rgba(255,255,255,0.7)';
+      }, 3000);
+    }
+  }, 1000);
+}
+
+// Quiz Check with Tracking
+function checkQuizAnswer(button, correctAnswer) {
+  const question = button.closest('.quiz-question');
+  const feedback = question.querySelector('.quiz-feedback');
+  const buttons = question.querySelectorAll('.quiz-btn');
+  
+  buttons.forEach(btn => btn.classList.remove('correct', 'incorrect'));
+  
+  if (button.textContent.toLowerCase() === correctAnswer) {
+    button.classList.add('correct');
+    feedback.textContent = "Correct! Well done!";
+    feedback.className = "quiz-feedback correct";
+    trackAccuracy('quiz_q', true); // <--- TRACKING ADDED
+  } else {
+    button.classList.add('incorrect');
+    feedback.textContent = "Not quite. Try again!";
+    feedback.className = "quiz-feedback incorrect";
+    trackAccuracy('quiz_q', false); // <--- TRACKING ADDED
+    
+    buttons.forEach(btn => {
+      if (btn.textContent.toLowerCase() === correctAnswer) btn.classList.add('correct');
+    });
+  }
+}
+  </script>
+</body>
+</html>

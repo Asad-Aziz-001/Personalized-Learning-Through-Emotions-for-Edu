@@ -1,0 +1,2323 @@
+
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sentellect - Coordinate Geometry Exercise 4.4 (FSc Part 2)</title>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+    /* ===== Base Styles ===== */
+    :root {
+      --primary: #1e40af;
+      --primary-light: #3b82f6;
+      --primary-dark: #1e3a8a;
+      --secondary: #f59e0b;
+      --accent: #ec4899;
+      --text: #1e293b;
+      --text-light: #64748b;
+      --text-lighter: #94a3b8;
+      --bg: #f8fafc;
+      --white: #ffffff;
+      --gray: #e2e8f0;
+      --gray-light: #f1f5f9;
+      --success: #10b981;
+      --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      --hover-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      --pastel-bg: #f3f8ff;
+      --muted: #64748b;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    section {
+      padding: 80px 0;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .section-title h2 {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 15px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title h2::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: var(--secondary);
+      border-radius: 2px;
+    }
+
+    .section-title p {
+      color: var(--text-light);
+      font-size: 1.1rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 28px;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--white);
+      box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(30, 64, 175, 0.4);
+    }
+
+    .btn-secondary {
+      background-color: var(--white);
+      color: var(--primary);
+      border: 2px solid var(--primary);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--primary);
+      color: var(--white);
+      transform: translateY(-2px);
+    }
+
+    /* ===== Animations (kept original) ===== */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    @keyframes shimmer {
+      0% { background-position: -1000px 0; }
+      100% { background-position: 1000px 0; }
+    }
+    
+    @keyframes slideIn {
+      from { transform: translateX(-20px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    
+    @keyframes bounceIn {
+      0% { transform: scale(0.95); opacity: 0; }
+      50% { transform: scale(1.02); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes breathe {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.45); }
+    }
+
+    @keyframes wavey {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+      100% { transform: translateY(0); }
+    }
+
+    .animate {
+      animation: fadeIn 0.8s ease forwards;
+    }
+    
+    .animate-slide {
+      animation: slideIn 0.6s ease forwards;
+    }
+    
+    .animate-bounce {
+      animation: bounceIn 0.8s ease forwards;
+    }
+
+    .delay-1 { animation-delay: 0.2s; }
+    .delay-2 { animation-delay: 0.4s; }
+    .delay-3 { animation-delay: 0.6s; }
+    .delay-4 { animation-delay: 0.8s; }
+
+    /* ===== Header/Navbar (kept original) ===== */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      background-color: var(--white);
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    header.scrolled {
+      padding: 10px 0;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: var(--white);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 18px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(30, 64, 175, 0.2);
+    }
+
+    .logo-text {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      transition: all 0.3s ease;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 30px;
+    }
+
+    .nav-links a {
+      font-weight: 500;
+      position: relative;
+      padding: 5px 0;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      transition: width 0.3s ease;
+      border-radius: 2px;
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      width: 100%;
+    }
+
+    .nav-links a.active {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .auth-buttons {
+      display: flex;
+      gap: 15px;
+      /* Visibility controlled by content */
+    }
+
+    .login-btn {
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .login-btn:hover {
+      color: var(--primary);
+    }
+
+    .signup-btn {
+      padding: 8px 20px;
+      border-radius: 50px;
+      background: linear-gradient(to right, var(--primary), var(--primary-light));
+      color: var(--white);
+      font-weight: 500;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(30, 64, 175, 0.25);
+    }
+
+    .signup-btn:hover {
+      background: linear-gradient(to right, var(--primary-dark), var(--primary));
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(30, 64, 175, 0.35);
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--primary);
+      cursor: pointer;
+    }
+    
+    /* ===== Hero Section (kept original) ===== */
+    .hero {
+      position: relative;
+      padding: 180px 0 80px;
+      background: linear-gradient(135deg, var(--primary), #004e92);
+      color: var(--white);
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3QgZmlsbD0idXJsKCNwYXR0ZXJuKSIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIvPjwvc3ZnPg==');
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-size: 3.2rem;
+      margin-bottom: 20px;
+      line-height: 1.2;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      white-space: nowrap;
+    }
+
+    .hero h1 span {
+      color: var(--secondary);
+      position: relative;
+    }
+
+    .hero h1 span::after {
+      content: '';
+      position: absolute;
+      bottom: 5px;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background-color: rgba(255, 255, 255, 0.3);
+      z-index: -1;
+      border-radius: 4px;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 40px;
+      opacity: 0.9;
+    }
+
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .hero .btn-secondary {
+      background-color: transparent;
+      color: var(--white);
+      border-color: var(--white);
+    }
+
+    .hero .btn-secondary:hover {
+      background-color: var(--white);
+      color: var(--primary);
+    }
+
+    .floating-shape {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      z-index: 0;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .shape-1 {
+      width: 150px;
+      height: 150px;
+      top: 10%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .shape-2 {
+      width: 100px;
+      height: 100px;
+      bottom: 15%;
+      right: 10%;
+      animation-delay: 0.5s;
+    }
+
+    .shape-3 {
+      width: 80px;
+      height: 80px;
+      top: 30%;
+      right: 20%;
+      animation-delay: 1s;
+    }
+    
+    .particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 0;
+    }
+    
+    .particle {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      animation: float 8s infinite ease-in-out;
+    }
+
+    /* ===== Card Styles (kept original) ===== */
+    .card {
+      background-color: var(--white);
+      border-radius: 16px;
+      padding: 30px;
+      margin: 25px 0;
+      box-shadow: var(--card-shadow);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--primary), var(--secondary));
+      transition: width 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--hover-shadow);
+    }
+    
+    .card:hover::before {
+      width: 8px;
+    }
+
+    h2 {
+      color: var(--primary);
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    h3 {
+      color: var(--primary);
+      font-size: 1.4rem;
+      margin: 25px 0 15px;
+      font-weight: 600;
+      position: relative;
+      padding-left: 15px;
+    }
+    
+    h3::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 6px;
+      height: 6px;
+      background: var(--secondary);
+      border-radius: 50%;
+    }
+
+    p {
+      color: var(--text-light);
+      margin-bottom: 20px;
+      line-height: 1.7;
+    }
+
+    .lead {
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    /* ===== Step Buttons (kept original) ===== */
+    .step-buttons {
+      display: flex;
+      gap: 12px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+
+    .step-btn {
+      padding: 10px 16px;
+      background: linear-gradient(to right, var(--primary), var(--primary-light));
+      color: var(--white);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      box-shadow: 0 4px 8px rgba(30, 64, 175, 0.2);
+    }
+
+    .step-btn:hover {
+      background: linear-gradient(to right, var(--primary-dark), var(--primary));
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(30, 64, 175, 0.3);
+    }
+
+    /* ===== Solution Display (kept original) ===== */
+    .solution {
+      background: var(--gray-light);
+      border-left: 4px solid var(--secondary);
+      padding: 20px;
+      margin: 15px 0;
+      border-radius: 0 8px 8px 0;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .solution::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.5), transparent);
+      transform: translateX(-100%);
+    }
+    
+    .solution.active::before {
+      animation: shimmer 1.5s ease;
+    }
+
+    /* ===== Self-Care Notes (kept original) ===== */
+    .self-care {
+      background: linear-gradient(135deg, #e0f2fe, #f0f9ff);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 25px 0;
+      text-align: center;
+      border-left: 5px solid var(--accent);
+      animation: pulse 3s infinite;
+    }
+
+    .self-care h4 {
+      color: var(--accent);
+      margin-bottom: 10px;
+      font-size: 1.3rem;
+    }
+
+    .self-care p {
+      color: var(--text);
+      font-size: 1.1rem;
+      margin-bottom: 0;
+    }
+
+    /* ===== Visual Elements (kept original) ===== */
+    .math-emoji {
+      font-size: 2rem;
+      margin: 0 10px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .emoji-row {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin: 15px 0;
+    }
+
+    /* ===== Chapter 4 Specific Styles (kept original) ===== */
+    .definition {
+      background: #f3fbff;
+      border-left: 6px solid var(--primary);
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 10px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .definition-content{flex:1}
+    .definition-cartoon{flex-shrink:0;width:80px;height:80px;display:flex;align-items:center;justify-content:center}
+
+    .controls {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .big {
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+
+    .step-block {
+      margin-top: 10px;
+    }
+
+    .step-line {
+      display: none;
+      padding: 10px;
+      border-radius: 8px;
+      background: #f7fbff;
+      margin-top: 8px;
+      border-left: 4px solid #d6eefc;
+      font-family: 'Times New Roman', serif; /* Enhance math presentation */
+      font-size: 1.1em;
+      line-height: 1.5;
+    }
+
+    .next-step {
+      margin-top: 8px;
+      background: var(--primary);
+      color: white;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #d9ecff;
+      width: 100%;
+      font-size: 15px;
+    }
+    input[type="number"] {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #d9ecff;
+      max-width: 100px;
+      font-size: 15px;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+
+    button.check {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .result {
+      margin-top: 8px;
+      padding: 10px;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .result.good {
+      background: #e6fff0;
+      border-left: 4px solid #2fb46a;
+    }
+
+    .result.warn {
+      background: #fff7e6;
+      border-left: 4px solid #ffb74d;
+    }
+
+    .calm {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 10px;
+      background: linear-gradient(180deg, #fff8f0, #f8ffff);
+      text-align: center;
+      border: 1px solid #e6f7ff;
+    }
+
+    .breath {
+      width: 48px;
+      height: 48px;
+      background: #ffd08a;
+      border-radius: 50%;
+      margin: 12px auto;
+      animation: breathe 4s infinite ease-in-out;
+    }
+
+    .wave {
+      font-size: 36px;
+      display: inline-block;
+      animation: wavey 2.6s infinite;
+    }
+
+    .divider {
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+      color: white;
+      padding: 10px 14px;
+      border-radius: 10px;
+      margin: 18px 0;
+      font-weight: 700;
+      box-shadow: 0 6px 18px rgba(3, 102, 214, 0.08);
+      text-align: center;
+    }
+
+    .small-note {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-top: 6px;
+    }
+
+    .motivate{
+      background:linear-gradient(180deg,#fff,#fffaf6);
+      border-radius:10px;
+      padding:10px;
+      border-left:6px solid var(--accent);
+      margin-top:12px;
+      display:flex;
+      align-items:center;
+      gap:12px
+    }
+    .motivate .emoji{font-size:24px}
+    .motivate .text{font-weight:700;color:var(--primary);font-size:0.95rem}
+
+    .try-yourself {
+      background: #fffaf0;
+      border-radius: 10px;
+      padding: 15px;
+      margin: 15px 0;
+      border: 1px dashed rgba(245,158,11,0.16);
+    }
+
+    .try-title {
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .example-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .example-box {
+      background: var(--pastel-bg);
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid rgba(30,64,175,0.04);
+    }
+    
+    /* ===== Interactive Games (re-styled to 4.1 look) ===== */
+    .game-card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    
+    .game-card-style{
+      display:flex;
+      gap:16px;
+      align-items:center;
+      background:var(--white);
+      padding:20px;
+      border-radius:16px;
+      box-shadow:0 8px 25px rgba(2,6,23,0.08);
+      cursor:pointer;
+      border:1px solid rgba(30,64,175,0.04);
+      transition:all 0.3s ease;
+      position:relative;
+      overflow:hidden
+    }
+    .game-card-style:hover{
+      transform:translateY(-8px);
+      box-shadow:0 15px 35px rgba(30,64,175,0.15)
+    }
+    .game-card-style::before{
+      content:"";
+      position:absolute;
+      top:0;
+      left:0;
+      width:100%;
+      height:5px;
+      background:linear-gradient(90deg,var(--primary),var(--accent))
+    }
+    .game-card-left{
+      min-width:110px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:8px
+    }
+    .svg-icon{
+      width:100px;
+      height:100px;
+      border-radius:16px;
+      background:linear-gradient(180deg,#fff,#fffaf6);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:0 8px 20px rgba(30,64,175,0.08);
+      border:2px solid rgba(255,255,255,0.7);
+      overflow:hidden;
+      font-size: 48px;
+      color: var(--primary);
+    }
+    .game-card-title{
+      font-weight:800;
+      color:var(--primary);
+      font-size:1.2rem;
+      margin-bottom:6px
+    }
+    .game-card-desc{
+      color:var(--muted);
+      font-size:0.95rem;
+      line-height:1.4
+    }
+    .start-btn {
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(30,64,175,0.2);
+    }
+    .start-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(30,64,175,0.3);
+    }
+
+    .game-play-area {
+      display: none;
+      margin-top: 20px;
+      padding: 20px;
+      border: 2px solid var(--accent);
+      border-radius: 12px;
+      background: #fffafc;
+      text-align: center;
+    }
+    
+    .score-board {
+      font-weight: 700;
+      color: var(--primary);
+      background: #f0f9ff;
+      padding: 6px 10px;
+      border-radius: 6px;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+    
+    .game-message {
+      margin-top: 12px;
+      color: var(--primary);
+      font-weight: 600;
+    }
+    
+    .game-input-group {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 15px;
+        font-weight: 600;
+        color: var(--primary);
+    }
+    
+    .game-icon-visual {
+      font-size: 48px;
+      margin-bottom: 10px;
+    }
+
+    /* Celebration Overlay */
+    .celebration {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 2000;
+      display: none;
+    }
+    
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: #f00;
+      opacity: 0;
+    }
+    
+    .hurray-text {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 48px;
+      font-weight: bold;
+      color: #ff6b6b;
+      text-shadow: 2px 2px 0 #ffd166, 4px 4px 0 #06d6a0;
+      opacity: 0;
+    }
+
+    /* Sound controls style */
+    .sound-toggle {
+      position: fixed;
+      right: 18px;
+      bottom: 100px;
+      z-index: 200;
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(11, 99, 216, 0.14);
+      cursor: pointer;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .sound-toggle .icon {
+      font-size: 18px;
+    }
+
+    .sound-muted {
+      background: #ddd;
+      color: #666;
+      border: 1px solid #ccc;
+    }
+
+    /* ===== Footer (kept original) ===== */
+    .footer {
+      background: linear-gradient(to bottom, var(--primary-dark), #0f172a);
+      color: var(--white);
+      padding: 80px 0 30px;
+      position: relative;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 10px;
+      background: linear-gradient(90deg, var(--secondary), var(--primary));
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+      margin-bottom: 60px;
+    }
+
+    .footer-about {
+      grid-column: span 2;
+    }
+
+    .footer-logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .footer-logo-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--white), var(--gray));
+      color: var(--primary);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .footer-about p {
+      opacity: 0.8;
+      margin-bottom: 25px;
+      line-height: 1.7;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 15px;
+    }
+
+    .social-link {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+      background: linear-gradient(135deg, var(--secondary), var(--accent));
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
+    }
+
+    .footer-links h3 {
+      font-size: 1.2rem;
+      margin-bottom: 25px;
+      position: relative;
+      padding-bottom: 10px;
+      color: var(--white);
+    }
+
+    .footer-links h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 3px;
+      background: linear-gradient(to right, var(--secondary), var(--accent));
+    }
+
+    .footer-links ul {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 12px;
+    }
+
+    .footer-links a {
+      opacity: 0.8;
+      transition: all 0.3s ease;
+      position: relative;
+      padding-left: 15px;
+    }
+
+    .footer-links a::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      opacity: 1;
+      padding-left: 20px;
+    }
+
+    .footer-links a:hover::before {
+      opacity: 1;
+      left: -5px;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 30px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-bottom p {
+      opacity: 0.7;
+      margin-bottom: 20px;
+    }
+
+    .footer-tags {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 5px 15px;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+    }
+
+    .tag:hover {
+      background: linear-gradient(to right, var(--secondary), var(--accent));
+      color: var(--text);
+      transform: translateY(-2px);
+    }
+    
+    /* ===== Floating Action Button (kept original) ===== */
+    .fab {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: 0 6px 15px rgba(30, 64, 175, 0.3);
+      cursor: pointer;
+      z-index: 999;
+      transition: all 0.3s ease;
+      animation: pulse 2s infinite;
+    }
+    
+    .fab:hover {
+      transform: scale(1.1) rotate(90deg);
+      box-shadow: 0 8px 20px rgba(30, 64, 175, 0.4);
+    }
+  </style>
+
+<style>
+/* === Light Readable Theme (Low Stress) === */
+.card-light, .concept-cartoon, .example-box, .definition, .try-yourself {
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+  padding: 18px 22px;
+  margin: 22px 0;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.card-light:hover, .concept-cartoon:hover, .example-box:hover, .definition:hover, .try-yourself:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 28px rgba(59,130,246,0.16);
+}
+.definition, .formula {
+  background: #f0f7ff;
+  border-left: 6px solid #2563eb;
+  color: #1e3a8a;
+}
+.try-yourself {
+  background: #f9fcff;
+  border-left: 6px solid #3b82f6;
+}
+.example-box {
+  background: #f8fbff;
+  border: 1px solid #e2e8f0;
+}
+.example-box .big {
+  color: #1e3a8a;
+}
+.concept-cartoon {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  background: #f9fbff;
+  border-left: 6px solid #3b82f6;
+}
+.concept-cartoon .cartoon-character {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #e0f2ff, #cfe9ff);
+  box-shadow: inset 0 -4px 8px rgba(0,0,0,0.05);
+}
+.divider {
+  background: linear-gradient(90deg, #3b82f6, #60a5fa);
+  color: white;
+  padding: 14px;
+  border-radius: 12px;
+  font-weight: bold;
+  box-shadow: 0 8px 22px rgba(59,130,246,0.18);
+  text-align: center;
+  margin: 26px 0 14px;
+}
+.conceptt-visual {
+      display: flex;
+      justify-content: center;
+      margin: 15px 0;
+    }
+</style>
+</head><body><header id="header">
+<div class="container">
+<nav class="navbar">
+<a class="logo" href="#">
+<div class="logo-icon">S</div>
+<span class="logo-text">Sentellect</span>
+</a>
+<ul class="nav-links" style="display:flex;justify-content:center;align-items:center;gap:40px;list-style:none;margin:0 auto;padding:0;">
+<li><a class="active" href="#home">Home</a></li>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#graphing">Graphing</a></li>
+<li><a href="#systems">Systems</a></li>
+<li><a href="#practice">Practice</a></li>
+</ul>
+<div class="auth-buttons" style="display:none;">
+</div>
+<button class="mobile-menu-btn" style="display:none;">
+<i class="fas fa-bars"></i>
+</button>
+</nav>
+</div>
+</header><section class="hero">
+<div class="particles">
+<div class="particle" style="top: 20%; left: 5%; width: 10px; height: 10px; animation-delay: 0s;"></div>
+<div class="particle" style="top: 60%; left: 15%; width: 15px; height: 15px; animation-delay: 1s;"></div>
+<div class="particle" style="top: 30%; right: 10%; width: 12px; height: 12px; animation-delay: 2s;"></div>
+<div class="particle" style="bottom: 20%; left: 20%; width: 8px; height: 8px; animation-delay: 3s;"></div>
+<div class="particle" style="bottom: 40%; right: 15%; width: 14px; height: 14px; animation-delay: 4s;"></div>
+</div>
+<div class="floating-shape shape-1"></div>
+<div class="floating-shape shape-2"></div>
+<div class="floating-shape shape-3"></div>
+<div class="container">
+<div class="hero-content">
+<h1 class="animate">Coordinate Geometry — Chapter 4</h1>
+<p class="animate delay-1">Exercise 4.3(L):Slope, Parallel/Perpendicular Conditions, and Distance Formula</p>
+<div class="hero-buttons">
+<a class="btn btn-primary animate delay-2" href="#distance-section">Start Learning</a>
+<a class="btn btn-secondary animate delay-3" href="#collinearity-section">Coordinate Geometry</a>
+</div>
+</div>
+</div>
+</section><div class="container"><div class="wrap">
+<div class="card">
+<h1><i class="fas fa-book-open"></i> Welcome to the Straight Lines Workbook!</h1>
+<p class="lead">Master the core concepts of straight lines, including slope, line relationships, and various forms of equations.</p>
+<div class="definition card-light">Based on FSc Part 2 Mathematics - Punjab Textbook Board</div>
+<div class="motivation">
+<div class="motivation-icon">🌟</div>
+<div class="motivation-text">You're about to unlock the language of straight lines!</div>
+<div class="motivation-subtext">Every problem you solve brings clarity to the coordinate plane.</div>
+</div>
+</div>
+<div class="divider"><i class="fas fa-chart-line"></i> Slope &amp; Inclination</div>
+<section class="card">
+<h2><i class="fas fa-angle-up"></i> Slope and Direction</h2>
+<p class="lead">The slope (m) is the measure of a line's steepness ("rise over run"). The inclination (α) is the angle the line makes with the positive x-axis.</p>
+<div class="definition formula card-light">
+<b>Slope Formula:</b> \( m = \frac{y_2 - y_1}{x_2 - x_1} \)    |    <b>Inclination:</b> \( m = \tan\alpha \)
+            </div>
+<div class="concept-cartoon card-light">
+<div class="cartoon-character">🎢</div>
+<div class="cartoon-content">
+<div class="cartoon-title">Slope Concept Explained</div>
+<div class="cartoon-explanation">
+<div class="explanation-line">Imagine a **roller coaster**! Slope is how steep the track is at any point.</div>
+<div class="explanation-line">A steep, upward slope has a large **positive m**.</div>
+<div class="explanation-line">A steep, downward slope has a large **negative m**.</div>
+</div>
+</div>
+</div>
+<div class="example-container">
+<div class="example-box card-light">
+<div class="example-icon">📈</div>
+<div class="big">Example: Find slope &amp; inclination for P(1, 10) and Q(5, 14)</div>
+<div class="controls">
+<button class="step-btn" data-target="slope1"><i class="fas fa-play"></i> Show Steps</button>
+<button class="btn" onclick="toggleGraph(this)"><i class="fas fa-chart-bar"></i> Show Graph</button>
+</div>
+<div class="step-block" id="slope1">
+<div class="hidden"><b>Step 1:</b> Identify points: P(x₁, y₁) = (1, 10) and Q(x₂, y₂) = (5, 14)</div>
+<div class="hidden"><b>Step 2:</b> Apply the slope formula: \[ m = \frac{14 - 10}{5 - 1} \] </div>
+<div class="hidden"><b>Step 3:</b> Calculate: \[ m = \frac{4}{4} = 1 \]</div>
+<div class="hidden"><b>Step 4:</b> Find inclination (α) using m = tanα: \[ \tan\alpha = 1 \implies \alpha = 45^\circ \]</div>
+<div class="hidden">**Result:** The **slope** is m=1, and the **inclination** is α=45°.</div>
+<div style="margin-top:12px">
+<button class="show-all-btn" data-target="slope1"><i class="fas fa-fast-forward"></i> Show All Steps</button>
+</div>
+</div>
+<canvas class="graph-canvas" id="canvas-slope1"></canvas>
+<div class="graph-step-block" id="g-slope1" style="display:none"><p>Graph shows the line connecting P(1,10) and Q(5,14) with a moderate upward slope of 1 (45°).</p></div>
+</div>
+<div class="example-box card-light">
+<div class="example-icon">📉</div>
+<div class="big">Example 2: Negative slope for R(-1, 8) and S(3, 0)</div>
+<div class="controls">
+<button class="step-btn" data-target="slope2"><i class="fas fa-play"></i> Show Steps</button>
+<button class="btn" onclick="toggleGraph(this)"><i class="fas fa-chart-bar"></i> Show Graph</button>
+</div>
+<div class="step-block" id="slope2">
+<div class="hidden"><b>Step 1:</b> Apply the slope formula: \( m = \frac{0 - 8}{3 - (-1)} \)</div>
+<div class="hidden"><b>Step 2:</b> Calculate: \( m = \frac{-8}{4} = -2 \)</div>
+<div class="hidden"><b>Step 3:</b> Find inclination: \( \tan\alpha = -2 \Rightarrow \alpha = 180^\circ - \tan^{-1}(2) \approx 116.57^\circ \)</div>
+<div style="margin-top:12px">
+<button class="show-all-btn" data-target="slope2"><i class="fas fa-fast-forward"></i> Show All Steps</button>
+</div>
+</div>
+<canvas class="graph-canvas" id="canvas-slope2"></canvas>
+<div class="graph-step-block" id="g-slope2" style="display:none"><p>Graph shows the line connecting R(-1,8) and S(3,0) with a downward slope of -2.</p></div>
+</div>
+</div>
+<div class="try-yourself card-light">
+<div class="try-title"><i class="fas fa-pencil-alt"></i> Try It Yourself — Slope</div>
+<p>1. Find slope of the line joining (6, -2) and (-4, 3)</p>
+<div class="row">
+<input id="tslope1" placeholder="Enter slope (e.g., -1/2)" type="text"/>
+<button class="check" onclick="checkTextMotivate('tslope1','-1/2','tslope1_res')">Check</button>
+</div>
+<div class="result" id="tslope1_res"></div>
+<p style="margin-top:12px">2. If a line has inclination 120°, what is its slope? (Use decimal/radical form)</p>
+<div class="row">
+<input id="tslope2" placeholder="Enter slope (e.g., -1.732)" type="text"/>
+<button class="check" onclick="checkTextMotivate('tslope2','-sqrt(3)','tslope2_res')">Check</button>
+</div>
+<div class="result" id="tslope2_res"></div>
+</div>
+</section>
+<div class="divider"><i class="fas fa-align-center"></i> Collinearity of Points</div>
+<section class="card">
+<h2><i class="fas fa-chain"></i> Checking if Points are Aligned</h2>
+<p class="lead">Three or more points are collinear if they lie on the same straight line. This is true if the slopes between consecutive pairs of points are equal.</p>
+<div class="definition card-light">
+<b>Collinearity Test:</b> Points A, B, C are collinear if slope of AB = slope of BC.
+            </div>
+<div class="concept-cartoon card-light">
+<div class="cartoon-character">📏</div>
+<div class="cartoon-content">
+<div class="cartoon-title">Collinearity Concept Explained</div>
+<div class="cartoon-explanation">
+<div class="explanation-line">It's like laying a **ruler** down. If all points touch the edge, they're collinear.</div>
+<div class="explanation-line">The segment from A to B must have the exact same steepness as B to C.</div>
+<div class="explanation-line">If the slopes are different, the path "bends" at point B, making them non-collinear.</div>
+</div>
+</div>
+</div>
+<div class="example-container">
+<div class="example-box card-light">
+<div class="example-icon">✅</div>
+<div class="big">Example 1: Show A(-3, 0), B(1, 4), C(3, 6) are collinear.</div>
+<div class="controls">
+<button class="step-btn" data-target="coll1"><i class="fas fa-play"></i> Show Steps</button>
+<button class="btn" onclick="toggleGraph(this)"><i class="fas fa-chart-bar"></i> Show Graph</button>
+</div>
+<div class="step-block" id="coll1">
+<div class="hidden"><b>Step 1:</b> Calculate \( m_{AB} = \frac{4 - 0}{1 - (-3)} = \frac{4}{4} = 1 \)</div>
+<div class="hidden"><b>Step 2:</b> Calculate \( m_{BC} = \frac{6 - 4}{3 - 1} = \frac{2}{2} = 1 \)</div>
+<div class="hidden"><b>Step 3:</b> Since \( m_{AB} = m_{BC} = 1 \), the points are **collinear**.</div>
+<div style="margin-top:12px">
+<button class="show-all-btn" data-target="coll1"><i class="fas fa-fast-forward"></i> Show All Steps</button>
+</div>
+</div>
+<canvas class="graph-canvas" id="canvas-coll1"></canvas>
+<div class="graph-step-block" id="g-coll1" style="display:none"><p>Graph shows A(-3,0), B(1,4), C(3,6) all lying on the line y=x+3.</p></div>
+</div>
+<div class="example-box card-light">
+<div class="example-icon">✍️</div>
+<div class="big">Example 2: Show A(1, 1), B(a, b), C(2a-1, 2b-1) are collinear.</div>
+<div class="controls">
+<button class="step-btn" data-target="coll2"><i class="fas fa-play"></i> Show Steps</button>
+</div>
+<div class="step-block" id="coll2">
+<div class="hidden"><b>Step 1:</b> Calculate \( m_{AB} = \frac{b - 1}{a - 1} \)</div>
+<div class="hidden"><b>Step 2:</b> Calculate \( m_{BC} = \frac{(2b-1) - b}{(2a-1) - a} = \frac{b - 1}{a - 1} \)</div>
+<div class="hidden"><b>Step 3:</b> Since \( m_{AB} = m_{BC} \), the points are **collinear**.</div>
+<div style="margin-top:12px">
+<button class="show-all-btn" data-target="coll2"><i class="fas fa-fast-forward"></i> Show All Steps</button>
+</div>
+</div>
+<div class="graph-step-block" id="g-coll2" style="display:block"><p>This is an algebraic proof; no single numeric graph applies.</p></div>
+</div>
+</div>
+<div class="try-yourself card-light">
+<div class="try-title"><i class="fas fa-pencil-alt"></i> Try It Yourself — Collinearity</div>
+<p>1. Are points (1, 3), (2, 5), (3, 7) collinear?</p>
+<div class="row">
+<input id="tcoll1" placeholder="Yes or No" type="text"/>
+<button class="check" onclick="checkTextMotivate('tcoll1','yes','tcoll1_res')">Check</button>
+</div>
+<div class="result" id="tcoll1_res"></div>
+<p style="margin-top:12px">2. Do points (0, 0), (2, 1), (5, 3) lie on the same line?</p>
+<div class="row">
+<input id="tcoll2" placeholder="Yes or No" type="text"/>
+<button class="check" onclick="checkTextMotivate('tcoll2','no','tcoll2_res')">Check</button>
+</div>
+<div class="result" id="tcoll2_res"></div>
+</div>
+</section>
+<hr/>
+<div class="divider"><i class="fas fa-handshake"></i> Parallel &amp; Perpendicular Lines</div>
+<section class="card">
+<h2><i class="fas fa-arrows-alt-h"></i> Line Relationships using Slope</h2>
+<p class="lead">The slope is the ultimate tool for judging if two lines are **parallel** or **perpendicular**.</p>
+<div class="definition formula card-light">
+<b>Parallel Lines:</b> \( m_1 = m_2 \)    |    <b>Perpendicular Lines:</b> \( m_1 \times m_2 = -1 \)
+                <p style="margin-top:8px">**Memory tip:** Perpendicular slopes are **negative reciprocals**!</p>
+</div>
+<div class="concept-cartoon card-light">
+<div class="cartoon-character">🚏</div>
+<div class="cartoon-content">
+<div class="cartoon-title">Line Relationship Concept Explained</div>
+<div class="cartoon-explanation">
+<div class="explanation-line">**Parallel** is like **railroad tracks** — always the same slope, never meeting.</div>
+<div class="explanation-line">**Perpendicular** is like a **crossroads** — meeting at a 90° angle.</div>
+<div class="explanation-line">To find a perpendicular slope, flip the fraction and change the sign!</div>
+</div>
+</div>
+</div>
+<div class="example-container">
+<div class="example-box card-light">
+<div class="example-icon">🎚️</div>
+<div class="big">Example 1: Find k for **Parallel** Lines</div>
+<p class="lead">Line L₁ joins A(5,2), B(k,-1). Line L₂ joins C(-2,4), D(0,5). Find k if L₁ ∥ L₂.</p>
+<div class="controls">
+<button class="step-btn" data-target="par1"><i class="fas fa-play"></i> Show Steps</button>
+<button class="btn" onclick="toggleGraph(this)"><i class="fas fa-chart-bar"></i> Show Graph</button>
+</div>
+<div class="step-block" id="par1">
+<div class="hidden"><b>Step 1:</b> Find \( m_2 \): \( m_2 = \frac{5 - 4}{0 - (-2)} = \frac{1}{2} \)</div>
+<div class="hidden"><b>Step 2:</b> Find \( m_1 \): \( m_1 = \frac{-1 - 2}{k - 5} = \frac{-3}{k - 5} \)</div>
+<div class="hidden"><b>Step 3:</b> Set \( m_1 = m_2 \): \( \frac{-3}{k - 5} = \frac{1}{2} \)</div>
+<div class="hidden"><b>Step 4:</b> Solve: \( -6 = k - 5 \Rightarrow k = -1 \)</div>
+<div style="margin-top:12px">
+<button class="show-all-btn" data-target="par1"><i class="fas fa-fast-forward"></i> Show All Steps</button>
+</div>
+</div>
+<canvas class="graph-canvas" id="canvas-par1"></canvas>
+<div class="graph-step-block" id="g-par1" style="display:none"><p>Graph shows L₂ (slope 1/2) and L₁ with k=-1. They have the same slope, confirming they are parallel.</p></div>
+</div>
+<div class="example-box card-light">
+<div class="example-icon">✝️</div>
+<div class="big">Example 2: Find k for **Perpendicular** Lines</div>
+<p class="lead">Using the same lines, find k if L₁ ⟂ L₂.</p>
+<div class="controls">
+<button class="step-btn" data-target="perp1"><i class="fas fa-play"></i> Show Steps</button>
+<button class="btn" onclick="toggleGraph(this)"><i class="fas fa-chart-bar"></i> Show Graph</button>
+</div>
+<div class="step-block" id="perp1">
+<div class="hidden"><b>Step 1:</b> Slopes: \( m_2 = \frac{1}{2} \) and \( m_1 = \frac{-3}{k - 5} \)</div>
+<div class="hidden"><b>Step 2:</b> Set \( m_1 \times m_2 = -1 \): \( \frac{-3}{k - 5} \times \frac{1}{2} = -1 \)</div>
+<div class="hidden"><b>Step 3:</b> Solve: \( \frac{-3}{2(k - 5)} = -1 \Rightarrow -3 = -2(k - 5) \Rightarrow 3 = 2k - 10 \)</div>
+<div class="hidden"><b>Step 4:</b> Final result: \( 2k = 13 \Rightarrow k = \frac{13}{2} \)</div>
+<div style="margin-top:12px">
+<button class="show-all-btn" data-target="perp1"><i class="fas fa-fast-forward"></i> Show All Steps</button>
+</div>
+</div>
+<canvas class="graph-canvas" id="canvas-perp1"></canvas>
+<div class="graph-step-block" id="g-perp1" style="display:none"><p>Graph shows L₂ (slope 1/2) and L₁ with k=13/2. They intersect at a right angle.</p></div>
+</div>
+</div>
+<div class="try-yourself card-light">
+<div class="try-title"><i class="fas fa-pencil-alt"></i> Try It Yourself — Lines</div>
+<p>1. If a line has slope \( \frac{3}{5} \), what slope is parallel to it?</p>
+<div class="row">
+<input id="tpar1" placeholder="Enter slope (e.g., 3/5)" type="text"/>
+<button class="check" onclick="checkTextMotivate('tpar1','3/5','tpar1_res')">Check</button>
+</div>
+<div class="result" id="tpar1_res"></div>
+<p style="margin-top:12px">2. If a line has slope 1/4, slope of its perpendicular line is?</p>
+<div class="row">
+<input id="tpar2" placeholder="Enter slope (e.g., -4)" type="text"/>
+<button class="check" onclick="checkTextMotivate('tpar2','-4','tpar2_res')">Check</button>
+</div>
+<div class="result" id="tpar2_res"></div>
+</div>
+</section>
+<hr/>
+<div class="divider"><i class="fas fa-pencil-alt"></i> Forms of Line Equations</div>
+<section class="card">
+<h2><i class="fas fa-code"></i> Representing a Straight Line</h2>
+<p class="lead">A straight line can be written in several forms, each useful for showing different properties (slope, intercepts, distance).</p>
+<div class="definition formula card-light">
+<b>Point-Slope:</b> \( y - y_1 = m(x - x_1) \)
+                <br/><b>Slope-Intercept:</b> \( y = mx + c \)
+                <br/><b>Two-Intercept:</b> \( \frac{x}{a} + \frac{y}{b} = 1 \)
+                <br/><b>General:</b> \( Ax + By + C = 0 \)
+            </div>
+<div class="concept-cartoon card-light">
+<div class="cartoon-character">🔄</div>
+<div class="cartoon-content">
+<div class="cartoon-title">Equation Form Concept Explained</div>
+<div class="cartoon-explanation">
+<div class="explanation-line">It's like having **four different maps** for the same city (line).</div>
+<div class="explanation-line">The **Slope-Intercept** map gives the easiest route (slope) and start point (y-intercept).</div>
+<div class="explanation-line">The **General** form is useful for calculating distances.</div>
+</div>
+</div>
+</div>
+<div class="example-container">
+<div class="example-box card-light">
+<div class="example-icon">➡️</div>
+<div class="big">Example 1: Convert 3x + 6y - 12 = 0 to Slope-Intercept form.</div>
+<div class="controls">
+<button class="step-btn" data-target="form1"><i class="fas fa-play"></i> Show Steps</button>
+<button class="btn" onclick="toggleGraph(this)"><i class="fas fa-chart-bar"></i> Show Graph</button>
+</div>
+<div class="step-block" id="form1">
+<div class="hidden"><b>Step 1:</b> Start with: \( 3x + 6y - 12 = 0 \)</div>
+<div class="hidden"><b>Step 2:</b> Isolate the \( y \) term: \( 6y = -3x + 12 \)</div>
+<div class="hidden"><b>Step 3:</b> Divide by 6: \( y = \frac{-3x + 12}{6} \)</div>
+<div class="hidden"><b>Step 4:</b> Simplify: \( y = -\frac{1}{2}x + 2 \) (Slope m=-1/2, y-intercept c=2)</div>
+<div style="margin-top:12px">
+<button class="show-all-btn" data-target="form1"><i class="fas fa-fast-forward"></i> Show All Steps</button>
+</div>
+</div>
+<canvas class="graph-canvas" id="canvas-form1"></canvas>
+<div class="graph-step-block" id="g-form1" style="display:none"><p>Graph shows the line y = -0.5x + 2. It crosses the y-axis at 2 (intercept) and goes down 1 for every 2 across (slope).</p></div>
+</div>
+<div class="example-box card-light">
+<div class="example-icon">⬅️</div>
+<div class="big">Example 2: Convert 3x + 6y - 12 = 0 to Two-Intercept form.</div>
+<div class="controls">
+<button class="step-btn" data-target="form2"><i class="fas fa-play"></i> Show Steps</button>
+<button class="btn" onclick="toggleGraph(this)"><i class="fas fa-chart-bar"></i> Show Graph</button>
+</div>
+<div class="step-block" id="form2">
+<div class="hidden"><b>Step 1:</b> Move constant: \( 3x + 6y = 12 \)</div>
+<div class="hidden"><b>Step 2:</b> Divide by the constant (12): \( \frac{3x}{12} + \frac{6y}{12} = 1 \)</div>
+<div class="hidden"><b>Step 3:</b> Simplify the fractions: \( \frac{x}{4} + \frac{y}{2} = 1 \)</div>
+<div class="hidden"><b>Step 4:</b> x-intercept a=4, y-intercept b=2.</div>
+<div style="margin-top:12px">
+<button class="show-all-btn" data-target="form2"><i class="fas fa-fast-forward"></i> Show All Steps</button>
+</div>
+</div>
+<canvas class="graph-canvas" id="canvas-form2"></canvas>
+<div class="graph-step-block" id="g-form2" style="display:none"><p>Graph shows the line crossing the x-axis at 4 and the y-axis at 2 (the two intercepts).</p></div>
+</div>
+</div>
+<div class="try-yourself card-light">
+<div class="try-title"><i class="fas fa-pencil-alt"></i> Try It Yourself — Forms</div>
+<p>1. Convert 4x - 2y + 8 = 0 to slope-intercept form.</p>
+<div class="row">
+<input id="tform1" placeholder="Enter equation (e.g., y=2x+4)" type="text"/>
+<button class="check" onclick="checkTextMotivate('tform1','y=2x+4','tform1_res')">Check</button>
+</div>
+<div class="result" id="tform1_res"></div>
+<p style="margin-top:12px">2. Convert 3x - 5y = 15 to two-intercept form (find a and b).</p>
+<div class="row">
+<input id="tform2" placeholder="Enter a, b (e.g., 5,-3)" type="text"/>
+<button class="check" onclick="checkTextMotivate('tform2','5,-3','tform2_res')">Check</button>
+</div>
+<div class="result" id="tform2_res"></div>
+</div>
+</section>
+<hr/>
+<div class="divider"><i class="fas fa-ruler-combined"></i> Distance from a Point to a Line</div>
+<section class="card">
+<h2><i class="fas fa-crosshairs"></i> Finding the Shortest Distance</h2>
+<p class="lead">The shortest distance from a point (x₁, y₁) to a line Ax + By + C = 0 is always the perpendicular distance.</p>
+<div class="definition formula card-light">
+<b>Distance Formula:</b> \( d = \frac{|Ax_1 + By_1 + C|}{\sqrt{A^2 + B^2}} \)
+            </div>
+<div class="concept-cartoon card-light">
+<div class="cartoon-character">🎯</div>
+<div class="cartoon-content">
+<div class="cartoon-title">Distance Concept Explained</div>
+<div class="cartoon-explanation">
+<div class="explanation-line">The distance formula finds the shortest path, like a **bullseye** shot.</div>
+<div class="explanation-line">The numerator substitutes the point into the General Form of the line.</div>
+<div class="explanation-line">The denominator is the magnitude of the normal vector (\(\sqrt{A^2 + B^2}\)).</div>
+</div>
+</div>
+</div>
+<div class="example-container">
+<div class="example-box card-light">
+<div class="example-icon">📍</div>
+<div class="big">Example 1: Distance from P(2, -3) to 3x + 4y - 12 = 0.</div>
+<div class="controls">
+<button class="step-btn" data-target="dist1"><i class="fas fa-play"></i> Show Steps</button>
+<button class="btn" onclick="toggleGraph(this)"><i class="fas fa-chart-bar"></i> Show Graph</button>
+</div>
+<div class="step-block" id="dist1">
+<div class="hidden"><b>Step 1:</b> Identify: A=3, B=4, C=-12, Point (x₁, y₁) = (2, -3)</div>
+<div class="hidden"><b>Step 2:</b> Numerator: \( |3(2) + 4(-3) - 12| = |6 - 12 - 12| = |-18| = 18 \)</div>
+<div class="hidden"><b>Step 3:</b> Denominator: \( \sqrt{3^2 + 4^2} = \sqrt{9 + 16} = \sqrt{25} = 5 \)</div>
+<div class="hidden"><b>Step 4:</b> Result: \( d = \frac{18}{5} \) or 3.6 units.</div>
+<div style="margin-top:12px">
+<button class="show-all-btn" data-target="dist1"><i class="fas fa-fast-forward"></i> Show All Steps</button>
+</div>
+</div>
+<canvas class="graph-canvas" id="canvas-dist1"></canvas>
+<div class="graph-step-block" id="g-dist1" style="display:none"><p>Graph shows point P(2,-3) and the line 3x+4y-12=0. The dashed line is the shortest distance.</p></div>
+</div>
+<div class="example-box card-light">
+<div class="example-icon">📏</div>
+<div class="big">Example 2: Distance between 2x - y + 5 = 0 and 2x - y + 15 = 0.</div>
+<div class="controls">
+<button class="step-btn" data-target="dist2"><i class="fas fa-play"></i> Show Steps</button>
+<button class="btn" onclick="toggleGraph(this)"><i class="fas fa-chart-bar"></i> Show Graph</button>
+</div>
+<div class="step-block" id="dist2">
+<div class="hidden"><b>Step 1:</b> Choose a point on the first line: Let x₁ = 0 ⇒ -y₁ + 5 = 0 ⇒ P(0, 5)</div>
+<div class="hidden"><b>Step 2:</b> Use the formula with P(0, 5) and the second line (2x - y + 15 = 0). A=2, B=-1, C=15.</div>
+<div class="hidden"><b>Step 3:</b> Numerator: \( |2(0) - 1(5) + 15| = |-5 + 15| = 10 \)</div>
+<div class="hidden"><b>Step 4:</b> Denominator: \( \sqrt{2^2 + (-1)^2} = \sqrt{5} \)</div>
+<div class="hidden"><b>Step 5:</b> Result: \( d = \frac{10}{\sqrt{5}} = 2\sqrt{5} \approx 4.47 \) units.</div>
+<div style="margin-top:12px">
+<button class="show-all-btn" data-target="dist2"><i class="fas fa-fast-forward"></i> Show All Steps</button>
+</div>
+</div>
+<canvas class="graph-canvas" id="canvas-dist2"></canvas>
+<div class="graph-step-block" id="g-dist2" style="display:none"><p>Graph shows the two parallel lines and the constant distance between them (perpendicular distance).</p></div>
+</div>
+</div>
+<div class="try-yourself card-light">
+<div class="try-title"><i class="fas fa-pencil-alt"></i> Try It Yourself — Distance</div>
+<p>1. Find the distance from point (1, 1) to the line 4x - 3y + 10 = 0.</p>
+<div class="row">
+<input id="tdist1" placeholder="Enter distance (e.g., 2.2)" type="text"/>
+<button class="check" onclick="checkTextMotivate('tdist1','11/5','tdist1_res')">Check</button>
+</div>
+<div class="result" id="tdist1_res"></div>
+<p style="margin-top:12px">2. Find the distance between lines x - 2y + 1 = 0 and x - 2y + 6 = 0.</p>
+<div class="row">
+<input id="tdist2" placeholder="Enter distance (e.g., 5/sqrt(5))" type="text"/>
+<button class="check" onclick="checkTextMotivate('tdist2','5/sqrt(5)','tdist2_res')">Check</button>
+</div>
+<div class="result" id="tdist2_res"></div>
+</div>
+</section>
+<hr/>
+<div class="divider"><i class="fas fa-map-pin"></i> Position of a Point Relative to a Line</div>
+<section class="card">
+<h2><i class="fas fa-compass"></i> Above, Below, or On the Line</h2>
+<p class="lead">We can check which side of a line Ax + By + C = 0 a point (x₁, y₁) lies on. The rule requires making the coefficient B positive first.</p>
+<div class="definition card-light">
+<b>Position Test:</b> For line Ax + By + C = 0 with **B &gt; 0**:
+                <br/>• Point is **above** if Ax₁ + By₁ + C &gt; 0
+                <br/>• Point is **below** if Ax₁ + By₁ + C &lt; 0
+                <br/>• Point is **on** the line if Ax₁ + By₁ + C = 0
+            </div>
+<div class="concept-cartoon card-light">
+<div class="cartoon-character">🚦</div>
+<div class="cartoon-content">
+<div class="cartoon-title">Position Concept Explained</div>
+<div class="cartoon-explanation">
+<div class="explanation-line">Think of the line as a **road divider**. We check which side of the road the point is on.</div>
+<div class="explanation-line">Setting B &gt; 0 establishes the "up" direction for the test.</div>
+<div class="explanation-line">If two points yield the same sign (both + or both -), they are on the **same side**.</div>
+</div>
+</div>
+</div>
+<div class="example-container">
+<div class="example-box card-light">
+<div class="example-icon">⬆️</div>
+<div class="big">Example 1: Position of P(4, 1) relative to x - 4y + 5 = 0.</div>
+<div class="controls">
+<button class="step-btn" data-target="pos1"><i class="fas fa-play"></i> Show Steps</button>
+<button class="btn" onclick="toggleGraph(this)"><i class="fas fa-chart-bar"></i> Show Graph</button>
+</div>
+<div class="step-block" id="pos1">
+<div class="hidden"><b>Step 1:</b> Make B positive: Multiply by -1: -x + 4y - 5 = 0. (A=-1, B=4, C=-5)</div>
+<div class="hidden"><b>Step 2:</b> Substitute P(4, 1): -1(4) + 4(1) - 5 = -4 + 4 - 5 = -5</div>
+<div class="hidden"><b>Step 3:</b> Since the result is -5 &lt; 0, the point lies **below** the line.</div>
+<div style="margin-top:12px">
+<button class="show-all-btn" data-target="pos1"><i class="fas fa-fast-forward"></i> Show All Steps</button>
+</div>
+</div>
+<canvas class="graph-canvas" id="canvas-pos1"></canvas>
+<div class="graph-step-block" id="g-pos1" style="display:none"><p>Graph shows point P(4,1) below the line x-4y+5=0.</p></div>
+</div>
+<div class="example-box card-light">
+<div class="example-icon">⚖️</div>
+<div class="big">Example 2: Check if Q(0, 0) and R(10, 0) are on the same side of 2x - 5y + 1 = 0.</div>
+<div class="controls">
+<button class="step-btn" data-target="pos2"><i class="fas fa-play"></i> Show Steps</button>
+<button class="btn" onclick="toggleGraph(this)"><i class="fas fa-chart-bar"></i> Show Graph</button>
+</div>
+<div class="step-block" id="pos2">
+<div class="hidden"><b>Step 1:</b> Make B positive: Multiply by -1: -2x + 5y - 1 = 0.</div>
+<div class="hidden"><b>Step 2:</b> Check Q(0, 0): -2(0) + 5(0) - 1 = -1 (Below)</div>
+<div class="hidden"><b>Step 3:</b> Check R(10, 0): -2(10) + 5(0) - 1 = -21 (Below)</div>
+<div class="hidden"><b>Step 4:</b> Since both results are **negative**, the points lie on the **same side**.</div>
+<div style="margin-top:12px">
+<button class="show-all-btn" data-target="pos2"><i class="fas fa-fast-forward"></i> Show All Steps</button>
+</div>
+</div>
+<canvas class="graph-canvas" id="canvas-pos2"></canvas>
+<div class="graph-step-block" id="g-pos2" style="display:none"><p>Graph shows Q(0,0) and R(10,0) both positioned on the same side of the line.</p></div>
+</div>
+</div>
+<div class="try-yourself card-light">
+<div class="try-title"><i class="fas fa-pencil-alt"></i> Try It Yourself — Position</div>
+<p>1. Determine if point (3, 3) lies above or below the line 2x - y - 1 = 0.</p>
+<div class="row">
+<input id="tpos1" placeholder="Above or Below" type="text"/>
+<button class="check" onclick="checkTextMotivate('tpos1','above','tpos1_res')">Check</button>
+</div>
+<div class="result" id="tpos1_res"></div>
+<p style="margin-top:12px">2. Check if (1, 5) and (-5, 1) lie on the same side of 3x - y + 10 = 0.</p>
+<div class="row">
+<input id="tpos2" placeholder="Same or Opposite" type="text"/>
+<button class="check" onclick="checkTextMotivate('tpos2','opposite','tpos2_res')">Check</button>
+</div>
+<div class="result" id="tpos2_res"></div>
+</div>
+</section>
+<div style="text-align: center; margin: 40px 0;">
+    <a href="{{ url_for('serve_chapter_part', chapter_num=4, part_num=4) }}" class="btn btn-primary">
+        Continue to Part 4 <i class="fas fa-arrow-right"></i>
+    </a>
+</div>
+</div>
+</div></div><footer class="footer">
+<div class="container">
+<div class="footer-content">
+<div class="footer-about">
+<div class="footer-logo">
+<div class="footer-logo-icon">S</div>
+            Sentellect
+          </div>
+<p>Personalizing learning through emotions to improve educational experience for HSSC Mathematics.</p>
+<div class="social-links">
+<a class="social-link" href="#"><i class="fab fa-facebook-f"></i></a>
+<a class="social-link" href="#"><i class="fab fa-twitter"></i></a>
+<a class="social-link" href="#"><i class="fab fa-instagram"></i></a>
+<a class="social-link" href="#"><i class="fab fa-linkedin-in"></i></a>
+</div>
+</div>
+<div class="footer-links">
+<h3>Platform</h3>
+<ul>
+<li><a href="#distance-section">Distance</a></li>
+<li><a href="#midpoint-section">Midpoint</a></li>
+<li><a href="#section-section">Section</a></li>
+<li><a href="#collinearity-section">Collinearity</a></li>
+</ul>
+</div>
+<div class="footer-links">
+<h3>Resources</h3>
+<ul>
+<li><a href="#">Study Materials</a></li>
+<li><a href="#">About Project</a></li>
+<li><a href="#">Contact</a></li>
+<li><a href="#">Support</a></li>
+</ul>
+</div>
+<div class="footer-links">
+<h3>Account</h3>
+<ul>
+<li><a href="#">Your Account</a></li>
+<li><a href="#">Help Center</a></li>
+<li><a href="#">Contact Us</a></li>
+<li><a href="#">Privacy Policy</a></li>
+<li><a href="#">Terms &amp; Conditions</a></li>
+</ul>
+</div>
+</div>
+<div class="footer-bottom">
+<p>© 2025 Sentellect. Final Year Project - Educational Technology.</p>
+<div class="footer-tags">
+<a class="tag" href="#">PTB HSSC Mathematics</a>
+<a class="tag" href="#">Emotion-Aware Learning</a>
+<a class="tag" href="#">Coordinate Geometry</a>
+</div>
+</div>
+</div>
+</footer><script>
+        // --- Interactivity and Graph Drawing Functions ---
+
+        // Global state for step-by-step functionality
+        const stepStates = {};
+
+        // Initialize step blocks to ensure correct state on load
+        function initStepBlocks(){
+            document.querySelectorAll('.step-block').forEach(block => {
+                // Find all hidden steps and hide them
+                Array.from(block.querySelectorAll('.hidden')).forEach(h => h.style.display = 'none');
+                
+                // Reset step tracking state
+                stepStates[block.id] = { currentStep: 0, totalSteps: block.querySelectorAll('.hidden').length };
+
+                // Ensure the main step button is enabled (it will disable itself when all steps are shown)
+                const stepBtn = block.closest('.example-box').querySelector('.step-btn');
+                if (stepBtn) stepBtn.disabled = false;
+                
+                // Hide the corresponding graph area
+                const graphId = block.id;
+                const canvas = document.getElementById(`canvas-${graphId}`);
+                if(canvas) canvas.style.display = 'none';
+                const graphBlock = document.getElementById(`g-${graphId}`);
+                if(graphBlock) graphBlock.style.display = 'none';
+            });
+        }
+
+        // Reveals the next step in a block
+        function revealStep(btn){
+            const block = btn.closest('.step-block');
+            if(!block) return;
+            const state = stepStates[block.id];
+            
+            if (state.currentStep < state.totalSteps) {
+                const nextStepEl = block.querySelectorAll('.hidden')[state.currentStep];
+                nextStepEl.style.display = 'block';
+                state.currentStep++;
+                
+                // Visual feedback for the new step
+                nextStepEl.animate([{transform:'translateY(6px)', opacity:0},{transform:'none', opacity:1}],{duration:280,iterations:1});
+            }
+            
+            // If all steps are shown, disable the button
+            if (state.currentStep >= state.totalSteps) {
+                btn.disabled = true;
+            }
+             if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        }
+
+        // Shows all steps in a block instantly
+        function revealAll(btn){
+            const block = btn.closest('.step-block');
+            if(!block) return;
+            
+            // Show all hidden elements
+            Array.from(block.querySelectorAll('.hidden')).forEach(h => h.style.display = 'block');
+            
+            // Disable the step-by-step button
+            const stepBtn = block.closest('.example-box').querySelector('.step-btn');
+            if(stepBtn) stepBtn.disabled = true;
+
+            // Update state
+            const state = stepStates[block.id];
+            state.currentStep = state.totalSteps;
+             if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        }
+
+        // Toggles graph visibility and draws it if shown
+        function toggleGraph(btn) {
+            const exampleBox = btn.closest('.example-box');
+            const graphId = exampleBox.querySelector('.step-block').id;
+            const canvas = document.getElementById(`canvas-${graphId}`);
+            const graphBlock = document.getElementById(`g-${graphId}`);
+
+            if (!canvas) return;
+
+            if (canvas.style.display === 'block') {
+                canvas.style.display = 'none';
+                graphBlock.style.display = 'none';
+                btn.innerHTML = '<i class="fas fa-chart-bar"></i> Show Graph';
+            } else {
+                canvas.style.display = 'block';
+                graphBlock.style.display = 'block';
+                btn.innerHTML = '<i class="fas fa-times"></i> Hide Graph';
+                
+                // Draw or redraw the graph to ensure correct scaling/rendering
+                setTimeout(() => drawGraphById(graphId), 50);
+            }
+        }
+        
+        // --- Answer Checking Logic ---
+        function normalizeAnswer(ans){
+            if (ans === null || ans === undefined) return '';
+            return String(ans).trim().replace(/\s+/g, '').toLowerCase();
+        }
+
+        function equivalentSlope(user, expected){
+            const userNorm = normalizeAnswer(user);
+            const expectedNorm = normalizeAnswer(expected);
+            if (userNorm === expectedNorm) return true;
+
+            const parseNumber = s => {
+                if (!s) return null;
+                s = s.replace(/\s+/g,'');
+                // Handle fraction like -1/4
+                const frac = s.match(/^([-+]?\d+)\/(\d+)$/);
+                if (frac) return Number(frac[1]) / Number(frac[2]);
+                // Handle sqrt(3) or -sqrt(3) etc.
+                if (s.includes('sqrt(3)')) return s.startsWith('-') ? -Math.sqrt(3) : Math.sqrt(3);
+                
+                const v = Number(s);
+                return isNaN(v) ? null : v;
+            };
+
+            const u = parseNumber(user);
+            const e = parseNumber(expected);
+            if (u === null || e === null) return false;
+            // Compare with tolerance for floating point numbers
+            return Math.abs(u - e) < 1e-6;
+        }
+        
+        function checkTextMotivate(inputId, correct, resultId) {
+            const userAns = document.getElementById(inputId).value || '';
+            const resultEl = document.getElementById(resultId);
+            
+            const motivationalMessages = ["Great job! You're getting it!", "Excellent work! Keep it up!", "Perfect! You're mastering this!", "Well done! You're on the right track!", "Correct! You're doing amazing!"];
+            const tryAgainMessages = ["Almost! Try again with a fresh perspective.", "Not quite, but you're close! Try once more.", "Good attempt! Let's try that again.", "Not exactly, but you're learning! Try again.", "Almost there! Give it another shot."];
+            
+            const randomGood = motivationalMessages[Math.floor(Math.random() * motivationalMessages.length)];
+            const randomTry = tryAgainMessages[Math.floor(Math.random() * tryAgainMessages.length)];
+            
+            const correctList = String(correct).split('|').map(s => s.trim()).filter(Boolean);
+
+            let isCorrect = false;
+            
+            // Check for simple text or numeric/slope equivalence
+            if (correctList.some(exp => normalizeAnswer(userAns) === normalizeAnswer(exp) || equivalentSlope(userAns, exp))) {
+                isCorrect = true;
+            }
+
+            if (isCorrect) {
+                resultEl.innerHTML = `✅ ${randomGood}`;
+                resultEl.className = "result good";
+            } else {
+                resultEl.innerHTML = `❌ ${randomTry} <br><small>Hint: correct answer is <b>${correct}</b>. Check the formula, sign, or simplification.</small>`;
+                resultEl.className = "result warn";
+            }
+            resultEl.style.display = "block";
+            resultEl.animate([{transform:'translateY(6px)', opacity:0},{transform:'none', opacity:1}],{duration:280,iterations:1});
+        }
+        
+        // --- Canvas Drawing Implementation (Simplified) ---
+
+        const canvasData = {
+            // New Example Data for the requested structure
+            'slope1': { type: 'line', points: [[1, 10], [5, 14]], labels: ['P(1,10)','Q(5,14)'], scale: 15 },
+            'slope2': { type: 'line', points: [[-1, 8], [3, 0]], labels: ['R(-1,8)','S(3,0)'], scale: 20 },
+            'coll1': { type: 'collinear', points: [[-3, 0], [1, 4], [3, 6]], labels: ['A','B','C'], scale: 20 },
+            'coll2': { type: 'text', text: 'Algebraic Proof - No graph' },
+            'par1': { type: 'parallel', points: [[-2, 4], [0, 5]], labels: ['C','D'], shift: 4, m: 0.5, scale: 20 }, // L1(A,B) shifted for visual clarity
+            'perp1': { type: 'perpendicular', points: [[-2, 4], [0, 5]], labels: ['C','D'], point_on_perp: [5, 2], m1: 0.5, scale: 20 },
+            'form1': { type: 'equation', intercepts: [4, 2], scale: 25 }, // 3x+6y-12=0 => x/4 + y/2 = 1
+            'form2': { type: 'equation', intercepts: [4, 2], scale: 25 },
+            'dist1': { type: 'distance', point: [2, -3], line: [3, 4, -12], scale: 25 }, // 3x+4y-12=0, P(2,-3)
+            'dist2': { type: 'parallel_distance', line1: [2, -1, 5], line2: [2, -1, 15], scale: 25 }, // 2x-y+5=0, 2x-y+15=0
+            'pos1': { type: 'position', point: [4, 1], line: [1, -4, 5], scale: 20 }, // x-4y+5=0, P(4,1)
+            'pos2': { type: 'position_check', points: [[0, 0], [10, 0]], line: [2, -5, 1], scale: 15 }, // 2x-5y+1=0, Q(0,0), R(10,0)
+        };
+
+        function drawCoordinateSystem(ctx, width, height, data) {
+            const margin = 20;
+            const effectiveWidth = width - 2 * margin;
+            const effectiveHeight = height - 2 * margin;
+            
+            // Determine coordinate bounds for scaling (simplified for integer examples)
+            let minX = -1, maxX = 1, minY = -1, maxY = 1;
+
+            if (data && data.points) {
+                data.points.forEach(p => {
+                    minX = Math.min(minX, p[0]);
+                    maxX = Math.max(maxX, p[0]);
+                    minY = Math.min(minY, p[1]);
+                    maxY = Math.max(maxY, p[1]);
+                });
+            }
+             if (data && data.intercepts) {
+                minX = Math.min(minX, data.intercepts[0]);
+                maxX = Math.max(maxX, data.intercepts[0]);
+                minY = Math.min(minY, data.intercepts[1]);
+                maxY = Math.max(maxY, data.intercepts[1]);
+            }
+            if (data && data.point) {
+                minX = Math.min(minX, data.point[0]);
+                maxX = Math.max(maxX, data.point[0]);
+                minY = Math.min(minY, data.point[1]);
+                maxY = Math.max(maxY, data.point[1]);
+            }
+            
+            // Simple padding for view and ensuring min/max are at least 4 units apart
+            const pad = 0.5;
+            minX = Math.floor(minX) - pad; maxX = Math.ceil(maxX) + pad;
+            minY = Math.floor(minY) - pad; maxY = Math.ceil(maxY) + pad;
+            
+            if (maxX - minX < 8) {
+                let center = (minX + maxX) / 2;
+                minX = center - 4; maxX = center + 4;
+            }
+            if (maxY - minY < 6) {
+                let center = (minY + maxY) / 2;
+                minY = center - 3; maxY = center + 3;
+            }
+
+            const rangeX = maxX - minX;
+            const rangeY = maxY - minY;
+            const scaleX = effectiveWidth / rangeX;
+            const scaleY = effectiveHeight / rangeY;
+            
+            const toPixel = (x, y) => {
+                const px = margin + (x - minX) * scaleX;
+                // Y-axis is inverted in canvas, so we use max Y
+                const py = margin + (maxY - y) * scaleY;
+                return [px, py];
+            };
+            
+            // Draw Axes
+            const [originX, originY] = toPixel(0, 0);
+            ctx.strokeStyle = varColor('--accent');
+            ctx.lineWidth = 1.5;
+            
+            // Draw grid lines (simplified)
+            ctx.strokeStyle = '#e0e0e0';
+            ctx.lineWidth = 0.5;
+            
+            for (let x = Math.ceil(minX); x <= maxX; x++) {
+                if (Math.abs(x) > 100) continue;
+                const [px, ] = toPixel(x, 0);
+                ctx.beginPath();
+                ctx.moveTo(px, margin);
+                ctx.lineTo(px, height - margin);
+                ctx.stroke();
+            }
+            for (let y = Math.ceil(minY); y <= maxY; y++) {
+                if (Math.abs(y) > 100) continue;
+                const [, py] = toPixel(0, y);
+                ctx.beginPath();
+                ctx.moveTo(margin, py);
+                ctx.lineTo(width - margin, py);
+                ctx.stroke();
+            }
+
+            // Draw thick Axes (if within view)
+            ctx.strokeStyle = varColor('--accent');
+            ctx.lineWidth = 1.5;
+            if (originY > margin && originY < height - margin) {
+                ctx.beginPath(); ctx.moveTo(margin, originY); ctx.lineTo(width - margin, originY); ctx.stroke();
+            }
+            if (originX > margin && originX < width - margin) {
+                ctx.beginPath(); ctx.moveTo(originX, margin); ctx.lineTo(originX, height - margin); ctx.stroke();
+            }
+
+            return { toPixel, scaleX, scaleY, minX, maxX, minY, maxY };
+        }
+
+        function drawLine(ctx, toPixel, minX, maxX, line, style = {}) {
+            // Line: Ax + By + C = 0
+            const [A, B, C] = line;
+            
+            ctx.strokeStyle = style.color || varColor('--line-color');
+            ctx.lineWidth = style.width || 2;
+            
+            ctx.beginPath();
+            
+            // Calculate points at the canvas edges
+            const xLeft = minX;
+            const yLeft = B !== 0 ? (-A * xLeft - C) / B : 0;
+            
+            const xRight = maxX;
+            const yRight = B !== 0 ? (-A * xRight - C) / B : 0;
+            
+            const [px1, py1] = toPixel(xLeft, yLeft);
+            const [px2, py2] = toPixel(xRight, yRight);
+            
+            ctx.moveTo(px1, py1);
+            ctx.lineTo(px2, py2);
+            ctx.stroke();
+        }
+        
+        function drawPoints(ctx, toPixel, points, labels) {
+            ctx.fillStyle = varColor('--point-color');
+            ctx.font = '12px Quicksand, Arial';
+            ctx.textAlign = 'left';
+            
+            points.forEach((p, i) => {
+                const [px, py] = toPixel(p[0], p[1]);
+                
+                ctx.beginPath();
+                ctx.arc(px, py, 4, 0, Math.PI * 2);
+                ctx.fill();
+
+                if (labels) {
+                    ctx.fillStyle = varColor('--accent');
+                    ctx.fillText(labels[i] || `(${p[0]},${p[1]})`, px + 5, py - 5);
+                }
+            });
+        }
+        
+        function varColor(variable, fallback) {
+            return getComputedStyle(document.documentElement).getPropertyValue(variable).trim() || fallback;
+        }
+
+        // Main graph drawing function using the data structure
+        function drawGraphById(id) {
+            const canvas = document.getElementById(`canvas-${id}`);
+            const data = canvasData[id];
+            if (!canvas || !data) return;
+
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            ctx.clearRect(0, 0, width, height);
+
+            const { toPixel, minX, maxX } = drawCoordinateSystem(ctx, width, height, data);
+
+            // --- Drawing Logic based on Type ---
+            if (data.type === 'line' || data.type === 'collinear') {
+                const line = calculateLineEquation(data.points[0], data.points[data.points.length - 1]);
+                drawLine(ctx, toPixel, minX, maxX, line);
+                drawPoints(ctx, toPixel, data.points, data.labels);
+            } 
+            else if (data.type === 'parallel') {
+                const line_ref = calculateLineEquation(data.points[0], data.points[1]);
+                drawLine(ctx, toPixel, minX, maxX, line_ref);
+                
+                // Draw second parallel line (shifted)
+                const [A, B, C] = line_ref;
+                const C_prime = C + data.shift * Math.sqrt(A*A + B*B); // Shift along normal vector
+                const line2 = [A, B, C_prime];
+                
+                ctx.strokeStyle = varColor('--point-color');
+                drawLine(ctx, toPixel, minX, maxX, line2, { color: varColor('--point-color') });
+                drawPoints(ctx, toPixel, data.points, data.labels);
+            }
+            else if (data.type === 'perpendicular') {
+                const line_ref = calculateLineEquation(data.points[0], data.points[1]);
+                drawLine(ctx, toPixel, minX, maxX, line_ref);
+                
+                // Draw perpendicular line through a point (using negative reciprocal slope)
+                const [A1, B1, C1] = line_ref;
+                const A2 = B1;
+                const B2 = -A1;
+                const C2 = -A2 * data.point_on_perp[0] - B2 * data.point_on_perp[1];
+                const line2 = [A2, B2, C2];
+                
+                ctx.strokeStyle = varColor('--point-color');
+                drawLine(ctx, toPixel, minX, maxX, line2, { color: varColor('--point-color') });
+                drawPoints(ctx, toPixel, data.points, data.labels);
+            }
+            else if (data.type === 'equation') {
+                // Draw line from intercepts
+                const [a, b] = data.intercepts;
+                
+                if (a !== 0 && b !== 0) {
+                    const line = [b, a, -a * b]; // bx + ay - ab = 0
+                    drawLine(ctx, toPixel, minX, maxX, line);
+                    
+                    // Mark intercepts
+                    drawPoints(ctx, toPixel, [[a, 0], [0, b]], [`(${a},0)`, `(0,${b})`]);
+                }
+            }
+            else if (data.type === 'distance') {
+                const line = data.line;
+                const point = data.point;
+                drawLine(ctx, toPixel, minX, maxX, line);
+                drawPoints(ctx, toPixel, [point], ['P']);
+                
+                // Draw perpendicular distance (dashed)
+                const [A, B] = line;
+                const [x0, y0] = point;
+                const t = (-A * x0 - B * y0 - line[2]) / (A * A + B * B);
+                const foot = [x0 + A * t, y0 + B * t];
+
+                ctx.strokeStyle = '#2fd182';
+                ctx.lineWidth = 1;
+                ctx.setLineDash([5, 5]);
+                ctx.beginPath();
+                const [px1, py1] = toPixel(x0, y0);
+                const [px2, py2] = toPixel(foot[0], foot[1]);
+                ctx.moveTo(px1, py1);
+                ctx.lineTo(px2, py2);
+                ctx.stroke();
+                ctx.setLineDash([]);
+            }
+            else if (data.type === 'parallel_distance') {
+                const line1 = data.line1;
+                const line2 = data.line2;
+                
+                // Draw line 1 (blue)
+                drawLine(ctx, toPixel, minX, maxX, line1);
+                
+                // Draw line 2 (red)
+                drawLine(ctx, toPixel, minX, maxX, line2, { color: varColor('--point-color') });
+
+                // Draw perpendicular distance (dashed green) - simplified at x=0
+                const x0 = 0;
+                const y1 = (-line1[0] * x0 - line1[2]) / line1[1];
+                const y2 = (-line2[0] * x0 - line2[2]) / line2[1];
+                
+                ctx.strokeStyle = '#2fd182';
+                ctx.lineWidth = 1;
+                ctx.setLineDash([5, 5]);
+                ctx.beginPath();
+                const [px1, py1] = toPixel(x0, y1);
+                const [px2, py2] = toPixel(x0, y2);
+                ctx.moveTo(px1, py1);
+                ctx.lineTo(px2, py2);
+                ctx.stroke();
+                ctx.setLineDash([]);
+            }
+             else if (data.type === 'position' || data.type === 'position_check') {
+                const [A, B, C] = data.line;
+                drawLine(ctx, toPixel, minX, maxX, data.line);
+                
+                if (data.type === 'position') {
+                    drawPoints(ctx, toPixel, [data.point], ['P']);
+                } else if (data.type === 'position_check') {
+                    drawPoints(ctx, toPixel, data.points, ['Q', 'R']);
+                }
+            }
+        }
+        
+        function calculateLineEquation(p1, p2) {
+            const [x1, y1] = p1;
+            const [x2, y2] = p2;
+            
+            // A(x-x1) + B(y-y1) = 0 => Ax + By + C = 0
+            const A = y2 - y1;
+            const B = x1 - x2;
+            const C = -A * x1 - B * y1;
+            return [A, B, C];
+        }
+
+
+        // --- Event Handlers & Initialization ---
+        window.addEventListener('load', function() {
+            // Initialize step blocks
+            initStepBlocks();
+            
+            // Wire up all step buttons to use the same function
+            document.querySelectorAll('.step-btn').forEach(btn=>{
+                btn.addEventListener('click', (e)=> {
+                    e.preventDefault();
+                    revealStep(btn);
+                    // Also redraw graph when showing first step, in case the user jumped here
+                    const graphId = btn.closest('.step-block').id;
+                    const canvas = document.getElementById(`canvas-${graphId}`);
+                    if(canvas && canvas.style.display === 'block') {
+                        drawGraphById(graphId);
+                    }
+                });
+            });
+            
+            // Wire up all show-all buttons
+            document.querySelectorAll('.show-all-btn').forEach(btn=>{
+                btn.addEventListener('click', (e)=> {
+                    e.preventDefault();
+                    revealAll(btn);
+                });
+            });
+
+            // Wire up a single button to toggle graph visibility/drawing
+            document.querySelectorAll('.example-box .controls').forEach(controls => {
+                const stepBlock = controls.closest('.example-box').querySelector('.step-block');
+                if (!stepBlock) return;
+                const stepBlockId = stepBlock.id;
+                const graphData = canvasData[stepBlockId];
+                
+                // Only add the graph button if it's not an algebraic proof
+                if(graphData && graphData.type !== 'text') {
+                    const existingBtn = controls.querySelector('button[onclick*="toggleGraph"]');
+                    if (!existingBtn) {
+                        const graphBtn = document.createElement('button');
+                        graphBtn.classList.add('btn');
+                        graphBtn.innerHTML = '<i class="fas fa-chart-bar"></i> Show Graph';
+                        graphBtn.setAttribute('onclick', 'toggleGraph(this)');
+                        controls.appendChild(graphBtn);
+                    }
+                } else {
+                    // For algebraic proof, just ensure the 'no graph' message is visible
+                    const graphBlock = document.getElementById(`g-${stepBlockId}`);
+                    if(graphBlock) graphBlock.style.display = 'block';
+                }
+            });
+
+            // Attach Enter handler for inputs
+            document.querySelectorAll('input[type="text"]').forEach(inp => {
+                inp.addEventListener('keydown', function(e){
+                    if (e.key === 'Enter'){
+                        const btn = inp.parentElement.querySelector('.check');
+                        if (btn) btn.click();
+                        e.preventDefault();
+                    }
+                });
+            });
+            
+            // Render MathJax
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        });
+
+        // Expose functions globally for inline handlers
+        window.revealStep = revealStep;
+        window.revealAll = revealAll;
+        window.checkTextMotivate = checkTextMotivate;
+        window.toggleGraph = toggleGraph;
+    </script></body></html>

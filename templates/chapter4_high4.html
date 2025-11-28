@@ -1,0 +1,2843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sentellect — Coordinate Geometry (Chapter 4) - Exercise 4.4</title>
+
+  <!-- MathJax -->
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ===== Base Styles ===== */
+    :root {
+      --primary: #1e40af;
+      --primary-light: #3b82f6;
+      --primary-dark: #1e3a8a;
+      --secondary: #f59e0b;
+      --accent: #ec4899;
+      --text: #1e293b;
+      --text-light: #64748b;
+      --text-lighter: #94a3b8;
+      --bg: #f8fafc;
+      --white: #ffffff;
+      --gray: #e2e8f0;
+      --gray-light: #f1f5f9;
+      --success: #10b981;
+      --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      --hover-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      --pastel-bg: #f3f8ff;
+      --muted: #64748b;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Quicksand', system-ui, -apple-system, 'Segoe UI', Roboto, Arial;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    section {
+      padding: 80px 0;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .section-title h2 {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 15px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title h2::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: var(--secondary);
+      border-radius: 2px;
+    }
+
+    .section-title p {
+      color: var(--text-light);
+      font-size: 1.1rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 28px;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--white);
+      box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(30, 64, 175, 0.4);
+    }
+
+    .btn-secondary {
+      background-color: var(--white);
+      color: var(--primary);
+      border: 2px solid var(--primary);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--primary);
+      color: var(--white);
+      transform: translateY(-2px);
+    }
+
+    /* ===== Animations ===== */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    @keyframes shimmer {
+      0% { background-position: -1000px 0; }
+      100% { background-position: 1000px 0; }
+    }
+    
+    @keyframes slideIn {
+      from { transform: translateX(-20px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    
+    @keyframes bounceIn {
+      0% { transform: scale(0.95); opacity: 0; }
+      50% { transform: scale(1.02); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes breathe {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.45); }
+    }
+
+    @keyframes wavey {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+      100% { transform: translateY(0); }
+    }
+
+    .animate {
+      animation: fadeIn 0.8s ease forwards;
+    }
+    
+    .animate-slide {
+      animation: slideIn 0.6s ease forwards;
+    }
+    
+    .animate-bounce {
+      animation: bounceIn 0.8s ease forwards;
+    }
+
+    .delay-1 { animation-delay: 0.2s; }
+    .delay-2 { animation-delay: 0.4s; }
+    .delay-3 { animation-delay: 0.6s; }
+    .delay-4 { animation-delay: 0.8s; }
+
+    /* ===== Header/Navbar ===== */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      background-color: var(--white);
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    header.scrolled {
+      padding: 10px 0;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: var(--white);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 18px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(30, 64, 175, 0.2);
+    }
+
+    .logo-text {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      transition: all 0.3s ease;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 30px;
+      margin: 0 auto;
+    }
+
+    .nav-links a {
+      font-weight: 500;
+      position: relative;
+      padding: 5px 0;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      transition: width 0.3s ease;
+      border-radius: 2px;
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      width: 100%;
+    }
+
+    .nav-links a.active {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--primary);
+      cursor: pointer;
+    }
+
+    /* Sound controls in header */
+    .header-sound-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    
+    .sound-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .sound-btn:hover {
+      transform: scale(1.1);
+      background: var(--primary-light);
+    }
+    
+    .sound-btn.muted {
+      background: var(--muted);
+    }
+    
+    /* ===== Hero Section ===== */
+    .hero {
+      position: relative;
+      padding: 180px 0 80px;
+      background: linear-gradient(135deg, var(--primary), #004e92);
+      color: var(--white);
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3QgZmlsbD0idXJsKCNwYXR0ZXJuKSIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIvPjwvc3ZnPg==');
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-size: 3.2rem;
+      margin-bottom: 20px;
+      line-height: 1.2;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .hero h1 span {
+      color: var(--secondary);
+      position: relative;
+    }
+
+    .hero h1 span::after {
+      content: '';
+      position: absolute;
+      bottom: 5px;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background-color: rgba(255, 255, 255, 0.3);
+      z-index: -1;
+      border-radius: 4px;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 40px;
+      opacity: 0.9;
+    }
+
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .hero .btn-secondary {
+      background-color: transparent;
+      color: var(--white);
+      border-color: var(--white);
+    }
+
+    .hero .btn-secondary:hover {
+      background-color: var(--white);
+      color: var(--primary);
+    }
+
+    .floating-shape {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      z-index: 0;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .shape-1 {
+      width: 150px;
+      height: 150px;
+      top: 10%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .shape-2 {
+      width: 100px;
+      height: 100px;
+      bottom: 15%;
+      right: 10%;
+      animation-delay: 0.5s;
+    }
+
+    .shape-3 {
+      width: 80px;
+      height: 80px;
+      top: 30%;
+      right: 20%;
+      animation-delay: 1s;
+    }
+    
+    .particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 0;
+    }
+    
+    .particle {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      animation: float 8s infinite ease-in-out;
+    }
+
+    /* ===== Card Styles ===== */
+    .card {
+      background-color: var(--white);
+      border-radius: 16px;
+      padding: 30px;
+      margin: 25px 0;
+      box-shadow: var(--card-shadow);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--primary), var(--secondary));
+      transition: width 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--hover-shadow);
+    }
+    
+    .card:hover::before {
+      width: 8px;
+    }
+
+    h2 {
+      color: var(--primary);
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    h3 {
+      color: var(--primary);
+      font-size: 1.4rem;
+      margin: 25px 0 15px;
+      font-weight: 600;
+      position: relative;
+      padding-left: 15px;
+    }
+    
+    h3::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 6px;
+      height: 6px;
+      background: var(--secondary);
+      border-radius: 50%;
+    }
+
+    p {
+      color: var(--text-light);
+      margin-bottom: 20px;
+      line-height: 1.7;
+    }
+
+    .lead {
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    /* ===== Step Buttons ===== */
+    .step-buttons {
+      display: flex;
+      gap: 12px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+
+    .step-btn {
+      padding: 10px 16px;
+      background: linear-gradient(to right, var(--primary), var(--primary-light));
+      color: var(--white);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      box-shadow: 0 4px 8px rgba(30, 64, 175, 0.2);
+    }
+
+    .step-btn:hover {
+      background: linear-gradient(to right, var(--primary-dark), var(--primary));
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(30, 64, 175, 0.3);
+    }
+
+    /* ===== Solution Display ===== */
+    .solution {
+      background: var(--gray-light);
+      border-left: 4px solid var(--secondary);
+      padding: 20px;
+      margin: 15px 0;
+      border-radius: 0 8px 8px 0;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .solution::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.5), transparent);
+      transform: translateX(-100%);
+    }
+    
+    .solution.active::before {
+      animation: shimmer 1.5s ease;
+    }
+
+    /* ===== Progress Bar ===== */
+    .progress-container {
+      width: 100%;
+      height: 8px;
+      background-color: var(--gray);
+      border-radius: 4px;
+      margin: 20px 0;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      border-radius: 4px;
+      width: 0%;
+      transition: width 1s ease;
+    }
+
+    /* ===== Self-Care Notes ===== */
+    .self-care {
+      background: linear-gradient(135deg, #e0f2fe, #f0f9ff);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 25px 0;
+      text-align: center;
+      border-left: 5px solid var(--accent);
+      animation: pulse 3s infinite;
+    }
+
+    .self-care h4 {
+      color: var(--accent);
+      margin-bottom: 10px;
+      font-size: 1.3rem;
+    }
+
+    .self-care p {
+      color: var(--text);
+      font-size: 1.1rem;
+      margin-bottom: 0;
+    }
+
+    /* ===== Visual Elements ===== */
+    .math-emoji {
+      font-size: 2rem;
+      margin: 0 10px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .visual-element {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .emoji-row {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin: 15px 0;
+    }
+
+    /* Coordinate Visuals */
+    .concept-visual {
+      display: flex;
+      justify-content: center;
+      margin: 15px 0;
+    }
+
+    .coordinate-visual {
+      position: relative;
+      width: 280px;
+      height: 200px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+
+    .grid-lines {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-image: linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+
+    .axis {
+      position: absolute;
+      background: #333;
+    }
+
+    .x-axis {
+      bottom: 50%;
+      left: 0;
+      width: 100%;
+      height: 2px;
+    }
+
+    .y-axis {
+      left: 50%;
+      top: 0;
+      width: 2px;
+      height: 100%;
+    }
+
+    .point {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .point-label {
+      position: absolute;
+      font-size: 12px;
+      font-weight: bold;
+      transform: translate(5px, -5px);
+    }
+
+    .line {
+      position: absolute;
+      height: 2px;
+      transform-origin: left center;
+    }
+
+    /* Concept visuals */
+    .visual-box {
+      width: 220px;
+      height: 160px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      padding: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ===== Chapter 4 Specific Styles ===== */
+    .definition {
+      background: #f3fbff;
+      border-left: 6px solid var(--primary);
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 10px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .definition-content{flex:1}
+    .definition-cartoon{flex-shrink:0;width:80px;height:80px;display:flex;align-items:center;justify-content:center}
+
+    .controls {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .example {
+      background: #fff;
+      padding: 12px;
+      border-radius: 10px;
+      margin-top: 12px;
+      border-left: 6px solid #bfe9ff;
+    }
+
+    .big {
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+
+    .step-block {
+      margin-top: 10px;
+    }
+
+    .step-line {
+      display: none;
+      padding: 10px;
+      border-radius: 8px;
+      background: #f7fbff;
+      margin-top: 8px;
+      border-left: 4px solid #d6eefc;
+    }
+
+    .next-step {
+      margin-top: 8px;
+      background: var(--primary);
+      color: white;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #d9ecff;
+      width: 100%;
+      font-size: 15px;
+    }
+    input[type="number"] {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #d9ecff;
+      max-width: 100px;
+      font-size: 15px;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+
+    button.check {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .result {
+      margin-top: 8px;
+      padding: 10px;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .result.good {
+      background: #e6fff0;
+      border-left: 4px solid #2fb46a;
+    }
+
+    .result.warn {
+      background: #fff7e6;
+      border-left: 4px solid #ffb74d;
+    }
+
+    .calm {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 10px;
+      background: linear-gradient(180deg, #fff8f0, #f8ffff);
+      text-align: center;
+      border: 1px solid #e6f7ff;
+    }
+
+    .breath {
+      width: 48px;
+      height: 48px;
+      background: #ffd08a;
+      border-radius: 50%;
+      margin: 12px auto;
+      animation: breathe 4s infinite ease-in-out;
+    }
+
+    .wave {
+      font-size: 36px;
+      display: inline-block;
+      animation: wavey 2.6s infinite;
+    }
+
+    .divider {
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+      color: white;
+      padding: 10px 14px;
+      border-radius: 10px;
+      margin: 18px 0;
+      font-weight: 700;
+      box-shadow: 0 6px 18px rgba(3, 102, 214, 0.08);
+      text-align: center;
+    }
+
+    .small-note {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-top: 6px;
+    }
+
+    .funny-note {
+      font-size: 14px;
+      color: var(--primary);
+      margin-top: 6px;
+    }
+
+    .scenario {
+      display: none;
+    }
+
+    .try-yourself {
+      background: #fffaf0;
+      border-radius: 10px;
+      padding: 15px;
+      margin: 15px 0;
+      border: 1px dashed rgba(245,158,11,0.16);
+    }
+
+    .try-title {
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .example-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .example-box {
+      background: var(--pastel-bg);
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid rgba(30,64,175,0.04);
+    }
+
+    .motivate{
+      background:linear-gradient(180deg,#fff,#fffaf6);
+      border-radius:10px;
+      padding:10px;
+      border-left:6px solid var(--accent);
+      margin-top:12px;
+      display:flex;
+      align-items:center;
+      gap:12px
+    }
+    .motivate .emoji{font-size:24px}
+    .motivate .text{font-weight:700;color:var(--primary);font-size:0.95rem}
+
+    /* ===== Interactive Games ===== */
+    .game-card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    
+    .game-card-style{
+      display:flex;
+      gap:16px;
+      align-items:center;
+      background:var(--white);
+      padding:20px;
+      border-radius:16px;
+      box-shadow:0 8px 25px rgba(2,6,23,0.08);
+      cursor:pointer;
+      border:1px solid rgba(30,64,175,0.04);
+      transition:all 0.3s ease;
+      position:relative;
+      overflow:hidden
+    }
+    .game-card-style:hover{
+      transform:translateY(-8px);
+      box-shadow:0 15px 35px rgba(30,64,175,0.15)
+    }
+    .game-card-style::before{
+      content:"";
+      position:absolute;
+      top:0;
+      left:0;
+      width:100%;
+      height:5px;
+      background:linear-gradient(90deg,var(--primary),var(--accent))
+    }
+    .game-card-left{
+      min-width:110px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:8px
+    }
+    .svg-icon{
+      width:100px;
+      height:100px;
+      border-radius:16px;
+      background:linear-gradient(180deg,#fff,#fffaf6);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:0 8px 20px rgba(30,64,175,0.08);
+      border:2px solid rgba(255,255,255,0.7);
+      overflow:hidden;
+      font-size: 48px;
+      color: var(--primary);
+    }
+    .game-card-title{
+      font-weight:800;
+      color:var(--primary);
+      font-size:1.2rem;
+      margin-bottom:6px
+    }
+    .game-card-desc{
+      color:var(--muted);
+      font-size:0.95rem;
+      line-height:1.4
+    }
+    .start-btn {
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(30,64,175,0.2);
+    }
+    .start-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(30,64,175,0.3);
+    }
+
+    .game-play-area {
+      display: none;
+      margin-top: 20px;
+      padding: 20px;
+      border: 2px solid var(--accent);
+      border-radius: 12px;
+      background: #fffafc;
+      text-align: center;
+    }
+    
+    .score-board {
+      font-weight: 700;
+      color: var(--primary);
+      background: #f0f9ff;
+      padding: 6px 10px;
+      border-radius: 6px;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+    
+    .game-message {
+      margin-top: 12px;
+      color: var(--primary);
+      font-weight: 600;
+    }
+    
+    .game-input-group {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 15px;
+        font-weight: 600;
+        color: var(--primary);
+    }
+    
+    .game-icon-visual {
+      font-size: 48px;
+      margin-bottom: 10px;
+    }
+
+    /* Celebration Overlay */
+    .celebration {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 2000;
+      display: none;
+    }
+    
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: #f00;
+      opacity: 0;
+    }
+    
+    .hurray-text {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 48px;
+      font-weight: bold;
+      color: #ff6b6b;
+      text-shadow: 2px 2px 0 #ffd166, 4px 4px 0 #06d6a0;
+      opacity: 0;
+    }
+
+    /* Party popper */
+    .party-popper {
+      position: absolute;
+      font-size: 30px;
+      opacity: 0;
+    }
+    
+    /* ===== Footer ===== */
+    .footer {
+      background: linear-gradient(to bottom, var(--primary-dark), #0f172a);
+      color: var(--white);
+      padding: 80px 0 30px;
+      position: relative;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 10px;
+      background: linear-gradient(90deg, var(--secondary), var(--primary));
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+      margin-bottom: 60px;
+    }
+
+    .footer-about {
+      grid-column: span 2;
+    }
+
+    .footer-logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .footer-logo-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--white), var(--gray));
+      color: var(--primary);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .footer-about p {
+      opacity: 0.8;
+      margin-bottom: 25px;
+      line-height: 1.7;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 15px;
+    }
+
+    .social-link {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+      background: linear-gradient(135deg, var(--secondary), var(--accent));
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
+    }
+
+    .footer-links h3 {
+      font-size: 1.2rem;
+      margin-bottom: 25px;
+      position: relative;
+      padding-bottom: 10px;
+      color: var(--white);
+    }
+
+    .footer-links h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 3px;
+      background: linear-gradient(to right, var(--secondary), var(--accent));
+    }
+
+    .footer-links ul {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 12px;
+    }
+
+    .footer-links a {
+      opacity: 0.8;
+      transition: all 0.3s ease;
+      position: relative;
+      padding-left: 15px;
+    }
+
+    .footer-links a::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      opacity: 1;
+      padding-left: 20px;
+    }
+
+    .footer-links a:hover::before {
+      opacity: 1;
+      left: -5px;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 30px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-bottom p {
+      opacity: 0.7;
+      margin-bottom: 20px;
+    }
+
+    .footer-tags {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 5px 15px;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+    }
+
+    .tag:hover {
+      background: linear-gradient(to right, var(--secondary), var(--accent));
+      color: var(--text);
+      transform: translateY(-2px);
+    }
+    
+    /* ===== Floating Action Button ===== */
+    .fab {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: 0 6px 15px rgba(30, 64, 175, 0.3);
+      cursor: pointer;
+      z-index: 999;
+      transition: all 0.3s ease;
+      animation: pulse 2s infinite;
+    }
+    
+    .fab:hover {
+      transform: scale(1.1) rotate(90deg);
+      box-shadow: 0 8px 20px rgba(30, 64, 175, 0.4);
+    }
+
+    /* ===== Responsive Styles ===== */
+    @media (max-width: 992px) {
+      .nav-links {
+        gap: 20px;
+      }
+      
+      .footer-content {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .footer-about {
+        grid-column: span 2;
+      }
+      
+      .scenario .card-mini {
+        width: 45%;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 15px 0;
+      }
+      
+      .nav-links {
+        display: none;
+      }
+      
+      .mobile-menu-btn {
+        display: block;
+      }
+      
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      
+      .hero-buttons {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .footer-content {
+        grid-template-columns: 1fr;
+      }
+      
+      .footer-about {
+        grid-column: span 1;
+      }
+      
+      .scenario .card-mini {
+        width: 100%;
+      }
+      
+      .header-sound-controls {
+        right: 60px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .section-title h2 {
+        font-size: 2rem;
+      }
+      
+      .hero {
+        padding: 150px 0 80px;
+      }
+      
+      .hero h1 {
+        font-size: 2rem;
+      }
+      
+      .hero p {
+        font-size: 1rem;
+      }
+      
+      .header-sound-controls {
+        right: 50px;
+      }
+    }
+    /* =========================================
+   MANUAL MODE SWITCHER & SCROLL DETECTION
+   ========================================= */
+
+/* 1. Mode Switcher (Floating Top Right) */
+.mode-indicator {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid #dc2626; /* Red for High Stress */
+    padding: 10px 20px;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(220, 38, 38, 0.2);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    animation: slideInRight 0.5s ease-out;
+}
+
+.mode-text {
+    color: #dc2626;
+    font-weight: bold;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.switch-btn {
+    background: linear-gradient(to right, #3b82f6, #2563eb);
+    color: white;
+    padding: 6px 15px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    text-decoration: none;
+}
+
+.switch-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+    color: white;
+}
+
+/* 2. Scroll Modal (Hidden by default) */
+#scrollModal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(2px);
+}
+
+.scroll-modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    max-width: 450px;
+    text-align: center;
+    border-top: 6px solid #f59e0b; /* Orange for Warning */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Animations & Responsiveness */
+@keyframes slideInRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@media (max-width: 768px) {
+    .mode-indicator {
+        top: auto;
+        bottom: 20px;
+        right: 50%;
+        transform: translateX(50%);
+        width: 90%;
+        justify-content: space-between;
+    }
+}
+  </style>
+</head>
+<body>
+  <div class="mode-indicator">
+    <div class="mode-text">
+        <i class="fas fa-fire"></i> Challenge Mode
+    </div>
+    <a href="{{ url_for('serve_chapter', chapter_num=2) }}?mode=mid" class="switch-btn">
+        Switch to Standard
+    </a>
+</div>
+
+<div id="scrollModal">
+    <div class="scroll-modal-content">
+        <h3 style="color:#d97706; margin-bottom:15px;">🏎️ Woah, slowing down?</h3>
+        <p style="font-size:1.1rem; color:#555; margin-bottom:20px;">
+            We noticed you are scrolling quite fast. <br><br>
+            If you are looking for a more structured flow without the relaxation elements, the <b>Standard Mode</b> might be a better fit.
+        </p>
+        
+        <div style="display:flex; gap:15px; justify-content:center; margin-top:20px;">
+            <button onclick="closeScrollModal()" style="padding:10px 20px; border:1px solid #ccc; background:white; border-radius:50px; cursor:pointer; font-weight:600; color:#666;">I'm just skimming</button>
+            <a href="{{ url_for('serve_chapter', chapter_num=2) }}?mode=mid" style="padding:10px 25px; background:#3b82f6; color:white; border-radius:50px; text-decoration:none; font-weight:600; box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);">
+                Switch to Standard
+            </a>
+        </div>
+    </div>
+</div>
+  <!-- Celebration Overlay -->
+  <div class="celebration" id="celebration"></div>
+
+  <!-- Header with updated navigation -->
+  <header>
+    <div class="container">
+      <nav class="navbar">
+        <a href="#" class="logo">
+          <div class="logo-icon">S</div>
+          <span class="logo-text">Sentellect</span>
+        </a>
+        
+        <ul class="nav-links">
+          <li><a href="#" class="active">Home</a></li>
+	  <li><a href="#angle">Introduction</a></li>
+          <li><a href="#Graphing">Graphing</a></li>
+          <li><a href="#System">Systems</a></li>
+          <li><a href="#centres">Practice</a></li>
+          <li><a href="#games">Games</a></li>   
+        </ul>
+        
+        <!-- Sound controls in header - moved to top right -->
+        <div class="header-sound-controls">
+          <button class="sound-btn" id="toggleSound" title="Toggle sound effects">
+            <i class="fas fa-volume-up"></i>
+          </button>
+        </div>
+        
+        <button class="mobile-menu-btn">
+          <i class="fas fa-bars"></i>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" role="banner" aria-label="Chapter 4 hero">
+    <div class="particles">
+      <div class="particle" style="top: 20%; left: 5%; width: 10px; height: 10px; animation-delay: 0s;"></div>
+      <div class="particle" style="top: 60%; left: 15%; width: 15px; height: 15px; animation-delay: 1s;"></div>
+      <div class="particle" style="top: 30%; right: 10%; width: 12px; height: 12px; animation-delay: 2s;"></div>
+      <div class="particle" style="bottom: 20%; left: 20%; width: 8px; height: 8px; animation-delay: 3s;"></div>
+      <div class="particle" style="bottom: 40%; right: 15%; width: 14px; height: 14px; animation-delay: 4s;"></div>
+    </div>
+    
+    <div class="floating-shape shape-1"></div>
+    <div class="floating-shape shape-2"></div>
+    <div class="floating-shape shape-3"></div>
+    
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="animate">Coordinate Geometry — Chapter 4</h1>
+        <p class="animate delay-1">Exercise 4.4(H): Geometry of Lines and Triangles. Explore equations for lines based on intersection, and the special points inside a triangle.</p>
+        <div class="hero-buttons">
+          <a href="#intersection" class="btn btn-primary animate delay-2">Start Exercise 4.4</a>
+          <a href="#games" class="btn btn-secondary animate delay-3">Open Games</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <div class="container" style="padding-bottom:60px;">
+
+    <!-- Welcome card -->
+    <div class="card animate">
+      <h2>Welcome to Geometry of Lines and Triangles</h2>
+      <p class="lead">This module contains all examples, try-it-yourself exercises, and interactive games to practice the key ideas about line intersections, concurrency, angles between lines, and triangle centres.</p>
+      
+      <!-- Welcome visual -->
+      <div class="concept-visual">
+        <div class="visual-box" style="background:linear-gradient(135deg, #e3f2fd, #f3e5f5); display:flex; align-items:center; justify-content:center;">
+          <div style="text-align:center">
+            <div style="font-size:40px; margin-bottom:10px">📐</div>
+            <div style="font-weight:bold; color:var(--primary)">Let's Explore Line Geometry!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= POINT OF INTERSECTION OF TWO LINES ================= -->
+    <div id="intersection" class="divider">1. Point of Intersection of Two Lines</div>
+    <section class="card animate delay-1">
+      <h2>Where Do They Meet? (Intersection)</h2>
+      <p class="lead">This is the unique point (x,y) where two non-parallel lines cross each other. We solve their equations simultaneously. Think of it as finding the single spot on a map that belongs to two different roads!</p>
+
+      <div class="definition">
+        <div class="definition-content">
+          <strong>Cross-Multiplication Formula:</strong> The solution to a₁x+b₁y+c₁=0 and a₂x+b₂y+c₂=0 is:
+          <p style="font-size:1.1rem; text-align:center; font-family: monospace;">
+            x/(b₁c₂ - b₂c₁) = -y/(a₁c₂ - a₂c₁) = 1/(a₁b₂ - a₂b₁)
+          </p>
+          <div style="margin-top:8px; display:flex; align-items:center; gap:8px;">
+            <span style="font-size:24px">🛣️</span>
+            <span>The <strong>intersection point</strong> satisfies <em>both</em> line equations.</span>
+          </div>
+        </div>
+        <div class="definition-cartoon">
+          <svg viewBox="0 0 100 100" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+            <line x1="15" y1="20" x2="85" y2="80" stroke="#3b82f6" stroke-width="5" stroke-linecap="round" />
+            <line x1="15" y1="80" x2="85" y2="20" stroke="#f59e0b" stroke-width="5" stroke-linecap="round" />
+            <circle cx="50" cy="50" r="8" fill="#ec4899" />
+            <text x="50" y="54" font-size="8" fill="white" text-anchor="middle" font-weight="bold">P</text>
+            <text x="80" y="85" font-size="6" fill="#f59e0b">L1</text>
+            <text x="80" y="15" font-size="6" fill="#3b82f6">L2</text>
+            <path d="M50 50 L55 60 L45 60 Z" fill="#ec4899" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Examples -->
+      <div class="example-container">
+        <div class="example-box">
+          <div class="big">Example 1: Integer Solution (Road Crossing)</div>
+          <p class="small-note"><strong>Question:</strong> Find the point of intersection of: x-2y+1=0 and 2x-y+2=0</p>
+          <div class="controls">
+            <button class="step-btn" onclick="startSteps('int1'); playSound('concept')">Show Steps</button>
+          </div>
+          <div class="step-block" id="int1">
+            <div class="step-line" style="display:none"><b>Step 1:</b> Identify coefficients: a₁=1, b₁=-2, c₁=1 and a₂=2, b₂=-1, c₂=2.</div>
+            <div class="step-line" style="display:none"><b>Step 2:</b> Calculate the denominator D = a₁b₂-a₂b₁ = (1)(-1)-(2)(-2) = 3.</div>
+            <div class="step-line" style="display:none"><b>Step 3:</b> Solve for x: x = (b₁c₂-b₂c₁)/D = ((-2)(2)-(-1)(1))/3 = -1.</div>
+            <div class="step-line" style="display:none"><b>Step 4:</b> Solve for y: y = -(a₁c₂-a₂c₁)/D = -((1)(2)-(2)(1))/3 = 0.</div>
+            <div class="step-line" style="display:none"><b>Answer:</b> The point of intersection is (-1, 0).</div>
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('int1'); playSound('click')">Next Step</button></div>
+          </div>
+        </div>
+
+        <div class="example-box">
+          <div class="big">Example 2: Simple Fraction Solution</div>
+          <p class="small-note"><strong>Question:</strong> Find the point of intersection of: 3x+y+12=0 and x+2y-1=0</p>
+          <div class="controls">
+            <button class="step-btn" onclick="startSteps('int2'); playSound('concept')">Show Steps</button>
+          </div>
+          <div class="step-block" id="int2">
+            <div class="step-line" style="display:none"><b>Step 1:</b> Identify coefficients: a₁=3, b₁=1, c₁=12 and a₂=1, b₂=2, c₂=-1.</div>
+            <div class="step-line" style="display:none"><b>Step 2:</b> Calculate the denominator D = a₁b₂-a₂b₁ = (3)(2)-(1)(1) = 5.</div>
+            <div class="step-line" style="display:none"><b>Step 3:</b> Solve for x: x = ((1)(-1)-(2)(12))/5 = -5.</div>
+            <div class="step-line" style="display:none"><b>Step 4:</b> Solve for y: y = -((3)(-1)-(1)(12))/5 = 3.</div>
+            <div class="step-line" style="display:none"><b>Answer:</b> The point of intersection is (-5, 3).</div>
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('int2'); playSound('click')">Next Step</button></div>
+          </div>
+        </div>
+        
+        <div class="example-box">
+          <div class="big">Example 3: Line through Intersection (Family of Lines)</div>
+          <p class="small-note"><strong>Question:</strong> Find the line through intersection of 2x+5y-8=0 and 3x-4y-6=0 that passes through (2,1).</p>
+          <div class="controls">
+            <button class="step-btn" onclick="startSteps('int3'); playSound('concept')">Show Steps</button>
+          </div>
+          <div class="step-block" id="int3">
+            <div class="step-line" style="display:none"><b>Step 1:</b> Use L₁ + λL₂ = 0: (2x+5y-8) + λ(3x-4y-6) = 0.</div>
+            <div class="step-line" style="display:none"><b>Step 2:</b> Substitute external point (2, 1) to find λ: (1) + λ(-4) = 0 ⇒ λ = 1/4.</div>
+            <div class="step-line" style="display:none"><b>Step 3:</b> Substitute λ=1/4 back: (2x+5y-8) + ¼(3x-4y-6) = 0.</div>
+            <div class="step-line" style="display:none"><b>Step 4:</b> Multiply by 4 and simplify: 8x+20y-32+3x-4y-6=0.</div>
+            <div class="step-line" style="display:none"><b>Answer:</b> The required equation is 11x+16y-38=0.</div>
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('int3'); playSound('click')">Next Step</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="try-yourself">
+        <div class="try-title">✨ Try It Yourself: Find the Meeting Point</div>
+        <p>1. Find the point of intersection of x+4y-12=0 and x-3y+3=0. (Enter as x,y)</p>
+        <div class="row">
+          <input id="t_int1" placeholder="e.g. 1,2">
+          <button class="check" onclick="checkTextMotivate('t_int1','(24/7,15/7)','t_int1_res')">Check</button>
+        </div>
+        <div id="t_int1_res" class="result"></div>
+        
+        <p style="margin-top:10px">2. Find the lambda value if the line passing through intersection of x+2y-3=0 and 2x-y+4=0 is parallel to 3x+y-7=0.</p>
+        <div class="row">
+          <input id="t_int2" placeholder="Enter only the number">
+          <button class="check" onclick="checkTextMotivate('t_int2','1','t_int2_res')">Check</button>
+        </div>
+        <div id="t_int2_res" class="result"></div>
+      </div>
+      
+      <div class="motivate" style="margin-top:14px">
+        <div class="emoji">🗺️💖</div>
+        <div class="text" style="color:#ec4899;">Great job finding the exact coordinates where the lines cross!</div>
+      </div>
+      
+      <!-- Game card for Intersection -->
+      <h3 style="margin-top:18px;color:var(--accent)">Play the Intersection Games</h3>
+      <div class="game-card-grid">
+        <div class="game-card-style" onclick="showGame('intersection-game'); playSound('gameStart')">
+          <div class="game-card-left">
+            <div class="svg-icon" aria-hidden="true" style="background: linear-gradient(135deg, #ff7eb3, #ff758c);">
+              <i class="fas fa-road"></i>
+            </div>
+            <div style="font-size:12px;color:var(--muted); margin-top:5px">Road Maps</div>
+          </div>
+          <div>
+            <div class="game-card-title">Roads to Riches</div>
+            <div class="game-card-desc">Identify the correct meeting point of two lines quickly for a high score.</div>
+            <div style="margin-top:12px"><button class="start-btn">Play Game</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="intersection-game" class="game-play-area">
+        <h3 style="color:var(--primary); margin-bottom: 10px;">Roads to Riches: Find the intersection point!</h3>
+        <div class="game-icon-visual">🗺️</div>
+        <div class="score-board" id="int-score-display">Score: 0</div>
+        <div class="game-prompt" id="int-prompt">L1: x - 2y + 1 = 0 | L2: 2x - y + 2 = 0</div>
+        <div class="game-input-group">
+            x: <input type="number" id="int-x-input" placeholder="x">
+            y: <input type="number" id="int-y-input" placeholder="y">
+        </div>
+        <button class="check" onclick="checkIntersection()" style="background:var(--primary)">Check Coordinates</button>
+        <div class="game-message" id="int-status">Ready.</div>
+        <button class="step-btn" style="margin-top: 15px;" onclick="initIntersectionGame(); playSound('click')">New Roads</button>
+      </div>
+
+      <div class="calm">
+        <div class="wave">💡</div>
+        <div style="font-weight:700">Calm: Picture a gentle "X" mark on a graph. Breathe in that sharp moment of clarity!</div>
+      </div>
+    </section>
+
+    <!-- ================= THREE CONCURRENT LINES ================= -->
+    <div id="concurrency" class="divider">2. Three Concurrent Lines</div>
+    <section class="card animate delay-2">
+      <h2>The Three-Way Meetup (Concurrency)</h2>
+      <p class="lead">Three lines are <strong>concurrent</strong> if they all pass through the exact same point. We check this by seeing if the determinant of their coefficients is zero.</p>
+
+      <div class="definition">
+        <div class="definition-content">
+          <strong>Concurrency Condition (Determinant Test):</strong> For L₁, L₂, L₃:
+          <p style="font-size:1.1rem; text-align:center; font-family: monospace;">
+            | a₁  b₁  c₁ |<br>
+            | a₂  b₂  c₂ | = 0<br>
+            | a₃  b₃  c₃ |
+          </p>
+          <div style="margin-top:8px; display:flex; align-items:center; gap:8px;">
+            <span style="font-size:24px">🎯</span>
+            <span>If the determinant is zero, all three lines hit the <strong>bullseye</strong>!</span>
+          </div>
+        </div>
+        <div class="definition-cartoon">
+          <svg viewBox="0 0 100 100" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="40" fill="#ff6b6b" />
+            <circle cx="50" cy="50" r="30" fill="#ffd166" />
+            <circle cx="50" cy="50" r="20" fill="#06d6a0" />
+            <circle cx="50" cy="50" r="10" fill="#118ab2" />
+            <line x1="20" y1="20" x2="80" y2="80" stroke="#FFF" stroke-width="2" />
+            <line x1="20" y1="80" x2="80" y2="20" stroke="#FFF" stroke-width="2" />
+            <line x1="10" y1="50" x2="90" y2="50" stroke="#FFF" stroke-width="2" />
+            <line x1="50" y1="10" x2="50" y2="90" stroke="#FFF" stroke-width="2" />
+            <text x="50" y="54" font-size="8" fill="white" text-anchor="middle" font-weight="bold">0</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Examples -->
+      <div class="example-container">
+        <div class="example-box">
+          <div class="big">Example 1: Finding the unknown 'p'</div>
+          <p class="small-note"><strong>Question:</strong> Find p if 2x+3y-1=0, 3x-y-5=0, and 3x+py+8=0 are concurrent.</p>
+          <div class="controls">
+            <button class="step-btn" onclick="startSteps('conc1'); playSound('concept')">Show Steps</button>
+          </div>
+          <div class="step-block" id="conc1">
+            <div class="step-line" style="display:none"><b>Step 1:</b> Set up the determinant = 0 using coefficients.</div>
+            <div class="step-line" style="display:none"><b>Step 2:</b> Expand: 2(8 - (-5)p) - 3(24 - (-15)) + (-1)(3p - (-3)) = 0.</div>
+            <div class="step-line" style="display:none"><b>Step 3:</b> Simplify: 16 - 10p - 117 - 3p - 3 = 0.</div>
+            <div class="step-line" style="display:none"><b>Step 4:</b> Solve for p: -13p - 104 = 0.</div>
+            <div class="step-line" style="display:none"><b>Answer:</b> The lines are concurrent when p = -8.</div>
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('conc1'); playSound('click')">Next Step</button></div>
+          </div>
+        </div>
+
+        <div class="example-box">
+          <div class="big">Example 2: Find Concurrency Point</div>
+          <p class="small-note"><strong>Question:</strong> Find the point where 4x-3y-8=0, 3x-4y-6=0, and x-y-2=0 meet.</p>
+          <div class="controls">
+            <button class="step-btn" onclick="startSteps('conc2'); playSound('concept')">Show Steps</button>
+          </div>
+          <div class="step-block" id="conc2">
+            <div class="step-line" style="display:none"><b>Step 1:</b> Find intersection of first two lines (L₁, L₂): 4x-3y=8 and 3x-4y=6.</div>
+            <div class="step-line" style="display:none"><b>Step 2:</b> Use elimination: 4 × L₁ - 3 × L₂ ⇒ 7x=14 ⇒ x=2.</div>
+            <div class="step-line" style="display:none"><b>Step 3:</b> Substitute x=2 into L₁: 4(2)-3y=8 ⇒ y=0. Point is (2, 0).</div>
+            <div class="step-line" style="display:none"><b>Step 4:</b> Check point (2, 0) in L₃: 2-0-2=0. It works, so they are concurrent.</div>
+            <div class="step-line" style="display:none"><b>Answer:</b> The concurrency point is (2, 0).</div>
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('conc2'); playSound('click')">Next Step</button></div>
+          </div>
+        </div>
+        
+        <div class="example-box">
+          <div class="big">Example 3: Non-Concurrent Check (Forms a Triangle)</div>
+          <p class="small-note"><strong>Question:</strong> Check concurrency of 2x+3y+4=0, x-2y-3=0, 3x+y-8=0.</p>
+          <div class="controls">
+            <button class="step-btn" onclick="startSteps('conc3'); playSound('concept')">Show Steps</button>
+          </div>
+          <div class="step-block" id="conc3">
+            <div class="step-line" style="display:none"><b>Step 1:</b> Set up the determinant using coefficients.</div>
+            <div class="step-line" style="display:none"><b>Step 2:</b> Expand: 2(16 - (-3)) - 3(-8 - (-9)) + 4(1 - (-6)).</div>
+            <div class="step-line" style="display:none"><b>Step 3:</b> Calculate: 2(19) - 3(1) + 4(7) = 63.</div>
+            <div class="step-line" style="display:none"><b>Answer:</b> Since the determinant is 63 ≠ 0, the lines are <strong>not</strong> concurrent.</div>
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('conc3'); playSound('click')">Next Step</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="try-yourself">
+        <div class="try-title">✨ Try It Yourself: Check the Alignment</div>
+        <p>1. Are these lines concurrent? x+3y-2=0, 2x-y+4=0, x-11y+14=0. (Enter Yes/No)</p>
+        <div class="row">
+          <input id="t_conc1" placeholder="Yes or No">
+          <button class="check" onclick="checkTextMotivate('t_conc1','yes','t_conc1_res')">Check</button>
+        </div>
+        <div id="t_conc1_res" class="result"></div>
+        
+        <p style="margin-top:10px">2. Find the k value if x+y-2=0, 2x-y-1=0, and 3x+ky-7=0 are concurrent. (Enter number)</p>
+        <div class="row">
+          <input id="t_conc2" placeholder="Enter only the number">
+          <button class="check" onclick="checkTextMotivate('t_conc2','5','t_conc2_res')">Check</button>
+        </div>
+        <div id="t_conc2_res" class="result"></div>
+      </div>
+      
+      <div class="motivate" style="margin-top:14px">
+        <div class="emoji">🔍🎯</div>
+        <div class="text" style="color:#06D6A0;">You're a geometry detective! Spotting that perfect meeting point is impressive.</div>
+      </div>
+      
+      <!-- Game card for Concurrency -->
+      <h3 style="margin-top:16px;color:var(--accent)">Play the Concurrency Games</h3>
+      <div class="game-card-grid">
+        <div class="game-card-style" onclick="showGame('concurrency-game'); playSound('gameStart')">
+          <div class="game-card-left">
+            <div class="svg-icon" aria-hidden="true" style="background: linear-gradient(135deg, #FFD166, #EF476F);">
+              <i class="fas fa-bullseye"></i>
+            </div>
+            <div style="font-size:12px;color:var(--muted); margin-top:5px">Bullseye Hunt</div>
+          </div>
+          <div>
+            <div class="game-card-title">Triple Target Challenge</div>
+            <div class="game-card-desc">Find the unknown value (p) that forces three lines to meet at a single point.</div>
+            <div style="margin-top:12px"><button class="start-btn">Play Game</button></div>
+          </div>
+        </div>
+      </div>
+      
+      <div id="concurrency-game" class="game-play-area">
+        <h3 style="color:var(--primary); margin-bottom: 20px;">Triple Target: Find p for concurrency!</h3>
+        <div class="game-icon-visual">🎯</div>
+        <div class="score-board" id="conc-score-display">Score: 0</div>
+        <div class="game-prompt" id="conc-prompt">L1: 2x+3y-1=0 | L2: 3x-y-5=0 | L3: 3x+py+8=0</div>
+        <div class="game-input-group">
+          p: <input type="number" id="conc-p-input" placeholder="p">
+        </div>
+        <button class="check" onclick="checkConcurrency()" style="background:var(--primary)">Submit</button>
+        <div class="game-message" id="conc-status">Ready.</div>
+        <button class="step-btn" style="margin-top: 15px;" onclick="initConcurrencyGame(); playSound('click')">New Problem</button>
+      </div>
+
+      <div class="calm">
+        <div style="font-size:28px">🧘</div>
+        <div style="font-weight:700">Calm: Close your eyes and breathe slowly through the matrix calculation. Relax.</div>
+      </div>
+    </section>
+
+    <!-- ================= ANGLE BETWEEN TWO LINES ================= -->
+    <div id="angle" class="divider">3. Angle Between Two Lines</div>
+    <section class="card animate delay-3">
+      <h2>How Sharp is the Turn? (Angle Formula)</h2>
+      <p class="lead">We use the slopes (m₁ and m₂) to find the <strong>acute angle</strong> (θ) between two non-perpendicular lines. Remember, slope is key!</p>
+
+      <div class="definition">
+        <div class="definition-content">
+          <strong>Angle Formula:</strong> Where θ is the acute angle:
+          <p style="font-size:1.1rem; text-align:center; font-family: monospace;">
+            tan(θ) = | (m₂ - m₁) / (1 + m₁ m₂) |
+          </p>
+          <div style="margin-top:8px; display:flex; align-items:center; gap:8px;">
+            <span style="font-size:24px">📐</span>
+            <span><strong>Special Case:</strong> If m₁ m₂ = -1, the lines are <strong>perpendicular</strong> (θ = 90°).</span>
+          </div>
+        </div>
+        <div class="definition-cartoon">
+          <svg viewBox="0 0 100 100" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+            <line x1="15" y1="80" x2="85" y2="20" stroke="#3b82f6" stroke-width="5" stroke-linecap="round" />
+            <line x1="15" y1="80" x2="85" y2="80" stroke="#f59e0b" stroke-width="5" stroke-linecap="round" />
+            <path d="M25 80 A 10 10 0 0 1 20 70" fill="none" stroke="#ec4899" stroke-width="2" />
+            <path d="M30 80 A 20 20 0 0 1 25 70" fill="none" stroke="#ec4899" stroke-width="2" />
+            <text x="35" y="70" font-size="8" fill="#ec4899" font-weight="bold">θ</text>
+            <text x="50" y="50" font-size="8" fill="#3b82f6" font-weight="bold">m2</text>
+            <text x="50" y="85" font-size="8" fill="#f59e0b" font-weight="bold">m1</text>
+            <circle cx="15" cy="80" r="5" fill="#1e40af" />
+          </svg>
+        </div>
+      </div>
+      
+      <!-- Examples -->
+      <div class="example-container">
+        <div class="example-box">
+          <div class="big">Example 1: Standard Angle Calculation</div>
+          <p class="small-note"><strong>Question:</strong> Find the acute angle θ between 2x+3y=0 and x-y+1=0.</p>
+          <div class="controls">
+            <button class="step-btn" onclick="startSteps('angle1'); playSound('concept')">Show Steps</button>
+          </div>
+          <div class="step-block" id="angle1">
+            <div class="step-line" style="display:none"><b>Step 1:</b> Find slopes: m₁ = -2/3 and m₂ = 1.</div>
+            <div class="step-line" style="display:none"><b>Step 2:</b> Substitute into formula: tan(θ) = | (1 - (-2/3)) / (1 + (1)(-2/3)) |.</div>
+            <div class="step-line" style="display:none"><b>Step 3:</b> Simplify: tan(θ) = | (5/3) / (1/3) | = 5.</div>
+            <div class="step-line" style="display:none"><b>Answer:</b> θ = arctan(5) ≈ 78.69°.</div>
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('angle1'); playSound('click')">Next Step</button></div>
+          </div>
+        </div>
+
+        <div class="example-box">
+          <div class="big">Example 2: Perpendicular Lines (The Builder's Square)</div>
+          <p class="small-note"><strong>Question:</strong> Find the angle between y=2x+1 and y=-½x+3.</p>
+          <div class="controls">
+            <button class="step-btn" onclick="startSteps('angle2'); playSound('concept')">Show Steps</button>
+          </div>
+          <div class="step-block" id="angle2">
+            <div class="step-line" style="display:none"><b>Step 1:</b> Identify slopes: m₁ = 2 and m₂ = -1/2.</div>
+            <div class="step-line" style="display:none"><b>Step 2:</b> Check the product: m₁ m₂ = 2 × (-½) = -1.</div>
+            <div class="step-line" style="display:none"><b>Step 3:</b> Since the product of slopes is -1, the lines are perpendicular.</div>
+            <div class="step-line" style="display:none"><b>Answer:</b> θ = 90°. A perfect corner!</div>
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('angle2'); playSound('click')">Next Step</button></div>
+          </div>
+        </div>
+        
+        <div class="example-box">
+          <div class="big">Example 3: Angle from Points</div>
+          <p class="small-note"><strong>Question:</strong> Find the acute angle θ between L₁ (through (-9,-1) and (3,-5)) and L₂ (through (2,7) and (-6,-7)).</p>
+          <div class="controls">
+            <button class="step-btn" onclick="startSteps('angle3'); playSound('concept')">Show Steps</button>
+          </div>
+          <div class="step-block" id="angle3">
+            <div class="step-line" style="display:none"><b>Step 1:</b> Find slopes: m₁ = (-5-(-1))/(3-(-9)) = -1/3.</div>
+            <div class="step-line" style="display:none"><b>Step 2:</b> m₂ = (-7-7)/(-6-2) = 7/4.</div>
+            <div class="step-line" style="display:none"><b>Step 3:</b> Substitute: tan(θ) = | (7/4 - (-1/3)) / (1 + (7/4)(-1/3)) | = | (25/12) / (5/12) |.</div>
+            <div class="step-line" style="display:none"><b>Step 4:</b> Simplify: tan(θ) = 5.</div>
+            <div class="step-line" style="display:none"><b>Answer:</b> θ = arctan(5) ≈ 78.69°.</div>
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('angle3'); playSound('click')">Next Step</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="try-yourself">
+        <div class="try-title">✨ Try It Yourself: Test Your Slopes</div>
+        <p>1. Find tan(θ) (the value, not the angle) for L₁: 4x-3y-8=0 and L₂: x-y-2=0.</p>
+        <div class="row">
+          <input id="t_angle1" placeholder="Enter simplified fraction or number">
+          <button class="check" onclick="checkTextMotivate('t_angle1','1/7','t_angle1_res')">Check</button>
+        </div>
+        <div id="t_angle1_res" class="result"></div>
+        
+        <p style="margin-top:10px">2. Are the lines 5x+2y-1=0 and 2x-5y+3=0 parallel or perpendicular? (Enter P for Parallel, R for Perpendicular)</p>
+        <div class="row">
+          <input id="t_angle2" placeholder="P or R">
+          <button class="check" onclick="checkTextMotivate('t_angle2','r','t_angle2_res')">Check</button>
+        </div>
+        <div id="t_angle2_res" class="result"></div>
+      </div>
+      
+      <div class="motivate" style="margin-top:14px">
+        <div class="emoji">📏📐</div>
+        <div class="text" style="color:#f59e0b;">Excellent! You've precisely measured the turn between the lines!</div>
+      </div>
+      
+      <!-- Game card for Angle -->
+      <h3 style="margin-top:14px;color:var(--accent)">Play the Angle Games</h3>
+      <div class="game-card-grid">
+        <div class="game-card-style" onclick="showGame('angle-inspector-game'); playSound('gameStart')">
+          <div class="game-card-left">
+            <div class="svg-icon" aria-hidden="true" style="background: linear-gradient(135deg, #65C7F7, #4ECDC4);">
+              <i class="fas fa-ruler-combined"></i>
+            </div>
+            <div style="font-size:12px;color:var(--muted); margin-top:5px">Angle Ruler</div>
+          </div>
+          <div>
+            <div class="game-card-title">Angle Inspector</div>
+            <div class="game-card-desc">Calculate the angle (θ) between two lines and choose the correct value.</div>
+            <div style="margin-top:12px"><button class="start-btn">Play Game</button></div>
+          </div>
+        </div>
+      </div>
+      
+      <div id="angle-inspector-game" class="game-play-area">
+        <h3 style="color:var(--primary); margin-bottom: 10px;">Angle Inspector: Find the acute angle θ (in degrees)!</h3>
+        <div class="game-icon-visual">✂️</div>
+        <div class="score-board" id="angle-score-display">Score: 0</div>
+        <div class="game-prompt" id="angle-prompt">L₁: y = 2x - 1 | L₂: y = -1/2x + 4</div>
+        <div class="game-input-group">
+            θ: <input type="number" id="angle-input" placeholder="degrees (e.g. 45)">
+        </div>
+        <button class="check" onclick="checkAngle()" style="background:var(--primary)">Check Angle</button>
+        <div class="game-message" id="angle-status">Ready.</div>
+        <button class="step-btn" style="margin-top: 15px;" onclick="initAngleGame(); playSound('click')">New Problem</button>
+      </div>
+
+      <div class="calm">
+        <div style="font-size:24px">🧠</div>
+        <div style="font-weight:700">Calm: Focus on the angle of your wrist. 90° is easy, but the acute angle takes concentration!</div>
+      </div>
+    </section>
+
+    <!-- ================= SPECIAL TRIANGLE CENTRES ================= -->
+    <div id="centres" class="divider">4. Special Triangle Centres (The Core Builders)</div>
+    <section class="card animate">
+      <h2>Orthocentre, Circumcentre, and Centroid</h2>
+      <p class="lead">These are the three most important points inside a triangle. Orthocentre and Circumcentre require complex steps of finding perpendicular lines and solving their intersection.</p>
+
+      <div class="definition">
+        <div class="definition-content">
+          <p>The easiest is the <strong>Centroid (G)</strong>: G = ( (x₁+x₂+x₃)/3, (y₁+y₂+y₃)/3 )</p>
+          <p>★ <strong>Orthocentre (H):</strong> Intersection of <strong>Altitudes</strong> (perpendicular from vertex to opposite side).</p>
+          <p>★ <strong>Circumcentre (O):</strong> Intersection of <strong>Perpendicular Bisectors</strong> (perpendicular through the midpoint of a side).</p>
+          <div style="margin-top:8px; display:flex; align-items:center; gap:8px;">
+            <span style="font-size:24px">📐</span>
+            <span>You must find two Altitudes (for H) or two Perpendicular Bisectors (for O) and solve them simultaneously.</span>
+          </div>
+        </div>
+        <div class="definition-cartoon">
+          <svg viewBox="0 0 100 100" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="50,10 10,80 90,80" fill="#f0f9ff" stroke="#3b82f6" stroke-width="3" />
+            <circle cx="50" cy="50" r="12" fill="#ff6b6b" opacity="0.4" />
+            <circle cx="50" cy="50" r="4" fill="#1e40af" />
+            <text x="50" y="55" font-size="6" fill="white" text-anchor="middle" font-weight="bold">C</text>
+            <text x="50" y="10" font-size="8" fill="#ec4899">A</text>
+            <text x="5" y="85" font-size="8" fill="#ec4899">B</text>
+            <text x="95" y="85" font-size="8" fill="#ec4899">C</text>
+            <line x1="50" y1="10" x2="50" y2="80" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,3" />
+            <line x1="90" y1="80" x2="30" y2="50" stroke="#06d6a0" stroke-width="1" stroke-dasharray="3,3" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Examples -->
+      <div class="example-container">
+        <div class="example-box">
+          <div class="big">Example 1: Finding the Orthocentre (H)</div>
+          <p class="small-note"><strong>Question:</strong> Find the Orthocentre of the triangle with vertices A(-2,3), B(-4,1), C(3,5).</p>
+          <div class="controls">
+            <button class="step-btn" onclick="startSteps('ortho'); playSound('concept')">Show Steps</button>
+          </div>
+          <div class="step-block" id="ortho">
+            <div class="step-line" style="display:none"><b>Step 1 (Altitude 1):</b> Slope of AB: m_AB = 1. Perpendicular slope is m_⊥ = -1.</div>
+            <div class="step-line" style="display:none"><b>Step 2:</b> Altitude on AB passes through C(3,5): y-5 = -1(x-3) ⇒ x+y-8=0. (L₁)</div>
+            <div class="step-line" style="display:none"><b>Step 3 (Altitude 2):</b> Slope of BC: m_BC = 4/7. Perpendicular slope is m_⊥ = -7/4.</div>
+            <div class="step-line" style="display:none"><b>Step 4:</b> Altitude on BC passes through A(-2,3): y-3 = -⁷⁄₄(x+2) ⇒ 7x+4y+2=0. (L₂)</div>
+            <div class="step-line" style="display:none"><b>Step 5:</b> Solve L₁ and L₂ simultaneously: x = -34/3. Then y = 58/3.</div>
+            <div class="step-line" style="display:none"><b>Answer:</b> The Orthocentre is (-³⁴⁄₃, ⁵⁸⁄₃).</div>
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('ortho'); playSound('click')">Next Step</button></div>
+          </div>
+        </div>
+
+        <div class="example-box">
+          <div class="big">Example 2: Finding the Circumcentre (O)</div>
+          <p class="small-note"><strong>Question:</strong> Find the Circumcentre of the triangle with vertices A(-2,3), B(-4,1), C(3,5).</p>
+          <div class="controls">
+            <button class="step-btn" onclick="startSteps('circ'); playSound('concept')">Show Steps</button>
+          </div>
+          <div class="step-block" id="circ">
+            <div class="step-line" style="display:none"><b>Step 1 (Bisector 1 - AB):</b> Midpoint D of AB: (-3, 2). Perpendicular slope is m_⊥ = -1.</div>
+            <div class="step-line" style="display:none"><b>Step 2:</b> Bisector on AB passes through D(-3,2): y-2 = -1(x+3) ⇒ x+y+1=0. (L₃)</div>
+            <div class="step-line" style="display:none"><b>Step 3 (Bisector 2 - BC):</b> Midpoint E of BC: (-½, 3). Perpendicular slope is m_⊥ = -7/4.</div>
+            <div class="step-line" style="display:none"><b>Step 4:</b> Bisector on BC passes through E(-½, 3): y-3 = -⁷⁄₄(x+½) ⇒ 14x+8y-17=0. (L₄)</div>
+            <div class="step-line" style="display:none"><b>Step 5:</b> Solve L₃ and L₄: x = 25/6. Then y = -31/6.</div>
+            <div class="step-line" style="display:none"><b>Answer:</b> The Circumcentre is (²⁵⁄₆, -³¹⁄₆).</div>
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('circ'); playSound('click')">Next Step</button></div>
+          </div>
+        </div>
+        
+        <div class="example-box">
+          <div class="big">Example 3: Area of Triangle</div>
+          <p class="small-note"><strong>Question:</strong> Find the area of the triangle formed by lines 7x-y-10=0, 10x+y-41=0, and 3x+2y+3=0.</p>
+          <div class="controls">
+            <button class="step-btn" onclick="startSteps('area'); playSound('concept')">Show Steps</button>
+          </div>
+          <div class="step-block" id="area">
+            <div class="step-line" style="display:none"><b>Step 1:</b> Find all three intersection points (Vertices): A(3, 11), B(5, -9), C(1, -3).</div>
+            <div class="step-line" style="display:none"><b>Step 2:</b> Use the Area Formula: Area = ½ × |x₁(y₂-y₃) + x₂(y₃-y₁) + x₃(y₁-y₂)|.</div>
+            <div class="step-line" style="display:none"><b>Step 3:</b> Substitute and Expand: ½ × |3(-9+3) - 11(5-1) + 1(-15+9)|.</div>
+            <div class="step-line" style="display:none"><b>Step 4:</b> Calculate: ½ × |-18 - 44 - 6| = ½ × |-68| = 34.</div>
+            <div class="step-line" style="display:none"><b>Answer:</b> Area of the triangle is 34 sq. units.</div>
+            <div style="margin-top:8px"><button class="next-step" onclick="nextStep('area'); playSound('click')">Next Step</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="try-yourself">
+        <div class="try-title">✨ Try It Yourself: Triangle Centres Quiz</div>
+        <p>1. Find the Centroid (the balance point) of a triangle with vertices (1, 1), (5, 5), and (-3, 0). (Enter as x,y)</p>
+        <div class="row">
+          <input id="t_cent1" placeholder="e.g. 1,2">
+          <button class="check" onclick="checkTextMotivate('t_cent1','(1,2)','t_cent1_res')">Check</button>
+        </div>
+        <div id="t_cent1_res" class="result"></div>
+        
+        <p style="margin-top:10px">2. The Orthocentre of a right triangle is always located where? (Hint: It's one of the vertices!)</p>
+        <div class="row">
+          <input id="t_cent2" placeholder="Start your answer with 'At the'">
+          <button class="check" onclick="checkTextMotivate('t_cent2','attherightanglevertex','t_cent2_res')">Check</button>
+        </div>
+        <div id="t_cent2_res" class="result"></div>
+      </div>
+      
+      <div class="motivate" style="margin-top:14px">
+        <div class="emoji">🏗️🏆</div>
+        <div class="text" style="color:#118AB2;">Incredible work on the complex triangle centres! That's a huge achievement!</div>
+      </div>
+      
+      <!-- Game card for Triangle Centres -->
+      <h3 style="margin-top:14px;color:var(--accent)">Play the Triangle Centre Games</h3>
+      <div class="game-card-grid">
+        <div class="game-card-style" onclick="showGame('triangle-architect-game'); playSound('gameStart')">
+          <div class="game-card-left">
+            <div class="svg-icon" aria-hidden="true" style="background: linear-gradient(135deg, #ff7eb3, #ff758c);">
+              <i class="fas fa-drafting-compass"></i>
+            </div>
+            <div style="font-size:12px;color:var(--muted); margin-top:5px">Triangle Builder</div>
+          </div>
+          <div>
+            <div class="game-card-title">Triangle Architect</div>
+            <div class="game-card-desc">Match the correct definition/formula to the special triangle center.</div>
+            <div style="margin-top:12px"><button class="start-btn">Play Game</button></div>
+          </div>
+        </div>
+      </div>
+      
+      <div id="triangle-architect-game" class="game-play-area">
+        <h3 style="color:var(--primary); margin-bottom: 20px;">Triangle Architect: Identify the correct center!</h3>
+        <div class="game-icon-visual">🏗️</div>
+        <div class="score-board" id="centres-score-display">Score: 0</div>
+        <div class="game-prompt" id="centres-prompt">Which point is the intersection of <strong>Perpendicular Bisectors</strong>?</div>
+        <div class="options-grid" id="centres-choices" style="display:flex; flex-direction:column; gap:10px; max-width: 400px; margin: 15px auto;">
+          <button class="step-btn" onclick="checkCentre('centroid')">Centroid</button>
+          <button class="step-btn" onclick="checkCentre('orthocentre')">Orthocentre</button>
+          <button class="step-btn" onclick="checkCentre('circumcentre')">Circumcentre</button>
+          <button class="step-btn" onclick="checkCentre('incentre')">Incentre</button>
+        </div>
+        <div class="game-message" id="centres-status">Ready.</div>
+        <button class="step-btn" style="margin-top: 15px;" onclick="initCentresGame(); playSound('click')">New Challenge</button>
+      </div>
+
+      <div class="calm">
+        <div style="font-size:24px">🤸</div>
+        <div style="font-weight:700">Calm: Stretch your body like a triangle, find your center of balance (Centroid)!</div>
+      </div>
+    </section>
+
+    <!-- GAMES landing -->
+    <div id="games" class="divider">Stress-Relief Games</div>
+    <section class="card">
+      <h2>Quick Access to Games</h2>
+      <p class="lead">Click any game below to open it and start practicing what you've learned in a fun way!</p>
+      <div class="game-card-grid">
+        <div class="game-card-style" onclick="showGame('intersection-game'); playSound('gameStart')">
+          <div class="game-card-left">
+            <div class="svg-icon" style="background: linear-gradient(135deg, #ff7eb3, #ff758c);">
+              <i class="fas fa-road"></i>
+            </div>
+            <div style="font-size:12px;color:var(--muted); margin-top:5px">Road Maps</div>
+          </div>
+          <div>
+            <div class="game-card-title">Roads to Riches</div>
+            <div class="game-card-desc">Practice finding the exact intersection point (x, y).</div>
+          </div>
+        </div>
+
+        <div class="game-card-style" onclick="showGame('concurrency-game'); playSound('gameStart')">
+          <div class="game-card-left">
+            <div class="svg-icon" style="background: linear-gradient(135deg, #FFD166, #EF476F);">
+              <i class="fas fa-bullseye"></i>
+            </div>
+            <div style="font-size:12px;color:var(--muted); margin-top:5px">Bullseye Hunt</div>
+          </div>
+          <div>
+            <div class="game-card-title">Triple Target Challenge</div>
+            <div class="game-card-desc">Find the unknown coefficient for concurrent lines.</div>
+          </div>
+        </div>
+
+        <div class="game-card-style" onclick="showGame('angle-inspector-game'); playSound('gameStart')">
+          <div class="game-card-left">
+            <div class="svg-icon" style="background: linear-gradient(135deg, #65C7F7, #4ECDC4);">
+              <i class="fas fa-ruler-combined"></i>
+            </div>
+            <div style="font-size:12px;color:var(--muted); margin-top:5px">Angle Ruler</div>
+          </div>
+          <div>
+            <div class="game-card-title">Angle Inspector</div>
+            <div class="game-card-desc">Test your acute angle (θ) calculation skills.</div>
+          </div>
+        </div>
+        
+        <div class="game-card-style" onclick="showGame('triangle-architect-game'); playSound('gameStart')">
+          <div class="game-card-left">
+            <div class="svg-icon" style="background: linear-gradient(135deg, #ff7eb3, #ff758c);">
+              <i class="fas fa-drafting-compass"></i>
+            </div>
+            <div style="font-size:12px;color:var(--muted); margin-top:5px">Triangle Builder</div>
+          </div>
+          <div>
+            <div class="game-card-title">Triangle Architect</div>
+            <div class="game-card-desc">Identify the definitions for Orthocentre and Circumcentre.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div style="text-align: center; margin: 40px 0;">
+    <a href="{{ url_for('serve_chapter_part', chapter_num=4, part_num=5) }}" class="btn btn-primary">
+        Continue to Part 5 <i class="fas fa-arrow-right"></i>
+    </a>
+</div>
+    </div>
+  </div>
+
+  <!-- Floating quick games button -->
+  <div class="fab">
+    <i class="fas fa-gamepad"></i>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-about">
+          <div class="footer-logo">
+            <div class="footer-logo-icon">S</div>
+            Sentellect
+          </div>
+          <p>Personalizing learning through emotions to improve educational experience for HSSC Mathematics.</p>
+          <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            <!-- Sound control removed from here -->
+            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+        
+        <div class="footer-links">
+          <h3>Platform</h3>
+          <ul>
+            <li><a href="#intersection">Intersection</a></li>
+            <li><a href="#concurrency">Concurrency</a></li>
+            <li><a href="#angle">Angle</a></li>
+            <li><a href="#centres">Triangle Centres</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-links">
+          <h3>Resources</h3>
+          <ul>
+            <li><a href="#">Study Materials</a></li>
+            <li><a href="#">About Project</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Support</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-links">
+          <h3>Account</h3>
+          <ul>
+            <li><a href="#">Your Account</a></li>    
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms & Conditions</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>© 2025 Sentellect. Final Year Project - Educational Technology.</p>
+        <div class="footer-tags">
+          <a href="#" class="tag">PTB HSSC Mathematics</a>
+          <a href="#" class="tag">Emotion-Aware Learning</a>
+          <a href="#" class="tag">Coordinate Geometry</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= JS: games + UI functions ================= -->
+  <script>
+    /* ==========================================
+   SCROLL SPEED DETECTOR (Anxiety Check)
+   ========================================== */
+
+let lastScrollTop = 0;
+let fastScrollCount = 0;
+let scrollAlertShown = false; // To prevent spamming the popup
+
+// Check scroll speed every 200ms
+setInterval(() => {
+    if (scrollAlertShown) return; // Stop checking if we already showed the modal
+
+    // Get current scroll position
+    const st = window.pageYOffset || document.documentElement.scrollTop;
+    
+    // Calculate distance moved in last 200ms
+    const distance = Math.abs(st - lastScrollTop);
+    
+    // Threshold: If moved more than 300px in 0.2 seconds (Very Fast)
+    if (distance > 300) {
+        fastScrollCount++;
+        console.log("⚠️ Fast Scroll Detected:", fastScrollCount);
+    } else {
+        // Decay counter (if they slow down, forgive them)
+        if (fastScrollCount > 0) fastScrollCount--;
+    }
+
+    // Trigger: If they speed-scroll 4 times consecutively
+    if (fastScrollCount >= 4) {
+        showScrollModal();
+        fastScrollCount = 0; // Reset
+    }
+
+    lastScrollTop = st;
+}, 200); 
+
+function showScrollModal() {
+    const modal = document.getElementById('scrollModal');
+    if (modal) {
+        modal.style.display = 'flex';
+        scrollAlertShown = true; // Ensure it only pops up once per session
+        
+        // Optional: Log to backend
+        if(typeof fetch !== 'undefined') {
+            fetch('/api/log_behavior', { 
+                method: 'POST', 
+                headers: {'Content-Type': 'application/json'}, 
+                body: JSON.stringify({ reason: 'rapid_scrolling', context: 'high_stress_chapter2' }) 
+            }).catch(e => console.log(e));
+        }
+    }
+}
+
+function closeScrollModal() {
+    document.getElementById('scrollModal').style.display = 'none';
+    // scrollAlertShown remains true so we don't bug them again
+}
+    // Celebration system
+    function celebrate() {
+      if (!soundEnabled) return;
+      
+      const celebration = document.getElementById('celebration');
+      celebration.style.display = 'block';
+      
+      // Play celebration sound
+      playSound('celebration');
+      
+      // Create confetti
+      for (let i = 0; i < 150; i++) {
+        createConfetti();
+      }
+      
+      // Create party poppers
+      for (let i = 0; i < 20; i++) {
+        createPartyPopper();
+      }
+      
+      // Create hurray text
+      createHurrayText();
+      
+      // Hide celebration after 3 seconds
+      setTimeout(() => {
+        celebration.style.display = 'none';
+        celebration.innerHTML = '';
+      }, 3000);
+    }
+    
+    function createConfetti() {
+      const celebration = document.getElementById('celebration');
+      const confetti = document.createElement('div');
+      confetti.className = 'confetti';
+      
+      // Random position
+      const left = Math.random() * 100;
+      const colors = ['#ff6b6b', '#ffd166', '#06d6a0', '#118ab2', '#ef476f'];
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      
+      confetti.style.left = `${left}%`;
+      confetti.style.backgroundColor = color;
+      
+      celebration.appendChild(confetti);
+      
+      // Animate confetti
+      const animation = confetti.animate([
+        { transform: 'translateY(-20px) rotate(0deg)', opacity: 1 },
+        { transform: `translateY(${window.innerHeight}px) rotate(720deg)`, opacity: 0 }
+      ], {
+        duration: 2000 + Math.random() * 1000,
+        easing: 'cubic-bezier(0.215, 0.61, 0.355, 1)'
+      });
+      
+      animation.onfinish = () => {
+        confetti.remove();
+      };
+    }
+    
+    function createPartyPopper() {
+      const celebration = document.getElementById('celebration');
+      const popper = document.createElement('div');
+      popper.className = 'party-popper';
+      popper.textContent = '🎉';
+      
+      // Random position
+      const left = Math.random() * 100;
+      const top = Math.random() * 100;
+      
+      popper.style.left = `${left}%`;
+      popper.style.top = `${top}%`;
+      
+      celebration.appendChild(popper);
+      
+      // Animate party popper
+      const animation = popper.animate([
+        { transform: 'scale(0) rotate(0deg)', opacity: 1 },
+        { transform: 'scale(1.5) rotate(360deg)', opacity: 0 }
+      ], {
+        duration: 1000 + Math.random() * 500,
+        easing: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+      });
+      
+      animation.onfinish = () => {
+        popper.remove();
+      };
+    }
+    
+    function createHurrayText() {
+      const celebration = document.getElementById('celebration');
+      const hurray = document.createElement('div');
+      hurray.className = 'hurray-text';
+      hurray.textContent = 'HURRAY!';
+      
+      celebration.appendChild(hurray);
+      
+      // Animate hurray text
+      const animation = hurray.animate([
+        { transform: 'translate(-50%, -50%) scale(0)', opacity: 0 },
+        { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
+        { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
+        { transform: 'translate(-50%, -50%) scale(1.2)', opacity: 0 }
+      ], {
+        duration: 3000,
+        easing: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+      });
+      
+      animation.onfinish = () => {
+        hurray.remove();
+      };
+    }
+
+    // Sound system
+    let soundEnabled = true;
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    
+    // Sound functions
+    function playSound(type) {
+      if (!soundEnabled) return;
+      
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      // Set sound parameters based on type
+      switch(type) {
+        case 'success':
+          oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
+          gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+          oscillator.start();
+          oscillator.stop(audioContext.currentTime + 0.5);
+          break;
+          
+        case 'error':
+          oscillator.frequency.setValueAtTime(220, audioContext.currentTime); // A3
+          gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+          oscillator.start();
+          oscillator.stop(audioContext.currentTime + 0.3);
+          break;
+          
+        case 'click':
+          oscillator.frequency.setValueAtTime(784, audioContext.currentTime); // G5
+          gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+          oscillator.start();
+          oscillator.stop(audioContext.currentTime + 0.1);
+          break;
+          
+        case 'gameStart':
+          // Play a little melody
+          playMelody([784, 659, 523, 659, 784], [0.15, 0.15, 0.15, 0.15, 0.3]);
+          break;
+          
+        case 'celebration':
+          // Play a celebratory melody
+          playMelody([523.25, 659.25, 783.99, 1046.50, 1318.51, 1567.98], [0.15, 0.15, 0.15, 0.15, 0.15, 0.5]);
+          break;
+          
+        case 'concept':
+          // Play a gentle sound for understanding concepts
+          playMelody([261.63, 329.63, 392.00], [0.3, 0.3, 0.5]);
+          break;
+      }
+    }
+    
+    function playMelody(frequencies, durations) {
+      let time = audioContext.currentTime;
+      
+      frequencies.forEach((freq, i) => {
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        oscillator.frequency.setValueAtTime(freq, time);
+        gainNode.gain.setValueAtTime(0.2, time);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, time + durations[i]);
+        
+        oscillator.start(time);
+        oscillator.stop(time + durations[i]);
+        
+        time += durations[i];
+      });
+    }
+    
+    // Toggle sound
+    document.getElementById('toggleSound').addEventListener('click', function() {
+      soundEnabled = !soundEnabled;
+      const icon = this.querySelector('i');
+      
+      if (soundEnabled) {
+        icon.className = 'fas fa-volume-up';
+        this.classList.remove('muted');
+        playSound('click');
+      } else {
+        icon.className = 'fas fa-volume-mute';
+        this.classList.add('muted');
+      }
+    });
+
+    /* -------- Helpers (step reveals & answer checking) -------- */
+    function startSteps(blockId){
+      const block = document.getElementById(blockId);
+      if(!block) return;
+      const lines = block.querySelectorAll('.step-line');
+      lines.forEach(l => l.style.display = 'none');
+      if(lines.length) lines[0].style.display = 'block';
+      playSound('concept');
+    }
+    
+    function nextStep(blockId){
+      const block = document.getElementById(blockId);
+      if(!block) return;
+      const lines = block.querySelectorAll('.step-line');
+      let shown = 0;
+      for(let i=0;i<lines.length;i++) if(getComputedStyle(lines[i]).display !== 'none') shown++;
+      if(shown < lines.length) {
+        lines[shown].style.display = 'block';
+        playSound('success');
+        // Celebrate on the last step
+        if (shown === lines.length - 1) {
+          setTimeout(celebrate, 500);
+        }
+      }
+    }
+
+    function checkTextMotivate(inputId, correctText, resultId){
+      const val = (document.getElementById(inputId).value || '').trim().toLowerCase().replace(/\s/g,'');
+      const correct = (''+correctText).trim().toLowerCase().replace(/\s/g,'');
+      const resEl = document.getElementById(resultId);
+      if(!resEl){
+        // create a simple inline feedback if result element missing
+        const el = document.createElement('div'); el.style.marginTop='8px';
+        if(val === correct){ 
+          el.style.color='#047857'; 
+          el.textContent='Nice! Correct ✅';
+          playSound('success');
+          celebrate();
+        } else { 
+          el.style.color='#92400e'; 
+          el.textContent='Not quite — try again.';
+          playSound('error');
+        }
+        document.getElementById(inputId).insertAdjacentElement('afterend', el);
+        return;
+      }
+      if(val === correct){
+        resEl.style.color = '#047857'; 
+        resEl.textContent = 'Nice! Correct ✅';
+        resEl.className = "result good";
+        playSound('success');
+        celebrate();
+      } else {
+        resEl.style.color = '#92400e'; 
+        resEl.textContent = 'Not quite — try again.';
+        resEl.className = "result warn";
+        playSound('error');
+      }
+      resEl.style.display = "block";
+    }
+
+    /* ---------- Game datasets ---------- */
+    const intersectionData = [
+      { l1: [1, -2, 1], l2: [2, -1, 2], point: [-1, 0] },
+      { l1: [3, 1, 12], l2: [1, 2, -1], point: [-5, 3] },
+      { l1: [2, 5, -8], l2: [3, -4, -6], point: [2, 1] }
+    ];
+
+    const concurrencyData = [
+      { l1: [2, 3, -1], l2: [3, -1, -5], l3: [3, -8, 8], p: -8 },
+      { l1: [4, -3, -8], l2: [3, -4, -6], l3: [1, -1, -2], point: [2, 0] },
+      { l1: [2, 3, 4], l2: [1, -2, -3], l3: [3, 1, -8], p: null }
+    ];
+
+    const angleData = [
+      { l1: [2, 3, 0], l2: [1, -1, 1], angle: 78.69 },
+      { l1: [1, -2, 1], l2: [2, 1, -3], angle: 90 },
+      { l1: [3, 1, 12], l2: [1, 2, -1], angle: 45 }
+    ];
+
+    const centresData = [
+      { question: "Which point is the intersection of **Perpendicular Bisectors**?", answer: "circumcentre" },
+      { question: "Which point is the intersection of **Altitudes**?", answer: "orthocentre" },
+      { question: "Which point divides medians in 2:1 ratio?", answer: "centroid" },
+      { question: "Which point is the intersection of **Medians**?", answer: "centroid" },
+      { question: "Which point is equidistant from vertices?", answer: "circumcentre" }
+    ];
+
+    function shuffle(arr){ for(let i=arr.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]] } return arr }
+
+    /* ---------------- Intersection Game ---------------- */
+    let intScore = 0;
+    let currentIntProblem = null;
+
+    function initIntersectionGame(){
+      const problem = intersectionData[Math.floor(Math.random() * intersectionData.length)];
+      currentIntProblem = problem;
+      
+      document.getElementById('int-prompt').textContent = `L1: ${problem.l1[0]}x + ${problem.l1[1]}y + ${problem.l1[2]} = 0 | L2: ${problem.l2[0]}x + ${problem.l2[1]}y + ${problem.l2[2]} = 0`;
+      document.getElementById('int-x-input').value = '';
+      document.getElementById('int-y-input').value = '';
+      document.getElementById('int-status').textContent = `Score: ${intScore}`;
+      document.getElementById('int-score-display').textContent = `Score: ${intScore}`;
+      document.getElementById('int-status').classList.remove('success', 'wrong');
+    }
+
+    function checkIntersection() {
+      const x = parseFloat(document.getElementById('int-x-input').value);
+      const y = parseFloat(document.getElementById('int-y-input').value);
+      const correctX = currentIntProblem.point[0];
+      const correctY = currentIntProblem.point[1];
+      
+      if (x === correctX && y === correctY) {
+        intScore++;
+        document.getElementById('int-status').className = 'game-message success';
+        document.getElementById('int-status').textContent = `✅ Correct! Score: ${intScore}`;
+        document.getElementById('int-score-display').textContent = `Score: ${intScore}`;
+        playSound('success');
+        setTimeout(initIntersectionGame, 1000);
+      } else {
+        document.getElementById('int-status').className = 'game-message wrong';
+        document.getElementById('int-status').textContent = `❌ Try again. Hint: it's (${correctX}, ${correctY})`;
+        playSound('error');
+      }
+    }
+
+    /* ---------------- Concurrency Game ---------------- */
+    let concScore = 0;
+    let currentConcProblem = null;
+
+    function initConcurrencyGame() {
+      const problem = concurrencyData[Math.floor(Math.random() * concurrencyData.length)];
+      currentConcProblem = problem;
+      
+      document.getElementById('conc-prompt').textContent = `L1: ${problem.l1[0]}x+${problem.l1[1]}y+${problem.l1[2]}=0 | L2: ${problem.l2[0]}x+${problem.l2[1]}y+${problem.l2[2]}=0 | L3: ${problem.l3[0]}x+py+${problem.l3[2]}=0`;
+      document.getElementById('conc-p-input').value = '';
+      document.getElementById('conc-status').textContent = `Score: ${concScore}`;
+      document.getElementById('conc-score-display').textContent = `Score: ${concScore}`;
+      document.getElementById('conc-status').classList.remove('success', 'wrong');
+    }
+
+    function checkConcurrency() {
+      const p = parseFloat(document.getElementById('conc-p-input').value);
+      const correctP = currentConcProblem.p;
+
+      if (p === correctP) {
+        concScore++;
+        document.getElementById('conc-status').className = 'game-message success';
+        document.getElementById('conc-status').textContent = `✅ Correct! Score: ${concScore}`;
+        document.getElementById('conc-score-display').textContent = `Score: ${concScore}`;
+        playSound('success');
+        setTimeout(initConcurrencyGame, 1000);
+      } else {
+        document.getElementById('conc-status').className = 'game-message wrong';
+        document.getElementById('conc-status').textContent = `❌ Try again. Hint: the answer is ${correctP}.`;
+        playSound('error');
+      }
+    }
+    
+    /* ---------------- Angle Game ---------------- */
+    let angleScore = 0;
+    let currentAngleProblem = null;
+
+    function initAngleGame() {
+      const problem = angleData[Math.floor(Math.random() * angleData.length)];
+      currentAngleProblem = problem;
+      
+      document.getElementById('angle-prompt').textContent = `L₁: ${problem.l1[0]}x + ${problem.l1[1]}y + ${problem.l1[2]} = 0 | L₂: ${problem.l2[0]}x + ${problem.l2[1]}y + ${problem.l2[2]} = 0`;
+      document.getElementById('angle-input').value = '';
+      document.getElementById('angle-status').textContent = `Score: ${angleScore}`;
+      document.getElementById('angle-score-display').textContent = `Score: ${angleScore}`;
+      document.getElementById('angle-status').classList.remove('success', 'wrong');
+    }
+    
+    function checkAngle() {
+      const theta = parseFloat(document.getElementById('angle-input').value);
+      const correctAngle = currentAngleProblem.angle;
+
+      if (Math.abs(theta - correctAngle) < 0.5) {
+        angleScore++;
+        document.getElementById('angle-status').className = 'game-message success';
+        document.getElementById('angle-status').textContent = `✅ Correct! Score: ${angleScore}`;
+        document.getElementById('angle-score-display').textContent = `Score: ${angleScore}`;
+        playSound('success');
+        setTimeout(initAngleGame, 1000);
+      } else {
+        document.getElementById('angle-status').className = 'game-message wrong';
+        document.getElementById('angle-status').textContent = `❌ Try again. Hint: Check the slopes product.`;
+        playSound('error');
+      }
+    }
+
+    /* ---------------- Triangle Centres Game ---------------- */
+    let centresScore = 0;
+    let currentCentresProblem = null;
+
+    function initCentresGame() {
+      const problem = centresData[Math.floor(Math.random() * centresData.length)];
+      currentCentresProblem = problem;
+      
+      document.getElementById('centres-prompt').textContent = problem.question;
+      document.getElementById('centres-status').textContent = `Score: ${centresScore}`;
+      document.getElementById('centres-score-display').textContent = `Score: ${centresScore}`;
+      document.getElementById('centres-status').classList.remove('success', 'wrong');
+    }
+
+    function checkCentre(guess) {
+      if (guess === currentCentresProblem.answer) {
+        centresScore++;
+        document.getElementById('centres-status').className = 'game-message success';
+        document.getElementById('centres-status').textContent = `✅ Correct! Score: ${centresScore}`;
+        document.getElementById('centres-score-display').textContent = `Score: ${centresScore}`;
+        playSound('success');
+        setTimeout(initCentresGame, 1000);
+      } else {
+        document.getElementById('centres-status').className = 'game-message wrong';
+        document.getElementById('centres-status').textContent = `❌ Try again! Hint: It's the ${currentCentresProblem.answer}.`;
+        playSound('error');
+      }
+    }
+
+    /* ---------- show/hide game area helper ---------- */
+    function showGame(gameId){
+      document.querySelectorAll('.game-play-area').forEach(e => e.style.display = 'none');
+      const area = document.getElementById(gameId);
+      if(area){ 
+        area.style.display = 'block'; 
+        area.scrollIntoView({behavior:'smooth', block:'center'}); 
+      }
+      if(gameId === 'intersection-game') initIntersectionGame();
+      if(gameId === 'concurrency-game') initConcurrencyGame();
+      if(gameId === 'angle-inspector-game') initAngleGame();
+      if(gameId === 'triangle-architect-game') initCentresGame();
+    }
+
+    /* ---------- init on load ---------- */
+    window.addEventListener('load', function(){
+      // hide game areas
+      document.querySelectorAll('.game-play-area').forEach(g => g.style.display = 'none');
+      
+      // Header scroll effect
+      window.addEventListener('scroll', function() {
+        const header = document.querySelector('header');
+        if (window.scrollY > 50) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      });
+
+      // Animation on scroll
+      const animateElements = document.querySelectorAll('.animate');
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const delay = entry.target.classList.contains('delay-1') ? 0.2 : 
+                         entry.target.classList.contains('delay-2') ? 0.4 :
+                         entry.target.classList.contains('delay-3') ? 0.6 : 0;
+            
+            setTimeout(() => {
+              entry.target.style.opacity = 1;
+              entry.target.style.transform = 'translateY(0)';
+            }, delay * 1000);
+          }
+        });
+      }, { threshold: 0.1 });
+      
+      animateElements.forEach(element => {
+        element.style.opacity = 0;
+        element.style.transform = 'translateY(20px)';
+        element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(element);
+      });
+      
+      // Create floating particles for hero section
+      createParticles();
+      
+      // Play welcome sound
+      setTimeout(() => {
+        playSound('gameStart');
+      }, 500);
+    });
+    
+    function createParticles() {
+      const particlesContainer = document.querySelector('.particles');
+      for (let i = 0; i < 15; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        
+        const size = Math.random() * 10 + 5;
+        const posX = Math.random() * 100;
+        const posY = Math.random() * 100;
+        const delay = Math.random() * 5;
+        
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.left = `${posX}%`;
+        particle.style.top = `${posY}%`;
+        particle.style.animationDelay = `${delay}s`;
+        
+        particlesContainer.appendChild(particle);
+      }
+    }
+
+    // nav links smooth scroll
+    document.querySelectorAll('.nav-links a').forEach(a => {
+      a.addEventListener('click', function(e){
+        e.preventDefault();
+        const href = this.getAttribute('href') || '#';
+        if(href.startsWith('#')){
+          const t = document.querySelector(href);
+          if(t) t.scrollIntoView({behavior:'smooth', block:'center'});
+        }
+        playSound('click');
+      });
+    });
+    
+    // FAB scroll to games
+    document.querySelector('.fab').addEventListener('click', function() {
+      document.querySelector('#games').scrollIntoView({behavior:'smooth'});
+      playSound('click');
+    });
+  </script>
+</body>
+</html>
