@@ -64,7 +64,7 @@ def load_user(user_id):
 # ---- Load Model (Extract if zipped) ----
 import zipfile
 
-ZIP_FILE = "model.zip"   # Your zip file containing depression_model_final.joblib
+ZIP_FILE = "depression_model_final.zip"   # Your zip file containing depression_model_final.joblib
 MODEL_FILE = "depression_model_final.joblib"
 model = None
 
@@ -342,5 +342,6 @@ def log_behavior():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
+
 
 
